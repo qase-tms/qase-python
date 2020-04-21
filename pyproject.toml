@@ -10,7 +10,10 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.6"
+python = "^3.6"
+python-apitist = "^0.5.0"
+attrs = "^19.3.0"
+cattrs = "^1.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^4.6"
