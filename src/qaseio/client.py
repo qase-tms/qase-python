@@ -3,12 +3,13 @@ from typing import Callable
 from urllib.parse import urljoin
 
 import attr
-from apitist.requests import Session
 from apitist.hooks import (
     PrepRequestDebugLoggingHook,
+    RequestConverterHook,
     ResponseDebugLoggingHook,
-    RequestConverterHook
 )
+from apitist.requests import Session
+
 from qaseio.services.projects import Projects
 from qaseio.services.test_cases import TestCases
 
@@ -16,11 +17,7 @@ from qaseio.services.test_cases import TestCases
 @attr.s
 class Client:
     api_token: str = attr.ib(repr=False)
-    _s: Session = attr.ib(
-        factory=lambda: Session(),
-        repr=False,
-        init=False,
-    )
+    _s: Session = attr.ib(factory=lambda: Session(), repr=False, init=False)
     _path: Callable[[str], str] = attr.ib(repr=False, init=False)
     projects: Projects = attr.ib(init=False)
     cases: TestCases = attr.ib(init=False)
@@ -29,9 +26,7 @@ class Client:
         self._s.add_request_hook(RequestConverterHook)
         self._s.add_prep_request_hook(PrepRequestDebugLoggingHook)
         self._s.add_response_hook(ResponseDebugLoggingHook)
-        self._s.headers.update(
-            {"Token": self.api_token}
-        )
+        self._s.headers.update({"Token": self.api_token})
 
         def get_url(path: str):
             return partial(urljoin, "https://api.qase.io/v1/")(path)
@@ -40,7 +35,3 @@ class Client:
 
         self.projects = Projects(self._s, self._path)
         self.cases = TestCases(self._s, self._path)
-
-
-    
-

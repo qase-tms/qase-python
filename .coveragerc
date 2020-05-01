@@ -1,0 +1,24 @@
+# .coveragerc to control coverage.py
+[run]
+branch = True
+source = apitist
+
+[paths]
+source =
+    src/
+    */site-packages/
+
+[report]
+exclude_lines =
+    # Have to re-enable the standard pragma
+    pragma: no cover
+
+    def __repr__
+    if self\.debug
+
+    raise AssertionError
+    raise NotImplementedError
+
+    if 0:
+    if __name__ == .__main__.:
+    except DistributionNotFound:

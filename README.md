@@ -10,7 +10,7 @@ TBD
 Qase.io uses API tokens to authenticate requests. You can view an manage your API keys in [API tokens pages](https://app.qase.io/user/api/token).
 
 You must replace api_token with your personal API key.
- 
+
 ```python
 from qaseio import QaseApi
 
