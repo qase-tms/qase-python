@@ -17,13 +17,20 @@ T = TypeVar("T")
 class BaseService:
     s: Session = attr.ib()
     path: Callable[[str], str] = attr.ib()
+    _in_test = attr.ib(default=False)
+    _last_res = attr.ib(default=False)
 
-    @staticmethod
     def validate_response(
-        res: Response, to_type: Type[T], status: Union[int, List[int]] = 200
+        self,
+        res: Response,
+        to_type: Type[T],
+        status: Union[int, List[int]] = 200,
     ) -> T:
         if isinstance(status, int):
             status = [status]
+
+        if self._in_test:
+            self._last_res = res
 
         if res.status_code == 429:
             raise TooManyRequestsException("Too many requests")

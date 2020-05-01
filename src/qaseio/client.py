@@ -20,7 +20,7 @@ class Client:
     _s: Session = attr.ib(factory=lambda: Session(), repr=False, init=False)
     _path: Callable[[str], str] = attr.ib(repr=False, init=False)
     projects: Projects = attr.ib(init=False)
-    cases: TestCases = attr.ib(init=False)
+    test_cases: TestCases = attr.ib(init=False)
 
     def __attrs_post_init__(self):
         self._s.add_request_hook(RequestConverterHook)
@@ -36,4 +36,4 @@ class Client:
         self._path = get_url
 
         self.projects = Projects(self._s, self._path)
-        self.cases = TestCases(self._s, self._path)
+        self.test_cases = TestCases(self._s, self._path)
