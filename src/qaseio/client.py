@@ -29,6 +29,8 @@ class Client:
         self._s.headers.update({"Token": self.api_token})
 
         def get_url(path: str):
+            if isinstance(path, str) and path.startswith("/"):
+                path = path[1:]
             return partial(urljoin, "https://api.qase.io/v1/")(path)
 
         self._path = get_url
