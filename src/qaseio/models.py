@@ -1,4 +1,5 @@
 from enum import Enum, unique
+from typing import List
 
 import attr
 
@@ -13,15 +14,15 @@ class AccessLevel(Enum):
 @attr.s
 class ProjectCreate:
     title: str = attr.ib()
-    code: str = attr.ib()
+    code: str = attr.ib(
+        validator=[
+            attr.validators.instance_of(str),
+            attr.validators.matches_re(r"[a-zA-Z]{2,6}"),
+        ]
+    )
     description: str = attr.ib(default=None)
     access: AccessLevel = attr.ib(default=AccessLevel.NONE)
     group: str = attr.ib(default=None)
-
-    @code.validator
-    def check(self, _, value):
-        if not (2 <= len(value) <= 6) and not str(value).isascii():
-            raise ValueError("code should be from 2 to 6 latin symbols")
 
     @group.validator
     def check(self, _, value):
@@ -29,3 +30,48 @@ class ProjectCreate:
             raise ValueError(
                 "Group hash should be provided access group level"
             )
+
+
+@attr.s
+class ProjectCreated:
+    code = attr.ib(default=None)
+
+
+@attr.s
+class ProjectCountsRuns:
+    total = attr.ib(default=None)
+    active = attr.ib(default=None)
+
+
+@attr.s
+class ProjectCountsDefects:
+    total = attr.ib(default=None)
+    open = attr.ib(default=None)
+
+
+@attr.s
+class ProjectCounts:
+    cases = attr.ib(default=None)
+    suites = attr.ib(default=None)
+    milestones = attr.ib(default=None)
+    runs: ProjectCountsRuns = attr.ib(default=None)
+    defects: ProjectCountsDefects = attr.ib(default=None)
+
+
+@attr.s
+class ProjectInfo:
+    title = attr.ib(default=None)
+    code = attr.ib(default=None)
+    counts: ProjectCounts = attr.ib(default=None)
+
+
+@attr.s
+class DefaultList:
+    total: int = attr.ib(default=None)
+    filtered: int = attr.ib(default=None)
+    count: int = attr.ib(default=None)
+
+
+@attr.s
+class ProjectList(DefaultList):
+    entities: List[ProjectInfo] = attr.ib(factory=list)
