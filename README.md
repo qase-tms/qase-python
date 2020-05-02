@@ -30,7 +30,7 @@ projects = qase.projects.get_all()
 This method allows to retrieve a specific project.
 
 ```python
-projects = qase.projects.get("PRJCODE")
+project = qase.projects.get("PRJCODE")
 ```
 
 #### Create a new project ####
@@ -39,7 +39,7 @@ This method is used to create a new project through API.
 ```python
 from qaseio.models import ProjectCreate
 
-projectCreated = qase.projects.create(
+project = qase.projects.create(
     ProjectCreate("Test project", "PRJCODE")
 )
 ```
@@ -57,7 +57,7 @@ test_cases = qase.test_cases.get_all("PRJCODE")
 This method allows to retrieve a specific test case.
 
 ```python
-test_cases = qase.test_cases.get("PRJCODE", 4)
+test_case = qase.test_cases.get("PRJCODE", 4)
 ```
 
 #### Delete test case ####

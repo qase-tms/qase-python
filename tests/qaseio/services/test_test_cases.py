@@ -39,7 +39,7 @@ def test_get_specific_test_case(client):
         assert res.url == client._path("case/CODE/123")
 
 
-def test_create_new_project(client):
+def test_delete_test_case(client):
     with requests_mock.Mocker() as m:
         m.delete(client._path("case/CODE/123"), json={"status": True})
         data = client.test_cases.delete("CODE", 123)
