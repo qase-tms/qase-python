@@ -3,7 +3,7 @@ name: Python package
 on: [push]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
@@ -24,6 +24,7 @@ jobs:
         tox
   build-n-publish:
     runs-on: ubuntu-latest
+    needs: test
     if: startsWith(github.event.ref, 'refs/tags')
     steps:
     - uses: actions/checkout@v2
