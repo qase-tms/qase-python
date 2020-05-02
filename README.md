@@ -4,7 +4,9 @@
 
 # Installation
 
-TBD
+```
+pip install qaseio
+```
 
 ## Usage ##
 Qase.io uses API tokens to authenticate requests. You can view an manage your API keys in [API tokens pages](https://app.qase.io/user/api/token).
@@ -100,4 +102,27 @@ This method completely deletes a test run from repository.
 
 ```python
 qase.runs.delete("PRJCODE", 4)
+```
+
+# Contribution
+
+Install project locally:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python setup.py develop
+```
+
+Install dev requirements:
+
+```bash
+pip install pre-commit
+pre-commit install
+```
+
+Test project:
+
+```bash
+tox
 ```
