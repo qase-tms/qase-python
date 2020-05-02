@@ -39,6 +39,32 @@ def _test_case():
     }
 
 
+def _test_run():
+    return {
+        "id": 1,
+        "title": "Test run 2019/12/12",
+        "description": None,
+        "status": 0,
+        "start_time": "2019-12-12 12:12:12",
+        "end_time": None,
+        "public": False,
+        "stats": {
+            "total": 3,
+            "untested": 3,
+            "passed": 0,
+            "failed": 0,
+            "blocked": 0,
+            "skipped": 0,
+            "retest": 0,
+            "deleted": 4,
+        },
+        "time_spent": 0,
+        "user_id": 1,
+        "environment": None,
+        "cases": [1, 2, 3],
+    }
+
+
 def _list(data):
     return {"total": 10, "filtered": 10, "count": 1, "entities": [data]}
 

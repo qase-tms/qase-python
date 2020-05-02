@@ -9,6 +9,7 @@ def client():
     api = QaseApi("")
     api.projects._in_test = True
     api.test_cases._in_test = True
+    api.runs._in_test = True
     return api
 
 

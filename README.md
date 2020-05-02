@@ -64,5 +64,40 @@ test_case = qase.test_cases.get("PRJCODE", 4)
 This method completely deletes a test case from repository.
 
 ```python
-result = qase.test_cases.delete("PRJCODE", 4)
+qase.test_cases.delete("PRJCODE", 4)
+```
+
+### Test runs ###
+
+#### Get all test runs ####
+This method allows to retrieve all test runs stored in selected project. You can you limit and offset params to paginate.
+
+```python
+from qaseio.models import TestRunInclude
+test_runs = qase.runs.get_all("PRJCODE", include=TestRunInclude.CASES)
+```
+
+#### Get a specific test run ####
+This method allows to retrieve a specific test run.
+
+```python
+test_run = qase.runs.get("PRJCODE", 4)
+```
+
+#### Create a new test run ####
+This method is used to create a new test run through API.
+
+```python
+from qaseio.models import TestRunCreate
+
+test_run = qase.runs.create(
+    TestRunCreate("Test run", [1, 2, 3])
+)
+```
+
+#### Delete test run ####
+This method completely deletes a test run from repository.
+
+```python
+qase.runs.delete("PRJCODE", 4)
 ```

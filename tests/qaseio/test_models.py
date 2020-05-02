@@ -1,6 +1,6 @@
 import pytest
 
-from qaseio.models import AccessLevel, ProjectCreate
+from qaseio.models import AccessLevel, ProjectCreate, TestRunCreate
 
 
 @pytest.mark.parametrize(
@@ -43,3 +43,18 @@ def test_valid_project_creation(data):
 def test_invalid_project_creation(data):
     with pytest.raises((ValueError, TypeError)):
         ProjectCreate(*data)
+
+
+@pytest.mark.parametrize(
+    "data", [("", [1]), ("a" * 65, [13, 14, 15], "a" * 65, 123)],
+)
+def test_valid_test_run_creation(data):
+    TestRunCreate(*data)
+
+
+@pytest.mark.parametrize(
+    "data", [("a", []), ("a", 123)],
+)
+def test_invalid_test_run_creation(data):
+    with pytest.raises(ValueError):
+        TestRunCreate(*data)
