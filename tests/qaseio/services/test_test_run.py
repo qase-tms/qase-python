@@ -9,9 +9,11 @@ from tests.data import _list, _status_true, _test_run
 from qaseio.models import (
     TestRunCreate,
     TestRunCreated,
+    TestRunFilters,
     TestRunInclude,
     TestRunInfo,
     TestRunList,
+    TestRunStatus,
 )
 
 
@@ -22,6 +24,10 @@ from qaseio.models import (
         ((None, 30, None), "?offset=30"),
         ((10, None, None), "?limit=10"),
         ((None, None, TestRunInclude.CASES), "?include=cases"),
+        (
+            (None, None, None, TestRunFilters(status=[TestRunStatus.ABORT])),
+            "?filters%5Bstatus%5D=abort",
+        ),
     ],
 )
 def test_get_all_test_runs(client, params, query):

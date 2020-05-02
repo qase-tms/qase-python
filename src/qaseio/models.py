@@ -58,10 +58,17 @@ class Automation(Enum):
 
 
 @unique
-class Status(Enum):
+class TestCaseStatus(Enum):
     ACTUAL = "actual"
     DRAFT = "draft"
     DEPRECATED = "deprecated"
+
+
+@unique
+class TestRunStatus(Enum):
+    ACTIVE = "active"
+    COMPLETE = "complete"
+    ABORT = "abort"
 
 
 class TestRunInclude:
@@ -201,7 +208,7 @@ class TestCaseFilters(DefaultFilter):
     type: List[Type] = attr.ib(default=None)
     behavior: List[Behavior] = attr.ib(default=None)
     automation: List[Automation] = attr.ib(default=None)
-    status: List[Status] = attr.ib(default=None)
+    status: List[TestCaseStatus] = attr.ib(default=None)
 
 
 @attr.s
@@ -255,6 +262,11 @@ class TestRunInfo:
     user_id = attr.ib(default=None)
     environment = attr.ib(default=None)
     cases = attr.ib(factory=list)
+
+
+@attr.s
+class TestRunFilters(DefaultFilter):
+    status: List[TestRunStatus] = attr.ib(default=None)
 
 
 @attr.s

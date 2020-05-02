@@ -3,6 +3,7 @@ from typing import Union
 from qaseio.models import (
     TestRunCreate,
     TestRunCreated,
+    TestRunFilters,
     TestRunInclude,
     TestRunInfo,
     TestRunList,
@@ -12,13 +13,18 @@ from qaseio.services import BaseService
 
 class Runs(BaseService):
     def get_all(
-        self, code: str, limit=None, offset=None, include=TestRunInclude.NONE
+        self,
+        code: str,
+        limit=None,
+        offset=None,
+        include=TestRunInclude.NONE,
+        filters: TestRunFilters = None,
     ):
+        query = {"limit": limit, "offset": offset, "include": include}
+        if filters:
+            query.update(filters.filter())
         return self.vr(
-            self.s.get(
-                self.path("run/{}".format(code)),
-                params={"limit": limit, "offset": offset, "include": include},
-            ),
+            self.s.get(self.path("run/{}".format(code)), params=query),
             to_type=TestRunList,
         )
 
