@@ -11,9 +11,99 @@ class AccessLevel(Enum):
     NONE = "none"
 
 
+@unique
+class Severity(Enum):
+    UNDEFINED = "undefined"
+    BLOCKER = "blocker"
+    CRITICAL = "critical"
+    MAJOR = "major"
+    NORMAL = "normal"
+    MINOR = "minor"
+    TRIVIAL = "trivial"
+
+
+@unique
+class Priority(Enum):
+    UNDEFINED = "undefined"
+    HIGH = "high"
+    MEDIUM = "medium"
+    LOW = "low"
+
+
+@unique
+class Type(Enum):
+    OTHER = "other"
+    FUNCTIONAL = "functional"
+    SMOKE = "smoke"
+    REGRESSION = "regression"
+    SECURITY = "security"
+    USABILITY = "usability"
+    PERFORMANCE = "performance"
+    ACCEPTANCE = "acceptance"
+
+
+@unique
+class Behavior(Enum):
+    UNDEFINED = "undefined"
+    POSITIVE = "positive"
+    NEGATIVE = "negative"
+    DESTRUCTIVE = "destructive"
+
+
+@unique
+class Automation(Enum):
+    IS_NOT_AUTOMATED = "is-not-automated"
+    AUTOMATED = "automated"
+    TO_BE_AUTOMATED = "to-be-automated"
+
+
+@unique
+class Status(Enum):
+    ACTUAL = "actual"
+    DRAFT = "draft"
+    DEPRECATED = "deprecated"
+
+
 class TestRunInclude:
     NONE = None
     CASES = "cases"
+
+
+@attr.s
+class DefaultList:
+    total: int = attr.ib(default=None)
+    filtered: int = attr.ib(default=None)
+    count: int = attr.ib(default=None)
+
+
+@attr.s
+class DefaultFilter:
+    _is_filter = True
+
+    def _no_enum(self, value):
+        if isinstance(value, Enum):
+            return value.value
+        return value
+
+    def filter(self):
+        from apitist.utils import is_sequence
+
+        fields = attr.fields(type(self))
+        filters = {}
+        for field in fields:
+            name = field.name
+            values = getattr(self, field.name)
+            if (
+                values is not None
+                and is_sequence(field.type)
+                and isinstance(values, list)
+            ):
+                values = ",".join([self._no_enum(val) for val in values])
+            else:
+                values = self._no_enum(values)
+            if values:
+                filters[f"filters[{name}]"] = values
+        return filters
 
 
 @attr.s
@@ -71,13 +161,6 @@ class ProjectInfo:
 
 
 @attr.s
-class DefaultList:
-    total: int = attr.ib(default=None)
-    filtered: int = attr.ib(default=None)
-    count: int = attr.ib(default=None)
-
-
-@attr.s
 class ProjectList(DefaultList):
     entities: List[ProjectInfo] = attr.ib(factory=list)
 
@@ -106,6 +189,19 @@ class TestCaseInfo:
     steps = attr.ib(factory=list)
     created = attr.ib(default=None)
     updated = attr.ib(default=None)
+
+
+@attr.s
+class TestCaseFilters(DefaultFilter):
+    search: str = attr.ib(default=None)
+    milestone_id: int = attr.ib(default=None)
+    suite_id: int = attr.ib(default=None)
+    severity: List[Severity] = attr.ib(default=None)
+    priority: List[Priority] = attr.ib(default=None)
+    type: List[Type] = attr.ib(default=None)
+    behavior: List[Behavior] = attr.ib(default=None)
+    automation: List[Automation] = attr.ib(default=None)
+    status: List[Status] = attr.ib(default=None)
 
 
 @attr.s

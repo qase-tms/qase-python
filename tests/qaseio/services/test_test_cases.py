@@ -4,7 +4,7 @@ import requests_mock
 from apitist.constructor import converter
 from tests.data import _list, _status_true, _test_case
 
-from qaseio.models import TestCaseInfo, TestCaseList
+from qaseio.models import Severity, TestCaseFilters, TestCaseInfo, TestCaseList
 
 
 @pytest.mark.parametrize(
@@ -13,6 +13,16 @@ from qaseio.models import TestCaseInfo, TestCaseList
         ((10, 30), "?limit=10&offset=30"),
         ((None, 30), "?offset=30"),
         ((10, None), "?limit=10"),
+        (
+            (
+                10,
+                None,
+                TestCaseFilters(
+                    severity=[Severity.CRITICAL, Severity.BLOCKER]
+                ),
+            ),
+            "?limit=10&filters%5Bseverity%5D=critical%2Cblocker",
+        ),
     ],
 )
 def test_get_all_test_cases(client, params, query):

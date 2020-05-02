@@ -1,18 +1,49 @@
 import pytest
 
-from qaseio.models import AccessLevel, ProjectCreate, TestRunCreate
+from qaseio.models import (
+    AccessLevel,
+    ProjectCreate,
+    Severity,
+    TestCaseFilters,
+    TestRunCreate,
+)
 
 
 @pytest.mark.parametrize(
-    "_type, value",
+    "filters, output",
     [
-        (AccessLevel.ALL, "all"),
-        (AccessLevel.GROUP, "group"),
-        (AccessLevel.NONE, "none"),
+        (TestCaseFilters(), {}),
+        (TestCaseFilters(search="query"), {"filters[search]": "query"}),
+        (TestCaseFilters(milestone_id=123), {"filters[milestone_id]": 123}),
+        (
+            TestCaseFilters(severity=[Severity.BLOCKER, Severity.UNDEFINED]),
+            {"filters[severity]": "blocker,undefined"},
+        ),
+        (
+            TestCaseFilters(
+                search="query",
+                milestone_id=123,
+                severity=[Severity.BLOCKER, Severity.UNDEFINED],
+            ),
+            {
+                "filters[search]": "query",
+                "filters[milestone_id]": 123,
+                "filters[severity]": "blocker,undefined",
+            },
+        ),
+        (
+            TestCaseFilters(severity=["blocker", "undefined"]),
+            {"filters[severity]": "blocker,undefined"},
+        ),
+        (
+            TestCaseFilters(severity="blocker"),
+            {"filters[severity]": "blocker"},
+        ),
+        (TestCaseFilters(severity=[]), {}),
     ],
 )
-def test_access_level_types(_type, value):
-    assert _type.value == value
+def test_filters(filters, output):
+    assert filters.filter() == output
 
 
 @pytest.mark.parametrize(

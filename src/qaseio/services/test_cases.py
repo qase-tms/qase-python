@@ -1,16 +1,22 @@
 from typing import Union
 
-from qaseio.models import TestCaseInfo, TestCaseList
+from qaseio.models import TestCaseFilters, TestCaseInfo, TestCaseList
 from qaseio.services import BaseService
 
 
 class TestCases(BaseService):
-    def get_all(self, code: str, limit=None, offset=None):
+    def get_all(
+        self,
+        code: str,
+        limit=None,
+        offset=None,
+        filters: TestCaseFilters = None,
+    ):
+        query = {"limit": limit, "offset": offset}
+        if filters:
+            query.update(filters.filter())
         return self.vr(
-            self.s.get(
-                self.path("case/{}".format(code)),
-                params={"limit": limit, "offset": offset},
-            ),
+            self.s.get(self.path("case/{}".format(code)), params=query),
             to_type=TestCaseList,
         )
 
