@@ -8,7 +8,7 @@ from qaseio.client.models import (
     TestRunInfo,
     TestRunList,
 )
-from qaseio.client.services import BaseService
+from qaseio.client.services import BaseService, NotFoundException
 
 
 class Runs(BaseService):
@@ -45,3 +45,9 @@ class Runs(BaseService):
             self.s.delete(self.path("run/{}/{}".format(code, run_id))),
             to_type=None,
         )
+
+    def exists(self, code: str, run_id: Union[str, int]):
+        try:
+            return self.get(code, run_id)
+        except NotFoundException:
+            return False

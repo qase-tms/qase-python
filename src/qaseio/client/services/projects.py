@@ -4,7 +4,7 @@ from qaseio.client.models import (
     ProjectInfo,
     ProjectList,
 )
-from qaseio.client.services import BaseService
+from qaseio.client.services import BaseService, NotFoundException
 
 
 class Projects(BaseService):
@@ -27,3 +27,9 @@ class Projects(BaseService):
             self.s.post(self.path("project"), data=data),
             to_type=ProjectCreated,
         )
+
+    def exists(self, code: str):
+        try:
+            return self.get(code)
+        except NotFoundException:
+            return False

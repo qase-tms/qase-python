@@ -1,7 +1,7 @@
 from typing import Union
 
 from qaseio.client.models import TestCaseFilters, TestCaseInfo, TestCaseList
-from qaseio.client.services import BaseService
+from qaseio.client.services import BaseService, NotFoundException
 
 
 class TestCases(BaseService):
@@ -31,3 +31,9 @@ class TestCases(BaseService):
             self.s.delete(self.path("case/{}/{}".format(code, case_id))),
             to_type=None,
         )
+
+    def exists(self, code: str, case_id: Union[str, int]):
+        try:
+            return self.get(code, case_id)
+        except NotFoundException:
+            return False

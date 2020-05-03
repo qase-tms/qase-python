@@ -6,8 +6,33 @@ from apitist.requests import Session
 from requests import Response
 
 
+class BadRequestException(Exception):
+    pass
+
+
+class UnauthorizedException(Exception):
+    pass
+
+
+class ForbiddenException(Exception):
+    pass
+
+
+class NotFoundException(Exception):
+    pass
+
+
 class TooManyRequestsException(Exception):
     pass
+
+
+exceptions = {
+    400: BadRequestException,
+    401: UnauthorizedException,
+    403: ForbiddenException,
+    404: NotFoundException,
+    429: TooManyRequestsException,
+}
 
 
 T = TypeVar("T")
@@ -32,8 +57,9 @@ class BaseService:
         if self._in_test:
             self._last_res = res
 
-        if res.status_code == 429:
-            raise TooManyRequestsException("Too many requests")
+        if res.status_code in exceptions:
+            message = "Got error during response: {}".format(res.content)
+            raise exceptions[res.status_code](message)
 
         if res.status_code not in status:
             raise ValueError(
