@@ -93,7 +93,8 @@ This method is used to create a new test run through API.
 from qaseio.models import TestRunCreate
 
 test_run = qase.runs.create(
-    TestRunCreate("Test run", [1, 2, 3])
+    "PRJCODE",
+    TestRunCreate("Test run", [1, 2, 3]),
 )
 ```
 
@@ -102,6 +103,56 @@ This method completely deletes a test run from repository.
 
 ```python
 qase.runs.delete("PRJCODE", 4)
+```
+
+### Test run results ###
+
+#### Get all test run results ####
+This method allows to retrieve all test run results stored in selected project. You can you limit and offset params to paginate.
+
+```python
+test_run_results = qase.results.get_all("PRJCODE")
+```
+
+#### Get a specific test run result ####
+This method allows to retrieve a specific test run result.
+
+```python
+test_run_result = qase.results.get("PRJCODE", "2898ba7f3b4d857cec8bee4a852cdc85f8b33132")
+```
+
+#### Create a new test run result ####
+This method is used to create a new test run result through API.
+
+```python
+from qaseio.models import TestRunResultCreate, TestRunResultStatus
+
+test_run_result = qase.results.create(
+    "PRJCODE",
+    4,
+    TestRunResultCreate(123, TestRunResultStatus.PASSED),
+)
+```
+
+#### Update test run result ####
+This method is used to update existing test run result through API.
+
+```python
+from qaseio.models import TestRunResultUpdate, TestRunResultStatus
+
+test_run_result = qase.results.update(
+    "PRJCODE",
+    4,
+    "2898ba7f3b4d857cec8bee4a852cdc85f8b33132",
+    TestRunResultUpdate(TestRunResultStatus.PASSED),
+)
+```
+
+#### Delete test run result ####
+This method completely deletes a test run result from repository.
+
+```python
+qase.results.delete("PRJCODE", 4, "2898ba7f3b4d857cec8bee4a852cdc85f8b33132")
 ```
 
 # Contribution

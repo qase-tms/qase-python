@@ -11,6 +11,7 @@ from apitist.hooks import (
 from apitist.requests import Session
 
 from qaseio.services.projects import Projects
+from qaseio.services.results import Results
 from qaseio.services.runs import Runs
 from qaseio.services.test_cases import TestCases
 
@@ -23,6 +24,7 @@ class Client:
     projects: Projects = attr.ib(init=False)
     test_cases: TestCases = attr.ib(init=False)
     runs: Runs = attr.ib(init=False)
+    results: Results = attr.ib(init=False)
 
     def __attrs_post_init__(self):
         self._s.add_request_hook(RequestConverterHook)
@@ -40,3 +42,4 @@ class Client:
         self.projects = Projects(self._s, self._path)
         self.test_cases = TestCases(self._s, self._path)
         self.runs = Runs(self._s, self._path)
+        self.results = Results(self._s, self._path)
