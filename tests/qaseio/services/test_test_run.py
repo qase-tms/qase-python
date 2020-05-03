@@ -6,7 +6,7 @@ import requests_mock
 from apitist.constructor import converter
 from tests.data import _list, _status_true, _test_run
 
-from qaseio.models import (
+from qaseio.client.models import (
     TestRunCreate,
     TestRunCreated,
     TestRunFilters,

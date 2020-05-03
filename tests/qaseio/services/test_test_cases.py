@@ -4,7 +4,12 @@ import requests_mock
 from apitist.constructor import converter
 from tests.data import _list, _status_true, _test_case
 
-from qaseio.models import Severity, TestCaseFilters, TestCaseInfo, TestCaseList
+from qaseio.client.models import (
+    Severity,
+    TestCaseFilters,
+    TestCaseInfo,
+    TestCaseList,
+)
 
 
 @pytest.mark.parametrize(

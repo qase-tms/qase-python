@@ -1,7 +1,7 @@
 import pytest
 
-from qaseio import QaseApi
-from qaseio.services import BaseService
+from qaseio.client import QaseApi
+from qaseio.client.services import BaseService
 
 
 @pytest.fixture()

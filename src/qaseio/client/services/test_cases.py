@@ -1,7 +1,7 @@
 from typing import Union
 
-from qaseio.models import TestCaseFilters, TestCaseInfo, TestCaseList
-from qaseio.services import BaseService
+from qaseio.client.models import TestCaseFilters, TestCaseInfo, TestCaseList
+from qaseio.client.services import BaseService
 
 
 class TestCases(BaseService):

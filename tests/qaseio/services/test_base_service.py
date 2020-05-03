@@ -3,8 +3,8 @@ import pytest
 import attr
 from requests import Response
 
-from qaseio.models import ProjectCreated
-from qaseio.services import BaseService, TooManyRequestsException
+from qaseio.client.models import ProjectCreated
+from qaseio.client.services import BaseService, TooManyRequestsException
 
 
 @pytest.mark.parametrize("values", [(), (None,)])

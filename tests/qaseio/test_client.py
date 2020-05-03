@@ -6,11 +6,11 @@ from apitist.hooks import (
     ResponseDebugLoggingHook,
 )
 
-from qaseio.client import Client
+from qaseio.client import QaseApi
 
 
 def test_session_hooks():
-    client = Client("")
+    client = QaseApi("")
     assert RequestConverterHook in client._s.request_hooks
     assert PrepRequestDebugLoggingHook in client._s.prep_request_hooks
     assert ResponseDebugLoggingHook in client._s.response_hooks
@@ -30,5 +30,5 @@ def test_session_hooks():
     ],
 )
 def test_path_func(path, result):
-    client = Client("")
+    client = QaseApi("")
     assert client._path(path) == result

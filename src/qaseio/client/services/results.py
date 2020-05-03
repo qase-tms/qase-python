@@ -1,6 +1,6 @@
 from typing import Union
 
-from qaseio.models import (
+from qaseio.client.models import (
     TestRunResultCreate,
     TestRunResultCreated,
     TestRunResultFilters,
@@ -8,7 +8,7 @@ from qaseio.models import (
     TestRunResultList,
     TestRunResultUpdate,
 )
-from qaseio.services import BaseService
+from qaseio.client.services import BaseService
 
 
 class Results(BaseService):

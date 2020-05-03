@@ -1,6 +1,6 @@
 import pytest
 
-from qaseio.models import (
+from qaseio.client.models import (
     AccessLevel,
     ProjectCreate,
     Severity,

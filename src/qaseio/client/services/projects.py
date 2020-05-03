@@ -1,10 +1,10 @@
-from qaseio.models import (
+from qaseio.client.models import (
     ProjectCreate,
     ProjectCreated,
     ProjectInfo,
     ProjectList,
 )
-from qaseio.services import BaseService
+from qaseio.client.services import BaseService
 
 
 class Projects(BaseService):

@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 from functools import partial
+from pkg_resources import DistributionNotFound, get_distribution
 from typing import Callable
 from urllib.parse import urljoin
 
@@ -10,14 +12,23 @@ from apitist.hooks import (
 )
 from apitist.requests import Session
 
-from qaseio.services.projects import Projects
-from qaseio.services.results import Results
-from qaseio.services.runs import Runs
-from qaseio.services.test_cases import TestCases
+from qaseio.client.services.projects import Projects
+from qaseio.client.services.results import Results
+from qaseio.client.services.runs import Runs
+from qaseio.client.services.test_cases import TestCases
+
+try:
+    # Change here if project is renamed and does not equal the package name
+    dist_name = "qaseio"
+    __version__ = get_distribution(dist_name).version
+except DistributionNotFound:
+    __version__ = "unknown"
+finally:
+    del get_distribution, DistributionNotFound
 
 
 @attr.s
-class Client:
+class QaseApi:
     api_token: str = attr.ib(repr=False)
     _s: Session = attr.ib(factory=lambda: Session(), repr=False, init=False)
     _path: Callable[[str], str] = attr.ib(repr=False, init=False)
