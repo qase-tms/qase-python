@@ -53,7 +53,7 @@ class QasePytestPlugin:
 
     def pytest_report_header(self, config, startdir):
         """ Add extra-info in header """
-        message = "pytest-qase: "
+        message = "qase: "
         if self.testrun_id:
             message += "existing testrun #{} selected".format(self.testrun_id)
         else:

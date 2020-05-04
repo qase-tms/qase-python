@@ -5,7 +5,7 @@
 # Installation
 
 ```
-pip install pytest-qase
+pip install qase-pytest
 ```
 
 # Usage

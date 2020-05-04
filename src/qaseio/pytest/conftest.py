@@ -56,5 +56,5 @@ def pytest_configure(config):
                 get_option_ini(config, "qs_testrun_id"),
                 debug_info=get_option_ini(config, "qs_debug"),
             ),
-            name="pytest-qase",
+            name="qase-pytest",
         )
