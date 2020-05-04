@@ -51,8 +51,8 @@ class Runs(BaseService):
             to_type=None,
         )
 
-    def exists(self, code: str, run_id: Union[str, int]):
+    def exists(self, code: str, run_id: Union[str, int], **kwargs):
         try:
-            return self.get(code, run_id)
+            return self.get(code, run_id, **kwargs)
         except NotFoundException:
             return False

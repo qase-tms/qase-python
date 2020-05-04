@@ -50,6 +50,20 @@ def test_get_specific_test_run(client):
         assert res.url == client._path("run/CODE/123")
 
 
+def test_test_run_exists(client):
+    response = _status_true(_test_run())
+    with requests_mock.Mocker() as m:
+        m.get(
+            client._path("run/CODE/123"),
+            [
+                {"status_code": 200, "json": response},
+                {"status_code": 404, "json": {}},
+            ],
+        )
+        assert client.runs.exists("CODE", 123)
+        assert not client.runs.exists("CODE", 123)
+
+
 def test_create_new_test_run(client):
     response = _status_true({"id": 123})
     with requests_mock.Mocker() as m:

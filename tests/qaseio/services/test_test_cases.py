@@ -54,6 +54,20 @@ def test_get_specific_test_case(client):
         assert res.url == client._path("case/CODE/123")
 
 
+def test_test_case_exists(client):
+    response = _status_true(_test_case())
+    with requests_mock.Mocker() as m:
+        m.get(
+            client._path("case/CODE/123"),
+            [
+                {"status_code": 200, "json": response},
+                {"status_code": 404, "json": {}},
+            ],
+        )
+        assert client.test_cases.exists("CODE", 123)
+        assert not client.test_cases.exists("CODE", 123)
+
+
 def test_delete_test_case(client):
     with requests_mock.Mocker() as m:
         m.delete(client._path("case/CODE/123"), json={"status": True})

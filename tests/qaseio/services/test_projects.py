@@ -42,6 +42,20 @@ def test_get_specific_project(client):
         assert res.url == client._path("project/CODE")
 
 
+def test_project_exists(client):
+    response = _status_true(_project())
+    with requests_mock.Mocker() as m:
+        m.get(
+            client._path("project/CODE"),
+            [
+                {"status_code": 200, "json": response},
+                {"status_code": 404, "json": {}},
+            ],
+        )
+        assert client.projects.exists("CODE")
+        assert not client.projects.exists("CODE")
+
+
 def test_create_new_project(client):
     response = _status_true({"code": "NEW"})
     with requests_mock.Mocker() as m:
