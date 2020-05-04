@@ -28,9 +28,14 @@ class Runs(BaseService):
             to_type=TestRunList,
         )
 
-    def get(self, code: str, run_id: Union[str, int]):
+    def get(
+        self, code: str, run_id: Union[str, int], include=TestRunInclude.NONE
+    ):
+        query = {"include": include}
         return self.vr(
-            self.s.get(self.path("run/{}/{}".format(code, run_id))),
+            self.s.get(
+                self.path("run/{}/{}".format(code, run_id)), params=query
+            ),
             to_type=TestRunInfo,
         )
 
