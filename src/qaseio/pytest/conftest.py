@@ -23,25 +23,27 @@ def pytest_addoption(parser):
         group.addoption(option, dest=dest, **kwargs)
 
     add_option_ini(
-        "--qase", "qs_enabled", default=False, type=bool, help="Use Qase TMS"
+        "--qase",
+        "qs_enabled",
+        default=False,
+        type="bool",
+        help="Use Qase TMS",
+        action="store_true",
     )
     add_option_ini(
-        "--qase-api-token",
-        "qs_api_token",
-        type=str,
-        help="Api token for Qase TMS",
+        "--qase-api-token", "qs_api_token", help="Api token for Qase TMS",
     )
     add_option_ini(
-        "--qase-project",
-        "qs_project_code",
-        type=str,
-        help="Project code in Qase TMS",
+        "--qase-project", "qs_project_code", help="Project code in Qase TMS",
     )
     add_option_ini(
-        "--qase-testrun",
-        "qs_testrun_id",
-        type=str,
-        help="Testrun ID in Qase TMS",
+        "--qase-testrun", "qs_testrun_id", help="Testrun ID in Qase TMS",
+    )
+    add_option_ini(
+        "--qase-debug",
+        "qs_debug",
+        type="bool",
+        help="Prints additional output of plugin",
     )
 
 
@@ -52,6 +54,7 @@ def pytest_configure(config):
                 get_option_ini(config, "qs_api_token"),
                 get_option_ini(config, "qs_project_code"),
                 get_option_ini(config, "qs_testrun_id"),
+                debug_info=get_option_ini(config, "qs_debug"),
             ),
             name="pytest-qase",
         )

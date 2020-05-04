@@ -6,7 +6,6 @@ def test_init(qs_plugin):
 
 
 def test_plugin_init(qs_plugin, testdir):
-    print(dir(testdir))
     testdir.plugins = [qs_plugin()]
     testdir.makepyfile(
         """
