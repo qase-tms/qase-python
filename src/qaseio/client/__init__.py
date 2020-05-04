@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import logging
+import time
 from functools import partial
 from pkg_resources import DistributionNotFound, get_distribution
 from typing import Callable
@@ -9,8 +11,10 @@ from apitist.hooks import (
     PrepRequestDebugLoggingHook,
     RequestConverterHook,
     ResponseDebugLoggingHook,
+    ResponseHook,
 )
 from apitist.requests import Session
+from requests import Response
 
 from qaseio.client.services.projects import Projects
 from qaseio.client.services.results import Results
@@ -27,6 +31,9 @@ finally:
     del get_distribution, DistributionNotFound
 
 
+logger = logging.getLogger("qase-api")
+
+
 @attr.s
 class QaseApi:
     api_token: str = attr.ib(repr=False)
@@ -38,9 +45,24 @@ class QaseApi:
     results: Results = attr.ib(init=False)
 
     def __attrs_post_init__(self):
+        class ResponseRetryAfterLimitHook(ResponseHook):
+            def run(_self, response: Response) -> Response:
+                nonlocal self
+                if response.status_code == 429:
+                    retry_after = int(response.headers.get("retry-after", 60))
+                    logger.warning(
+                        "qase: got 429 for {}, sleeping for {}".format(
+                            response.url, retry_after
+                        )
+                    )
+                    time.sleep(retry_after)
+                    response = self._s.send(response.request)
+                return response
+
         self._s.add_request_hook(RequestConverterHook)
         self._s.add_prep_request_hook(PrepRequestDebugLoggingHook)
         self._s.add_response_hook(ResponseDebugLoggingHook)
+        self._s.add_response_hook(ResponseRetryAfterLimitHook)
         self._s.headers.update({"Token": self.api_token})
 
         def get_url(path: str):
