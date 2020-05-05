@@ -11,6 +11,7 @@ def client():
     api.test_cases._in_test = True
     api.runs._in_test = True
     api.results._in_test = True
+    api.plans._in_test = True
     return api
 
 

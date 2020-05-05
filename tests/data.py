@@ -65,6 +65,30 @@ def _test_run():
     }
 
 
+def _test_plan():
+    return {
+        "id": 1,
+        "title": "Sample plan",
+        "description": "Regression",
+        "cases_count": 10,
+        "created": "2019-01-10T22:47:53.000000Z",
+        "updated": "2019-01-10T22:47:53.000000Z",
+    }
+
+
+def _test_plan_full():
+    return {
+        "id": 16,
+        "title": "Sample plan",
+        "description": "Awesome plan",
+        "cases_count": 1,
+        "created": "2019-09-15T18:49:07.000000Z",
+        "updated": "2019-09-15T18:49:30.000000Z",
+        "average_time": 40,
+        "cases": [{"case_id": 1, "assignee_id": 1}],
+    }
+
+
 def _test_run_result():
     return {
         "hash": "6efce6e4f9de887a2ee863e8197cb74ab626a273",

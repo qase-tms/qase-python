@@ -16,6 +16,7 @@ from apitist.hooks import (
 from apitist.requests import Session
 from requests import Response
 
+from qaseio.client.services.plans import Plans
 from qaseio.client.services.projects import Projects
 from qaseio.client.services.results import Results
 from qaseio.client.services.runs import Runs
@@ -43,6 +44,7 @@ class QaseApi:
     test_cases: TestCases = attr.ib(init=False)
     runs: Runs = attr.ib(init=False)
     results: Results = attr.ib(init=False)
+    plans: Plans = attr.ib(init=False)
 
     def __attrs_post_init__(self):
         class ResponseRetryAfterLimitHook(ResponseHook):
@@ -76,3 +78,4 @@ class QaseApi:
         self.test_cases = TestCases(self._s, self._path)
         self.runs = Runs(self._s, self._path)
         self.results = Results(self._s, self._path)
+        self.plans = Plans(self._s, self._path)
