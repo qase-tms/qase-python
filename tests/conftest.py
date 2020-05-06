@@ -8,7 +8,7 @@ pytest_plugins = ["pytester"]
 
 
 @pytest.fixture
-def mock():
+def mock() -> requests_mock.Mocker:
     with requests_mock.Mocker() as m:
         yield m
 

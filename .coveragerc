@@ -2,7 +2,9 @@
 [run]
 branch = True
 source = qaseio
-omit = */qaseio/client/*
+omit =
+    **/qaseio/client/**
+    */qaseio/__init__.py
 
 [paths]
 source =

@@ -1,13 +1,11 @@
 from qaseio.pytest.plugin import QasePytestPlugin
 
 
-def get_option_ini(config, *names):
-    for name in names:
-        ret = config.getoption(name)  # 'default' arg won't work as expected
-        if ret is None:
-            ret = config.getini(name)
-        if ret:
-            return ret
+def get_option_ini(config, name):
+    ret = config.getoption(name)  # 'default' arg won't work as expected
+    if ret in (None, False):
+        ret = config.getini(name)
+    return ret
 
 
 def pytest_addoption(parser):
@@ -42,8 +40,10 @@ def pytest_addoption(parser):
     add_option_ini(
         "--qase-debug",
         "qs_debug",
+        default=False,
         type="bool",
         help="Prints additional output of plugin",
+        action="store_true",
     )
 
 
