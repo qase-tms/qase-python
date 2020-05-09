@@ -28,11 +28,17 @@ This method allows to retrieve all projects available for your account. You can 
 projects = qase.projects.get_all()
 ```
 
-#### Get All Projects ####
+#### Get a specific project ####
 This method allows to retrieve a specific project.
 
 ```python
 project = qase.projects.get("PRJCODE")
+```
+
+#### Check project exists ####
+
+```python
+exists = qase.projects.exists("PRJCODE")
 ```
 
 #### Create a new project ####
@@ -62,11 +68,70 @@ This method allows to retrieve a specific test case.
 test_case = qase.test_cases.get("PRJCODE", 4)
 ```
 
+#### Check test case exists ####
+
+```python
+exists = qase.test_cases.exists("PRJCODE", 4)
+```
+
 #### Delete test case ####
 This method completely deletes a test case from repository.
 
 ```python
 qase.test_cases.delete("PRJCODE", 4)
+```
+### Test plans ###
+
+#### Get all test plans ####
+This method allows to retrieve all test plans stored in selected project. You can you limit and offset params to paginate.
+
+```python
+test_plans = qase.plans.get_all("PRJCODE")
+```
+
+#### Get a specific test plan ####
+This method allows to retrieve a specific test plan.
+
+```python
+test_plan = qase.plans.get("PRJCODE", 123)
+```
+
+#### Check test plan exists ####
+
+```python
+exists = qase.plans.exists("PRJCODE", 123)
+```
+
+#### Create a new test plan ####
+This method is used to create a new test plan through API.
+
+```python
+from qaseio.models import TestPlanCreate
+
+test_plan = qase.plans.create(
+    "PRJCODE",
+    TestPlanCreate("New test run", [1, 2, 3]),
+)
+```
+
+#### Update test plan ####
+This method is used to update existing test plan through API.
+
+```python
+from qaseio.models import TestPlanCreate
+
+test_plan = qase.plans.update(
+    "PRJCODE",
+    123,
+    TestPlanCreate("New test run", [1, 2, 3]),
+)
+```
+
+#### Delete test plan ####
+This method completely deletes a test plan from repository.
+
+```python
+qase.plans.delete("PRJCODE", 123)
 ```
 
 ### Test runs ###
@@ -84,6 +149,12 @@ This method allows to retrieve a specific test run.
 
 ```python
 test_run = qase.runs.get("PRJCODE", 4)
+```
+
+#### Check test run exists ####
+
+```python
+exists = qase.runs.exists("PRJCODE", 4)
 ```
 
 #### Create a new test run ####
