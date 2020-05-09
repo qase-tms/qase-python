@@ -1,15 +1,8 @@
 import re
 
 
-def default_mocks(mock):
-    mock.get("/v1/project/PRJ", json={"status": True, "result": {}})
-    mock.get(
-        "/v1/run/PRJ/3", json={"status": True, "result": {"cases": [1, 2, 3]}}
-    )
-
-
-def test_run_all_parameters_cli(mock, testdir):
-    default_mocks(mock)
+def test_run_all_parameters_cli(mock, default_mocks, testdir):
+    default_mocks()
     testdir.makepyfile(
         """
     def test_example():
@@ -29,8 +22,8 @@ def test_run_all_parameters_cli(mock, testdir):
     assert mock.request_history[0].headers.get("Token") == "12345"
 
 
-def test_run_not_enabled(mock, testdir):
-    default_mocks(mock)
+def test_run_not_enabled(mock, default_mocks, testdir):
+    default_mocks()
     testdir.makepyfile(
         """
     def test_example():
@@ -42,8 +35,8 @@ def test_run_not_enabled(mock, testdir):
     assert len(mock.request_history) == 0
 
 
-def test_run_all_parameters_config(mock, testdir):
-    default_mocks(mock)
+def test_run_all_parameters_config(mock, default_mocks, testdir):
+    default_mocks()
     testdir.makepyfile(
         """
     def test_example():
@@ -64,8 +57,8 @@ def test_run_all_parameters_config(mock, testdir):
     assert mock.request_history[0].headers.get("Token") == "12345"
 
 
-def test_run_override_using_cli(mock, testdir):
-    default_mocks(mock)
+def test_run_override_using_cli(mock, default_mocks, testdir):
+    default_mocks()
     testdir.makepyfile(
         """
     def test_example():

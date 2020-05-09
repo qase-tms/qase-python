@@ -33,18 +33,19 @@ def get_ids_from_pytest_nodes(items):
 
 
 class QasePytestPlugin:
-    def __init__(self, api_token, project, testrun, debug_info=False):
+    def __init__(self, api_token, project, testrun, debug=False):
         self.client = QaseApi(api_token)
         self.project_code = project
         self.testrun_id = testrun
-        self.debug = debug_info
-        self.nodes_with_ids = []
+        self.debug = debug
+        self.nodes_with_ids = {}
         self.missing_ids = []
         self.project = self.client.projects.exists(self.project_code)
+        self.comment = "Pytest Plugin Automation Run"
         if not self.project:
             raise ValueError("Unable to find given project code")
-        self.testrun = self.client.runs.get(
-            self.project_code, self.testrun_id, TestRunInclude.CASES
+        self.testrun = self.client.runs.exists(
+            self.project_code, self.testrun_id, include=TestRunInclude.CASES
         )
         if not self.testrun:
             raise ValueError(
@@ -60,6 +61,20 @@ class QasePytestPlugin:
             message += "a new testrun will be created"
         return message
 
+    def get_missing_case_ids(self, data):
+        missing = []
+        for _id in data.get("ids"):
+            if not self.client.test_cases.exists(self.project_code, _id):
+                missing.append(_id)
+        return missing
+
+    def get_missing_in_testrun(self, data):
+        missing = []
+        for _id in data.get("ids"):
+            if _id not in self.testrun.cases:
+                missing.append(_id)
+        return missing
+
     @pytest.hookimpl(trylast=True)
     def pytest_collection_modifyitems(self, session, config, items):
         """
@@ -68,32 +83,27 @@ class QasePytestPlugin:
 
         Prints additional info at start of the run, if debug in True
         """
-        self.nodes_with_ids, missing = get_ids_from_pytest_nodes(items)
+        self.nodes_with_ids, no_ids = get_ids_from_pytest_nodes(items)
         write_lines = []
-        if missing:
-            line = ", ".join([miss.name for miss in missing])
+        if no_ids:
+            line = ", ".join([miss.name for miss in no_ids])
             write_lines.append(
                 "This tests does not have test case ids:\n" + line
             )
 
         for nodeid, data in self.nodes_with_ids.items():
-            missing_ids = []
-            missing_in_run = []
-            for _id in data.get("ids"):
-                if not self.client.test_cases.exists(self.project_code, _id):
-                    missing_ids.append(_id)
-                if _id not in self.testrun.cases:
-                    missing_in_run.append(_id)
+            missing_ids = self.get_missing_case_ids(data)
+            missing_in_run = self.get_missing_in_testrun(data)
             if missing_ids:
                 write_lines.append(
                     "For test {} could not find test cases in TMS: {}".format(
-                        nodeid, ", ".join(missing_ids)
+                        nodeid, ", ".join([str(i) for i in missing_ids])
                     )
                 )
             if missing_in_run:
                 write_lines.append(
                     "For test {} could not find test cases in run: {}".format(
-                        nodeid, ", ".join(missing_in_run)
+                        nodeid, ", ".join([str(i) for i in missing_in_run])
                     )
                 )
             self.missing_ids.extend(missing_ids)
@@ -162,7 +172,7 @@ class QasePytestPlugin:
         if item.nodeid in self.nodes_with_ids:
             results = self.nodes_with_ids[item.nodeid]
             hashes = results.get("hashes", [])
-            comment = "Pytest Plugin Automation Run"
+            comment = self.comment
             if results.get("error"):
                 comment += "\n\n```\n" + str(results.get("error")) + "\n```"
             for hash in hashes:

@@ -48,13 +48,16 @@ def pytest_addoption(parser):
 
 
 def pytest_configure(config):
+    config.addinivalue_line(
+        "markers", "qase(*ids): mark test to be associate with Qase TMS"
+    )
     if get_option_ini(config, "qs_enabled"):
         config.pluginmanager.register(
             QasePytestPlugin(
                 get_option_ini(config, "qs_api_token"),
                 get_option_ini(config, "qs_project_code"),
                 get_option_ini(config, "qs_testrun_id"),
-                debug_info=get_option_ini(config, "qs_debug"),
+                debug=get_option_ini(config, "qs_debug"),
             ),
             name="qase-pytest",
         )

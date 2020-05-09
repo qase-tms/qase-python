@@ -1,10 +1,7 @@
 # .coveragerc to control coverage.py
 [run]
 branch = True
-source = qaseio
-omit =
-    **/qaseio/client/**
-    */qaseio/__init__.py
+source = qaseio.client
 
 [paths]
 source =
