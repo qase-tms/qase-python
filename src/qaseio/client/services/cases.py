@@ -4,7 +4,7 @@ from qaseio.client.models import TestCaseFilters, TestCaseInfo, TestCaseList
 from qaseio.client.services import BaseService, NotFoundException
 
 
-class TestCases(BaseService):
+class Cases(BaseService):
     def get_all(
         self,
         code: str,

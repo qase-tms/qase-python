@@ -16,11 +16,11 @@ from apitist.hooks import (
 from apitist.requests import Session
 from requests import Response
 
+from qaseio.client.services.cases import Cases
 from qaseio.client.services.plans import Plans
 from qaseio.client.services.projects import Projects
 from qaseio.client.services.results import Results
 from qaseio.client.services.runs import Runs
-from qaseio.client.services.test_cases import TestCases
 
 try:
     # Change here if project is renamed and does not equal the package name
@@ -41,7 +41,7 @@ class QaseApi:
     _s: Session = attr.ib(factory=lambda: Session(), repr=False, init=False)
     _path: Callable[[str], str] = attr.ib(repr=False, init=False)
     projects: Projects = attr.ib(init=False)
-    test_cases: TestCases = attr.ib(init=False)
+    cases: Cases = attr.ib(init=False)
     runs: Runs = attr.ib(init=False)
     results: Results = attr.ib(init=False)
     plans: Plans = attr.ib(init=False)
@@ -75,7 +75,7 @@ class QaseApi:
         self._path = get_url
 
         self.projects = Projects(self._s, self._path)
-        self.test_cases = TestCases(self._s, self._path)
+        self.cases = Cases(self._s, self._path)
         self.runs = Runs(self._s, self._path)
         self.results = Results(self._s, self._path)
         self.plans = Plans(self._s, self._path)

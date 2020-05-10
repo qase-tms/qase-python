@@ -58,27 +58,27 @@ project = qase.projects.create(
 This method allows to retrieve all test cases stored in selected project. You can you limit and offset params to paginate.
 
 ```python
-test_cases = qase.test_cases.get_all("PRJCODE")
+test_cases = qase.cases.get_all("PRJCODE")
 ```
 
 #### Get a specific test case ####
 This method allows to retrieve a specific test case.
 
 ```python
-test_case = qase.test_cases.get("PRJCODE", 4)
+test_case = qase.cases.get("PRJCODE", 4)
 ```
 
 #### Check test case exists ####
 
 ```python
-exists = qase.test_cases.exists("PRJCODE", 4)
+exists = qase.cases.exists("PRJCODE", 4)
 ```
 
 #### Delete test case ####
 This method completely deletes a test case from repository.
 
 ```python
-qase.test_cases.delete("PRJCODE", 4)
+qase.cases.delete("PRJCODE", 4)
 ```
 ### Test plans ###
 

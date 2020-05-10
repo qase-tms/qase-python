@@ -34,11 +34,11 @@ def test_get_all_test_cases(client, params, query):
     response = _status_true(_list(_test_case()))
     with requests_mock.Mocker() as m:
         m.get(client._path("case/CODE"), json=response)
-        data = client.test_cases.get_all("CODE", *params)
+        data = client.cases.get_all("CODE", *params)
         assert data == converter.structure(
             response.get("result"), TestCaseList
         )
-        res = client.test_cases._last_res
+        res = client.cases._last_res
         assert res.url == client._path("case/CODE" + query)
 
 
@@ -46,11 +46,11 @@ def test_get_specific_test_case(client):
     response = _status_true(_test_case())
     with requests_mock.Mocker() as m:
         m.get(client._path("case/CODE/123"), json=response)
-        data = client.test_cases.get("CODE", 123)
+        data = client.cases.get("CODE", 123)
         assert data == converter.structure(
             response.get("result"), TestCaseInfo
         )
-        res = client.test_cases._last_res
+        res = client.cases._last_res
         assert res.url == client._path("case/CODE/123")
 
 
@@ -64,14 +64,14 @@ def test_test_case_exists(client):
                 {"status_code": 404, "json": {}},
             ],
         )
-        assert client.test_cases.exists("CODE", 123)
-        assert not client.test_cases.exists("CODE", 123)
+        assert client.cases.exists("CODE", 123)
+        assert not client.cases.exists("CODE", 123)
 
 
 def test_delete_test_case(client):
     with requests_mock.Mocker() as m:
         m.delete(client._path("case/CODE/123"), json={"status": True})
-        data = client.test_cases.delete("CODE", 123)
+        data = client.cases.delete("CODE", 123)
         assert data is None
-        res = client.test_cases._last_res
+        res = client.cases._last_res
         assert res.url == client._path("case/CODE/123")
