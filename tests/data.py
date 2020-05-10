@@ -89,6 +89,20 @@ def _test_plan_full():
     }
 
 
+def _test_suite():
+    return {
+        "id": 1,
+        "title": "Level 1",
+        "description": "Set from API",
+        "preconditions": "Set from API",
+        "position": 1,
+        "cases_count": 10,
+        "parent_id": None,
+        "created": "2018-05-02T10:49:01.000000Z",
+        "updated": "2019-07-21T19:10:15.000000Z",
+    }
+
+
 def _test_run_result():
     return {
         "hash": "6efce6e4f9de887a2ee863e8197cb74ab626a273",

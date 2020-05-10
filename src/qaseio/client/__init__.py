@@ -21,6 +21,7 @@ from qaseio.client.services.plans import Plans
 from qaseio.client.services.projects import Projects
 from qaseio.client.services.results import Results
 from qaseio.client.services.runs import Runs
+from qaseio.client.services.suites import Suites
 
 try:
     # Change here if project is renamed and does not equal the package name
@@ -45,6 +46,7 @@ class QaseApi:
     runs: Runs = attr.ib(init=False)
     results: Results = attr.ib(init=False)
     plans: Plans = attr.ib(init=False)
+    suites: Suites = attr.ib(init=False)
 
     def __attrs_post_init__(self):
         class ResponseRetryAfterLimitHook(ResponseHook):
@@ -79,3 +81,4 @@ class QaseApi:
         self.runs = Runs(self._s, self._path)
         self.results = Results(self._s, self._path)
         self.plans = Plans(self._s, self._path)
+        self.suites = Suites(self._s, self._path)
