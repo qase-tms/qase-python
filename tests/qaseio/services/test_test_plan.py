@@ -11,6 +11,7 @@ from qaseio.client.models import (
     TestPlanCreated,
     TestPlanInfo,
     TestPlanList,
+    TestPlanUpdate,
 )
 
 
@@ -79,7 +80,7 @@ def test_update_test_plan(client):
     response = _status_true({"id": 123})
     with requests_mock.Mocker() as m:
         m.patch(client._path("plan/CODE/123"), json=response)
-        update_data = TestPlanCreate("new test plan", [1, 2, 3])
+        update_data = TestPlanUpdate("new test plan", [1, 2, 3])
         data = client.plans.update("CODE", 123, update_data)
         assert data == converter.structure(
             response.get("result"), TestPlanCreated

@@ -5,6 +5,7 @@ from qaseio.client.models import (
     TestPlanCreated,
     TestPlanInfo,
     TestPlanList,
+    TestPlanUpdate,
 )
 from qaseio.client.services import BaseService, NotFoundException
 
@@ -32,7 +33,7 @@ class Plans(BaseService):
         )
 
     def update(
-        self, code: str, plan_id: Union[str, int], data: TestPlanCreate
+        self, code: str, plan_id: Union[str, int], data: TestPlanUpdate
     ):
         return self.vr(
             self.s.patch(

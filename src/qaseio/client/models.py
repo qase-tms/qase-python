@@ -356,6 +356,18 @@ class TestPlanCreate:
 
 
 @attr.s
+class TestPlanUpdate(TestPlanCreate):
+    title: str = attr.ib(default=None)
+    cases: List[int] = attr.ib(factory=list)
+    description: str = attr.ib(default=None)
+
+
+@attr.s
+class TestPlanCreated:
+    id = attr.ib(default=None)
+
+
+@attr.s
 class TestPlanSteps:
     case_id = attr.ib(default=None)
     assignee_id = attr.ib(default=None)
@@ -376,8 +388,3 @@ class TestPlanInfo:
 @attr.s
 class TestPlanList(DefaultList):
     entities: List[TestPlanInfo] = attr.ib(factory=list)
-
-
-@attr.s
-class TestPlanCreated:
-    id = attr.ib(default=None)
