@@ -14,7 +14,7 @@ Qase.io uses API tokens to authenticate requests. You can view an manage your AP
 You must replace api_token with your personal API key.
 
 ```python
-from qaseio import QaseApi
+from qaseio.client import QaseApi
 
 qase = QaseApi("api_token")
 ```
@@ -45,7 +45,7 @@ exists = qase.projects.exists("PRJCODE")
 This method is used to create a new project through API.
 
 ```python
-from qaseio.models import ProjectCreate
+from qaseio.client.models import ProjectCreate
 
 project = qase.projects.create(
     ProjectCreate("Test project", "PRJCODE")
@@ -80,6 +80,65 @@ This method completely deletes a test case from repository.
 ```python
 qase.cases.delete("PRJCODE", 4)
 ```
+
+### Test Suites ###
+
+#### Get all test suites ####
+This method allows to retrieve all test suites stored in selected project. You can you limit and offset params to paginate.
+
+```python
+from qaseio.client.models import TestSuiteFilters
+
+test_suites = qase.suites.get_all(
+    "PRJCODE", filters=TestSuiteFilters(search="query")
+)
+```
+
+#### Get a specific test suite ####
+This method allows to retrieve a specific test suite.
+
+```python
+test_suite = qase.suites.get("PRJCODE", 123)
+```
+
+#### Check test suite exists ####
+
+```python
+exists = qase.suites.exists("PRJCODE", 123)
+```
+
+#### Create a new test suite ####
+This method is used to create a new test plan through API.
+
+```python
+from qaseio.client.models import TestSuiteCreate
+
+test_suite = qase.suites.create(
+    "PRJCODE",
+    TestSuiteCreate("New test suite"),
+)
+```
+
+#### Update test suite ####
+This method is used to update existing test suite through API.
+
+```python
+from qaseio.client.models import TestSuiteUpdate
+
+test_suite = qase.suites.update(
+    "PRJCODE",
+    123,
+    TestSuiteUpdate("Updated suite"),
+)
+```
+
+#### Delete test suite ####
+This method completely deletes a test suite from repository.
+
+```python
+qase.suites.delete("PRJCODE", 123)
+```
+
 ### Test plans ###
 
 #### Get all test plans ####
@@ -106,7 +165,7 @@ exists = qase.plans.exists("PRJCODE", 123)
 This method is used to create a new test plan through API.
 
 ```python
-from qaseio.models import TestPlanCreate
+from qaseio.client.models import TestPlanCreate
 
 test_plan = qase.plans.create(
     "PRJCODE",
@@ -118,7 +177,7 @@ test_plan = qase.plans.create(
 This method is used to update existing test plan through API.
 
 ```python
-from qaseio.models import TestPlanCreate
+from qaseio.client.models import TestPlanCreate
 
 test_plan = qase.plans.update(
     "PRJCODE",
@@ -140,7 +199,7 @@ qase.plans.delete("PRJCODE", 123)
 This method allows to retrieve all test runs stored in selected project. You can you limit and offset params to paginate.
 
 ```python
-from qaseio.models import TestRunInclude
+from qaseio.client.models import TestRunInclude
 test_runs = qase.runs.get_all("PRJCODE", include=TestRunInclude.CASES)
 ```
 
@@ -161,7 +220,7 @@ exists = qase.runs.exists("PRJCODE", 4)
 This method is used to create a new test run through API.
 
 ```python
-from qaseio.models import TestRunCreate
+from qaseio.client.models import TestRunCreate
 
 test_run = qase.runs.create(
     "PRJCODE",
@@ -196,7 +255,7 @@ test_run_result = qase.results.get("PRJCODE", "2898ba7f3b4d857cec8bee4a852cdc85f
 This method is used to create a new test run result through API.
 
 ```python
-from qaseio.models import TestRunResultCreate, TestRunResultStatus
+from qaseio.client.models import TestRunResultCreate, TestRunResultStatus
 
 test_run_result = qase.results.create(
     "PRJCODE",
@@ -209,7 +268,7 @@ test_run_result = qase.results.create(
 This method is used to update existing test run result through API.
 
 ```python
-from qaseio.models import TestRunResultUpdate, TestRunResultStatus
+from qaseio.client.models import TestRunResultUpdate, TestRunResultStatus
 
 test_run_result = qase.results.update(
     "PRJCODE",
