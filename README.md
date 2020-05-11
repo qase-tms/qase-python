@@ -197,6 +197,64 @@ This method completely deletes a milestone from repository.
 qase.milestones.delete("PRJCODE", 123)
 ```
 
+### Shared steps ###
+
+#### Get all shared steps ####
+This method allows to retrieve all shared steps stored in selected project. You can you limit and offset params to paginate.
+
+```python
+from qaseio.client.models import SharedStepFilters
+
+shared_steps = qase.shared_steps.get_all(
+    "PRJCODE", filters=SharedStepFilters(search="query")
+)
+```
+
+#### Get a specific shared step ####
+This method allows to retrieve a specific shared step.
+
+```python
+shared_step = qase.shared_steps.get("PRJCODE", "hash")
+```
+
+#### Check shared step exists ####
+
+```python
+exists = qase.shared_steps.exists("PRJCODE", "hash")
+```
+
+#### Create a new shared step ####
+This method is used to create a new shared step through API.
+
+```python
+from qaseio.client.models import SharedStepCreate
+
+shared_step = qase.shared_steps.create(
+    "PRJCODE",
+    SharedStepCreate("New step", "action"),
+)
+```
+
+#### Update shared step ####
+This method is used to update existing shared step through API.
+
+```python
+from qaseio.client.models import SharedStepUpdate
+
+shared_step = qase.shared_steps.update(
+    "PRJCODE",
+    "hash",
+    SharedStepUpdate("Updated step"),
+)
+```
+
+#### Delete shared step ####
+This method completely deletes a shared step from repository.
+
+```python
+qase.shared_steps.delete("PRJCODE", "hash")
+```
+
 ### Test plans ###
 
 #### Get all test plans ####
