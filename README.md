@@ -139,6 +139,64 @@ This method completely deletes a test suite from repository.
 qase.suites.delete("PRJCODE", 123)
 ```
 
+### Milestones ###
+
+#### Get all milestones ####
+This method allows to retrieve all milestones stored in selected project. You can you limit and offset params to paginate.
+
+```python
+from qaseio.client.models import MilestoneFilters
+
+milestones = qase.milestones.get_all(
+    "PRJCODE", filters=MilestoneFilters(search="query")
+)
+```
+
+#### Get a specific milestone ####
+This method allows to retrieve a specific milestone.
+
+```python
+milestone = qase.milestones.get("PRJCODE", 123)
+```
+
+#### Check milestone exists ####
+
+```python
+exists = qase.milestones.exists("PRJCODE", 123)
+```
+
+#### Create a new milestone ####
+This method is used to create a new test plan through API.
+
+```python
+from qaseio.client.models import MilestoneCreate
+
+milestone = qase.milestones.create(
+    "PRJCODE",
+    MilestoneCreate("New test suite"),
+)
+```
+
+#### Update milestone ####
+This method is used to update existing milestone through API.
+
+```python
+from qaseio.client.models import MilestoneUpdate
+
+test_suite = qase.milestones.update(
+    "PRJCODE",
+    123,
+    MilestoneUpdate("Updated suite"),
+)
+```
+
+#### Delete milestone ####
+This method completely deletes a milestone from repository.
+
+```python
+qase.milestones.delete("PRJCODE", 123)
+```
+
 ### Test plans ###
 
 #### Get all test plans ####
