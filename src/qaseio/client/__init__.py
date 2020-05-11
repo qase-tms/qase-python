@@ -22,6 +22,7 @@ from qaseio.client.services.plans import Plans
 from qaseio.client.services.projects import Projects
 from qaseio.client.services.results import Results
 from qaseio.client.services.runs import Runs
+from qaseio.client.services.shared_steps import SharedSteps
 from qaseio.client.services.suites import Suites
 
 try:
@@ -49,6 +50,7 @@ class QaseApi:
     plans: Plans = attr.ib(init=False)
     suites: Suites = attr.ib(init=False)
     milestones: Milestones = attr.ib(init=False)
+    shared_steps: SharedSteps = attr.ib(init=False)
 
     def __attrs_post_init__(self):
         class ResponseRetryAfterLimitHook(ResponseHook):
@@ -85,3 +87,4 @@ class QaseApi:
         self.plans = Plans(self._s, self._path)
         self.suites = Suites(self._s, self._path)
         self.milestones = Milestones(self._s, self._path)
+        self.shared_steps = SharedSteps(self._s, self._path)

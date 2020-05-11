@@ -103,6 +103,19 @@ def _test_suite():
     }
 
 
+def _shared_step():
+    return {
+        "hash": "0223905c291bada23e6049d415385982af92d758",
+        "title": "Shared step",
+        "action": "Open signup page",
+        "expected_result": "Page is opened",
+        "cases": [41, 35, 42, 30],
+        "cases_count": 4,
+        "created": "2019-02-09T23:16:49.000000Z",
+        "updated": "2019-02-09T23:16:49.000000Z",
+    }
+
+
 def _test_run_result():
     return {
         "hash": "6efce6e4f9de887a2ee863e8197cb74ab626a273",

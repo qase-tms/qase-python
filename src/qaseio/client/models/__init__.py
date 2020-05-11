@@ -6,4 +6,5 @@ from .plans import *
 from .projects import *
 from .results import *
 from .runs import *
+from .shared_steps import *
 from .suites import *
