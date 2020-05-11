@@ -15,6 +15,7 @@ def client():
     api.suites._in_test = True
     api.milestones._in_test = True
     api.shared_steps._in_test = True
+    api.defects._in_test = True
     return api
 
 

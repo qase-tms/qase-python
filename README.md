@@ -401,6 +401,43 @@ This method completely deletes a test run result from repository.
 qase.results.delete("PRJCODE", 4, "2898ba7f3b4d857cec8bee4a852cdc85f8b33132")
 ```
 
+### Defects ###
+
+#### Get all defects ####
+This method allows to retrieve all defects stored in selected project. You can you limit and offset params to paginate.
+
+```python
+from qaseio.client.models import DefectStatus, DefectFilters
+defects = qase.defects.get_all("PRJCODE", filter=DefectFilters(DefectStatus.OPEN))
+```
+
+#### Get a specific defect ####
+This method allows to retrieve a specific defect.
+
+```python
+defect = qase.defects.get("PRJCODE", 4)
+```
+
+#### Check defect exists ####
+
+```python
+exists = qase.defects.exists("PRJCODE", 4)
+```
+
+#### Resolve defect ####
+This method is used to resolve defect through API.
+
+```python
+defect = qase.defects.resolve("PRJCODE", 4)
+```
+
+#### Delete defect ####
+This method completely deletes a defect from repository.
+
+```python
+qase.defects.delete("PRJCODE", 4)
+```
+
 # Contribution
 
 Install project locally:

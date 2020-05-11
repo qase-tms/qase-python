@@ -130,6 +130,19 @@ def _test_run_result():
     }
 
 
+def _defect():
+    return {
+        "id": 1,
+        "title": "Dangerous defect",
+        "actual_result": "Something happened",
+        "status": "open",
+        "user_id": 1,
+        "attachments": [],
+        "created": "2019-11-08T22:03:07.000000Z",
+        "updated": "2019-11-19T22:29:57.000000Z",
+    }
+
+
 def _list(data):
     return {"total": 10, "filtered": 10, "count": 1, "entities": [data]}
 

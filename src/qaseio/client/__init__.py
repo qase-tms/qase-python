@@ -17,6 +17,7 @@ from apitist.requests import Session
 from requests import Response
 
 from qaseio.client.services.cases import Cases
+from qaseio.client.services.defects import Defects
 from qaseio.client.services.milestones import Milestones
 from qaseio.client.services.plans import Plans
 from qaseio.client.services.projects import Projects
@@ -51,6 +52,7 @@ class QaseApi:
     suites: Suites = attr.ib(init=False)
     milestones: Milestones = attr.ib(init=False)
     shared_steps: SharedSteps = attr.ib(init=False)
+    defects: Defects = attr.ib(init=False)
 
     def __attrs_post_init__(self):
         class ResponseRetryAfterLimitHook(ResponseHook):
@@ -88,3 +90,4 @@ class QaseApi:
         self.suites = Suites(self._s, self._path)
         self.milestones = Milestones(self._s, self._path)
         self.shared_steps = SharedSteps(self._s, self._path)
+        self.defects = Defects(self._s, self._path)
