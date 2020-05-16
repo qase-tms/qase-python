@@ -18,6 +18,7 @@ from requests import Response
 
 from qaseio.client.services.attachments import Attachments
 from qaseio.client.services.cases import Cases
+from qaseio.client.services.custom_fields import CustomFields
 from qaseio.client.services.defects import Defects
 from qaseio.client.services.milestones import Milestones
 from qaseio.client.services.plans import Plans
@@ -55,6 +56,7 @@ class QaseApi:
     shared_steps: SharedSteps = attr.ib(init=False)
     defects: Defects = attr.ib(init=False)
     attachments: Attachments = attr.ib(init=False)
+    custom_fields: CustomFields = attr.ib(init=False)
 
     def __attrs_post_init__(self):
         class ResponseRetryAfterLimitHook(ResponseHook):
@@ -94,3 +96,4 @@ class QaseApi:
         self.shared_steps = SharedSteps(self._s, self._path)
         self.defects = Defects(self._s, self._path)
         self.attachments = Attachments(self._s, self._path)
+        self.custom_fields = CustomFields(self._s, self._path)

@@ -17,6 +17,7 @@ def client():
     api.shared_steps._in_test = True
     api.defects._in_test = True
     api.attachments._in_test = True
+    api.custom_fields._in_test = True
     return api
 
 

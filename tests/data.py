@@ -164,6 +164,22 @@ def _attachment_created():
     }
 
 
+def _custom_field():
+    return {
+        "id": 1,
+        "title": "Description",
+        "type": "Text",
+        "placeholder": "Write something",
+        "default_value": None,
+        "value": None,
+        "is_required": False,
+        "is_visible": False,
+        "is_filterable": False,
+        "created": "2019-08-26T22:30:07.000000Z",
+        "updated": "2019-08-26T22:30:07.000000Z",
+    }
+
+
 def _list(data):
     return {"total": 10, "filtered": 10, "count": 1, "entities": [data]}
 

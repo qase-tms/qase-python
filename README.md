@@ -438,6 +438,28 @@ This method completely deletes a defect from repository.
 qase.defects.delete("PRJCODE", 4)
 ```
 
+### Custom fields ###
+
+#### Get all custom fields ####
+This method allows to retrieve all custom fields stored in selected project. You can you limit and offset params to paginate.
+
+```python
+custom_fields = qase.custom_fields.get_all("PRJCODE")
+```
+
+#### Get a specific custom field ####
+This method allows to retrieve a specific custom field.
+
+```python
+custom_field = qase.custom_fields.get("PRJCODE", 123)
+```
+
+#### Check custom field exists ####
+
+```python
+exists = qase.custom_fields.get("PRJCODE", 123)
+```
+
 ### Attachments ###
 
 #### Get all attachments ####
