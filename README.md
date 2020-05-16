@@ -438,6 +438,55 @@ This method completely deletes a defect from repository.
 qase.defects.delete("PRJCODE", 4)
 ```
 
+### Attachments ###
+
+#### Get all attachments ####
+This method allows to retrieve all attachments stored in team. You can you limit and offset params to paginate.
+
+```python
+attachments = qase.attachments.get_all()
+```
+
+#### Get a specific attachment ####
+This method allows to retrieve a specific attachment.
+
+```python
+attachment = qase.attachments.get("<hash>")
+```
+
+#### Check attachment exists ####
+
+```python
+exists = qase.attachments.exists("<hash>")
+```
+
+#### Upload new attachments ####
+This method is used to upload new attachments through API. It supports different
+input formats
+
+```python
+from qaseio.client.models import MimeTypes
+results = qase.attachments.upload(
+    "PRJCODE",
+    "/absolute/path/to/file", # Upload file from absolute path
+    "./relative/path/to/file", # Upload file from relative path
+    # Upload file from path and specify mime-type
+    ("./path/to/file", MimeTypes.CSV),
+    # Upload bytes with given mime-type and filename
+    (b"some bytes data", MimeTypes.JSON, "filename.json"),
+)
+```
+
+You can specify as much files to upload as you need, according to API
+[limits](https://developers.qase.io/#upload-attachmeent).
+
+#### Delete attachment ####
+This method completely deletes a attachment from repository.
+
+```python
+qase.attachments.delete("<hash>")
+```
+
 # Contribution
 
 Install project locally:
