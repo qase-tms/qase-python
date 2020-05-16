@@ -1,4 +1,5 @@
 # flake8: noqa
+from .attachments import *
 from .base import *
 from .cases import *
 from .defects import *

@@ -1,0 +1,160 @@
+from typing import List
+
+import attr
+
+from qaseio.client.models.base import DefaultList
+
+
+class MimeTypes:
+    JS = "application/javascript"
+    MJS = "application/javascript"
+    JSON = "application/json"
+    WEBMANIFEST = "application/manifest+json"
+    DOC = "application/msword"
+    DOT = "application/msword"
+    WIZ = "application/msword"
+    BIN = "application/octet-stream"
+    A = "application/octet-stream"
+    DLL = "application/octet-stream"
+    EXE = "application/octet-stream"
+    OBJ = "application/octet-stream"
+    SO = "application/octet-stream"
+    ODA = "application/oda"
+    PDF = "application/pdf"
+    P7C = "application/pkcs7-mime"
+    PS = "application/postscript"
+    AI = "application/postscript"
+    EPS = "application/postscript"
+    M3U = "application/vnd.apple.mpegurl"
+    M3U8 = "application/vnd.apple.mpegurl"
+    XLS = "application/vnd.ms-excel"
+    XLB = "application/vnd.ms-excel"
+    PPT = "application/vnd.ms-powerpoint"
+    POT = "application/vnd.ms-powerpoint"
+    PPA = "application/vnd.ms-powerpoint"
+    PPS = "application/vnd.ms-powerpoint"
+    PWZ = "application/vnd.ms-powerpoint"
+    WASM = "application/wasm"
+    BCPIO = "application/x-bcpio"
+    CPIO = "application/x-cpio"
+    CSH = "application/x-csh"
+    DVI = "application/x-dvi"
+    GTAR = "application/x-gtar"
+    HDF = "application/x-hdf"
+    LATEX = "application/x-latex"
+    MIF = "application/x-mif"
+    CDF = "application/x-netcdf"
+    NC = "application/x-netcdf"
+    P12 = "application/x-pkcs12"
+    PFX = "application/x-pkcs12"
+    RAM = "application/x-pn-realaudio"
+    PYC = "application/x-python-code"
+    PYO = "application/x-python-code"
+    SH = "application/x-sh"
+    SHAR = "application/x-shar"
+    SWF = "application/x-shockwave-flash"
+    SV4CPIO = "application/x-sv4cpio"
+    SV4CRC = "application/x-sv4crc"
+    TAR = "application/x-tar"
+    TCL = "application/x-tcl"
+    TEX = "application/x-tex"
+    TEXI = "application/x-texinfo"
+    TEXINFO = "application/x-texinfo"
+    ROFF = "application/x-troff"
+    T = "application/x-troff"
+    TR = "application/x-troff"
+    MAN = "application/x-troff-man"
+    ME = "application/x-troff-me"
+    MS = "application/x-troff-ms"
+    USTAR = "application/x-ustar"
+    SRC = "application/x-wais-source"
+    XSL = "application/xml"
+    RDF = "application/xml"
+    WSDL = "application/xml"
+    XPDL = "application/xml"
+    ZIP = "application/zip"
+    AU = "audio/basic"
+    SND = "audio/basic"
+    MP3 = "audio/mpeg"
+    MP2 = "audio/mpeg"
+    AIF = "audio/x-aiff"
+    AIFC = "audio/x-aiff"
+    AIFF = "audio/x-aiff"
+    RA = "audio/x-pn-realaudio"
+    WAV = "audio/x-wav"
+    BMP = "image/bmp"
+    GIF = "image/gif"
+    IEF = "image/ief"
+    JPG = "image/jpeg"
+    JPE = "image/jpeg"
+    JPEG = "image/jpeg"
+    PNG = "image/png"
+    SVG = "image/svg+xml"
+    TIFF = "image/tiff"
+    TIF = "image/tiff"
+    ICO = "image/vnd.microsoft.icon"
+    RAS = "image/x-cmu-raster"
+    PNM = "image/x-portable-anymap"
+    PBM = "image/x-portable-bitmap"
+    PGM = "image/x-portable-graymap"
+    PPM = "image/x-portable-pixmap"
+    RGB = "image/x-rgb"
+    XBM = "image/x-xbitmap"
+    XPM = "image/x-xpixmap"
+    XWD = "image/x-xwindowdump"
+    EML = "message/rfc822"
+    MHT = "message/rfc822"
+    MHTML = "message/rfc822"
+    NWS = "message/rfc822"
+    CSS = "text/css"
+    CSV = "text/csv"
+    HTML = "text/html"
+    HTM = "text/html"
+    TXT = "text/plain"
+    BAT = "text/plain"
+    C = "text/plain"
+    H = "text/plain"
+    KSH = "text/plain"
+    PL = "text/plain"
+    RTX = "text/richtext"
+    TSV = "text/tab-separated-values"
+    PY = "text/x-python"
+    ETX = "text/x-setext"
+    SGM = "text/x-sgml"
+    SGML = "text/x-sgml"
+    VCF = "text/x-vcard"
+    XML = "text/xml"
+    MP4 = "video/mp4"
+    MPEG = "video/mpeg"
+    M1V = "video/mpeg"
+    MPA = "video/mpeg"
+    MPE = "video/mpeg"
+    MPG = "video/mpeg"
+    MOV = "video/quicktime"
+    QT = "video/quicktime"
+    WEBM = "video/webm"
+    AVI = "video/x-msvideo"
+    MOVIE = "video/x-sgi-movie"
+
+
+@attr.s
+class AttachmentCreated:
+    hash = attr.ib(default=None)
+    filename = attr.ib(default=None)
+    mime = attr.ib(default=None)
+    extension = attr.ib(default=None)
+    url = attr.ib(default=None)
+
+
+@attr.s
+class AttachmentInfo:
+    hash = attr.ib(default=None)
+    file = attr.ib(default=None)
+    mime = attr.ib(default=None)
+    size: int = attr.ib(default=None)
+    full_path = attr.ib(default=None)
+
+
+@attr.s
+class AttachmentList(DefaultList):
+    entities: List[AttachmentInfo] = attr.ib(factory=list)

@@ -16,6 +16,7 @@ def client():
     api.milestones._in_test = True
     api.shared_steps._in_test = True
     api.defects._in_test = True
+    api.attachments._in_test = True
     return api
 
 

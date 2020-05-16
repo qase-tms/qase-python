@@ -16,6 +16,7 @@ from apitist.hooks import (
 from apitist.requests import Session
 from requests import Response
 
+from qaseio.client.services.attachments import Attachments
 from qaseio.client.services.cases import Cases
 from qaseio.client.services.defects import Defects
 from qaseio.client.services.milestones import Milestones
@@ -53,6 +54,7 @@ class QaseApi:
     milestones: Milestones = attr.ib(init=False)
     shared_steps: SharedSteps = attr.ib(init=False)
     defects: Defects = attr.ib(init=False)
+    attachments: Attachments = attr.ib(init=False)
 
     def __attrs_post_init__(self):
         class ResponseRetryAfterLimitHook(ResponseHook):
@@ -91,3 +93,4 @@ class QaseApi:
         self.milestones = Milestones(self._s, self._path)
         self.shared_steps = SharedSteps(self._s, self._path)
         self.defects = Defects(self._s, self._path)
+        self.attachments = Attachments(self._s, self._path)
