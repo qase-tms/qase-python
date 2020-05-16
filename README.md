@@ -24,8 +24,8 @@ and using command-line arguments:
                         Project code in Qase TMS
   --qase-testrun=QS_TESTRUN_ID
                         Testrun ID in Qase TMS
-  --qase-debug=QS_DEBUG
-                        Prints additional output of plugin
+  --qase-new-run        Create new testrun, if no testrun id provided
+  --qase-debug          Prints additional output of plugin
 ```
 
 * INI file parameters:
@@ -38,6 +38,7 @@ and using command-line arguments:
                         default value for --qase-project
   qs_testrun_id (string):
                         default value for --qase-testrun
+  qs_new_run (bool):    default value for --qase-new-run
   qs_debug (bool):      default value for --qase-debug
 ```
 
@@ -58,6 +59,43 @@ def test_example_2():
 ```
 
 You could pass as much IDs as you need.
+
+## Sending tests to existing testrun
+
+Testrun in TMS will contain only those test results, which are presented in testrun,
+but every test would be executed.
+
+```bash
+pytest \
+    --qase \
+    --qase-api-token=<your api token here> \
+    --qase-project=PRJCODE \ # project, where your testrun exists in
+    --qase-testrun=3 # testrun id
+```
+
+## Creating new testrun according to current pytest run
+
+Testrun in TMS will contain only those test results, which has correct case ids,
+but every test would be executed.
+
+```bash
+pytest \
+    --qase \
+    --qase-api-token=<your api token here> \
+    --qase-project=PRJCODE \ # project, where your testrun would be created
+    --qase-new-run
+```
+
+## Debug information
+If you specify `--qase-debug` parameter you would get additional output:
+
+```
+=================================== Qase TMS ===================================
+This tests does not have test case ids:
+test_no_deco
+For test test_complex_run.py::test_multiple_ids_fail could not find test cases in run: 3
+=========================== Qase TMS setup finished ============================
+```
 
 ## Execution logic
 
