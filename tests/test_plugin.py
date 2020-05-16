@@ -172,7 +172,8 @@ def test_pytest_collection_modifyitems(qs_plugin, mock, cases_mocks, testfile):
     plugin = qs_plugin(debug=True)
     mock.reset_mock()
     plugin.pytest_collection_modifyitems(None, config, testfile)
-    assert len(mock.request_history) == 3
+    print([req.url for req in mock.request_history])
+    assert len(mock.request_history) == 6
     assert len(writer.results) == 2
     assert len(plugin.nodes_with_ids) == 2
 
@@ -190,7 +191,7 @@ def test_pytest_collection_modifyitems_missing_cases(
     testdir.makepyfile(tests)
     items = testdir.getitems(tests)
     plugin.pytest_collection_modifyitems(None, None, items)
-    assert len(mock.request_history) == 3
+    assert len(mock.request_history) == 6
     assert len(plugin.nodes_with_ids) == 2
 
 

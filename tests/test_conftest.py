@@ -22,6 +22,75 @@ def test_run_all_parameters_cli(mock, default_mocks, testdir):
     assert mock.request_history[0].headers.get("Token") == "12345"
 
 
+def test_run_create_testrun_no_ids(mock, default_mocks, testdir):
+    default_mocks()
+    testdir.makepyfile(
+        """
+    def test_example():
+        pass
+    """
+    )
+    testdir.runpytest(
+        "--qase",
+        "--qase-project=PRJ",
+        "--qase-new-run",
+        "--qase-api-token=12345",
+        "--qase-debug",
+    )
+    assert len(mock.request_history) == 1
+    assert re.findall(r".*/project/PRJ", mock.request_history[0].url)
+    assert mock.request_history[0].headers.get("Token") == "12345"
+
+
+def test_run_create_testrun(
+    mock, default_mocks, cases_mocks, results_mocks, testdir
+):
+    default_mocks()
+    cases_mocks()
+    results_mocks()
+    testdir.makepyfile(
+        """
+    from qaseio.pytest import qase
+    @qase.id(1)
+    def test_example():
+        pass
+    """
+    )
+    result = testdir.runpytest(
+        "--qase",
+        "--qase-project=PRJ",
+        "--qase-new-run",
+        "--qase-api-token=12345",
+        "--qase-debug",
+    )
+    assert not result.errlines
+    assert len(mock.request_history) == 7
+    assert re.findall(r".*/project/PRJ", mock.request_history[0].url)
+    assert mock.request_history[0].headers.get("Token") == "12345"
+
+
+def test_run_create_testrun_and_id(mock, default_mocks, testdir):
+    default_mocks()
+    testdir.makepyfile(
+        """
+    from qaseio.pytest import qase
+    @qase.id(1)
+    def test_example():
+        pass
+    """
+    )
+    result = testdir.runpytest(
+        "--qase",
+        "--qase-project=PRJ",
+        "--qase-testrun=3",
+        "--qase-new-run",
+        "--qase-api-token=12345",
+        "--qase-debug",
+    )
+    assert len(mock.request_history) == 2
+    assert result.errlines
+
+
 def test_run_not_enabled(mock, default_mocks, testdir):
     default_mocks()
     testdir.makepyfile(

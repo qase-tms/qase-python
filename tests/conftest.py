@@ -26,6 +26,9 @@ def default_mocks(mock):
                 "result": {"cases": [i for i in range(1, 16) if i not in [3]]},
             },
         )
+        mock.post(
+            f"/v1/run/{project}", json={"status": True, "result": {"id": 3}},
+        )
 
     return wrapper
 
@@ -35,6 +38,23 @@ def cases_mocks(mock):
     def wrapper(regex=r".*/case/[a-zA-Z]+/\d+", **kwargs):
         mock.get(
             re.compile(regex), json={"status": True, "result": {}}, **kwargs
+        )
+
+    return wrapper
+
+
+@pytest.fixture
+def results_mocks(mock):
+    def wrapper(regex=r".*/result/[a-zA-Z]+/\d+", **kwargs):
+        mock.post(
+            re.compile(regex),
+            json={"status": True, "result": {"hash": "1a2b3d"}},
+            **kwargs,
+        )
+        mock.patch(
+            re.compile(regex + r"/.*"),
+            json={"status": True, "result": {"hash": "1a2b3d"}},
+            **kwargs,
         )
 
     return wrapper

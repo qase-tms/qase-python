@@ -1,10 +1,13 @@
 import time
+from datetime import datetime
 
 import pytest
 
 from qaseio.client import QaseApi
 from qaseio.client.models import (
+    TestRunCreate,
     TestRunInclude,
+    TestRunInfo,
     TestRunResultCreate,
     TestRunResultStatus,
     TestRunResultUpdate,
@@ -33,23 +36,32 @@ def get_ids_from_pytest_nodes(items):
 
 
 class QasePytestPlugin:
-    def __init__(self, api_token, project, testrun, debug=False):
+    testrun: TestRunInfo = None
+
+    def __init__(
+        self, api_token, project, testrun=None, create_run=False, debug=False
+    ):
         self.client = QaseApi(api_token)
         self.project_code = project
         self.testrun_id = testrun
+        self.create_run = create_run
         self.debug = debug
         self.nodes_with_ids = {}
         self.missing_ids = []
+        self.existing_ids = []
         self.project = self.client.projects.exists(self.project_code)
         self.comment = "Pytest Plugin Automation Run"
         if not self.project:
             raise ValueError("Unable to find given project code")
-        self.testrun = self.client.runs.exists(
-            self.project_code, self.testrun_id, include=TestRunInclude.CASES
-        )
-        if not self.testrun:
+        self.check_testrun()
+        if not self.testrun and not self.create_run:
             raise ValueError(
                 "Unable to find given testrun id, you should specify it"
+            )
+        if self.testrun and self.create_run:
+            raise ValueError(
+                "You should provide either testrun id or select to create it, "
+                "not both of it"
             )
 
     def pytest_report_header(self, config, startdir):
@@ -61,12 +73,15 @@ class QasePytestPlugin:
             message += "a new testrun will be created"
         return message
 
-    def get_missing_case_ids(self, data):
-        missing = []
+    def check_case_ids(self, data, exists=False):
+        results = []
         for _id in data.get("ids"):
-            if not self.client.test_cases.exists(self.project_code, _id):
-                missing.append(_id)
-        return missing
+            if (
+                bool(self.client.cases.exists(self.project_code, _id))
+                == exists
+            ):
+                results.append(_id)
+        return results
 
     def get_missing_in_testrun(self, data):
         missing = []
@@ -74,6 +89,24 @@ class QasePytestPlugin:
             if _id not in self.testrun.cases:
                 missing.append(_id)
         return missing
+
+    def check_testrun(self):
+        if self.testrun_id:
+            self.testrun = self.client.runs.exists(
+                self.project_code,
+                self.testrun_id,
+                include=TestRunInclude.CASES,
+            )
+
+    def create_testrun(self):
+        self.testrun_id = self.client.runs.create(
+            self.project_code,
+            TestRunCreate(
+                "Automated Run {}".format(str(datetime.now())),
+                cases=self.existing_ids,
+            ),
+        ).id
+        print(self.testrun_id)
 
     @pytest.hookimpl(trylast=True)
     def pytest_collection_modifyitems(self, session, config, items):
@@ -92,22 +125,31 @@ class QasePytestPlugin:
             )
 
         for nodeid, data in self.nodes_with_ids.items():
-            missing_ids = self.get_missing_case_ids(data)
-            missing_in_run = self.get_missing_in_testrun(data)
+            missing_ids = self.check_case_ids(data)
+            exist_ids = self.check_case_ids(data, exists=True)
             if missing_ids:
                 write_lines.append(
                     "For test {} could not find test cases in TMS: {}".format(
                         nodeid, ", ".join([str(i) for i in missing_ids])
                     )
                 )
-            if missing_in_run:
-                write_lines.append(
-                    "For test {} could not find test cases in run: {}".format(
-                        nodeid, ", ".join([str(i) for i in missing_in_run])
+
+            if not self.create_run:
+                missing_in_run = self.get_missing_in_testrun(data)
+                if missing_in_run:
+                    write_lines.append(
+                        "For test {} could not find "
+                        "test cases in run: {}".format(
+                            nodeid, ", ".join([str(i) for i in missing_in_run])
+                        )
                     )
-                )
+                self.missing_ids.extend(missing_in_run)
             self.missing_ids.extend(missing_ids)
-            self.missing_ids.extend(missing_in_run)
+            self.existing_ids.extend(exist_ids)
+
+        if self.create_run and self.existing_ids:
+            self.create_testrun()
+            self.check_testrun()
 
         if write_lines and self.debug:
             writer = config.pluginmanager.get_plugin("terminalreporter")

@@ -38,6 +38,14 @@ def pytest_addoption(parser):
         "--qase-testrun", "qs_testrun_id", help="Testrun ID in Qase TMS",
     )
     add_option_ini(
+        "--qase-new-run",
+        "qs_new_run",
+        default=False,
+        type="bool",
+        help="Create new testrun, if no testrun id provided",
+        action="store_true",
+    )
+    add_option_ini(
         "--qase-debug",
         "qs_debug",
         default=False,
@@ -54,9 +62,10 @@ def pytest_configure(config):
     if get_option_ini(config, "qs_enabled"):
         config.pluginmanager.register(
             QasePytestPlugin(
-                get_option_ini(config, "qs_api_token"),
-                get_option_ini(config, "qs_project_code"),
-                get_option_ini(config, "qs_testrun_id"),
+                api_token=get_option_ini(config, "qs_api_token"),
+                project=get_option_ini(config, "qs_project_code"),
+                testrun=get_option_ini(config, "qs_testrun_id"),
+                create_run=get_option_ini(config, "qs_new_run"),
                 debug=get_option_ini(config, "qs_debug"),
             ),
             name="qase-pytest",
