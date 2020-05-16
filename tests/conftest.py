@@ -18,6 +18,7 @@ def client():
     api.defects._in_test = True
     api.attachments._in_test = True
     api.custom_fields._in_test = True
+    api.users._in_test = True
     return api
 
 

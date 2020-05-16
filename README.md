@@ -509,6 +509,28 @@ This method completely deletes a attachment from repository.
 qase.attachments.delete("<hash>")
 ```
 
+### Team ###
+
+#### Get all team members ####
+This method allows to retrieve all users in your team. You can you limit and offset params to paginate.
+
+```python
+users = qase.users.get_all()
+```
+
+#### Get a specific team member ####
+This method allows to retrieve a specific user in your team.
+
+```python
+user = qase.users.get(123)
+```
+
+#### Check user exists ####
+
+```python
+exists = qase.users.get(123)
+```
+
 # Contribution
 
 Install project locally:

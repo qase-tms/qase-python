@@ -180,6 +180,16 @@ def _custom_field():
     }
 
 
+def _user():
+    return {
+        "id": 1,
+        "name": "John Smith",
+        "email": "john@example.com",
+        "title": "Team Owner",
+        "status": 1,
+    }
+
+
 def _list(data):
     return {"total": 10, "filtered": 10, "count": 1, "entities": [data]}
 

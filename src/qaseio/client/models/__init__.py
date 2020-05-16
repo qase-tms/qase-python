@@ -11,3 +11,4 @@ from .results import *
 from .runs import *
 from .shared_steps import *
 from .suites import *
+from .users import *

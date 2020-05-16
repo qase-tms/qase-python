@@ -27,6 +27,7 @@ from qaseio.client.services.results import Results
 from qaseio.client.services.runs import Runs
 from qaseio.client.services.shared_steps import SharedSteps
 from qaseio.client.services.suites import Suites
+from qaseio.client.services.users import Users
 
 try:
     # Change here if project is renamed and does not equal the package name
@@ -57,6 +58,7 @@ class QaseApi:
     defects: Defects = attr.ib(init=False)
     attachments: Attachments = attr.ib(init=False)
     custom_fields: CustomFields = attr.ib(init=False)
+    users: Users = attr.ib(init=False)
 
     def __attrs_post_init__(self):
         class ResponseRetryAfterLimitHook(ResponseHook):
@@ -97,3 +99,4 @@ class QaseApi:
         self.defects = Defects(self._s, self._path)
         self.attachments = Attachments(self._s, self._path)
         self.custom_fields = CustomFields(self._s, self._path)
+        self.users = Users(self._s, self._path)
