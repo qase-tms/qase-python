@@ -28,6 +28,7 @@ class TestRunResultFilters(DefaultFilter):
 class TestRunResultInfo:
     hash = attr.ib(default=None)
     comment = attr.ib(default=None)
+    stacktrace = attr.ib(default=None)
     run_id = attr.ib(default=None)
     case_id = attr.ib(default=None)
     steps = attr.ib(factory=list)
@@ -35,6 +36,7 @@ class TestRunResultInfo:
     is_api_result = attr.ib(default=None)
     time_spent = attr.ib(default=None)
     end_time = attr.ib(default=None)
+    attachments: List[str] = attr.ib(factory=list)
 
 
 @attr.s
@@ -46,6 +48,7 @@ class TestRunResultList(DefaultList):
 class TestRunResultStepCreate:
     position: int = attr.ib()
     status: TestRunResultStatus = attr.ib()
+    attachments: List[str] = attr.ib(factory=list)
 
 
 @attr.s
@@ -55,8 +58,10 @@ class TestRunResultCreate:
     time: int = attr.ib(default=None)
     member_id: int = attr.ib(default=None)
     comment: str = attr.ib(default=None)
+    stacktrace: str = attr.ib(default=None)
     defect: bool = attr.ib(default=None)
     steps: List[TestRunResultStepCreate] = attr.ib(factory=list)
+    attachments: List[str] = attr.ib(factory=list)
 
 
 @attr.s
@@ -69,5 +74,7 @@ class TestRunResultUpdate:
     status: TestRunResultStatus = attr.ib(default=None)
     time: int = attr.ib(default=None)
     comment: str = attr.ib(default=None)
+    stacktrace: str = attr.ib(default=None)
     defect: bool = attr.ib(default=None)
     steps: List[TestRunResultStepCreate] = attr.ib(factory=list)
+    attachments: List[str] = attr.ib(factory=list)

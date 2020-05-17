@@ -120,6 +120,7 @@ def _test_run_result():
     return {
         "hash": "6efce6e4f9de887a2ee863e8197cb74ab626a273",
         "comment": "some comment",
+        "stacktrace": "some stacktrace",
         "run_id": 1,
         "case_id": 1,
         "steps": None,
@@ -127,6 +128,10 @@ def _test_run_result():
         "is_api_result": True,
         "time_spent": 0,
         "end_time": "2018-11-11 11:11:11",
+        "attachments": [
+            "6efce6e4f9de887a2ee863e8197cb74ab626a271",
+            "6efce6e4f9de887a2ee863e8197cb74ab626a272",
+        ],
     }
 
 
