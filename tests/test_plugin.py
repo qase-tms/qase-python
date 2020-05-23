@@ -258,7 +258,8 @@ def test_finish_pytest_item_errors(mock, start_items, testfile):
     for req in mock.request_history:
         data = json.loads(req.body)
         assert data.get("status") == "failed"
-        assert data.get("comment") == plugin.comment + "\n\n```\nerror\n```"
+        assert data.get("comment") == plugin.comment
+        assert data.get("stacktrace") == "error"
         assert data.get("time") is not None
 
 
