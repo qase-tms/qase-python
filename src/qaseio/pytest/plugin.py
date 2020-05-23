@@ -43,11 +43,18 @@ class QasePytestPlugin:
     testrun: TestRunInfo = None
 
     def __init__(
-        self, api_token, project, testrun=None, create_run=False, debug=False
+        self,
+        api_token,
+        project,
+        testrun=None,
+        testplan=None,
+        create_run=False,
+        debug=False,
     ):
         self.client = QaseApi(api_token)
         self.project_code = project
         self.testrun_id = testrun
+        self.testplan_id = testplan
         self.create_run = create_run
         self.debug = debug
         self.nodes_with_ids = {}
@@ -59,15 +66,6 @@ class QasePytestPlugin:
         if not self.project:
             raise ValueError("Unable to find given project code")
         self.check_testrun()
-        if not self.testrun and not self.create_run:
-            raise ValueError(
-                "Unable to find given testrun id, you should specify it"
-            )
-        if self.testrun and self.create_run:
-            raise ValueError(
-                "You should provide either testrun id or select to create it, "
-                "not both of it"
-            )
         if self.debug:
             logger = logging.getLogger(apitist.dist_name)
             logger.addHandler(logging.StreamHandler())
@@ -100,6 +98,29 @@ class QasePytestPlugin:
         return missing
 
     def check_testrun(self):
+        if (self.testrun_id or self.create_run) and self.testplan_id:
+            raise ValueError(
+                "You should provide either use testrun or testplan"
+            )
+        if self.testplan_id:
+            testplan = self.client.plans.exists(
+                self.project_code, self.testplan_id
+            )
+            if not testplan:
+                raise ValueError("Could not find testplan")
+            self.create_testrun([case.case_id for case in testplan.cases])
+        self.load_testrun()
+        if not self.testrun and not self.create_run:
+            raise ValueError(
+                "Unable to find given testrun id, you should specify it"
+            )
+        if self.testrun and self.create_run:
+            raise ValueError(
+                "You should provide either testrun/testplan id or "
+                "select to create it, not both of it"
+            )
+
+    def load_testrun(self):
         if self.testrun_id:
             self.testrun = self.client.runs.exists(
                 self.project_code,
@@ -107,15 +128,22 @@ class QasePytestPlugin:
                 include=TestRunInclude.CASES,
             )
 
-    def create_testrun(self):
-        self.testrun_id = self.client.runs.create(
-            self.project_code,
-            TestRunCreate(
-                "Automated Run {}".format(str(datetime.now())),
-                cases=self.existing_ids,
-            ),
-        ).id
-        print(self.testrun_id)
+    def create_testrun(self, cases):
+        if cases:
+            self.testrun_id = self.client.runs.create(
+                self.project_code,
+                TestRunCreate(
+                    "Automated Run {}".format(str(datetime.now())),
+                    cases=cases,
+                ),
+            ).id
+            print()
+            print(
+                "Qase TMS: created testrun "
+                "https://app.qase.io/run/{}/dashboard/{}".format(
+                    self.project_code, self.testrun_id
+                )
+            )
 
     @pytest.hookimpl(trylast=True)
     def pytest_collection_modifyitems(self, session, config, items):
@@ -157,8 +185,8 @@ class QasePytestPlugin:
             self.existing_ids.extend(exist_ids)
 
         if self.create_run and self.existing_ids:
-            self.create_testrun()
-            self.check_testrun()
+            self.create_testrun(self.existing_ids)
+            self.load_testrun()
 
         if write_lines and self.debug:
             writer = config.pluginmanager.get_plugin("terminalreporter")

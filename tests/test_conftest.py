@@ -1,5 +1,12 @@
 import re
 
+TEST_FILE = """
+from qaseio.pytest import qase
+@qase.id(1)
+def test_example():
+    pass
+"""
+
 
 def test_run_all_parameters_cli(mock, default_mocks, testdir):
     default_mocks()
@@ -75,14 +82,7 @@ def test_run_create_testrun(
 
 def test_run_create_testrun_and_id(mock, default_mocks, testdir):
     default_mocks()
-    testdir.makepyfile(
-        """
-    from qaseio.pytest import qase
-    @qase.id(1)
-    def test_example():
-        pass
-    """
-    )
+    testdir.makepyfile(TEST_FILE)
     result = testdir.runpytest(
         "--qase",
         "--qase-project=PRJ",
@@ -91,8 +91,56 @@ def test_run_create_testrun_and_id(mock, default_mocks, testdir):
         "--qase-api-token=12345",
         "--qase-debug",
     )
+    assert result.ret != 0
     assert len(mock.request_history) == 2
-    assert result.errlines
+
+
+def test_run_create_testrun_and_testplan(mock, default_mocks, testdir):
+    default_mocks()
+    testdir.makepyfile(TEST_FILE)
+    result = testdir.runpytest(
+        "--qase",
+        "--qase-project=PRJ",
+        "--qase-testplan=3",
+        "--qase-new-run",
+        "--qase-api-token=12345",
+        "--qase-debug",
+    )
+    assert result.ret != 0
+    assert len(mock.request_history) == 1
+
+
+def test_run_testrun_and_testplan(mock, default_mocks, testdir):
+    default_mocks()
+    testdir.makepyfile(TEST_FILE)
+    result = testdir.runpytest(
+        "--qase",
+        "--qase-project=PRJ",
+        "--qase-testplan=3",
+        "--qase-testrun=4",
+        "--qase-api-token=12345",
+        "--qase-debug",
+    )
+    assert result.ret != 0
+    assert len(mock.request_history) == 1
+
+
+def test_run_testrun_and_create_testrun_and_testplan(
+    mock, default_mocks, testdir
+):
+    default_mocks()
+    testdir.makepyfile(TEST_FILE)
+    result = testdir.runpytest(
+        "--qase",
+        "--qase-project=PRJ",
+        "--qase-testplan=3",
+        "--qase-testrun=4",
+        "--qase-new-run",
+        "--qase-api-token=12345",
+        "--qase-debug",
+    )
+    assert result.ret != 0
+    assert len(mock.request_history) == 1
 
 
 def test_run_not_enabled(mock, default_mocks, testdir):

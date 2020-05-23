@@ -24,6 +24,8 @@ and using command-line arguments:
                         Project code in Qase TMS
   --qase-testrun=QS_TESTRUN_ID
                         Testrun ID in Qase TMS
+  --qase-testplan=QS_TESTPLAN_ID
+                        Testplan ID in Qase TMS
   --qase-new-run        Create new testrun, if no testrun id provided
   --qase-debug          Prints additional output of plugin
 ```
@@ -38,6 +40,8 @@ and using command-line arguments:
                         default value for --qase-project
   qs_testrun_id (string):
                         default value for --qase-testrun
+  qs_testplan_id (string):
+                        default value for --qase-testplan
   qs_new_run (bool):    default value for --qase-new-run
   qs_debug (bool):      default value for --qase-debug
 ```
@@ -128,6 +132,19 @@ pytest \
     --qase-api-token=<your api token here> \
     --qase-project=PRJCODE \ # project, where your testrun exists in
     --qase-testrun=3 # testrun id
+```
+
+## Creating testrun base on testplan
+
+Create new testrun base on testplan. Testrun in TMS will contain only those
+test results, which are presented in testrun, but every test would be executed.
+
+```bash
+pytest \
+    --qase \
+    --qase-api-token=<your api token here> \
+    --qase-project=PRJCODE \ # project, where your testrun exists in
+    --qase-testplan=3 # testplan id
 ```
 
 ## Creating new testrun according to current pytest run
