@@ -1,4 +1,4 @@
-from qaseio.pytest.plugin import QasePytestPlugin
+from qaseio.pytest.plugin import QasePytestPluginSingleton
 
 
 def get_option_ini(config, name):
@@ -60,13 +60,13 @@ def pytest_configure(config):
         "markers", "qase(*ids): mark test to be associate with Qase TMS"
     )
     if get_option_ini(config, "qs_enabled"):
+        QasePytestPluginSingleton.init(
+            api_token=get_option_ini(config, "qs_api_token"),
+            project=get_option_ini(config, "qs_project_code"),
+            testrun=get_option_ini(config, "qs_testrun_id"),
+            create_run=get_option_ini(config, "qs_new_run"),
+            debug=get_option_ini(config, "qs_debug"),
+        )
         config.pluginmanager.register(
-            QasePytestPlugin(
-                api_token=get_option_ini(config, "qs_api_token"),
-                project=get_option_ini(config, "qs_project_code"),
-                testrun=get_option_ini(config, "qs_testrun_id"),
-                create_run=get_option_ini(config, "qs_new_run"),
-                debug=get_option_ini(config, "qs_debug"),
-            ),
-            name="qase-pytest",
+            QasePytestPluginSingleton.get_instance(), name="qase-pytest",
         )

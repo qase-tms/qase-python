@@ -233,3 +233,22 @@ class QasePytestPlugin:
                         time=int(time.time() - results.get("started_at")),
                     ),
                 )
+
+
+class QasePytestPluginSingleton:
+    __instance = None
+
+    @staticmethod
+    def init(**kwargs):
+        QasePytestPluginSingleton.__instance = QasePytestPlugin(**kwargs)
+
+    @staticmethod
+    def get_instance() -> QasePytestPlugin:
+        """ Static access method"""
+        if QasePytestPluginSingleton.__instance is None:
+            raise Exception("Init plugin first")
+        return QasePytestPluginSingleton.__instance
+
+    def __init__(self):
+        """ Virtually private constructor"""
+        raise Exception("Use get_instance()")
