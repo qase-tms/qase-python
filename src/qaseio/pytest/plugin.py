@@ -1,7 +1,10 @@
+import logging
 import time
 from datetime import datetime
 
 import pytest
+
+import apitist
 
 from qaseio.client import QaseApi
 from qaseio.client.models import (
@@ -63,6 +66,10 @@ class QasePytestPlugin:
                 "You should provide either testrun id or select to create it, "
                 "not both of it"
             )
+        if self.debug:
+            logger = logging.getLogger(apitist.dist_name)
+            logger.addHandler(logging.StreamHandler())
+            logger.setLevel(logging.INFO)
 
     def pytest_report_header(self, config, startdir):
         """ Add extra-info in header """
@@ -214,9 +221,6 @@ class QasePytestPlugin:
         if item.nodeid in self.nodes_with_ids:
             results = self.nodes_with_ids[item.nodeid]
             hashes = results.get("hashes", [])
-            comment = self.comment
-            if results.get("error"):
-                comment += "\n\n```\n" + str(results.get("error")) + "\n```"
             for hash in hashes:
                 self.client.results.update(
                     self.project_code,
@@ -224,7 +228,8 @@ class QasePytestPlugin:
                     hash,
                     TestRunResultUpdate(
                         status=results.get("result"),
-                        comment=comment,
-                        time=time.time() - results.get("started_at"),
+                        comment=self.comment,
+                        stacktrace=results.get("error"),
+                        time=int(time.time() - results.get("started_at")),
                     ),
                 )
