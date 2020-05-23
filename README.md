@@ -60,6 +60,63 @@ def test_example_2():
 
 You could pass as much IDs as you need.
 
+## Add attachments to test results
+
+When you need to push some additional information to server you could use
+attachments:
+
+```python
+import pytest
+from qaseio.client.models import MimeTypes
+from qaseio.pytest import qase
+
+
+@pytest.fixture(scope="session")
+def driver():
+    driver = webdriver.Chrome()
+    yield driver
+    logs = "\n".join(str(row) for row in driver.get_log('browser')).encode('utf-8')
+    qase.attach((logs, MimeTypes.TXT, "browser.log"))
+    driver.quit()
+
+@qase.id(13)
+def test_example_1():
+    qase.attach("/path/to/file", "/path/to/file/2")
+    qase.attach(
+        ("/path/to/file/1", "application/json"),
+        ("/path/to/file/3", MimeTypes.XML),
+    )
+
+@qase.id(12, 156)
+def test_example_2(driver):
+    qase.attach((driver.get_screenshot_as_png(), MimeTypes.PNG, "result.png"))
+```
+
+You could pass as much files as you need.
+
+Also you should know, that if no case id is associated with current test in
+pytest - attachment would not be uploaded:
+
+```python
+import pytest
+from qaseio.client.models import MimeTypes
+from qaseio.pytest import qase
+
+
+@pytest.fixture(scope="session")
+def driver():
+    driver = webdriver.Chrome()
+    yield driver
+    logs = "\n".join(str(row) for row in driver.get_log('browser')).encode('utf-8')
+    # This would do nothing, because last test does not have case id link
+    qase.attach((logs, MimeTypes.TXT, "browser.log"))
+    driver.quit()
+
+def test_example_2(driver):
+    # This would do nothing
+    qase.attach((driver.get_screenshot_as_png(), MimeTypes.PNG, "result.png"))
+```
+
 ## Sending tests to existing testrun
 
 Testrun in TMS will contain only those test results, which are presented in testrun,
