@@ -1,6 +1,7 @@
 import logging
 import time
 from datetime import datetime
+from typing import Tuple, Union
 
 import pytest
 
@@ -52,6 +53,7 @@ class QasePytestPlugin:
         self.nodes_with_ids = {}
         self.missing_ids = []
         self.existing_ids = []
+        self.last_node = None
         self.project = self.client.projects.exists(self.project_code)
         self.comment = "Pytest Plugin Automation Run"
         if not self.project:
@@ -203,6 +205,7 @@ class QasePytestPlugin:
 
     def start_pytest_item(self, item):
         if item.nodeid in self.nodes_with_ids:
+            self.last_node = item.nodeid
             hashes = []
             for _id in self.nodes_with_ids[item.nodeid].get("ids", []):
                 if _id not in self.missing_ids:
@@ -221,6 +224,12 @@ class QasePytestPlugin:
         if item.nodeid in self.nodes_with_ids:
             results = self.nodes_with_ids[item.nodeid]
             hashes = results.get("hashes", [])
+            attachments = results.get("attachments", [])
+            attached = []
+            if attachments:
+                attached = self.client.attachments.upload(
+                    self.project_code, *attachments
+                )
             for hash in hashes:
                 self.client.results.update(
                     self.project_code,
@@ -231,8 +240,19 @@ class QasePytestPlugin:
                         comment=self.comment,
                         stacktrace=results.get("error"),
                         time=int(time.time() - results.get("started_at")),
+                        attachments=[attach.hash for attach in attached],
                     ),
                 )
+            self.last_node = None
+
+    def add_attachments(
+        self, *files: Union[str, Tuple[str, str], Tuple[bytes, str, str]]
+    ):
+        if self.last_node:
+            node = self.nodes_with_ids[self.last_node]
+            attachments: list = node.get("attachments", [])
+            attachments.extend(files)
+            node["attachments"] = attachments
 
 
 class QasePytestPluginSingleton:

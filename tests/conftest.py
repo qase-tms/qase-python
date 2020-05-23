@@ -61,6 +61,30 @@ def results_mocks(mock):
 
 
 @pytest.fixture
+def attachment_mocks(mock):
+    def wrapper(regex=r".*/attachment/[a-zA-Z]+", **kwargs):
+        mock.post(
+            re.compile(regex),
+            json={
+                "status": True,
+                "result": [
+                    {
+                        "filename": "qaseio_pytest.py",
+                        "url": "https://storage.cdn.example/filename.ext",
+                        "extension": "py",
+                        "hash": "d81bb2beb147c2eceddbf3e10f98e6216cc757e3",
+                        "mime": "text\\/x-python",
+                        "team": "c66dc393c83fe149449e5de3e64545279e1442ed",
+                    }
+                ],
+            },
+            **kwargs,
+        )
+
+    return wrapper
+
+
+@pytest.fixture
 def qs_plugin(default_mocks):
     def wrapper(**kwargs):
         default_mocks("PRJCODE", 123)
