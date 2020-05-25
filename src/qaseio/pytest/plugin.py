@@ -14,6 +14,7 @@ from qaseio.client.models import (
     TestRunInfo,
     TestRunResultCreate,
     TestRunResultStatus,
+    TestRunResultStepCreate,
     TestRunResultUpdate,
 )
 
@@ -39,6 +40,14 @@ def get_ids_from_pytest_nodes(items):
     )
 
 
+class MoreThenOneCaseIdException(Exception):
+    pass
+
+
+class MissingStepIdentifierException(Exception):
+    pass
+
+
 class QasePytestPlugin:
     testrun: TestRunInfo = None
 
@@ -58,6 +67,7 @@ class QasePytestPlugin:
         self.create_run = create_run
         self.debug = debug
         self.nodes_with_ids = {}
+        self.cases_info = {}
         self.missing_ids = []
         self.existing_ids = []
         self.last_node = None
@@ -80,15 +90,17 @@ class QasePytestPlugin:
             message += "a new testrun will be created"
         return message
 
-    def check_case_ids(self, data, exists=False):
-        results = []
+    def check_case_ids(self, data):
+        exist = []
+        not_exist = []
         for _id in data.get("ids"):
-            if (
-                bool(self.client.cases.exists(self.project_code, _id))
-                == exists
-            ):
-                results.append(_id)
-        return results
+            case = self.client.cases.exists(self.project_code, _id)
+            if case:
+                self.cases_info[case.id] = case
+                exist.append(_id)
+                continue
+            not_exist.append(_id)
+        return exist, not_exist
 
     def get_missing_in_testrun(self, data):
         missing = []
@@ -145,6 +157,45 @@ class QasePytestPlugin:
                 )
             )
 
+    def get_step_position(self, identifier: Union[int, str], case):
+        if isinstance(identifier, int):
+            # We expect that this is correct position id
+            return identifier
+        if isinstance(identifier, str):
+            # Trying to guess that identifier is hash or step name
+            for pos, step in enumerate(case.steps):
+                if identifier in (step.get("hash"), step.get("action")):
+                    return pos + 1
+        raise MissingStepIdentifierException(
+            "Missing step for identifier {}".format(identifier)
+        )
+
+    def start_step(self, identifier):
+        case_ids = self.nodes_with_ids[self.last_node].get("ids")
+        if len(case_ids) > 1:
+            # We could not match steps with more then one case
+            raise MoreThenOneCaseIdException(
+                "Test case decorated with several ids: {}".format(
+                    ", ".join(case_ids)
+                )
+            )
+        elif case_ids[0] in self.missing_ids:
+            return None
+        case = self.cases_info.get(case_ids[0])
+        position = self.get_step_position(identifier, case)
+        return position
+
+    def finish_step(self, position: int, exception=None):
+        if not position:
+            return
+        status = TestRunResultStatus.PASSED
+        if exception:
+            status = TestRunResultStatus.FAILED
+        steps = self.nodes_with_ids[self.last_node].get("steps", {})
+        steps[position] = {}
+        steps[position]["status"] = status
+        self.nodes_with_ids[self.last_node]["steps"] = steps
+
     @pytest.hookimpl(trylast=True)
     def pytest_collection_modifyitems(self, session, config, items):
         """
@@ -162,8 +213,7 @@ class QasePytestPlugin:
             )
 
         for nodeid, data in self.nodes_with_ids.items():
-            missing_ids = self.check_case_ids(data)
-            exist_ids = self.check_case_ids(data, exists=True)
+            exist_ids, missing_ids = self.check_case_ids(data)
             if missing_ids:
                 write_lines.append(
                     "For test {} could not find test cases in TMS: {}".format(
@@ -253,6 +303,10 @@ class QasePytestPlugin:
             results = self.nodes_with_ids[item.nodeid]
             hashes = results.get("hashes", [])
             attachments = results.get("attachments", [])
+            steps = [
+                TestRunResultStepCreate(position=pos, **values)
+                for pos, values in results.get("steps", {}).items()
+            ]
             attached = []
             if attachments:
                 attached = self.client.attachments.upload(
@@ -269,6 +323,7 @@ class QasePytestPlugin:
                         stacktrace=results.get("error"),
                         time=int(time.time() - results.get("started_at")),
                         attachments=[attach.hash for attach in attached],
+                        steps=steps,
                     ),
                 )
             self.last_node = None

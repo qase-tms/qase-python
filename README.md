@@ -121,6 +121,35 @@ def test_example_2(driver):
     qase.attach((driver.get_screenshot_as_png(), MimeTypes.PNG, "result.png"))
 ```
 
+## Linking code with steps
+
+It is possible to link test step with function, or using context.
+There is 3 variants to link code with step:
+- position in case
+- step name
+- step uniq hash
+
+```python
+from qaseio.pytest import qase
+
+@qase.step(1)  # position
+def some_step():
+    sleep(5)
+
+@qase.step("Second step")  # test step name
+def another_step():
+    sleep(3)
+
+...
+
+def test_example():
+    some_step()
+    another_step()
+    # test step hash
+    with qase.step("2898ba7f3b4d857cec8bee4a852cdc85f8b33132"):
+        sleep(1)
+```
+
 ## Sending tests to existing testrun
 
 Testrun in TMS will contain only those test results, which are presented in testrun,
