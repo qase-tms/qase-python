@@ -64,6 +64,13 @@ def test_example_2():
 
 You could pass as much IDs as you need.
 
+### Possible cases statuses
+
+- PASSED - when test passed
+- FAILED - when test failed with AssertionError
+- BLOCKED - when test failed with any other exception
+- SKIPPED - when test has been skipped
+
 ## Add attachments to test results
 
 When you need to push some additional information to server you could use

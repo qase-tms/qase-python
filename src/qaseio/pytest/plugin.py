@@ -254,7 +254,7 @@ class QasePytestPlugin:
         self.finish_pytest_item(item)
 
     @pytest.hookimpl(hookwrapper=True)
-    def pytest_runtest_makereport(self, item):
+    def pytest_runtest_makereport(self, item, call):
         report = (yield).get_result()
 
         if item.nodeid in self.nodes_with_ids:
@@ -270,13 +270,16 @@ class QasePytestPlugin:
                 result(None)
 
             if report.failed:
-                result(TestRunResultStatus.FAILED)
+                if call.excinfo.typename != "AssertionError":
+                    result(TestRunResultStatus.BLOCKED)
+                else:
+                    result(TestRunResultStatus.FAILED)
             elif report.skipped:
                 if self.nodes_with_ids[item.nodeid]["result"] in (
                     None,
                     TestRunResultStatus.PASSED,
                 ):
-                    result(TestRunResultStatus.BLOCKED)
+                    result("skipped")
             else:
                 if self.nodes_with_ids[item.nodeid]["result"] is None:
                     result(TestRunResultStatus.PASSED)
