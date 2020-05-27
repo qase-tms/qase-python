@@ -1,5 +1,6 @@
 import json
 import re
+from enum import Enum
 
 import pytest
 
@@ -42,11 +43,11 @@ def test_no_deco():
 
 @qase.id(1)
 def test_single_id_fail():
-    raise ValueError()
+    assert 0
 
 @qase.id(2, 3)
 def test_multiple_ids_fail():
-    raise ValueError()
+    assert 0
 
 @qase.id(4)
 def test_single_id_pass():
@@ -172,7 +173,7 @@ def test_pytest_collection_modifyitems(qs_plugin, mock, cases_mocks, testfile):
     plugin = qs_plugin(debug=True)
     mock.reset_mock()
     plugin.pytest_collection_modifyitems(None, config, testfile)
-    assert len(mock.request_history) == 6
+    assert len(mock.request_history) == 3
     assert len(writer.results) == 2
     assert len(plugin.nodes_with_ids) == 2
 
@@ -190,7 +191,7 @@ def test_pytest_collection_modifyitems_missing_cases(
     testdir.makepyfile(tests)
     items = testdir.getitems(tests)
     plugin.pytest_collection_modifyitems(None, None, items)
-    assert len(mock.request_history) == 6
+    assert len(mock.request_history) == 3
     assert len(plugin.nodes_with_ids) == 2
 
 
@@ -287,12 +288,17 @@ def test_complex_run(qs_plugin, mock, default_mocks, cases_mocks, testdir):
     data, _ = get_ids_from_pytest_nodes(items)
     for nodeid, values in data.items():
         status = TestRunResultStatus.PASSED
-        if "fail" in nodeid:
-            status = TestRunResultStatus.FAILED
-        elif "skip" in nodeid:
+        if ("setup" in nodeid or "teardown" in nodeid) and "fail" in nodeid:
             status = TestRunResultStatus.BLOCKED
+        elif "skip" in nodeid:
+            status = "skipped"
+        elif "fail" in nodeid:
+            status = TestRunResultStatus.FAILED
+        print(nodeid, status)
         for _id in values.get("ids"):
             for req in mock.request_history:
                 if req.url.endswith(f"result/PRJ/3/{_id}"):
                     data = json.loads(req.body)
-                    assert data.get("status") == status.value
+                    if isinstance(status, Enum):
+                        status = status.value
+                    assert data.get("status") == status

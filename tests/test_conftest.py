@@ -75,7 +75,7 @@ def test_run_create_testrun(
         "--qase-debug",
     )
     assert result.ret == 0
-    assert len(mock.request_history) == 8
+    assert len(mock.request_history) == 7
     assert re.findall(r".*/project/PRJ", mock.request_history[0].url)
     assert mock.request_history[0].headers.get("Token") == "12345"
 
