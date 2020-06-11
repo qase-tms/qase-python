@@ -49,6 +49,7 @@ class TestRunResultStepCreate:
     position: int = attr.ib()
     status: TestRunResultStatus = attr.ib()
     attachments: List[str] = attr.ib(factory=list)
+    comment: str = attr.ib(default=None)
 
 
 @attr.s
