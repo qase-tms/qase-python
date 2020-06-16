@@ -44,6 +44,3 @@ def main():
         args.run_name
     )
     extractor.process()
-
-
-main()
