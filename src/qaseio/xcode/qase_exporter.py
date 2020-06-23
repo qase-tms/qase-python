@@ -1,5 +1,5 @@
 import json
-from typing import Optional, Dict, List
+from typing import Optional, Dict, List, Tuple
 
 import attr
 from qaseio.client import QaseApi
@@ -25,27 +25,33 @@ QASE_CONFIG_FILE = "Qase config"
 
 @attr.s
 class QaseExtractor:
-    xc_path: str = attr.ib()
+    xc_paths: List[str] = attr.ib()
     api_token: str = attr.ib()
     project_code: str = attr.ib()
     upload_attachments: bool = attr.ib(default=True)
     test_run_name: str = attr.ib(default="Run")
 
     def __attrs_post_init__(self):
-        self._parser = XCReportParser(self.xc_path)
         self._ignored_attachment_names = [QASE_STEP_MARKER_FILE, QASE_CONFIG_FILE]
 
     def process(self):
-        report = self._parser.open_report_object()
-        tests = self._parser.extract_tests(report)
-        tests_with_qase: Dict[int: ActionTestSummary] = {}
+
+        tests_with_qase: List[Tuple[int, ActionTestSummary, XCReportParser]] = []
         qase_ids: List[int] = []
-        for test in tests:
-            case_id = self.__find_case_id(test)
-            if case_id is None:
-                continue
-            qase_ids.append(int(case_id))
-            tests_with_qase[case_id] = test
+
+        for xc_path in self.xc_paths:
+            parser = XCReportParser(xc_path)
+            report = parser.open_report_object()
+            tests = parser.extract_tests(report)
+
+            for test in tests:
+                case_id = self.__find_case_id(parser, test)
+                if case_id is None:
+                    continue
+                tests_with_qase.append((int(case_id), test, parser))
+                if case_id in qase_ids:
+                    continue
+                qase_ids.append(int(case_id))
 
         qase = QaseApi(self.api_token)
 
@@ -54,14 +60,14 @@ class QaseExtractor:
             TestRunCreate(self.test_run_name, qase_ids)
         )
 
-        for case_id, test in tests_with_qase.items():
+        for case_id, test, parser in tests_with_qase:
             steps: List[TestRunResultStepCreate] = []
             # Find steps
             position = 1
             for activity_summary in test.activity_summaries:
-                if not self.__contains_step_mark(activity_summary):
+                if not self.__contains_step_mark(parser, activity_summary):
                     continue
-                files = self.__upload_attachments(activity_summary, qase) if self.upload_attachments else []
+                files = self.__upload_attachments(parser, activity_summary, qase) if self.upload_attachments else []
                 # Prepare step
                 contains_failure = self.__activity_summary_contains_type(activity_summary, ActivityType.FAILURE)
                 steps.append(
@@ -86,32 +92,37 @@ class QaseExtractor:
                     )
                 )
             except BadRequestException:
-                # Try without steps
-                qase.results.create(
-                    self.project_code,
-                    test_run.id,
-                    TestRunResultCreate(
-                        case_id,
-                        ACTION_TEST_SUMMARY_TO_QASE_STATUS[test.test_status],
-                        int(test.duration),
-                        comment="Check number of steps in your code. They are not equaly."
+                try:
+                    # Try without steps
+                    qase.results.create(
+                        self.project_code,
+                        test_run.id,
+                        TestRunResultCreate(
+                            case_id,
+                            ACTION_TEST_SUMMARY_TO_QASE_STATUS[test.test_status],
+                            int(test.duration),
+                            comment="Check number of steps in your code. They are not equaly."
+                        )
                     )
-                )
+                except Exception as err:
+                    print("case_id:", case_id, "error:", err)
+            except Exception as err:
+                print("case_id:", case_id, "error:", err)
 
-    def __extract_qase_config(self, test_summary: ActionTestSummary):
+    def __extract_qase_config(self, parser: XCReportParser, test_summary: ActionTestSummary):
         for activity_summary in test_summary.activity_summaries:
-            binary_data = self._parser.extract_attachment_from_activity_summary(activity_summary, QASE_CONFIG_FILE)
+            binary_data = parser.extract_attachment_from_activity_summary(activity_summary, QASE_CONFIG_FILE)
             if binary_data is not None:
                 config = json.loads(binary_data)
                 return config
 
-    def __activity_is_step_mark(self, activity_summary: ActionTestActivitySummary):
-        mark = self._parser.extract_attachment_from_activity_summary(activity_summary, QASE_STEP_MARKER_FILE)
+    def __activity_is_step_mark(self, parser: XCReportParser, activity_summary: ActionTestActivitySummary):
+        mark = parser.extract_attachment_from_activity_summary(activity_summary, QASE_STEP_MARKER_FILE)
         return mark is not None
 
-    def __contains_step_mark(self, activity_summary: ActionTestActivitySummary):
+    def __contains_step_mark(self, parser: XCReportParser, activity_summary: ActionTestActivitySummary):
         for sub_activity_summary in activity_summary.subactivities:
-            if self.__activity_is_step_mark(sub_activity_summary):
+            if self.__activity_is_step_mark(parser, sub_activity_summary):
                 return True
         return False
 
@@ -137,13 +148,13 @@ class QaseExtractor:
             result.extend(subResult)
         return result
 
-    def __find_case_id(self, test_summary: ActionTestSummary) -> Optional[str]:
-        test_config = self.__extract_qase_config(test_summary)
+    def __find_case_id(self, parser: XCReportParser, test_summary: ActionTestSummary) -> Optional[str]:
+        test_config = self.__extract_qase_config(parser, test_summary)
         if test_config is None:
             return None
         return test_config["caseId"]
 
-    def __upload_attachments(self, summary: ActionTestActivitySummary, qase: QaseApi) -> List[str]:
+    def __upload_attachments(self, parser: XCReportParser, summary: ActionTestActivitySummary, qase: QaseApi) -> List[str]:
         # Find attachments
         attachments = self.__find_all_attachments(summary)
         if not attachments:
@@ -152,7 +163,7 @@ class QaseExtractor:
         for attachment in attachments:
             if attachment.type_identifier not in ATTACHMENT_TYPES:
                 continue
-            binary_data = self._parser.open_attachment(attachment.payload_ref.obj_id)
+            binary_data = parser.open_attachment(attachment.payload_ref.obj_id)
             if binary_data is None:
                 continue
             attachments_to_upload.append(
