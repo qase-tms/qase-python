@@ -74,7 +74,8 @@ class QaseExtractor:
                     TestRunResultStepCreate(
                         position,
                         TestRunResultStatus.FAILED if contains_failure else TestRunResultStatus.PASSED,
-                        files
+                        files,
+                        self.__create_comment(activity_summary)
                     )
                 )
                 position += 1
@@ -176,3 +177,25 @@ class QaseExtractor:
         )
         files = list(map(lambda x: x.hash, result))
         return files
+
+    def __create_comment(self, summary: ActionTestActivitySummary, prefix: str = '') -> str:
+        if self.__is_system_summary(summary):
+            return ""
+
+        if prefix:
+            buffer = '{}- {}\n'.format(prefix, summary.title)
+        else:
+            buffer = '{}\n'.format(summary.title)
+
+        for sub in summary.subactivities:
+            buffer += self.__create_comment(sub, '  '.format(prefix))
+        return buffer
+
+    def __is_system_summary(self, summary: ActionTestActivitySummary):
+        if summary.activity_type == ActivityType.ATTACHMENT_CONTAINER:
+            for attachment in summary.attachments:
+                if attachment.name in self._ignored_attachment_names:
+                    return True
+        return False
+
+
