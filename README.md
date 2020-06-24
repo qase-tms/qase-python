@@ -1,3 +1,9 @@
+# Qase XCTest Utils
+
+## How to install
+
+`pip install qase-xctest`
+
 ## How to use
 
 ### For XCode
