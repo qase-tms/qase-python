@@ -64,17 +64,19 @@ class QaseExtractor:
             steps: List[TestRunResultStepCreate] = []
             # Find steps
             position = 1
+            test_run_attachments: List[str] = []
             for activity_summary in test.activity_summaries:
+                attachments = self.__upload_attachments(parser, activity_summary, qase) if self.upload_attachments else []
                 if not self.__contains_step_mark(parser, activity_summary):
+                    test_run_attachments.extend(attachments)
                     continue
-                files = self.__upload_attachments(parser, activity_summary, qase) if self.upload_attachments else []
                 # Prepare step
                 contains_failure = self.__activity_summary_contains_type(activity_summary, ActivityType.FAILURE)
                 steps.append(
                     TestRunResultStepCreate(
                         position,
                         TestRunResultStatus.FAILED if contains_failure else TestRunResultStatus.PASSED,
-                        files,
+                        attachments,
                         self.__create_comment(activity_summary)
                     )
                 )
@@ -89,7 +91,8 @@ class QaseExtractor:
                         case_id,
                         ACTION_TEST_SUMMARY_TO_QASE_STATUS[test.test_status],
                         int(test.duration),
-                        steps=steps
+                        steps=steps,
+                        attachments=test_run_attachments
                     )
                 )
             except BadRequestException:
@@ -102,9 +105,11 @@ class QaseExtractor:
                             case_id,
                             ACTION_TEST_SUMMARY_TO_QASE_STATUS[test.test_status],
                             int(test.duration),
-                            comment="Check number of steps in your code. They are not equaly."
+                            comment="Check number of steps in your code. They are not equally.",
+                            attachments=test_run_attachments
                         )
                     )
+                    print("Check number of steps in your code. They are not equally. case_id:", case_id)
                 except Exception as err:
                     print("case_id:", case_id, "error:", err)
             except Exception as err:
@@ -138,12 +143,11 @@ class QaseExtractor:
 
     def __find_all_attachments(self, summary: ActionTestActivitySummary) -> List[ActionTestAttachment]:
         result: List[ActionTestAttachment] = []
-        if summary.activity_type == ActivityType.ATTACHMENT_CONTAINER:
-            filtered = list(filter(
-                lambda a: a.name not in self._ignored_attachment_names and a.payload_ref is not None,
-                summary.attachments
-            ))
-            result.extend(filtered)
+        filtered = list(filter(
+            lambda a: a.name not in self._ignored_attachment_names and a.payload_ref is not None,
+            summary.attachments
+        ))
+        result.extend(filtered)
         for sub in summary.subactivities:
             subResult = self.__find_all_attachments(sub)
             result.extend(subResult)
@@ -188,7 +192,7 @@ class QaseExtractor:
             buffer = '{}\n'.format(summary.title)
 
         for sub in summary.subactivities:
-            buffer += self.__create_comment(sub, '  '.format(prefix))
+            buffer += self.__create_comment(sub, '  {}'.format(prefix))
         return buffer
 
     def __is_system_summary(self, summary: ActionTestActivitySummary):
