@@ -20,7 +20,11 @@ from qaseio.client.models import (
         ((None, 30), "?offset=30"),
         ((10, None), "?limit=10"),
         (
-            (10, None, DefectFilters(status=DefectStatus.OPEN),),
+            (
+                10,
+                None,
+                DefectFilters(status=DefectStatus.OPEN),
+            ),
             "?limit=10&filters%5Bstatus%5D=open",
         ),
     ],

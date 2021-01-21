@@ -12,7 +12,10 @@ from qaseio.client.services import BaseService, NotFoundException
 
 class Plans(BaseService):
     def get_all(
-        self, code: str, limit=None, offset=None,
+        self,
+        code: str,
+        limit=None,
+        offset=None,
     ):
         query = {"limit": limit, "offset": offset}
         return self.vr(

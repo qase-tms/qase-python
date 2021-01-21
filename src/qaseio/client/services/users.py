@@ -15,7 +15,8 @@ class Users(BaseService):
 
     def get(self, user_id: Union[str, int]):
         return self.vr(
-            self.s.get(self.path("user/{}".format(user_id))), to_type=UserInfo,
+            self.s.get(self.path("user/{}".format(user_id))),
+            to_type=UserInfo,
         )
 
     def exists(self, code: str):

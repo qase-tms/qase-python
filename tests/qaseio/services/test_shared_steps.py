@@ -23,7 +23,11 @@ from qaseio.client.models import (
         ((None, 30), "?offset=30"),
         ((10, None), "?limit=10"),
         (
-            (10, None, SharedStepFilters(search="123"),),
+            (
+                10,
+                None,
+                SharedStepFilters(search="123"),
+            ),
             "?limit=10&filters%5Bsearch%5D=123",
         ),
     ],

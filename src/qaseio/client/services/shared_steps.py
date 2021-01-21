@@ -40,7 +40,10 @@ class SharedSteps(BaseService):
         )
 
     def update(
-        self, code: str, shared_step_hash: str, data: SharedStepUpdate,
+        self,
+        code: str,
+        shared_step_hash: str,
+        data: SharedStepUpdate,
     ):
         return self.vr(
             self.s.patch(
