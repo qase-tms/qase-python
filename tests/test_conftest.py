@@ -197,7 +197,9 @@ def test_run_override_using_cli(mock, default_mocks, testdir):
         ),
     )
     result = testdir.runpytest(
-        "--qase-project=PRJ", "--qase-testrun=3", "--qase-api-token=45678",
+        "--qase-project=PRJ",
+        "--qase-testrun=3",
+        "--qase-api-token=45678",
     )
     assert result.ret == 0
     assert len(mock.request_history) == 2

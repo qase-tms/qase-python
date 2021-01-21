@@ -27,7 +27,8 @@ def default_mocks(mock):
             },
         )
         mock.post(
-            f"/v1/run/{project}", json={"status": True, "result": {"id": 3}},
+            f"/v1/run/{project}",
+            json={"status": True, "result": {"id": 3}},
         )
 
     return wrapper
