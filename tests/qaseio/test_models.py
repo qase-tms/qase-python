@@ -79,7 +79,12 @@ def test_invalid_project_creation(data):
 
 @pytest.mark.parametrize(
     "data",
-    [("", [1]), ("a" * 65, [13, 14, 15], "a" * 65, 123)],
+    [
+        ("", [1]),
+        ("a" * 65, [13, 14, 15], "a" * 65, 123),
+        ("a", []),
+        ("a", None),
+    ],
 )
 def test_valid_test_run_creation(data):
     TestRunCreate(*data)
@@ -87,7 +92,7 @@ def test_valid_test_run_creation(data):
 
 @pytest.mark.parametrize(
     "data",
-    [("a", []), ("a", 123)],
+    [("a", 123), ("a", set())],
 )
 def test_invalid_test_run_creation(data):
     with pytest.raises(ValueError):

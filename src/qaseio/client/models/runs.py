@@ -27,10 +27,8 @@ class TestRunCreate:
 
     @cases.validator
     def check(self, _, value):
-        if not isinstance(value, list) or len(value) < 1:
-            raise ValueError(
-                "You should provide at least one test case for a run"
-            )
+        if value is not None and not isinstance(value, list):
+            raise ValueError("You should provide list of cases or None")
 
 
 @attr.s
