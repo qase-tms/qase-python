@@ -2,10 +2,11 @@ import configparser
 import logging
 import os
 import re
+import sys
 from datetime import datetime
 from enum import Enum
 from pkg_resources import DistributionNotFound, get_distribution
-from typing import List, TypedDict
+from typing import List
 
 from qaseio import client
 from qaseio.client.models import (
@@ -14,6 +15,12 @@ from qaseio.client.models import (
     TestRunResultStatus,
     TestRunResultUpdate,
 )
+
+if sys.version_info >= (3, 8):
+    from typing import TypedDict
+else:
+    from typing import Dict as TypedDict
+
 
 try:
     # Change here if project is renamed and does not equal the package name
