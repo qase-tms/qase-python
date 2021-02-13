@@ -54,6 +54,7 @@ ENV variables:
 - `QASE_PROJECT` - Project code from Qase TMS
 - `QASE_RUN_ID` - Run ID if you want to add results to existing run
 - `QASE_RUN_NAME` - Set custom run name when no run ID is provided
+- `QASE_DEBUG` - If passed something - will enable debug logging for listener
 
 `tox.ini` configuration:
 
@@ -63,7 +64,22 @@ qase_api_token=<API TOKEN>
 qase_project=PROJECTCODE
 qase_run_id=14
 qase_run_name=New Robot Framework Run
+qase_debug=True
 ```
+
+## Working with steps
+
+Listener supports reporting steps results:
+![](./docs/steps_results.png)
+But in order to use it, you should follow some rules:
+- Steps name in Qase TMS should match to the steps in Robot Framework
+- If step in RF has some parameters (e.g. Push Button `12`)
+parameter would be ignored and the comparison to step in TMS will be made like:
+step in TMS should start with step name in RF. So if your step in RF is
+`Open page` it will be matched to step `Open page https://qase.io` in TMS.
+- You should preserve the order of steps. You can skip steps in RF, but
+you shouldn't mix them or so on - Qase does not support creating steps
+on the fly yet.
 
 ## Contribution
 

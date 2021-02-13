@@ -6,13 +6,15 @@ import sys
 from datetime import datetime
 from enum import Enum
 from pkg_resources import DistributionNotFound, get_distribution
-from typing import List
+from typing import List, Optional
 
 from qaseio import client
 from qaseio.client.models import (
+    TestCaseInfo,
     TestRunCreate,
     TestRunResultCreate,
     TestRunResultStatus,
+    TestRunResultStepCreate,
     TestRunResultUpdate,
 )
 
@@ -45,6 +47,7 @@ class Envs(Enum):
     PROJECT = "QASE_PROJECT"
     RUN_ID = "QASE_RUN_ID"
     RUN_NAME = "QASE_RUN_NAME"
+    DEBUG = "QASE_DEBUG"
 
 
 class StartSuiteModel(TypedDict):
@@ -126,6 +129,10 @@ class EndKeywordModel(TypedDict):
     status: str
 
 
+class MissingStepIdentifierException(Exception):
+    pass
+
+
 class Listener:
     ROBOT_LISTENER_API_VERSION = 2
 
@@ -141,6 +148,16 @@ class Listener:
         self.run_id = self.get_param(Envs.RUN_ID)
         self.run_name = self.get_param(Envs.RUN_NAME)
         self.results = {}
+        self.history = []
+        self.debug = bool(self.get_param(Envs.DEBUG))
+        if self.debug:
+            logger.setLevel(logging.DEBUG)
+            ch = logging.StreamHandler()
+            formatter = logging.Formatter(
+                "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+            )
+            ch.setFormatter(formatter)
+            logger.addHandler(ch)
 
     def get_param(self, param: Envs):
         param: str = param.value
@@ -149,6 +166,7 @@ class Listener:
         )
 
     def start_suite(self, name, attributes: StartSuiteModel):
+        logger.debug("Starting suite '%s'", name)
         if not self.run_id and attributes.get("totaltests") > 0:
             name = self.run_name or "Automated Run {}".format(
                 str(datetime.now())
@@ -162,10 +180,21 @@ class Listener:
             logger.info("Using run %s to publish test results", self.run_id)
 
     def start_test(self, name, attributes: StartTestModel):
+        logger.debug("Starting test '%s'", name)
         ids = self._extract_ids(attributes.get("tags"))
-        data = {"hashes": []}
+        if len(ids) == 1:
+            case_info = self.api.cases.get(self.project_code, ids[0])
+        else:
+            case_info = None
+        data = {
+            "hashes": [],
+            "case_info": case_info,
+            "use_steps": bool(case_info and case_info.steps),
+            "steps_count": 0,
+            "steps": [],
+        }
         for _id in ids:
-            logger.info("Running test %s-%s", self.project_code, _id)
+            logger.info("Adding result to case %s-%s", self.project_code, _id)
             req_data = TestRunResultCreate(
                 _id, TestRunResultStatus.IN_PROGRESS
             )
@@ -174,18 +203,60 @@ class Listener:
             )
             data.get("hashes").append(res.hash)
         self.results[attributes.get("id")] = data
+        self.history.append(data)
 
     def end_test(self, name, attributes: EndTestModel):
+        logger.debug("Finishing test '%s'", name)
         for hash in self.results.get(attributes.get("id"), {}).get(
             "hashes", []
         ):
+            logger.info(
+                "Finished case result with hash: %s, %s, error: %s",
+                hash,
+                attributes.get("status"),
+                attributes.get("message"),
+            )
             req_data = TestRunResultUpdate(
                 STATUSES[attributes.get("status")],
                 time=attributes.get("elapsedtime"),
                 stacktrace=attributes.get("message"),
+                steps=self.results.get(attributes.get("id"), {}).get(
+                    "steps", []
+                ),
             )
             self.api.results.update(
                 self.project_code, self.run_id, hash, req_data
+            )
+
+    def end_keyword(self, name, attributes: EndKeywordModel):
+        logger.debug("Finishing step '%s'", name)
+        last_item = self.history[-1]
+        case = last_item.get("case_info")
+        if last_item.get("use_steps"):
+            position = self._get_step_position(
+                attributes["kwname"], case, last_item.get("steps_count")
+            )
+            if position:
+                data = TestRunResultStepCreate(
+                    position,
+                    STATUSES[attributes["status"]],
+                    comment=f"Step `{name}` with args: {attributes['args']}",
+                )
+                last_item["steps"].append(data)
+            else:
+                logger.info(
+                    "Can't find suitable step in %s-%s for step '%s'",
+                    self.project_code,
+                    case.id,
+                    name,
+                )
+            last_item["steps_count"] += 1
+        elif case:
+            logger.info(
+                "Case %s-%s does not have steps, "
+                "skipping step result publishing",
+                self.project_code,
+                case.id,
             )
 
     def log_message(self, message):
@@ -197,3 +268,19 @@ class Listener:
             for tag in list_of_tags
             if re.fullmatch(r"Q-\d+", tag)
         ]
+
+    def _get_step_position(
+        self, step_name: str, case: TestCaseInfo, previous_step: int
+    ) -> Optional[int]:
+        for pos, step in enumerate(case.steps):
+            if re.match(
+                r"{}.*".format(step_name.lower()), step.get("action").lower()
+            ):
+                if pos >= previous_step:
+                    return pos + 1
+        logger.warning(
+            MissingStepIdentifierException(
+                "Missing step for name {}".format(step_name)
+            )
+        )
+        return None
