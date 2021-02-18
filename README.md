@@ -56,6 +56,11 @@ ENV variables:
 - `QASE_RUN_NAME` - Set custom run name when no run ID is provided
 - `QASE_DEBUG` - If passed something - will enable debug logging for listener
 
+Usage:
+```
+QASE_API_TOKEN=<API TOKEN> QASE_PROJECT=PRJCODE robot --listener qaseio.robotframework.Listener keyword_driven.robot data_driven.robot
+```
+
 `tox.ini` configuration:
 
 ```ini

@@ -207,57 +207,62 @@ class Listener:
 
     def end_test(self, name, attributes: EndTestModel):
         logger.debug("Finishing test '%s'", name)
-        for hash in self.results.get(attributes.get("id"), {}).get(
-            "hashes", []
-        ):
-            logger.info(
-                "Finished case result with hash: %s, %s, error: %s",
-                hash,
-                attributes.get("status"),
-                attributes.get("message"),
-            )
-            req_data = TestRunResultUpdate(
-                STATUSES[attributes.get("status")],
-                time=attributes.get("elapsedtime"),
-                stacktrace=attributes.get("message"),
-                steps=self.results.get(attributes.get("id"), {}).get(
-                    "steps", []
-                ),
-            )
-            self.api.results.update(
-                self.project_code, self.run_id, hash, req_data
-            )
+        if self.results.get(attributes.get("id")):
+            for hash in self.results.get(attributes.get("id"), {}).get(
+                "hashes", []
+            ):
+                logger.info(
+                    "Finished case result with hash: %s, %s, error: %s",
+                    hash,
+                    attributes.get("status"),
+                    attributes.get("message"),
+                )
+                req_data = TestRunResultUpdate(
+                    STATUSES[attributes.get("status")],
+                    time=attributes.get("elapsedtime"),
+                    stacktrace=attributes.get("message"),
+                    steps=self.results.get(attributes.get("id"), {}).get(
+                        "steps", []
+                    ),
+                )
+                self.api.results.update(
+                    self.project_code, self.run_id, hash, req_data
+                )
+            self.history.remove(self.results.get(attributes.get("id")))
 
     def end_keyword(self, name, attributes: EndKeywordModel):
-        logger.debug("Finishing step '%s'", name)
-        last_item = self.history[-1]
-        case = last_item.get("case_info")
-        if last_item.get("use_steps"):
-            position = self._get_step_position(
-                attributes["kwname"], case, last_item.get("steps_count")
-            )
-            if position:
-                data = TestRunResultStepCreate(
-                    position,
-                    STATUSES[attributes["status"]],
-                    comment=f"Step `{name}` with args: {attributes['args']}",
+        if self.history:
+            logger.debug("Finishing step '%s'", name)
+            last_item = self.history[-1]
+            case = last_item.get("case_info")
+            if last_item.get("use_steps"):
+                position = self._get_step_position(
+                    attributes["kwname"], case, last_item.get("steps_count")
                 )
-                last_item["steps"].append(data)
-            else:
+                if position:
+                    data = TestRunResultStepCreate(
+                        position,
+                        STATUSES[attributes["status"]],
+                        comment=f"Step `{name}` with args: {attributes['args']}",
+                    )
+                    last_item["steps"].append(data)
+                else:
+                    logger.info(
+                        "Can't find suitable step in %s-%s for step '%s'",
+                        self.project_code,
+                        case.id,
+                        name,
+                    )
+                last_item["steps_count"] += 1
+            elif case:
                 logger.info(
-                    "Can't find suitable step in %s-%s for step '%s'",
+                    "Case %s-%s does not have steps, "
+                    "skipping step result publishing",
                     self.project_code,
                     case.id,
-                    name,
                 )
-            last_item["steps_count"] += 1
-        elif case:
-            logger.info(
-                "Case %s-%s does not have steps, "
-                "skipping step result publishing",
-                self.project_code,
-                case.id,
-            )
+        else:
+            logger.debug("Skipping keyword '%s'", name)
 
     def log_message(self, message):
         logger.debug("Log:", message)
