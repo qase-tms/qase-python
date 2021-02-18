@@ -75,6 +75,7 @@ class TestRunResultCreated:
 class TestRunResultUpdate:
     status: TestRunResultStatus = attr.ib(default=None)
     time: int = attr.ib(default=None)
+    time_ms: int = attr.ib(default=None)
     comment: str = attr.ib(default=None)
     stacktrace: str = attr.ib(default=None)
     defect: bool = attr.ib(default=None)
