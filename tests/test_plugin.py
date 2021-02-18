@@ -261,7 +261,8 @@ def test_finish_pytest_item_errors(mock, start_items, testfile):
         assert data.get("status") == "failed"
         assert data.get("comment") == plugin.comment
         assert data.get("stacktrace") == "error"
-        assert data.get("time") is not None
+        assert data.get("time") is None
+        assert data.get("time_ms") is not None
 
 
 def test_complex_run(qs_plugin, mock, default_mocks, cases_mocks, testdir):

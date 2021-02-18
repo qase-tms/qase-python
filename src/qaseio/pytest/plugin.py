@@ -324,7 +324,9 @@ class QasePytestPlugin:
                         status=results.get("result"),
                         comment=self.comment,
                         stacktrace=results.get("error"),
-                        time=int(time.time() - results.get("started_at")),
+                        time_ms=int(
+                            (time.time() - results.get("started_at")) * 1000
+                        ),
                         attachments=[attach.hash for attach in attached],
                         steps=steps,
                     ),
