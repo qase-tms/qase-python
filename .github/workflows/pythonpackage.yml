@@ -13,24 +13,25 @@ jobs:
     name: Project ${{ matrix.changed-dir }} - Python ${{ matrix.python-version }}
     steps:
     - uses: actions/checkout@v2
-    - name: Run Find changed files.
-      id: changed_files
-      uses: tj-actions/verify-changed-files@v5.5
+    - uses: dorny/paths-filter@v2
+      id: filter
       with:
-        files: |
-          ${{ matrix.changed-dir }}
+        list-files: 'shell'
+        filters: |
+          changes:
+            - '${{ matrix.changed-dir }}/**'
     - name: Set up Python ${{ matrix.python-version }}
-      if: steps.changed_files.outputs.files_changed == 'true'
+      if: steps.filter.outputs.changes == 'true'
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
-      if: steps.changed_files.outputs.files_changed == 'true'
+      if: steps.filter.outputs.changes == 'true'
       run: |
         python -m pip install --upgrade pip
         pip install tox tox-pip-version
     - name: Lint with tox
-      if: steps.changed_files.outputs.files_changed == 'true'
+      if: steps.filter.outputs.changes == 'true'
       working-directory: ./${{ matrix.changed-dir }}
       run: |
         tox
