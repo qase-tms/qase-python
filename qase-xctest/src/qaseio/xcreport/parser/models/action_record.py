@@ -1,7 +1,7 @@
 import attr
 
-from .action_result import ActionResult
 from . import helpers
+from .action_result import ActionResult
 
 
 @attr.s
@@ -14,5 +14,7 @@ class ActionRecord:
             raise ValueError("type error")
 
         return cls(
-            helpers.object_from_report(ActionResult, report.get("actionResult"))
+            helpers.object_from_report(
+                ActionResult, report.get("actionResult")
+            )
         )

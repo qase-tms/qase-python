@@ -243,7 +243,7 @@ class Listener:
                     data = TestRunResultStepCreate(
                         position,
                         STATUSES[attributes["status"]],
-                        comment=f"Step `{name}` with args: {attributes['args']}",
+                        comment=f"Step `{name}` with args: {attributes['args']}",  # noqa: E501
                     )
                     last_item["steps"].append(data)
                 else:

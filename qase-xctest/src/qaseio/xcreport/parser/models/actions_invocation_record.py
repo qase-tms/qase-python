@@ -1,8 +1,9 @@
 from typing import List
+
 import attr
 
-from .action_record import ActionRecord
 from . import helpers
+from .action_record import ActionRecord
 
 
 @attr.s
@@ -15,5 +16,7 @@ class ActionsInvocationRecord:
             raise ValueError("type error")
 
         return cls(
-            helpers.list_from_report(ActionRecord, report.get("actions"), dict(default=[]))
+            helpers.list_from_report(
+                ActionRecord, report.get("actions"), dict(default=[])
+            )
         )

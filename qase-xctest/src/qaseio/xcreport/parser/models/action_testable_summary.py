@@ -1,9 +1,12 @@
 from typing import List
+
 import attr
 
-from .action_test_summary_identifiable_object import ActionTestSummaryIdentifiableObject
-from .action_abstract_test_summary import ActionAbstractTestSummary
 from . import helpers
+from .action_abstract_test_summary import ActionAbstractTestSummary
+from .action_test_summary_identifiable_object import (
+    ActionTestSummaryIdentifiableObject,
+)
 
 
 @attr.s
@@ -17,5 +20,9 @@ class ActionTestableSummary(ActionAbstractTestSummary):
 
         return cls(
             cls.convert_name_field(report),
-            helpers.list_from_report(ActionTestSummaryIdentifiableObject, report.get("tests"), dict(default=[]))
+            helpers.list_from_report(
+                ActionTestSummaryIdentifiableObject,
+                report.get("tests"),
+                dict(default=[]),
+            ),
         )

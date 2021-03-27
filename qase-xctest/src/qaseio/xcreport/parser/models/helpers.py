@@ -1,5 +1,4 @@
-from typing import List, TypeVar, Type
-
+from typing import List, Type, TypeVar
 
 T = TypeVar("T")
 _subtypes = []
@@ -8,7 +7,7 @@ _subtypes = []
 def try_from_report(try_block, params):
     try:
         return try_block()
-    except:
+    except Exception:
         if "default" in params:
             return params["default"]
         else:
@@ -42,7 +41,9 @@ def list_from_report(to_type: Type[T], report, params={}) -> List[T]:
     return try_from_report(convert, params)
 
 
-def __list_object_from_array(to_types: [], abstract_type: Type[T], report, params={}) -> List[T]:
+def __list_object_from_array(
+    to_types: [], abstract_type: Type[T], report, params={}
+) -> List[T]:
     def convert():
         if report["_type"]["_name"] != "Array":
             raise ValueError("type error")

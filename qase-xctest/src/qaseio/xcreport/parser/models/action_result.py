@@ -1,8 +1,9 @@
 from typing import Optional
+
 import attr
 
-from .reference import Reference
 from . import helpers
+from .reference import Reference
 
 
 @attr.s
@@ -15,5 +16,7 @@ class ActionResult:
             raise ValueError("type error")
 
         return cls(
-            helpers.object_from_report(Reference, report.get("testsRef"), dict(default=None))
+            helpers.object_from_report(
+                Reference, report.get("testsRef"), dict(default=None)
+            )
         )

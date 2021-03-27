@@ -1,9 +1,12 @@
 from typing import Optional
+
 import attr
 
-from .action_test_summary_identifiable_object import ActionTestSummaryIdentifiableObject
-from .reference import Reference
 from . import helpers
+from .action_test_summary_identifiable_object import (
+    ActionTestSummaryIdentifiableObject,
+)
+from .reference import Reference
 
 
 @attr.s
@@ -18,8 +21,12 @@ class ActionTestMetadata(ActionTestSummaryIdentifiableObject):
         return cls(
             cls.convert_name_field(report),
             cls.convert_identifier_field(report),
-            helpers.object_from_report(Reference, report.get("summaryRef"), dict(default=None))
+            helpers.object_from_report(
+                Reference, report.get("summaryRef"), dict(default=None)
+            ),
         )
 
 
-helpers.registry_subtype(ActionTestMetadata, ActionTestSummaryIdentifiableObject)
+helpers.registry_subtype(
+    ActionTestMetadata, ActionTestSummaryIdentifiableObject
+)

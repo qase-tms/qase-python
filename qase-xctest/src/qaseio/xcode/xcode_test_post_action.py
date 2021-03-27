@@ -14,7 +14,7 @@ def find_report(project_folder):
     test_folder = os.path.join(project_folder, "Logs/Test")
     manifest_file = os.path.join(test_folder, "LogStoreManifest.plist")
 
-    with open(manifest_file, 'rb') as fp:
+    with open(manifest_file, "rb") as fp:
         pl = plistlib.load(fp)
 
     time_start = 0.0
@@ -27,16 +27,27 @@ def find_report(project_folder):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Xcode Post Action For Export Test Report')
+    parser = argparse.ArgumentParser(
+        description="Xcode Post Action For Export Test Report"
+    )
 
     group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument('--build', help='Build Root Folder. Use BUILD_ROOT env.')
-    group.add_argument('--xcresults', help='Reports', nargs='+')
+    group.add_argument(
+        "--build", help="Build Root Folder. Use BUILD_ROOT env."
+    )
+    group.add_argument("--xcresults", help="Reports", nargs="+")
 
-    parser.add_argument('--api_token',help='Qase API token', required=True)
-    parser.add_argument('--project_code', help='Qase Project Code', required=True)
-    parser.add_argument('--upload_attachments', action="store_true", help='Upload Attachments', default=False)
-    parser.add_argument('--run_name', help='Qase Test Run Name', default="Run")
+    parser.add_argument("--api_token", help="Qase API token", required=True)
+    parser.add_argument(
+        "--project_code", help="Qase Project Code", required=True
+    )
+    parser.add_argument(
+        "--upload_attachments",
+        action="store_true",
+        help="Upload Attachments",
+        default=False,
+    )
+    parser.add_argument("--run_name", help="Qase Test Run Name", default="Run")
 
     args = parser.parse_args()
 
@@ -51,6 +62,6 @@ def main():
         args.api_token,
         args.project_code,
         args.upload_attachments,
-        args.run_name
+        args.run_name,
     )
     extractor.process()

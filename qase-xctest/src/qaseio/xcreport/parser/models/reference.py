@@ -1,4 +1,5 @@
 from typing import Optional
+
 import attr
 
 from . import helpers
@@ -16,9 +17,8 @@ class Reference:
 
         target_type: str = None
         if report.get("targetType") is not None:
-            target_type = helpers.string_from_report(report["targetType"]["name"], dict(default=None))
+            target_type = helpers.string_from_report(
+                report["targetType"]["name"], dict(default=None)
+            )
 
-        return cls(
-            helpers.string_from_report(report.get("id")),
-            target_type
-        )
+        return cls(helpers.string_from_report(report.get("id")), target_type)

@@ -12,7 +12,7 @@
 
 `--project_code YOUR_PROJECT_CODE` - You can find project code [here](https://app.qase.io/projects).
 
-`--build $BUILD_ROOT` - Xcode build folder. Xcode setup `$BUILD_ROOT` enviroment automatically. 
+`--build $BUILD_ROOT` - Xcode build folder. Xcode setup `$BUILD_ROOT` enviroment automatically.
 Always using this enviroment for `--build` arg.
 
 `--run_name From_Xcode` - Arbitrary run name. You can detect your run result from all results.

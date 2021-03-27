@@ -1,9 +1,10 @@
-from enum import unique, Enum
+from enum import Enum, unique
 from typing import Optional
+
 import attr
 
-from .reference import Reference
 from . import helpers
+from .reference import Reference
 
 
 @unique
@@ -24,7 +25,13 @@ class ActionTestAttachment:
             raise ValueError("type error")
 
         return cls(
-            helpers.enum_from_report(UniformTypeIdentifier, report.get("uniformTypeIdentifier"), dict(default=None)),
+            helpers.enum_from_report(
+                UniformTypeIdentifier,
+                report.get("uniformTypeIdentifier"),
+                dict(default=None),
+            ),
             helpers.string_from_report(report.get("name")),
-            helpers.object_from_report(Reference, report.get("payloadRef"), dict(default=None))
+            helpers.object_from_report(
+                Reference, report.get("payloadRef"), dict(default=None)
+            ),
         )

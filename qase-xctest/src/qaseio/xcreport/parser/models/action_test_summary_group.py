@@ -1,8 +1,11 @@
 from typing import List
+
 import attr
 
-from .action_test_summary_identifiable_object import ActionTestSummaryIdentifiableObject
 from . import helpers
+from .action_test_summary_identifiable_object import (
+    ActionTestSummaryIdentifiableObject,
+)
 
 
 @attr.s
@@ -17,8 +20,14 @@ class ActionTestSummaryGroup(ActionTestSummaryIdentifiableObject):
         return cls(
             cls.convert_name_field(report),
             cls.convert_identifier_field(report),
-            helpers.list_from_report(ActionTestSummaryIdentifiableObject, report.get("subtests"), dict(default=[]))
+            helpers.list_from_report(
+                ActionTestSummaryIdentifiableObject,
+                report.get("subtests"),
+                dict(default=[]),
+            ),
         )
 
 
-helpers.registry_subtype(ActionTestSummaryGroup, ActionTestSummaryIdentifiableObject)
+helpers.registry_subtype(
+    ActionTestSummaryGroup, ActionTestSummaryIdentifiableObject
+)
