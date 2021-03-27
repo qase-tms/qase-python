@@ -45,26 +45,19 @@ jobs:
     if: startsWith(github.event.ref, 'refs/tags')
     steps:
     - uses: actions/checkout@v2
-    - uses: dorny/paths-filter@v2
-      id: filter
-      with:
-        list-files: 'shell'
-        filters: |
-          changes:
-            - '${{ matrix.prefix }}/**'
     - name: Set up Python 3.9
-      if: steps.filter.outputs.changes == 'true'
+      if: contains(github.event.ref, matrix.prefix)
       uses: actions/setup-python@v1
       with:
         python-version: 3.9
     - name: Build a binary wheel and a source tarball
-      if: steps.filter.outputs.changes == 'true'
+      if: contains(github.event.ref, matrix.prefix)
       working-directory: ./${{ matrix.prefix }}
       run: |
         pip install wheel
         python setup.py sdist bdist_wheel
     - name: Publish distribution to PyPI
-      if: steps.filter.outputs.changes == 'true'
+      if: contains(github.event.ref, matrix.prefix)
       uses: pypa/gh-action-pypi-publish@v1.1.0
       with:
         password: ${{ secrets.PYPI_PASSWORD }}
