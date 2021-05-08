@@ -39,6 +39,7 @@ logger = logging.getLogger("qase-robotframework")
 STATUSES = {
     "PASS": TestRunResultStatus.PASSED,
     "FAIL": TestRunResultStatus.FAILED,
+    "SKIP": TestRunResultStatus.SKIPPED,
 }
 
 
