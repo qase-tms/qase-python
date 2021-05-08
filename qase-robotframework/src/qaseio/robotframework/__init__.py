@@ -220,7 +220,7 @@ class Listener:
                 )
                 req_data = TestRunResultUpdate(
                     STATUSES[attributes.get("status")],
-                    time=attributes.get("elapsedtime"),
+                    time_ms=attributes.get("elapsedtime"),
                     stacktrace=attributes.get("message"),
                     steps=self.results.get(attributes.get("id"), {}).get(
                         "steps", []
