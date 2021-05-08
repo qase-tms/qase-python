@@ -12,6 +12,7 @@ class TestRunResultStatus(Enum):
     PASSED = "passed"
     FAILED = "failed"
     BLOCKED = "blocked"
+    SKIPPED = "skipped"
 
 
 @attr.s
