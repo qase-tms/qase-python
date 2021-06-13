@@ -1,4 +1,4 @@
-from qaseio.pytest.plugin import QasePytestPluginSingleton
+from qaseio.pytest.plugin import QasePytestPlugin, QasePytestPluginSingleton
 
 
 def get_option_ini(config, name):
@@ -67,19 +67,30 @@ def pytest_addoption(parser):
 
 
 def pytest_configure(config):
-    config.addinivalue_line(
-        "markers", "qase(*ids): mark test to be associate with Qase TMS"
-    )
-    if get_option_ini(config, "qs_enabled"):
-        QasePytestPluginSingleton.init(
-            api_token=get_option_ini(config, "qs_api_token"),
-            project=get_option_ini(config, "qs_project_code"),
-            testrun=get_option_ini(config, "qs_testrun_id"),
-            testplan=get_option_ini(config, "qs_testplan_id"),
-            create_run=get_option_ini(config, "qs_new_run"),
-            debug=get_option_ini(config, "qs_debug"),
+    if not hasattr(config, "slaveinput"):
+        QasePytestPlugin.drop_run_id()
+        config.addinivalue_line(
+            "markers", "qase(*ids): mark test to be associate with Qase TMS"
         )
-        config.pluginmanager.register(
-            QasePytestPluginSingleton.get_instance(),
-            name="qase-pytest",
-        )
+        if get_option_ini(config, "qs_enabled"):
+            QasePytestPluginSingleton.init(
+                config=config,
+                api_token=get_option_ini(config, "qs_api_token"),
+                project=get_option_ini(config, "qs_project_code"),
+                testrun=get_option_ini(config, "qs_testrun_id"),
+                testplan=get_option_ini(config, "qs_testplan_id"),
+                create_run=get_option_ini(config, "qs_new_run"),
+                debug=get_option_ini(config, "qs_debug"),
+            )
+            config.qaseio = QasePytestPluginSingleton.get_instance()
+            config.pluginmanager.register(
+                config.qaseio,
+                name="qase-pytest",
+            )
+
+
+def pytest_unconfigure(config):
+    qaseio = getattr(config, "qaseio", None)
+    if qaseio:
+        del config.qaseio
+        config.pluginmanager.unregister(qaseio)

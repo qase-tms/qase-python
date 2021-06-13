@@ -1,4 +1,5 @@
 import logging
+import pathlib
 import time
 from datetime import datetime
 from typing import Tuple, Union
@@ -6,6 +7,7 @@ from typing import Tuple, Union
 import pytest
 
 import apitist
+from filelock import FileLock
 
 from qaseio.client import QaseApi
 from qaseio.client.models import (
@@ -50,9 +52,11 @@ class MissingStepIdentifierException(Exception):
 
 class QasePytestPlugin:
     testrun: TestRunInfo = None
+    meta_run_file = pathlib.Path("qaseio.runid")
 
     def __init__(
         self,
+        config,
         api_token,
         project,
         testrun=None,
@@ -71,6 +75,7 @@ class QasePytestPlugin:
         self.missing_ids = []
         self.existing_ids = []
         self.last_node = None
+        self.config = config
         self.project = self.client.projects.exists(self.project_code)
         self.comment = "Pytest Plugin Automation Run"
         if not self.project:
@@ -196,6 +201,17 @@ class QasePytestPlugin:
         steps[position]["status"] = status
         self.nodes_with_ids[self.last_node]["steps"] = steps
 
+    def get_worker_id(self):
+        worker_id = "default"
+        if hasattr(self.config, "workerinput"):
+            worker_id = self.config.workerinput["workerid"]
+        if (
+            not hasattr(self.config, "workerinput")
+            and getattr(self.config.option, "dist", "no") != "no"
+        ):
+            worker_id = "master"
+        return worker_id
+
     @pytest.hookimpl(trylast=True)
     def pytest_collection_modifyitems(self, session, config, items):
         """
@@ -204,39 +220,51 @@ class QasePytestPlugin:
 
         Prints additional info at start of the run, if debug in True
         """
-        self.nodes_with_ids, no_ids = get_ids_from_pytest_nodes(items)
-        write_lines = []
-        if no_ids:
-            line = ", ".join([miss.name for miss in no_ids])
-            write_lines.append(
-                "This tests does not have test case ids:\n" + line
-            )
-
-        for nodeid, data in self.nodes_with_ids.items():
-            exist_ids, missing_ids = self.check_case_ids(data)
-            if missing_ids:
+        with FileLock("qaseio.lock"):
+            if self.meta_run_file.exists():
+                with open(self.meta_run_file, "r") as lock_file:
+                    try:
+                        self.testrun_id = int(lock_file.read())
+                    except ValueError:
+                        pass
+            self.load_testrun()
+            self.nodes_with_ids, no_ids = get_ids_from_pytest_nodes(items)
+            write_lines = []
+            if no_ids:
+                line = ", ".join([miss.name for miss in no_ids])
                 write_lines.append(
-                    "For test {} could not find test cases in TMS: {}".format(
-                        nodeid, ", ".join([str(i) for i in missing_ids])
-                    )
+                    "This tests does not have test case ids:\n" + line
                 )
 
-            if not self.create_run:
-                missing_in_run = self.get_missing_in_testrun(data)
-                if missing_in_run:
+            for nodeid, data in self.nodes_with_ids.items():
+                exist_ids, missing_ids = self.check_case_ids(data)
+                if missing_ids:
                     write_lines.append(
-                        "For test {} could not find "
-                        "test cases in run: {}".format(
-                            nodeid, ", ".join([str(i) for i in missing_in_run])
+                        "For test {} can't find test cases in TMS: {}".format(
+                            nodeid, ", ".join([str(i) for i in missing_ids])
                         )
                     )
-                self.missing_ids.extend(missing_in_run)
-            self.missing_ids.extend(missing_ids)
-            self.existing_ids.extend(exist_ids)
 
-        if self.create_run and self.existing_ids:
-            self.create_testrun(self.existing_ids)
-            self.load_testrun()
+                if not self.create_run:
+                    missing_in_run = self.get_missing_in_testrun(data)
+                    if missing_in_run:
+                        write_lines.append(
+                            "For test {} could not find "
+                            "test cases in run: {}".format(
+                                nodeid,
+                                ", ".join([str(i) for i in missing_in_run]),
+                            )
+                        )
+                    self.missing_ids.extend(missing_in_run)
+                self.missing_ids.extend(missing_ids)
+                self.existing_ids.extend(exist_ids)
+
+            if self.create_run and self.existing_ids and not self.testrun_id:
+                self.create_testrun(self.existing_ids)
+                self.load_testrun()
+
+                with open(self.meta_run_file, "w") as lock_file:
+                    lock_file.write(str(self.testrun_id))
 
         if write_lines and self.debug:
             writer = config.pluginmanager.get_plugin("terminalreporter")
@@ -246,6 +274,13 @@ class QasePytestPlugin:
             for line in write_lines:
                 writer.line(line)
             writer.section("Qase TMS setup finished", sep="=")
+
+    @staticmethod
+    def drop_run_id():
+        QasePytestPlugin.meta_run_file.unlink(missing_ok=True)
+
+    def pytest_sessionfinish(self, session, exitstatus):
+        QasePytestPlugin.drop_run_id()
 
     @pytest.hookimpl(hookwrapper=True)
     def pytest_runtest_protocol(self, item):
@@ -344,18 +379,19 @@ class QasePytestPlugin:
 
 
 class QasePytestPluginSingleton:
-    __instance = None
+    _instance = None
 
     @staticmethod
     def init(**kwargs):
-        QasePytestPluginSingleton.__instance = QasePytestPlugin(**kwargs)
+        if QasePytestPluginSingleton._instance is None:
+            QasePytestPluginSingleton._instance = QasePytestPlugin(**kwargs)
 
     @staticmethod
     def get_instance() -> QasePytestPlugin:
         """ Static access method"""
-        if QasePytestPluginSingleton.__instance is None:
+        if QasePytestPluginSingleton._instance is None:
             raise Exception("Init plugin first")
-        return QasePytestPluginSingleton.__instance
+        return QasePytestPluginSingleton._instance
 
     def __init__(self):
         """ Virtually private constructor"""
