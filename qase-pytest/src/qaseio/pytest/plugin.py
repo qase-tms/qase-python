@@ -277,7 +277,8 @@ class QasePytestPlugin:
 
     @staticmethod
     def drop_run_id():
-        QasePytestPlugin.meta_run_file.unlink(missing_ok=True)
+        if QasePytestPlugin.meta_run_file.exists():
+            QasePytestPlugin.meta_run_file.unlink()
 
     def pytest_sessionfinish(self, session, exitstatus):
         QasePytestPlugin.drop_run_id()
