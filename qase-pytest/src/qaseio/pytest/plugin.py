@@ -56,7 +56,6 @@ class QasePytestPlugin:
 
     def __init__(
         self,
-        config,
         api_token,
         project,
         testrun=None,
@@ -75,7 +74,6 @@ class QasePytestPlugin:
         self.missing_ids = []
         self.existing_ids = []
         self.last_node = None
-        self.config = config
         self.project = self.client.projects.exists(self.project_code)
         self.comment = "Pytest Plugin Automation Run"
         if not self.project:
@@ -138,7 +136,7 @@ class QasePytestPlugin:
             )
 
     def load_testrun(self):
-        if self.testrun_id:
+        if self.testrun_id and self.testrun is None:
             self.testrun = self.client.runs.exists(
                 self.project_code,
                 self.testrun_id,
@@ -200,17 +198,6 @@ class QasePytestPlugin:
         steps[position] = {}
         steps[position]["status"] = status
         self.nodes_with_ids[self.last_node]["steps"] = steps
-
-    def get_worker_id(self):
-        worker_id = "default"
-        if hasattr(self.config, "workerinput"):
-            worker_id = self.config.workerinput["workerid"]
-        if (
-            not hasattr(self.config, "workerinput")
-            and getattr(self.config.option, "dist", "no") != "no"
-        ):
-            worker_id = "master"
-        return worker_id
 
     @pytest.hookimpl(trylast=True)
     def pytest_collection_modifyitems(self, session, config, items):

@@ -4,13 +4,14 @@ import pytest
 
 import requests_mock
 
-from qaseio.pytest.plugin import QasePytestPlugin
+from qaseio.pytest.plugin import QasePytestPlugin, QasePytestPluginSingleton
 
 pytest_plugins = ["pytester"]
 
 
 @pytest.fixture
 def mock() -> requests_mock.Mocker:
+    QasePytestPluginSingleton._instance = None
     with requests_mock.Mocker() as m:
         yield m
 

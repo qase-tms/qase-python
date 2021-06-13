@@ -74,7 +74,6 @@ def pytest_configure(config):
         )
         if get_option_ini(config, "qs_enabled"):
             QasePytestPluginSingleton.init(
-                config=config,
                 api_token=get_option_ini(config, "qs_api_token"),
                 project=get_option_ini(config, "qs_project_code"),
                 testrun=get_option_ini(config, "qs_testrun_id"),
