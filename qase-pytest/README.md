@@ -27,6 +27,7 @@ and using command-line arguments:
   --qase-testplan=QS_TESTPLAN_ID
                         Testplan ID in Qase TMS
   --qase-new-run        Create new testrun, if no testrun id provided
+  --qase-complete-run   Complete run after all tests are finished
   --qase-debug          Prints additional output of plugin
 ```
 
@@ -43,6 +44,8 @@ and using command-line arguments:
   qs_testplan_id (string):
                         default value for --qase-testplan
   qs_new_run (bool):    default value for --qase-new-run
+  qs_complete_run (bool):
+                        default value for --qase-complete-run
   qs_debug (bool):      default value for --qase-debug
 ```
 
