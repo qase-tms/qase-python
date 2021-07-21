@@ -57,6 +57,14 @@ def pytest_addoption(parser):
         action="store_true",
     )
     add_option_ini(
+        "--qase-complete-run",
+        "qs_complete_run",
+        default=False,
+        type="bool",
+        help="Complete run after all tests are finished",
+        action="store_true",
+    )
+    add_option_ini(
         "--qase-debug",
         "qs_debug",
         default=False,
@@ -79,6 +87,7 @@ def pytest_configure(config):
                 testrun=get_option_ini(config, "qs_testrun_id"),
                 testplan=get_option_ini(config, "qs_testplan_id"),
                 create_run=get_option_ini(config, "qs_new_run"),
+                complete_run=get_option_ini(config, "qs_complete_run"),
                 debug=get_option_ini(config, "qs_debug"),
             )
             config.qaseio = QasePytestPluginSingleton.get_instance()

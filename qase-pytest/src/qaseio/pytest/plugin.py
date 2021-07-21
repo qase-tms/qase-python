@@ -27,6 +27,13 @@ PYTEST_TO_QASE_STATUS = {
     "SKIPPED": TestRunResultStatus.BLOCKED,
 }
 
+try:
+    from xdist import is_xdist_master
+except ImportError:
+
+    def is_xdist_master(*args, **kwargs):
+        return True
+
 
 def get_ids_from_pytest_nodes(items):
     """Return tuple with item and test case ids for it and tests missing ids"""
@@ -61,6 +68,7 @@ class QasePytestPlugin:
         testrun=None,
         testplan=None,
         create_run=False,
+        complete_run=False,
         debug=False,
     ):
         self.client = QaseApi(api_token)
@@ -68,6 +76,7 @@ class QasePytestPlugin:
         self.testrun_id = testrun
         self.testplan_id = testplan
         self.create_run = create_run
+        self.complete_run = complete_run
         self.debug = debug
         self.nodes_with_ids = {}
         self.cases_info = {}
@@ -208,12 +217,7 @@ class QasePytestPlugin:
         Prints additional info at start of the run, if debug in True
         """
         with FileLock("qaseio.lock"):
-            if self.meta_run_file.exists():
-                with open(self.meta_run_file, "r") as lock_file:
-                    try:
-                        self.testrun_id = int(lock_file.read())
-                    except ValueError:
-                        pass
+            self.load_run_from_lock()
             self.load_testrun()
             self.nodes_with_ids, no_ids = get_ids_from_pytest_nodes(items)
             write_lines = []
@@ -262,13 +266,29 @@ class QasePytestPlugin:
                 writer.line(line)
             writer.section("Qase TMS setup finished", sep="=")
 
+    def load_run_from_lock(self):
+        if self.meta_run_file.exists():
+            with open(self.meta_run_file, "r") as lock_file:
+                try:
+                    self.testrun_id = int(lock_file.read())
+                except ValueError:
+                    pass
+
     @staticmethod
     def drop_run_id():
         if QasePytestPlugin.meta_run_file.exists():
             QasePytestPlugin.meta_run_file.unlink()
 
+    def pytest_sessionstart(self, session):
+        if is_xdist_master(session):
+            QasePytestPlugin.drop_run_id()
+
     def pytest_sessionfinish(self, session, exitstatus):
-        QasePytestPlugin.drop_run_id()
+        if is_xdist_master(session):
+            if self.complete_run:
+                self.load_run_from_lock()
+                self.complete()
+            QasePytestPlugin.drop_run_id()
 
     @pytest.hookimpl(hookwrapper=True)
     def pytest_runtest_protocol(self, item):
@@ -364,6 +384,20 @@ class QasePytestPlugin:
             attachments: list = node.get("attachments", [])
             attachments.extend(files)
             node["attachments"] = attachments
+
+    def complete(self):
+        if self.testrun_id and self.complete_run:
+            print()
+            print(f"Finishing run {self.testrun_id}")
+            res = self.client.runs.get(self.project_code, self.testrun_id)
+            if res.status == 1:
+                print(f"Run {self.testrun_id} already finished")
+                return
+            try:
+                self.client.runs.complete(self.project_code, self.testrun_id)
+                print(f"Run {self.testrun_id} was finished successfully")
+            except Exception as e:
+                print(f"Run {self.testrun_id} was finished with error: {e}")
 
 
 class QasePytestPluginSingleton:
