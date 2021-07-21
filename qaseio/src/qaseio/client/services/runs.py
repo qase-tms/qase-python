@@ -30,12 +30,12 @@ class Runs(BaseService):
 
     def get(
         self, code: str, run_id: Union[str, int], include=TestRunInclude.NONE
-    ):
+    ):  # noqa: E501
         query = {"include": include}
         return self.vr(
             self.s.get(
                 self.path("run/{}/{}".format(code, run_id)), params=query
-            ),
+            ),  # noqa: E501
             to_type=TestRunInfo,
         )
 
@@ -48,6 +48,12 @@ class Runs(BaseService):
     def delete(self, code: str, run_id: Union[str, int]):
         return self.vr(
             self.s.delete(self.path("run/{}/{}".format(code, run_id))),
+            to_type=None,
+        )
+
+    def complete(self, code: str, run_id: Union[str, int]):
+        return self.vr(
+            self.s.post(self.path("run/{}/{}/complete".format(code, run_id))),
             to_type=None,
         )
 
