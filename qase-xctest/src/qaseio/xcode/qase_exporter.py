@@ -235,6 +235,9 @@ class QaseExtractor:
                 ),
             )
 
+        if not attachments_to_upload:
+            return []
+
         result: List[AttachmentCreated] = qase.attachments.upload(
             self.project_code, *attachments_to_upload
         )
