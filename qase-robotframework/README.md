@@ -1,8 +1,8 @@
-# [Qase TMS](https://qase.io) Robot Framework Listener
+> # Qase TMS Robot Framework Listener
+>
+> Publish results simple and easy.
 
-[![License](https://lxgaming.github.io/badges/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-
-## Installation
+## How to integrate
 
 ```
 pip install qase-robotframework
@@ -60,7 +60,7 @@ Usage:
 ```
 QASE_API_TOKEN=<API TOKEN> QASE_PROJECT=PRJCODE robot --listener qaseio.robotframework.Listener keyword_driven.robot data_driven.robot
 ```
-
+![reporter](./example/screenshot/screenshot2.png "text")
 `tox.ini` configuration:
 
 ```ini
@@ -75,7 +75,7 @@ qase_debug=True
 ## Working with steps
 
 Listener supports reporting steps results:
-![](./docs/steps_results.png)
+![](./example/screenshot/screenshot.png)
 But in order to use it, you should follow some rules:
 - Steps name in Qase TMS should match to the steps in Robot Framework
 - If step in RF has some parameters (e.g. Push Button `12`)
@@ -85,7 +85,16 @@ step in TMS should start with step name in RF. So if your step in RF is
 - You should preserve the order of steps. You can skip steps in RF, but
 you shouldn't mix them or so on - Qase does not support creating steps
 on the fly yet.
+```robotframework
+Quick Get A JSON Body Test                                                  ## Test case: "Quick Get A JSON Body Test"
+    [Tags]  Q-3
+    ${response}=    GET  https://jsonplaceholder.typicode.com/posts/1       ## 1-st step - "GET"
+    Should Be Equal As Strings    1  ${response.json()}[id]                 ## 2-nd step - "Should Be Equal As Strings"
 
+Initializing the test case                                                  ## Test case: "Initializing the test case"
+    [Tags]  Q-4
+    Set To Dictionary    ${info}   field1=A sample string                   ## 1-st step - "Set To Dictionary"
+```
 ## Contribution
 
 Install project locally:
