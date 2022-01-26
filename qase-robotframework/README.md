@@ -28,7 +28,6 @@ Push multiple buttons
 ```
 
 ```robotframework
-
 *** Test Cases ***    Expression    Expected
 Addition              12 + 2 + 2    16
                       2 + -3        -1
@@ -39,10 +38,30 @@ Subtraction           12 - 2 - 2    8
     [Tags]   Q-8
 ```
 
-After adding new tags and configuring listener - you could simply use it like this:
+### Working with steps
 
-```
-robot --listener qaseio.robotframework.Listener keyword_driven.robot data_driven.robot
+Listener supports reporting steps results:
+![](./example/screenshot/screenshot.png)
+But in order to use it, you should follow some rules:
+- Steps name in Qase TMS should match to the steps in Robot Framework
+- If step in RF has some parameters (e.g. Push Button `12`)
+parameter would be ignored and the comparison to step in TMS will be made like:
+step in TMS should start with step name in RF. So if your step in RF is
+`Open page` it will be matched to step `Open page https://qase.io` in TMS.
+- You should preserve the order of steps. You can skip steps in RF, but
+you shouldn't mix them or so on - Qase does not support creating steps
+on the fly yet.
+
+Example:
+```robotframework
+Quick Get A JSON Body Test                                                  ## Test case: "Quick Get A JSON Body Test"
+    [Tags]  Q-3
+    ${response}=    GET  https://jsonplaceholder.typicode.com/posts/1       ## 1-st step - "GET"
+    Should Be Equal As Strings    1  ${response.json()}[id]                 ## 2-nd step - "Should Be Equal As Strings"
+
+Initializing the test case                                                  ## Test case: "Initializing the test case"
+    [Tags]  Q-4
+    Set To Dictionary    ${info}   field1=A sample string                   ## 1-st step - "Set To Dictionary"
 ```
 
 ## Configuration
@@ -56,45 +75,26 @@ ENV variables:
 - `QASE_RUN_NAME` - Set custom run name when no run ID is provided
 - `QASE_DEBUG` - If passed something - will enable debug logging for listener
 
-Usage:
+### Usage:
 ```
 QASE_API_TOKEN=<API TOKEN> QASE_PROJECT=PRJCODE robot --listener qaseio.robotframework.Listener keyword_driven.robot data_driven.robot
 ```
 ![reporter](./example/screenshot/screenshot2.png "text")
-`tox.ini` configuration:
+Moving variables to `tox.ini`, example configuration:
 
 ```ini
 [qase]
-qase_api_token=<API TOKEN>
-qase_project=PROJECTCODE
-qase_run_id=14
+qase_api_token=api_key
+qase_project=project_code
+qase_run_id=run_id
 qase_run_name=New Robot Framework Run
 qase_debug=True
 ```
-
-## Working with steps
-
-Listener supports reporting steps results:
-![](./example/screenshot/screenshot.png)
-But in order to use it, you should follow some rules:
-- Steps name in Qase TMS should match to the steps in Robot Framework
-- If step in RF has some parameters (e.g. Push Button `12`)
-parameter would be ignored and the comparison to step in TMS will be made like:
-step in TMS should start with step name in RF. So if your step in RF is
-`Open page` it will be matched to step `Open page https://qase.io` in TMS.
-- You should preserve the order of steps. You can skip steps in RF, but
-you shouldn't mix them or so on - Qase does not support creating steps
-on the fly yet.
-```robotframework
-Quick Get A JSON Body Test                                                  ## Test case: "Quick Get A JSON Body Test"
-    [Tags]  Q-3
-    ${response}=    GET  https://jsonplaceholder.typicode.com/posts/1       ## 1-st step - "GET"
-    Should Be Equal As Strings    1  ${response.json()}[id]                 ## 2-nd step - "Should Be Equal As Strings"
-
-Initializing the test case                                                  ## Test case: "Initializing the test case"
-    [Tags]  Q-4
-    Set To Dictionary    ${info}   field1=A sample string                   ## 1-st step - "Set To Dictionary"
+Execution:
 ```
+robot --listener qaseio.robotframework.Listener someTest.robot
+```
+
 ## Contribution
 
 Install project locally:
