@@ -10,7 +10,7 @@ Quick Get Request Test
     ${response}=    GET  https://www.google.com                             ## Second step in Qase TMS
 
 Quick Get Request With Parameters Test                                      ## ----------------------
-    [Tags]  Q-2
+    [Tags]  q-2
     Create Session    google  http://www.google.com                         ## First step in Qase TMS
     ${resp_google}=   GET On Session  google  /  expected_status=200        ## Second step in Qase TMS
 
@@ -22,7 +22,7 @@ Quick Get A JSON Body Test                                                  ## -
     Should Be Equal As Strings    1  ${response.json()}[id]                 ## Second step in Qase TMS
 
 Initializing the test case                                                  ## ----------------------
-    [Tags]  Q-4
+    [Tags]  q-4
     Set To Dictionary    ${info}   field1=A sample string                   ## First step in Qase TMS
 
 *** Variables ***

@@ -11,12 +11,12 @@ pip install qase-robotframework
 ## Usage
 
 You must add Qase case IDs to robot framework tests.
-They should be added as a tags in form like `Q-<case id without project code>`. Examples:
+They should be added as a tags in form like `Q-<case id without project code>`. You can use upper and lower case to indicate the test case IDs. Example:
 
 ```robotframework
 *** Test Cases ***
 Push button
-    [Tags]  Q-2
+    [Tags]  q-2
     Push button    1
     Result should be    1
 
@@ -60,7 +60,7 @@ Quick Get A JSON Body Test                                                  ## T
     Should Be Equal As Strings    1  ${response.json()}[id]                 ## 2-nd step - "Should Be Equal As Strings"
 
 Initializing the test case                                                  ## Test case: "Initializing the test case"
-    [Tags]  Q-4
+    [Tags]  q-4
     Set To Dictionary    ${info}   field1=A sample string                   ## 1-st step - "Set To Dictionary"
 ```
 
@@ -81,7 +81,6 @@ QASE_API_TOKEN=<API TOKEN> QASE_PROJECT=PRJCODE robot --listener qaseio.robotfra
 ```
 ![reporter](./example/screenshot/screenshot2.png "text")
 Moving variables to `tox.ini`, example configuration:
-
 ```ini
 [qase]
 qase_api_token=api_key
@@ -94,7 +93,6 @@ Execution:
 ```
 robot --listener qaseio.robotframework.Listener someTest.robot
 ```
-
 ## Contribution
 
 Install project locally:
