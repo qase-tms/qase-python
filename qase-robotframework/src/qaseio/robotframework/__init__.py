@@ -269,10 +269,9 @@ class Listener:
         logger.debug("Log:", message)
 
     def _extract_ids(self, list_of_tags: List[str]) -> List[int]:
+        id = re.compile(r"Q-(\d+)", re.IGNORECASE)
         return [
-            int(re.match(r"[Q,q]-(\d+)", tag).groups()[0])
-            for tag in list_of_tags
-            if re.fullmatch(r"[Q,q]-\d+", tag)
+            int(id.match(tag).groups()[0]) for tag in list_of_tags if id.fullmatch(tag)
         ]
 
     def _get_step_position(
