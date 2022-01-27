@@ -270,9 +270,9 @@ class Listener:
 
     def _extract_ids(self, list_of_tags: List[str]) -> List[int]:
         return [
-            int(re.match(r"Q-(\d+)", tag).groups()[0])
+            int(re.match(r"[Q,q]-(\d+)", tag).groups()[0])
             for tag in list_of_tags
-            if re.fullmatch(r"Q-\d+", tag)
+            if re.fullmatch(r"[Q,q]-\d+", tag)
         ]
 
     def _get_step_position(
