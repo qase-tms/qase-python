@@ -65,7 +65,7 @@ def test_example_2():
     pass
 ```
 
-You could pass as much IDs as you need.
+Each unique number can only be assigned once to the class or function being used. You could pass as much IDs as you need.
 
 ### Possible cases statuses
 
