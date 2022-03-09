@@ -11,52 +11,105 @@ Method | HTTP request | Description
 [**get_results**](ResultsApi.md#get_results) | **GET** /result/{code} | Get all test run results.
 [**update_result**](ResultsApi.md#update_result) | **PATCH** /result/{code}/{id}/{hash} | Update test run result.
 
+
 # **create_result**
-> InlineResponse200 create_result(body, code, id)
+> bool, date, datetime, dict, float, int, list, str, none_type create_result(code, id, result_create)
 
 Create test run result.
 
 This method allows to create test run result by Run Id. 
 
 ### Example
+
+* Api Key Authentication (TokenAuth):
+
 ```python
-from __future__ import print_function
 import time
 import qaseio
-from qaseio.rest import ApiException
+from qaseio.api import results_api
+from qaseio.model.response import Response
+from qaseio.model.result_create import ResultCreate
 from pprint import pprint
+# Defining the host is optional and defaults to https://api.qase.io/v1
+# See configuration.py for a list of all supported configuration parameters.
+configuration = qaseio.Configuration(
+    host = "https://api.qase.io/v1"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration = qaseio.Configuration()
-configuration.api_key['Token'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# configuration.api_key_prefix['Token'] = 'Bearer'
+# configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
-# create an instance of the API class
-api_instance = qaseio.ResultsApi(qaseio.ApiClient(configuration))
-body = qaseio.ResultCreate() # ResultCreate | 
-code = 'code_example' # str | Code of project, where to search entities.
-id = 56 # int | Identifier.
+# Enter a context with an instance of the API client
+with qaseio.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = results_api.ResultsApi(api_client)
+    code = "code_example" # str | Code of project, where to search entities.
+    id = 1 # int | Identifier.
+    result_create = ResultCreate(
+        case_id=1,
+        case=ResultCreateCase(
+            title="title_example",
+            suite_title="suite_title_example",
+            description="description_example",
+            layer="layer_example",
+            severity="severity_example",
+        ),
+        status="in_progress",
+        time=0,
+        time_ms=0,
+        defect=True,
+        attachments=[
+            "attachments_example",
+        ],
+        stacktrace="stacktrace_example",
+        comment="comment_example",
+        param={
+            "key": "key_example",
+        },
+        steps=[
+            ResultCreateSteps(
+                position=1,
+                status="passed",
+                comment="comment_example",
+                attachments=[
+                    "attachments_example",
+                ],
+                action="action_example",
+                expected_result="expected_result_example",
+                data="data_example",
+            ),
+        ],
+    ) # ResultCreate | 
 
-try:
-    # Create test run result.
-    api_response = api_instance.create_result(body, code, id)
-    pprint(api_response)
-except ApiException as e:
-    print("Exception when calling ResultsApi->create_result: %s\n" % e)
+    # example passing only required values which don't have defaults set
+    try:
+        # Create test run result.
+        api_response = api_instance.create_result(code, id, result_create)
+        pprint(api_response)
+    except qaseio.ApiException as e:
+        print("Exception when calling ResultsApi->create_result: %s\n" % e)
 ```
+
 
 ### Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**ResultCreate**](ResultCreate.md)|  | 
- **code** | **str**| Code of project, where to search entities. | 
- **id** | **int**| Identifier. | 
+ **code** | **str**| Code of project, where to search entities. |
+ **id** | **int**| Identifier. |
+ **result_create** | [**ResultCreate**](ResultCreate.md)|  |
 
 ### Return type
 
-[**InlineResponse200**](InlineResponse200.md)
+**bool, date, datetime, dict, float, int, list, str, none_type**
 
 ### Authorization
 
@@ -67,50 +120,113 @@ Name | Type | Description  | Notes
  - **Content-Type**: application/json
  - **Accept**: application/json
 
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | A result |  -  |
+
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create_result_bulk**
-> Response create_result_bulk(body, code, id)
+> Response create_result_bulk(code, id, result_create_bulk)
 
 Bulk create test run result.
 
 This method allows to create a lot of test run result at once. 
 
 ### Example
+
+* Api Key Authentication (TokenAuth):
+
 ```python
-from __future__ import print_function
 import time
 import qaseio
-from qaseio.rest import ApiException
+from qaseio.api import results_api
+from qaseio.model.response import Response
+from qaseio.model.result_create_bulk import ResultCreateBulk
 from pprint import pprint
+# Defining the host is optional and defaults to https://api.qase.io/v1
+# See configuration.py for a list of all supported configuration parameters.
+configuration = qaseio.Configuration(
+    host = "https://api.qase.io/v1"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration = qaseio.Configuration()
-configuration.api_key['Token'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# configuration.api_key_prefix['Token'] = 'Bearer'
+# configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
-# create an instance of the API class
-api_instance = qaseio.ResultsApi(qaseio.ApiClient(configuration))
-body = qaseio.ResultCreateBulk() # ResultCreateBulk | 
-code = 'code_example' # str | Code of project, where to search entities.
-id = 56 # int | Identifier.
+# Enter a context with an instance of the API client
+with qaseio.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = results_api.ResultsApi(api_client)
+    code = "code_example" # str | Code of project, where to search entities.
+    id = 1 # int | Identifier.
+    result_create_bulk = ResultCreateBulk(
+        results=[
+            ResultCreate(
+                case_id=1,
+                case=ResultCreateCase(
+                    title="title_example",
+                    suite_title="suite_title_example",
+                    description="description_example",
+                    layer="layer_example",
+                    severity="severity_example",
+                ),
+                status="in_progress",
+                time=0,
+                time_ms=0,
+                defect=True,
+                attachments=[
+                    "attachments_example",
+                ],
+                stacktrace="stacktrace_example",
+                comment="comment_example",
+                param={
+                    "key": "key_example",
+                },
+                steps=[
+                    ResultCreateSteps(
+                        position=1,
+                        status="passed",
+                        comment="comment_example",
+                        attachments=[
+                            "attachments_example",
+                        ],
+                        action="action_example",
+                        expected_result="expected_result_example",
+                        data="data_example",
+                    ),
+                ],
+            ),
+        ],
+    ) # ResultCreateBulk | 
 
-try:
-    # Bulk create test run result.
-    api_response = api_instance.create_result_bulk(body, code, id)
-    pprint(api_response)
-except ApiException as e:
-    print("Exception when calling ResultsApi->create_result_bulk: %s\n" % e)
+    # example passing only required values which don't have defaults set
+    try:
+        # Bulk create test run result.
+        api_response = api_instance.create_result_bulk(code, id, result_create_bulk)
+        pprint(api_response)
+    except qaseio.ApiException as e:
+        print("Exception when calling ResultsApi->create_result_bulk: %s\n" % e)
 ```
+
 
 ### Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**ResultCreateBulk**](ResultCreateBulk.md)|  | 
- **code** | **str**| Code of project, where to search entities. | 
- **id** | **int**| Identifier. | 
+ **code** | **str**| Code of project, where to search entities. |
+ **id** | **int**| Identifier. |
+ **result_create_bulk** | [**ResultCreateBulk**](ResultCreateBulk.md)|  |
 
 ### Return type
 
@@ -125,6 +241,13 @@ Name | Type | Description  | Notes
  - **Content-Type**: application/json
  - **Accept**: application/json
 
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | A result |  -  |
+
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **delete_result**
@@ -135,40 +258,57 @@ Delete test run result.
 This method allows to delete test run result. 
 
 ### Example
+
+* Api Key Authentication (TokenAuth):
+
 ```python
-from __future__ import print_function
 import time
 import qaseio
-from qaseio.rest import ApiException
+from qaseio.api import results_api
+from qaseio.model.hash_response import HashResponse
 from pprint import pprint
+# Defining the host is optional and defaults to https://api.qase.io/v1
+# See configuration.py for a list of all supported configuration parameters.
+configuration = qaseio.Configuration(
+    host = "https://api.qase.io/v1"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration = qaseio.Configuration()
-configuration.api_key['Token'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# configuration.api_key_prefix['Token'] = 'Bearer'
+# configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
-# create an instance of the API class
-api_instance = qaseio.ResultsApi(qaseio.ApiClient(configuration))
-code = 'code_example' # str | Code of project, where to search entities.
-id = 56 # int | Identifier.
-hash = 'hash_example' # str | Hash.
+# Enter a context with an instance of the API client
+with qaseio.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = results_api.ResultsApi(api_client)
+    code = "code_example" # str | Code of project, where to search entities.
+    id = 1 # int | Identifier.
+    hash = "hash_example" # str | Hash.
 
-try:
-    # Delete test run result.
-    api_response = api_instance.delete_result(code, id, hash)
-    pprint(api_response)
-except ApiException as e:
-    print("Exception when calling ResultsApi->delete_result: %s\n" % e)
+    # example passing only required values which don't have defaults set
+    try:
+        # Delete test run result.
+        api_response = api_instance.delete_result(code, id, hash)
+        pprint(api_response)
+    except qaseio.ApiException as e:
+        print("Exception when calling ResultsApi->delete_result: %s\n" % e)
 ```
+
 
 ### Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. | 
- **id** | **int**| Identifier. | 
- **hash** | **str**| Hash. | 
+ **code** | **str**| Code of project, where to search entities. |
+ **id** | **int**| Identifier. |
+ **hash** | **str**| Hash. |
 
 ### Return type
 
@@ -183,6 +323,13 @@ Name | Type | Description  | Notes
  - **Content-Type**: Not defined
  - **Accept**: application/json
 
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | A result |  -  |
+
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_result**
@@ -193,38 +340,55 @@ Get test run result by code.
 This method allows to retrieve a specific test run result by Hash. 
 
 ### Example
+
+* Api Key Authentication (TokenAuth):
+
 ```python
-from __future__ import print_function
 import time
 import qaseio
-from qaseio.rest import ApiException
+from qaseio.api import results_api
+from qaseio.model.result_response import ResultResponse
 from pprint import pprint
+# Defining the host is optional and defaults to https://api.qase.io/v1
+# See configuration.py for a list of all supported configuration parameters.
+configuration = qaseio.Configuration(
+    host = "https://api.qase.io/v1"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration = qaseio.Configuration()
-configuration.api_key['Token'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# configuration.api_key_prefix['Token'] = 'Bearer'
+# configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
-# create an instance of the API class
-api_instance = qaseio.ResultsApi(qaseio.ApiClient(configuration))
-code = 'code_example' # str | Code of project, where to search entities.
-hash = 'hash_example' # str | Hash.
+# Enter a context with an instance of the API client
+with qaseio.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = results_api.ResultsApi(api_client)
+    code = "code_example" # str | Code of project, where to search entities.
+    hash = "hash_example" # str | Hash.
 
-try:
-    # Get test run result by code.
-    api_response = api_instance.get_result(code, hash)
-    pprint(api_response)
-except ApiException as e:
-    print("Exception when calling ResultsApi->get_result: %s\n" % e)
+    # example passing only required values which don't have defaults set
+    try:
+        # Get test run result by code.
+        api_response = api_instance.get_result(code, hash)
+        pprint(api_response)
+    except qaseio.ApiException as e:
+        print("Exception when calling ResultsApi->get_result: %s\n" % e)
 ```
+
 
 ### Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. | 
- **hash** | **str**| Hash. | 
+ **code** | **str**| Code of project, where to search entities. |
+ **hash** | **str**| Hash. |
 
 ### Return type
 
@@ -239,52 +403,94 @@ Name | Type | Description  | Notes
  - **Content-Type**: Not defined
  - **Accept**: application/json
 
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | A test run result. |  -  |
+
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_results**
-> ResultListResponse get_results(code, filters=filters, limit=limit, offset=offset)
+> ResultListResponse get_results(code)
 
 Get all test run results.
 
 This method allows to retrieve all test run results stored in selected project. 
 
 ### Example
+
+* Api Key Authentication (TokenAuth):
+
 ```python
-from __future__ import print_function
 import time
 import qaseio
-from qaseio.rest import ApiException
+from qaseio.api import results_api
+from qaseio.model.filters4 import Filters4
+from qaseio.model.result_list_response import ResultListResponse
 from pprint import pprint
+# Defining the host is optional and defaults to https://api.qase.io/v1
+# See configuration.py for a list of all supported configuration parameters.
+configuration = qaseio.Configuration(
+    host = "https://api.qase.io/v1"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration = qaseio.Configuration()
-configuration.api_key['Token'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# configuration.api_key_prefix['Token'] = 'Bearer'
+# configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
-# create an instance of the API class
-api_instance = qaseio.ResultsApi(qaseio.ApiClient(configuration))
-code = 'code_example' # str | Code of project, where to search entities.
-filters = qaseio.Filters4() # Filters4 |  (optional)
-limit = 10 # int | A number of entities in result set. (optional) (default to 10)
-offset = 0 # int | How many entities should be skipped. (optional) (default to 0)
+# Enter a context with an instance of the API client
+with qaseio.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = results_api.ResultsApi(api_client)
+    code = "code_example" # str | Code of project, where to search entities.
+    filters = {
+        status="status_example",
+        run="run_example",
+        case_id="case_id_example",
+        member="member_example",
+        api=True,
+        from_end_time="from_end_time_example",
+        to_end_time="to_end_time_example",
+    } # Filters4 |  (optional)
+    limit = 10 # int | A number of entities in result set. (optional) if omitted the server will use the default value of 10
+    offset = 0 # int | How many entities should be skipped. (optional) if omitted the server will use the default value of 0
 
-try:
-    # Get all test run results.
-    api_response = api_instance.get_results(code, filters=filters, limit=limit, offset=offset)
-    pprint(api_response)
-except ApiException as e:
-    print("Exception when calling ResultsApi->get_results: %s\n" % e)
+    # example passing only required values which don't have defaults set
+    try:
+        # Get all test run results.
+        api_response = api_instance.get_results(code)
+        pprint(api_response)
+    except qaseio.ApiException as e:
+        print("Exception when calling ResultsApi->get_results: %s\n" % e)
+
+    # example passing only required values which don't have defaults set
+    # and optional values
+    try:
+        # Get all test run results.
+        api_response = api_instance.get_results(code, filters=filters, limit=limit, offset=offset)
+        pprint(api_response)
+    except qaseio.ApiException as e:
+        print("Exception when calling ResultsApi->get_results: %s\n" % e)
 ```
+
 
 ### Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. | 
- **filters** | [**Filters4**](.md)|  | [optional] 
- **limit** | **int**| A number of entities in result set. | [optional] [default to 10]
- **offset** | **int**| How many entities should be skipped. | [optional] [default to 0]
+ **code** | **str**| Code of project, where to search entities. |
+ **filters** | **Filters4**|  | [optional]
+ **limit** | **int**| A number of entities in result set. | [optional] if omitted the server will use the default value of 10
+ **offset** | **int**| How many entities should be skipped. | [optional] if omitted the server will use the default value of 0
 
 ### Return type
 
@@ -299,52 +505,96 @@ Name | Type | Description  | Notes
  - **Content-Type**: Not defined
  - **Accept**: application/json
 
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | A list of all test run results. |  -  |
+
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **update_result**
-> HashResponse update_result(body, code, id, hash)
+> HashResponse update_result(code, id, hash, result_update)
 
 Update test run result.
 
 This method allows to update test run result. 
 
 ### Example
+
+* Api Key Authentication (TokenAuth):
+
 ```python
-from __future__ import print_function
 import time
 import qaseio
-from qaseio.rest import ApiException
+from qaseio.api import results_api
+from qaseio.model.result_update import ResultUpdate
+from qaseio.model.hash_response import HashResponse
 from pprint import pprint
+# Defining the host is optional and defaults to https://api.qase.io/v1
+# See configuration.py for a list of all supported configuration parameters.
+configuration = qaseio.Configuration(
+    host = "https://api.qase.io/v1"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration = qaseio.Configuration()
-configuration.api_key['Token'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# configuration.api_key_prefix['Token'] = 'Bearer'
+# configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
-# create an instance of the API class
-api_instance = qaseio.ResultsApi(qaseio.ApiClient(configuration))
-body = qaseio.ResultUpdate() # ResultUpdate | 
-code = 'code_example' # str | Code of project, where to search entities.
-id = 56 # int | Identifier.
-hash = 'hash_example' # str | Hash.
+# Enter a context with an instance of the API client
+with qaseio.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = results_api.ResultsApi(api_client)
+    code = "code_example" # str | Code of project, where to search entities.
+    id = 1 # int | Identifier.
+    hash = "hash_example" # str | Hash.
+    result_update = ResultUpdate(
+        status="in_progress",
+        time_ms=0,
+        defect=True,
+        attachments=[
+            "attachments_example",
+        ],
+        stacktrace="stacktrace_example",
+        comment="comment_example",
+        steps=[
+            ResultUpdateSteps(
+                position=1,
+                status="passed",
+                comment="comment_example",
+                attachments=[
+                    "attachments_example",
+                ],
+            ),
+        ],
+    ) # ResultUpdate | 
 
-try:
-    # Update test run result.
-    api_response = api_instance.update_result(body, code, id, hash)
-    pprint(api_response)
-except ApiException as e:
-    print("Exception when calling ResultsApi->update_result: %s\n" % e)
+    # example passing only required values which don't have defaults set
+    try:
+        # Update test run result.
+        api_response = api_instance.update_result(code, id, hash, result_update)
+        pprint(api_response)
+    except qaseio.ApiException as e:
+        print("Exception when calling ResultsApi->update_result: %s\n" % e)
 ```
+
 
 ### Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**ResultUpdate**](ResultUpdate.md)|  | 
- **code** | **str**| Code of project, where to search entities. | 
- **id** | **int**| Identifier. | 
- **hash** | **str**| Hash. | 
+ **code** | **str**| Code of project, where to search entities. |
+ **id** | **int**| Identifier. |
+ **hash** | **str**| Hash. |
+ **result_update** | [**ResultUpdate**](ResultUpdate.md)|  |
 
 ### Return type
 
@@ -358,6 +608,13 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: application/json
  - **Accept**: application/json
+
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | A result |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

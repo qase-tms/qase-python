@@ -1,12 +1,13 @@
 # TestCaseCreate
 
+
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**title** | **str** |  | 
 **description** | **str** |  | [optional] 
 **preconditions** | **str** |  | [optional] 
 **postconditions** | **str** |  | [optional] 
-**title** | **str** |  | 
 **severity** | **int** |  | [optional] 
 **priority** | **int** |  | [optional] 
 **behavior** | **int** |  | [optional] 
@@ -18,9 +19,11 @@ Name | Type | Description | Notes
 **automation** | **int** |  | [optional] 
 **status** | **int** |  | [optional] 
 **attachments** | [**AttachmentHashList**](AttachmentHashList.md) |  | [optional] 
-**steps** | [**list[TestCaseCreateSteps]**](TestCaseCreateSteps.md) |  | [optional] 
-**tags** | **list[str]** |  | [optional] 
-**custom_field** | **dict(str, str)** | A map of custom fields values (id &#x3D;&gt; value) | [optional] 
+**steps** | [**[TestCaseCreateSteps]**](TestCaseCreateSteps.md) |  | [optional] 
+**tags** | **[str]** |  | [optional] 
+**custom_field** | **{str: (str,)}** | A map of custom fields values (id &#x3D;&gt; value) | [optional] 
+**any string name** | **bool, date, datetime, dict, float, int, list, str, none_type** | any string name can be used but the value must be the correct type | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 

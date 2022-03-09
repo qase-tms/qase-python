@@ -1,17 +1,20 @@
 # RunCreate
 
+
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **title** | **str** |  | 
 **description** | **str** |  | [optional] 
 **include_all_cases** | **bool** |  | [optional] 
-**cases** | **list[int]** |  | [optional] 
+**cases** | **[int]** |  | [optional] 
 **is_autotest** | **bool** |  | [optional] 
 **environment_id** | **int** |  | [optional] 
 **milestone_id** | **int** |  | [optional] 
 **plan_id** | **int** |  | [optional] 
-**tags** | **list[str]** |  | [optional] 
+**tags** | **[str]** |  | [optional] 
+**any string name** | **bool, date, datetime, dict, float, int, list, str, none_type** | any string name can be used but the value must be the correct type | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 
