@@ -81,7 +81,7 @@ class qase:
             - str, str - `filepath` and `mime-type` for it
             - bytes, str, str - `source` data, `mime-type` and `filename`
 
-        >>> from qaseio.client.models import MimeTypes
+        >>> from src.client.models import MimeTypes
         ... qase.attach(
         ...     (driver.get_screenshot_as_png(), MimeTypes.PNG, "page.png")
         ... )

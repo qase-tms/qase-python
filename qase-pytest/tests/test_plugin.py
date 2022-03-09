@@ -4,11 +4,10 @@ from enum import Enum
 
 import pytest
 
-from qaseio.client.models import TestRunResultStatus
 from qaseio.pytest.plugin import QasePytestPlugin, get_ids_from_pytest_nodes
 
 PYTEST_FILE = """
-from qaseio.pytest import qase
+from src.pytest import qase
 
 def test_no_deco():
     pass
@@ -23,7 +22,7 @@ def test_multiple_ids():
 """
 
 PYTEST_ALL_DECOS_FILE = """
-from qaseio.pytest import qase
+from src.pytest import qase
 
 @qase.id(1)
 def test_single_id():
@@ -36,7 +35,7 @@ def test_multiple_ids():
 
 PYTEST_COMPLEX_FILE = """
 import pytest
-from qaseio.pytest import qase
+from src.pytest import qase
 
 def test_no_deco():
     pass
@@ -234,7 +233,7 @@ def test_finish_pytest_item_no_errors(mock, start_items, testfile):
         json={"status": True, "result": {"hash": "1a2b3d"}},
     )
     for k, v in plugin.nodes_with_ids.items():
-        v["result"] = TestRunResultStatus.PASSED
+        v["result"] = "passed"
     for item in testfile:
         plugin.finish_pytest_item(item)
     assert len(mock.request_history) == 2
@@ -251,7 +250,7 @@ def test_finish_pytest_item_errors(mock, start_items, testfile):
         json={"status": True, "result": {"hash": "1a2b3d"}},
     )
     for k, v in plugin.nodes_with_ids.items():
-        v["result"] = TestRunResultStatus.FAILED
+        v["result"] = "failed"
         v["error"] = "error"
     for item in testfile:
         plugin.finish_pytest_item(item)
@@ -288,13 +287,13 @@ def test_complex_run(qs_plugin, mock, default_mocks, cases_mocks, testdir):
     )
     data, _ = get_ids_from_pytest_nodes(items)
     for nodeid, values in data.items():
-        status = TestRunResultStatus.PASSED
+        status = "passed"
         if ("setup" in nodeid or "teardown" in nodeid) and "fail" in nodeid:
-            status = TestRunResultStatus.BLOCKED
+            status = "blocked"
         elif "skip" in nodeid:
             status = "skipped"
         elif "fail" in nodeid:
-            status = TestRunResultStatus.FAILED
+            status = "failed"
         print(nodeid, status)
         for _id in values.get("ids"):
             for req in mock.request_history:

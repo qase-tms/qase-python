@@ -1,7 +1,7 @@
 import re
 
 TEST_FILE = """
-from qaseio.pytest import qase
+from src.pytest import qase
 @qase.id(1)
 def test_example():
     pass
@@ -34,7 +34,7 @@ def test_run_create_testrun_no_ids(mock, default_mocks, testdir):
     default_mocks()
     testdir.makepyfile(
         """
-    from qaseio.pytest import qase
+    from src.pytest import qase
     def test_example():
         qase.attach((b'', "text/plain", "example.txt"))
     """
@@ -61,7 +61,7 @@ def test_run_create_testrun(
     attachment_mocks()
     testdir.makepyfile(
         """
-    from qaseio.pytest import qase
+    from src.pytest import qase
     @qase.id(1)
     def test_example():
         qase.attach((b'{}', "text/plain", "example.txt"))
@@ -147,7 +147,7 @@ def test_run_not_enabled(mock, default_mocks, testdir):
     default_mocks()
     testdir.makepyfile(
         """
-    from qaseio.pytest import qase
+    from src.pytest import qase
     def test_example():
         qase.attach((b'', "text/plain", "example.txt"))
     """

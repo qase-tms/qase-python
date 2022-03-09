@@ -10,6 +10,20 @@ import apitist
 from filelock import FileLock
 
 import qaseio
+from qaseio.api_client import ApiClient
+from qaseio.configuration import Configuration
+from qaseio.api.attachments_api import AttachmentsApi
+from qaseio.api.cases_api import CasesApi
+from qaseio.api.plans_api import PlansApi
+from qaseio.api.projects_api import ProjectsApi
+from qaseio.api.results_api import ResultsApi
+from qaseio.api.runs_api import RunsApi
+from qaseio.models.run_create import RunCreate
+from qaseio.models.result import Result
+from qaseio.models.result_update import ResultUpdate
+from qaseio.models.result_create_steps import ResultCreateSteps
+
+
 
 QASE_MARKER = "qase"
 
@@ -66,7 +80,7 @@ def get_step_position(identifier: Union[int, str], case):
 
 class QasePytestPlugin:
     testrun = None
-    meta_run_file = pathlib.Path("qaseio.runid")
+    meta_run_file = pathlib.Path("src.runid")
 
     def __init__(
             self,
@@ -78,9 +92,9 @@ class QasePytestPlugin:
             complete_run=False,
             debug=False,
     ):
-        configuration = qaseio.Configuration()
+        configuration = Configuration()
         configuration.api_key['Token'] = api_token
-        self.client = qaseio.ApiClient(configuration)
+        self.client = ApiClient(configuration)
         self.project_code = project
         self.testrun_id = testrun
         self.testplan_id = testplan
@@ -93,6 +107,7 @@ class QasePytestPlugin:
         self.existing_ids = []
         self.last_node = None
         self.project = self.get_project(self.project_code)
+        print(self.project)
         self.comment = "Pytest Plugin Automation Run"
         if not self.project:
             raise ValueError("Unable to find given project code")
@@ -112,15 +127,18 @@ class QasePytestPlugin:
         return message
 
     def get_project(self, project_code):
-        api_instance = qaseio.ProjectsApi(self.client)
-        return api_instance.get_project(project_code)
+        print(project_code)
+        api_instance = ProjectsApi(self.client)
+        response = api_instance.get_project(project_code)
+        print(response)
+        return response.result
 
     def check_case_ids(self, data):
-        api_instance = qaseio.CasesApi(self.client)
+        api_instance = CasesApi(self.client)
         exist = []
         not_exist = []
         for _id in data.get("ids"):
-            case = api_instance.get_case(self.project_code, _id)
+            case = api_instance.get_case(self.project_code, _id).result
             if case:
                 self.cases_info[case.id] = case
                 exist.append(_id)
@@ -136,15 +154,16 @@ class QasePytestPlugin:
         return missing
 
     def check_testrun(self):
-        api_plans = qaseio.PlansApi(self.client)
         if (self.testrun_id or self.create_run) and self.testplan_id:
             raise ValueError(
                 "You should provide either use testrun or testplan"
             )
         if self.testplan_id:
+            api_plans = PlansApi(self.client)
             test_plan = api_plans.get_plan(
                 self.project_code, self.testplan_id
             )
+            print(test_plan)
             if not test_plan:
                 raise ValueError("Could not find test plan")
             self.create_testrun([case.case_id for case in test_plan.cases])
@@ -160,24 +179,27 @@ class QasePytestPlugin:
             )
 
     def load_testrun(self):
-        api_runs = qaseio.RunsApi(self.client)
+        api_runs = RunsApi(self.client)
         if self.testrun_id and self.testrun is None:
             self.testrun = api_runs.get_run(
                 self.project_code,
                 self.testrun_id,
                 include='cases',
-            )
+            ).result
 
     def create_testrun(self, cases):
-        api_runs = qaseio.RunsApi(self.client)
+        api_runs = RunsApi(self.client)
         if cases:
-            self.testrun_id = api_runs.create_run(
-                qaseio.RunCreate(
+            result = api_runs.create_run(
+                RunCreate(
                     title="Automated Run {}".format(str(datetime.now())),
-                    cases=cases
+                    cases=cases,
+                    is_autotest=True
                 ),
                 self.project_code,
-            ).id
+            )
+            print(result)
+            self.testrun_id = result.result.id
             print()
             print(
                 "Qase TMS: created testrun "
@@ -220,7 +242,7 @@ class QasePytestPlugin:
 
         Prints additional info at start of the run, if debug in True
         """
-        with FileLock("qaseio.lock"):
+        with FileLock("src.lock"):
             self.load_run_from_lock()
             self.load_testrun()
             self.nodes_with_ids, no_ids = get_ids_from_pytest_nodes(items)
@@ -332,14 +354,14 @@ class QasePytestPlugin:
                     result(PYTEST_TO_QASE_STATUS['PASSED'])
 
     def start_pytest_item(self, item):
-        api_results = qaseio.ResultsApi(self.client)
+        api_results = ResultsApi(self.client)
         if item.nodeid in self.nodes_with_ids:
             self.last_node = item.nodeid
             hashes = []
             for _id in self.nodes_with_ids[item.nodeid].get("ids", []):
                 if _id not in self.missing_ids:
                     result = api_results.create_result(
-                        qaseio.Result(
+                        Result(
                             case_id=_id,
                             status='in_progress',
                             is_api_result=True,
@@ -357,19 +379,19 @@ class QasePytestPlugin:
             hashes = results.get("hashes", [])
             attachments = results.get("attachments", [])
             steps = [
-                qaseio.ResultCreateSteps(position=pos, **values)
+                ResultCreateSteps(position=pos, **values)
                 for pos, values in results.get("steps", {}).items()
             ]
             attached = []
-            api_attachments = qaseio.AttachmentsApi(self.client)
+            api_attachments = AttachmentsApi(self.client)
             if attachments:
                 attached = api_attachments.upload_attachment(
                     self.project_code, **attachments
                 )
-            api_results = qaseio.ResultsApi(self.client)
+            api_results = ResultsApi(self.client)
             for hash in hashes:
                 api_results.update_result(
-                    qaseio.ResultUpdate(
+                    ResultUpdate(
                         status=results.get("result"),
                         comment=self.comment,
                         stacktrace=results.get("error"),
@@ -396,7 +418,7 @@ class QasePytestPlugin:
 
     def complete(self):
         if self.testrun_id and self.complete_run:
-            api_runs = qaseio.RunsApi(self.client)
+            api_runs = RunsApi(self.client)
             print()
             print(f"Finishing run {self.testrun_id}")
             res = api_runs.get_run(self.project_code, self.testrun_id)
