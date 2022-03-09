@@ -1,5 +1,6 @@
 # Defect
 
+
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
@@ -8,17 +9,20 @@ Name | Type | Description | Notes
 **actual_result** | **str** |  | [optional] 
 **severity** | **str** |  | [optional] 
 **status** | **str** |  | [optional] 
-**milestone_id** | **int** |  | [optional] 
-**custom_fields** | [**list[CustomFieldValue]**](CustomFieldValue.md) |  | [optional] 
-**attachments** | [**list[Attachment]**](Attachment.md) |  | [optional] 
-**created** | **datetime** |  | [optional] 
-**updated** | **datetime** |  | [optional] 
-**deleted** | **datetime** |  | [optional] 
-**resolved** | **datetime** |  | [optional] 
+**milestone_id** | **int, none_type** |  | [optional] 
+**custom_fields** | [**[CustomFieldValue]**](CustomFieldValue.md) |  | [optional] 
+**attachments** | [**[Attachment]**](Attachment.md) |  | [optional] 
+**resolved** | **datetime, none_type** |  | [optional] 
 **project_id** | **int** |  | [optional] 
 **member_id** | **int** |  | [optional] 
 **external_data** | **str** |  | [optional] 
-**tags** | [**list[TagValue]**](TagValue.md) |  | [optional] 
+**tags** | [**[TagValue]**](TagValue.md) |  | [optional] 
+**created_at** | **datetime** |  | [optional] 
+**updated_at** | **datetime** |  | [optional] 
+**created** | **str** | Deprecated, use the &#x60;created_at&#x60; property instead. | [optional] 
+**updated** | **str** | Deprecated, use the &#x60;updated_at&#x60; property instead. | [optional] 
+**any string name** | **bool, date, datetime, dict, float, int, list, str, none_type** | any string name can be used but the value must be the correct type | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 
