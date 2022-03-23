@@ -3,6 +3,11 @@ import pathlib
 import time
 from datetime import datetime
 from typing import Tuple, Union
+from urllib.parse import urlencode
+import platform
+import sys
+import pip
+from pkg_resources import DistributionNotFound, get_distribution
 
 import pytest
 
@@ -41,6 +46,14 @@ except ImportError:
         return True
 
 
+def package_version(name):
+    try:
+        version = get_distribution(name).version
+    except DistributionNotFound:
+        version = "unknown"
+    return version
+
+
 def get_ids_from_pytest_nodes(items):
     """Return tuple with item and test case ids for it and tests missing ids"""
     return (
@@ -77,6 +90,25 @@ def get_step_position(identifier: Union[int, str], case):
     )
 
 
+def get_platform():
+    platform_data = {
+        'os': platform.system(),
+        'arch': platform.machine(),
+        'python': '.'.join(map(str, sys.version_info)),
+        'pip': pip.__version__
+    }
+    return urlencode(platform_data)
+
+
+def get_client():
+    client_data = {
+        'qaseapi': package_version('qaseio'),
+        'qase-pytest': package_version('qase-pytest'),
+        'pytest': pytest.__version__,
+    }
+    return urlencode(client_data)
+
+
 class QasePytestPlugin:
     testrun = None
     meta_run_file = pathlib.Path("src.runid")
@@ -94,6 +126,8 @@ class QasePytestPlugin:
         configuration = Configuration()
         configuration.api_key['Token'] = api_token
         self.client = ApiClient(configuration)
+        self.client.set_default_header('X-Platform', get_platform())
+        self.client.set_default_header('X-Client', get_client())
         self.project_code = project
         self.testrun_id = testrun
         self.testplan_id = testplan
