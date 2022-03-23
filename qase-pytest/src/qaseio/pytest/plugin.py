@@ -9,7 +9,6 @@ import pytest
 import apitist
 from filelock import FileLock
 
-import qaseio
 from qaseio.api_client import ApiClient
 from qaseio.configuration import Configuration
 from qaseio.api.attachments_api import AttachmentsApi
@@ -22,7 +21,7 @@ from qaseio.models.run_create import RunCreate
 from qaseio.models.result import Result
 from qaseio.models.result_update import ResultUpdate
 from qaseio.models.result_create_steps import ResultCreateSteps
-
+from qaseio.rest import ApiException
 
 
 QASE_MARKER = "qase"
@@ -107,10 +106,7 @@ class QasePytestPlugin:
         self.existing_ids = []
         self.last_node = None
         self.project = self.get_project(self.project_code)
-        print(self.project)
         self.comment = "Pytest Plugin Automation Run"
-        if not self.project:
-            raise ValueError("Unable to find given project code")
         self.check_testrun()
         if self.debug:
             logger = logging.getLogger(apitist.dist_name)
@@ -127,11 +123,14 @@ class QasePytestPlugin:
         return message
 
     def get_project(self, project_code):
-        print(project_code)
         api_instance = ProjectsApi(self.client)
-        response = api_instance.get_project(project_code)
-        print(response)
-        return response.result
+        try:
+            response = api_instance.get_project(project_code)
+            if hasattr(response, 'result'):
+                return response.result
+            raise ValueError("Unable to find given project code")
+        except ApiException as e:
+            print("Exception when calling ProjectApi->get_project: %s\n" % e)
 
     def check_case_ids(self, data):
         api_instance = CasesApi(self.client)
@@ -368,7 +367,7 @@ class QasePytestPlugin:
                         ),
                         self.project_code,
                         self.testrun_id,
-                    )
+                    ).result
                     hashes.append(result.hash)
             self.nodes_with_ids[item.nodeid]["hashes"] = hashes
             self.nodes_with_ids[item.nodeid]["started_at"] = time.time()
@@ -387,7 +386,7 @@ class QasePytestPlugin:
             if attachments:
                 attached = api_attachments.upload_attachment(
                     self.project_code, **attachments
-                )
+                ).result
             api_results = ResultsApi(self.client)
             for hash in hashes:
                 api_results.update_result(
@@ -421,7 +420,7 @@ class QasePytestPlugin:
             api_runs = RunsApi(self.client)
             print()
             print(f"Finishing run {self.testrun_id}")
-            res = api_runs.get_run(self.project_code, self.testrun_id)
+            res = api_runs.get_run(self.project_code, self.testrun_id).result
             if res.status == 1:
                 print(f"Run {self.testrun_id} already finished")
                 return
