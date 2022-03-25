@@ -3,12 +3,11 @@ import pathlib
 import time
 from datetime import datetime
 from typing import Tuple, Union
-from urllib.parse import urlencode
 import platform
 import sys
 import pip
 from pkg_resources import DistributionNotFound, get_distribution
-
+from pprint import pprint
 import pytest
 
 import apitist
@@ -24,7 +23,7 @@ from qaseio.api.results_api import ResultsApi
 from qaseio.api.runs_api import RunsApi
 from qaseio.models.run_create import RunCreate
 from qaseio.models.result import Result
-from qaseio.models.result_update import ResultUpdate
+from qaseio.models.result_create_bulk import ResultCreateBulk
 from qaseio.models.result_create_steps import ResultCreateSteps
 from qaseio.rest import ApiException
 
@@ -97,7 +96,7 @@ def get_platform():
         'python': '.'.join(map(str, sys.version_info)),
         'pip': pip.__version__
     }
-    return urlencode(platform_data)
+    return ';'.join([f'{key}={value}' for key, value in platform_data.items()])
 
 
 def get_client():
@@ -106,7 +105,7 @@ def get_client():
         'qase-pytest': package_version('qase-pytest'),
         'pytest': pytest.__version__,
     }
-    return urlencode(client_data)
+    return ';'.join([f'{key}={value}' for key, value in client_data.items()])
 
 
 class QasePytestPlugin:
@@ -135,6 +134,7 @@ class QasePytestPlugin:
         self.complete_run = complete_run
         self.debug = debug
         self.nodes_with_ids = {}
+        self.results_for_send = {}
         self.cases_info = {}
         self.missing_ids = []
         self.existing_ids = []
@@ -196,7 +196,6 @@ class QasePytestPlugin:
             test_plan = api_plans.get_plan(
                 self.project_code, self.testplan_id
             )
-            print(test_plan)
             if not test_plan:
                 raise ValueError("Could not find test plan")
             self.create_testrun([case.case_id for case in test_plan.cases])
@@ -344,6 +343,7 @@ class QasePytestPlugin:
 
     def pytest_sessionfinish(self, session, exitstatus):
         if is_xdist_master(session):
+            self.send_bulk_results()
             if self.complete_run:
                 self.load_run_from_lock()
                 self.complete()
@@ -387,29 +387,20 @@ class QasePytestPlugin:
                     result(PYTEST_TO_QASE_STATUS['PASSED'])
 
     def start_pytest_item(self, item):
-        api_results = ResultsApi(self.client)
         if item.nodeid in self.nodes_with_ids:
             self.last_node = item.nodeid
-            hashes = []
             for _id in self.nodes_with_ids[item.nodeid].get("ids", []):
                 if _id not in self.missing_ids:
-                    result = api_results.create_result(
-                        Result(
-                            case_id=_id,
-                            status='in_progress',
-                            is_api_result=True,
-                        ),
-                        self.project_code,
-                        self.testrun_id,
-                    ).result
-                    hashes.append(result.hash)
-            self.nodes_with_ids[item.nodeid]["hashes"] = hashes
+                    self.results_for_send[_id] = {
+                        'case_id': _id,
+                        'status': 'in_progress',
+                        'is_api_result': True,
+                    }
             self.nodes_with_ids[item.nodeid]["started_at"] = time.time()
 
     def finish_pytest_item(self, item):
         if item.nodeid in self.nodes_with_ids:
             results = self.nodes_with_ids[item.nodeid]
-            hashes = results.get("hashes", [])
             attachments = results.get("attachments", [])
             steps = [
                 ResultCreateSteps(position=pos, **values)
@@ -421,23 +412,16 @@ class QasePytestPlugin:
                 attached = api_attachments.upload_attachment(
                     self.project_code, **attachments
                 ).result
-            api_results = ResultsApi(self.client)
-            for hash in hashes:
-                api_results.update_result(
-                    ResultUpdate(
-                        status=results.get("result"),
-                        comment=self.comment,
-                        stacktrace=results.get("error"),
-                        time_ms=int(
-                            (time.time() - results.get("started_at")) * 1000
-                        ),
-                        attachments=[attach.hash for attach in attached],
-                        steps=steps,
-                    ),
-                    self.project_code,
-                    self.testrun_id,
-                    hash,
-                )
+            for _id in self.nodes_with_ids[item.nodeid].get("ids", []):
+                if _id in self.results_for_send:
+                    self.results_for_send[_id]['status'] = results.get("result")
+                    self.results_for_send[_id]['comment'] = self.comment
+                    self.results_for_send[_id]['stacktrace'] = results.get("error")
+                    self.results_for_send[_id]['time_ms'] = int(
+                                (time.time() - results.get("started_at")) * 1000
+                            )
+                    self.results_for_send[_id]['attachments'] = [attach.hash for attach in attached]
+                    self.results_for_send[_id]['steps'] = steps
             self.last_node = None
 
     def add_attachments(
@@ -448,6 +432,22 @@ class QasePytestPlugin:
             attachments: list = node.get("attachments", [])
             attachments.extend(files)
             node["attachments"] = attachments
+
+    def send_bulk_results(self):
+        api_results = ResultsApi(self.client)
+        print()
+        print(f"Sending results to test run {self.testrun_id}...")
+        try:
+            api_results.create_result_bulk(
+                ResultCreateBulk(
+                    results=self.results_for_send
+                ),
+                self.project_code,
+                self.testrun_id
+            )
+            print(f"Results of run {self.testrun_id} was sent")
+        except Exception as e:
+            print(f"Error at sending results for run {self.testrun_id}: {e}")
 
     def complete(self):
         if self.testrun_id and self.complete_run:

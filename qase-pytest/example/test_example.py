@@ -9,10 +9,12 @@ def capital_case(x):
 def test_capital_case():
     assert capital_case('semaphor') == 'Semaphor'
 
+
 @qase.id(2)
 def test_capital_case2():
-    assert capital_case('semaphor') == 'Semaphor'
-
-@qase.id(3)
-def test_capital_case3():
     assert capital_case('semaphor') == 'semaphor'
+
+
+@qase.id(3, 4, 5)
+def test_capital_case3():
+    assert capital_case('semaphor') == 'Semaphor'
