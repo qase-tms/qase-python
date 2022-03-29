@@ -368,7 +368,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **update_suite**
-> IdResponse update_suite(code, id, suite_create)
+> IdResponse update_suite(code, id, inline_object1)
 
 Update test suite.
 
@@ -382,7 +382,7 @@ This method is used to update a test suite through API.
 import time
 import qaseio
 from qaseio.api import suites_api
-from qaseio.model.suite_create import SuiteCreate
+from qaseio.model.inline_object1 import InlineObject1
 from qaseio.model.id_response import IdResponse
 from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
@@ -408,17 +408,17 @@ with qaseio.ApiClient(configuration) as api_client:
     api_instance = suites_api.SuitesApi(api_client)
     code = "code_example" # str | Code of project, where to search entities.
     id = 1 # int | Identifier.
-    suite_create = SuiteCreate(
+    inline_object1 = InlineObject1(
         title="title_example",
         description="description_example",
         preconditions="preconditions_example",
         parent_id=1,
-    ) # SuiteCreate | 
+    ) # InlineObject1 | 
 
     # example passing only required values which don't have defaults set
     try:
         # Update test suite.
-        api_response = api_instance.update_suite(code, id, suite_create)
+        api_response = api_instance.update_suite(code, id, inline_object1)
         pprint(api_response)
     except qaseio.ApiException as e:
         print("Exception when calling SuitesApi->update_suite: %s\n" % e)
@@ -431,7 +431,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **code** | **str**| Code of project, where to search entities. |
  **id** | **int**| Identifier. |
- **suite_create** | [**SuiteCreate**](SuiteCreate.md)|  |
+ **inline_object1** | [**InlineObject1**](InlineObject1.md)|  |
 
 ### Return type
 

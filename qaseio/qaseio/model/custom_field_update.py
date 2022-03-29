@@ -98,7 +98,6 @@ class CustomFieldUpdate(ModelNormal):
         lazy_import()
         return {
             'title': (str,),  # noqa: E501
-            'projects_codes': ([str],),  # noqa: E501
             'value': ([CustomFieldCreateValue], none_type,),  # noqa: E501
             'replace_values': ({str: (str,)}, none_type,),  # noqa: E501
             'placeholder': (str, none_type,),  # noqa: E501
@@ -106,6 +105,7 @@ class CustomFieldUpdate(ModelNormal):
             'is_filterable': (bool,),  # noqa: E501
             'is_visible': (bool,),  # noqa: E501
             'is_required': (bool,),  # noqa: E501
+            'projects_codes': ([str],),  # noqa: E501
         }
 
     @cached_property
@@ -115,7 +115,6 @@ class CustomFieldUpdate(ModelNormal):
 
     attribute_map = {
         'title': 'title',  # noqa: E501
-        'projects_codes': 'projects_codes',  # noqa: E501
         'value': 'value',  # noqa: E501
         'replace_values': 'replace_values',  # noqa: E501
         'placeholder': 'placeholder',  # noqa: E501
@@ -123,6 +122,7 @@ class CustomFieldUpdate(ModelNormal):
         'is_filterable': 'is_filterable',  # noqa: E501
         'is_visible': 'is_visible',  # noqa: E501
         'is_required': 'is_required',  # noqa: E501
+        'projects_codes': 'projects_codes',  # noqa: E501
     }
 
     read_only_vars = {
@@ -132,12 +132,11 @@ class CustomFieldUpdate(ModelNormal):
 
     @classmethod
     @convert_js_args_to_python_args
-    def _from_openapi_data(cls, title, projects_codes, *args, **kwargs):  # noqa: E501
+    def _from_openapi_data(cls, title, *args, **kwargs):  # noqa: E501
         """CustomFieldUpdate - a model defined in OpenAPI
 
         Args:
             title (str):
-            projects_codes ([str]):
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -177,6 +176,7 @@ class CustomFieldUpdate(ModelNormal):
             is_filterable (bool): [optional]  # noqa: E501
             is_visible (bool): [optional]  # noqa: E501
             is_required (bool): [optional]  # noqa: E501
+            projects_codes ([str]): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -205,7 +205,6 @@ class CustomFieldUpdate(ModelNormal):
         self._visited_composed_classes = _visited_composed_classes + (self.__class__,)
 
         self.title = title
-        self.projects_codes = projects_codes
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \
@@ -226,12 +225,11 @@ class CustomFieldUpdate(ModelNormal):
     ])
 
     @convert_js_args_to_python_args
-    def __init__(self, title, projects_codes, *args, **kwargs):  # noqa: E501
+    def __init__(self, title, *args, **kwargs):  # noqa: E501
         """CustomFieldUpdate - a model defined in OpenAPI
 
         Args:
             title (str):
-            projects_codes ([str]):
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -271,6 +269,7 @@ class CustomFieldUpdate(ModelNormal):
             is_filterable (bool): [optional]  # noqa: E501
             is_visible (bool): [optional]  # noqa: E501
             is_required (bool): [optional]  # noqa: E501
+            projects_codes ([str]): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -297,7 +296,6 @@ class CustomFieldUpdate(ModelNormal):
         self._visited_composed_classes = _visited_composed_classes + (self.__class__,)
 
         self.title = title
-        self.projects_codes = projects_codes
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \

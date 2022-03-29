@@ -98,10 +98,10 @@ class Requirement(ModelNormal):
         """
         return {
             'id': (int,),  # noqa: E501
-            'parent_id': (int,),  # noqa: E501
+            'parent_id': (int, none_type,),  # noqa: E501
             'member_id': (int,),  # noqa: E501
             'title': (str,),  # noqa: E501
-            'description': (str,),  # noqa: E501
+            'description': (str, none_type,),  # noqa: E501
             'status': (str,),  # noqa: E501
             'type': (str,),  # noqa: E501
             'created_at': (datetime,),  # noqa: E501
@@ -167,10 +167,10 @@ class Requirement(ModelNormal):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             id (int): [optional]  # noqa: E501
-            parent_id (int): [optional]  # noqa: E501
+            parent_id (int, none_type): [optional]  # noqa: E501
             member_id (int): [optional]  # noqa: E501
             title (str): [optional]  # noqa: E501
-            description (str): [optional]  # noqa: E501
+            description (str, none_type): [optional]  # noqa: E501
             status (str): [optional]  # noqa: E501
             type (str): [optional]  # noqa: E501
             created_at (datetime): [optional]  # noqa: E501
@@ -257,10 +257,10 @@ class Requirement(ModelNormal):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             id (int): [optional]  # noqa: E501
-            parent_id (int): [optional]  # noqa: E501
+            parent_id (int, none_type): [optional]  # noqa: E501
             member_id (int): [optional]  # noqa: E501
             title (str): [optional]  # noqa: E501
-            description (str): [optional]  # noqa: E501
+            description (str, none_type): [optional]  # noqa: E501
             status (str): [optional]  # noqa: E501
             type (str): [optional]  # noqa: E501
             created_at (datetime): [optional]  # noqa: E501

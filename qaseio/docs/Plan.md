@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **int** |  | [optional] 
 **title** | **str** |  | [optional] 
-**description** | **str** |  | [optional] 
+**description** | **str, none_type** |  | [optional] 
 **cases_count** | **int** |  | [optional] 
 **created_at** | **datetime** |  | [optional] 
 **updated_at** | **datetime** |  | [optional] 

@@ -14,7 +14,11 @@ import unittest
 
 import qaseio
 from qaseio.model.attachment_get import AttachmentGet
+from qaseio.model.attachment_uploads_response_all_of import AttachmentUploadsResponseAllOf
+from qaseio.model.response import Response
 globals()['AttachmentGet'] = AttachmentGet
+globals()['AttachmentUploadsResponseAllOf'] = AttachmentUploadsResponseAllOf
+globals()['Response'] = Response
 from qaseio.model.attachment_uploads_response import AttachmentUploadsResponse
 
 

@@ -88,9 +88,9 @@ class Milestone(ModelNormal):
         return {
             'id': (int,),  # noqa: E501
             'title': (str,),  # noqa: E501
-            'description': (str,),  # noqa: E501
+            'description': (str, none_type,),  # noqa: E501
             'status': (str,),  # noqa: E501
-            'due_date': (datetime, none_type,),  # noqa: E501
+            'due_date': (str, none_type,),  # noqa: E501
             'created': (str,),  # noqa: E501
             'updated': (str, none_type,),  # noqa: E501
             'created_at': (datetime,),  # noqa: E501
@@ -157,9 +157,9 @@ class Milestone(ModelNormal):
                                 _visited_composed_classes = (Animal,)
             id (int): [optional]  # noqa: E501
             title (str): [optional]  # noqa: E501
-            description (str): [optional]  # noqa: E501
+            description (str, none_type): [optional]  # noqa: E501
             status (str): [optional]  # noqa: E501
-            due_date (datetime, none_type): [optional]  # noqa: E501
+            due_date (str, none_type): date in the 'Y-m-d H:i:s' format. [optional]  # noqa: E501
             created (str): Deprecated, use the `created_at` property instead.. [optional]  # noqa: E501
             updated (str, none_type): Deprecated, use the `updated_at` property instead.. [optional]  # noqa: E501
             created_at (datetime): [optional]  # noqa: E501
@@ -247,9 +247,9 @@ class Milestone(ModelNormal):
                                 _visited_composed_classes = (Animal,)
             id (int): [optional]  # noqa: E501
             title (str): [optional]  # noqa: E501
-            description (str): [optional]  # noqa: E501
+            description (str, none_type): [optional]  # noqa: E501
             status (str): [optional]  # noqa: E501
-            due_date (datetime, none_type): [optional]  # noqa: E501
+            due_date (str, none_type): date in the 'Y-m-d H:i:s' format. [optional]  # noqa: E501
             created (str): Deprecated, use the `created_at` property instead.. [optional]  # noqa: E501
             updated (str, none_type): Deprecated, use the `updated_at` property instead.. [optional]  # noqa: E501
             created_at (datetime): [optional]  # noqa: E501

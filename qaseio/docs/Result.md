@@ -5,15 +5,15 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **hash** | **str** |  | [optional] 
-**comment** | **str** |  | [optional] 
-**stacktrace** | **str** |  | [optional] 
+**comment** | **str, none_type** |  | [optional] 
+**stacktrace** | **str, none_type** |  | [optional] 
 **run_id** | **int** |  | [optional] 
 **case_id** | **int** |  | [optional] 
-**steps** | [**[ResultSteps]**](ResultSteps.md) |  | [optional] 
+**steps** | [**[ResultSteps], none_type**](ResultSteps.md) |  | [optional] 
 **status** | **str** |  | [optional] 
 **is_api_result** | **bool** |  | [optional] 
 **time_spent_ms** | **int** |  | [optional] 
-**end_time** | **datetime, none_type** |  | [optional] 
+**end_time** | **str, none_type** | date in the &#39;Y-m-d H:i:s&#39; format | [optional] 
 **attachments** | [**[Attachment]**](Attachment.md) |  | [optional] 
 **any string name** | **bool, date, datetime, dict, float, int, list, str, none_type** | any string name can be used but the value must be the correct type | [optional]
 

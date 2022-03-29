@@ -110,9 +110,9 @@ class ResultCreate(ModelNormal):
         """
         lazy_import()
         return {
+            'status': (str,),  # noqa: E501
             'case_id': (int,),  # noqa: E501
             'case': (ResultCreateCase,),  # noqa: E501
-            'status': (str,),  # noqa: E501
             'time': (int, none_type,),  # noqa: E501
             'time_ms': (int, none_type,),  # noqa: E501
             'defect': (bool, none_type,),  # noqa: E501
@@ -129,9 +129,9 @@ class ResultCreate(ModelNormal):
 
 
     attribute_map = {
+        'status': 'status',  # noqa: E501
         'case_id': 'case_id',  # noqa: E501
         'case': 'case',  # noqa: E501
-        'status': 'status',  # noqa: E501
         'time': 'time',  # noqa: E501
         'time_ms': 'time_ms',  # noqa: E501
         'defect': 'defect',  # noqa: E501
@@ -149,8 +149,11 @@ class ResultCreate(ModelNormal):
 
     @classmethod
     @convert_js_args_to_python_args
-    def _from_openapi_data(cls, *args, **kwargs):  # noqa: E501
+    def _from_openapi_data(cls, status, *args, **kwargs):  # noqa: E501
         """ResultCreate - a model defined in OpenAPI
+
+        Args:
+            status (str):
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -185,7 +188,6 @@ class ResultCreate(ModelNormal):
                                 _visited_composed_classes = (Animal,)
             case_id (int): [optional]  # noqa: E501
             case (ResultCreateCase): [optional]  # noqa: E501
-            status (str): [optional]  # noqa: E501
             time (int, none_type): [optional]  # noqa: E501
             time_ms (int, none_type): [optional]  # noqa: E501
             defect (bool, none_type): [optional]  # noqa: E501
@@ -221,6 +223,7 @@ class ResultCreate(ModelNormal):
         self._configuration = _configuration
         self._visited_composed_classes = _visited_composed_classes + (self.__class__,)
 
+        self.status = status
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \
@@ -241,8 +244,11 @@ class ResultCreate(ModelNormal):
     ])
 
     @convert_js_args_to_python_args
-    def __init__(self, *args, **kwargs):  # noqa: E501
+    def __init__(self, status, *args, **kwargs):  # noqa: E501
         """ResultCreate - a model defined in OpenAPI
+
+        Args:
+            status (str):
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -277,7 +283,6 @@ class ResultCreate(ModelNormal):
                                 _visited_composed_classes = (Animal,)
             case_id (int): [optional]  # noqa: E501
             case (ResultCreateCase): [optional]  # noqa: E501
-            status (str): [optional]  # noqa: E501
             time (int, none_type): [optional]  # noqa: E501
             time_ms (int, none_type): [optional]  # noqa: E501
             defect (bool, none_type): [optional]  # noqa: E501
@@ -311,6 +316,7 @@ class ResultCreate(ModelNormal):
         self._configuration = _configuration
         self._visited_composed_classes = _visited_composed_classes + (self.__class__,)
 
+        self.status = status
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \

@@ -6,9 +6,9 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **int** |  | [optional] 
 **title** | **str** |  | [optional] 
-**description** | **str** |  | [optional] 
+**description** | **str, none_type** |  | [optional] 
 **status** | **str** |  | [optional] 
-**due_date** | **datetime, none_type** |  | [optional] 
+**due_date** | **str, none_type** | date in the &#39;Y-m-d H:i:s&#39; format | [optional] 
 **created** | **str** | Deprecated, use the &#x60;created_at&#x60; property instead. | [optional] 
 **updated** | **str, none_type** | Deprecated, use the &#x60;updated_at&#x60; property instead. | [optional] 
 **created_at** | **datetime** |  | [optional] 

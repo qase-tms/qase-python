@@ -19,6 +19,7 @@ from qaseio.model.attachment_list_response_all_of_result import AttachmentListRe
 from qaseio.model.attachment_response import AttachmentResponse
 from qaseio.model.attachment_response_all_of import AttachmentResponseAllOf
 from qaseio.model.attachment_uploads_response import AttachmentUploadsResponse
+from qaseio.model.attachment_uploads_response_all_of import AttachmentUploadsResponseAllOf
 from qaseio.model.custom_field import CustomField
 from qaseio.model.custom_field_create import CustomFieldCreate
 from qaseio.model.custom_field_create_value import CustomFieldCreateValue
@@ -60,6 +61,7 @@ from qaseio.model.hash_response_all_of_result import HashResponseAllOfResult
 from qaseio.model.id_response import IdResponse
 from qaseio.model.id_response_all_of import IdResponseAllOf
 from qaseio.model.id_response_all_of_result import IdResponseAllOfResult
+from qaseio.model.inline_object1 import InlineObject1
 from qaseio.model.milestone import Milestone
 from qaseio.model.milestone_create import MilestoneCreate
 from qaseio.model.milestone_list_response import MilestoneListResponse
