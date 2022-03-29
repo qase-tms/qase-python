@@ -7,7 +7,6 @@ import platform
 import sys
 import pip
 from pkg_resources import DistributionNotFound, get_distribution
-from pprint import pprint
 import pytest
 
 import apitist
