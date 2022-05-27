@@ -93,8 +93,8 @@ class TestStep(ModelNormal):
             'shared_step_nested_hash': (str, none_type,),  # noqa: E501
             'position': (int,),  # noqa: E501
             'action': (str,),  # noqa: E501
-            'expected_result': (str,),  # noqa: E501
-            'data': (str,),  # noqa: E501
+            'expected_result': (str, none_type,),  # noqa: E501
+            'data': (str, none_type,),  # noqa: E501
             'attachments': ([Attachment],),  # noqa: E501
         }
 
@@ -160,8 +160,8 @@ class TestStep(ModelNormal):
             shared_step_nested_hash (str, none_type): [optional]  # noqa: E501
             position (int): [optional]  # noqa: E501
             action (str): [optional]  # noqa: E501
-            expected_result (str): [optional]  # noqa: E501
-            data (str): [optional]  # noqa: E501
+            expected_result (str, none_type): [optional]  # noqa: E501
+            data (str, none_type): [optional]  # noqa: E501
             attachments ([Attachment]): [optional]  # noqa: E501
         """
 
@@ -249,8 +249,8 @@ class TestStep(ModelNormal):
             shared_step_nested_hash (str, none_type): [optional]  # noqa: E501
             position (int): [optional]  # noqa: E501
             action (str): [optional]  # noqa: E501
-            expected_result (str): [optional]  # noqa: E501
-            data (str): [optional]  # noqa: E501
+            expected_result (str, none_type): [optional]  # noqa: E501
+            data (str, none_type): [optional]  # noqa: E501
             attachments ([Attachment]): [optional]  # noqa: E501
         """
 

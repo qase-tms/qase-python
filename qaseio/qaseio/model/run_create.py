@@ -106,6 +106,7 @@ class RunCreate(ModelNormal):
             'milestone_id': (int,),  # noqa: E501
             'plan_id': (int,),  # noqa: E501
             'tags': ([str],),  # noqa: E501
+            'custom_field': ({str: (str,)},),  # noqa: E501
         }
 
     @cached_property
@@ -123,6 +124,7 @@ class RunCreate(ModelNormal):
         'milestone_id': 'milestone_id',  # noqa: E501
         'plan_id': 'plan_id',  # noqa: E501
         'tags': 'tags',  # noqa: E501
+        'custom_field': 'custom_field',  # noqa: E501
     }
 
     read_only_vars = {
@@ -177,6 +179,7 @@ class RunCreate(ModelNormal):
             milestone_id (int): [optional]  # noqa: E501
             plan_id (int): [optional]  # noqa: E501
             tags ([str]): [optional]  # noqa: E501
+            custom_field ({str: (str,)}): A map of custom fields values (id => value). [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -270,6 +273,7 @@ class RunCreate(ModelNormal):
             milestone_id (int): [optional]  # noqa: E501
             plan_id (int): [optional]  # noqa: E501
             tags ([str]): [optional]  # noqa: E501
+            custom_field ({str: (str,)}): A map of custom fields values (id => value). [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)

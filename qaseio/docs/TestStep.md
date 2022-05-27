@@ -9,8 +9,8 @@ Name | Type | Description | Notes
 **shared_step_nested_hash** | **str, none_type** |  | [optional] 
 **position** | **int** |  | [optional] 
 **action** | **str** |  | [optional] 
-**expected_result** | **str** |  | [optional] 
-**data** | **str** |  | [optional] 
+**expected_result** | **str, none_type** |  | [optional] 
+**data** | **str, none_type** |  | [optional] 
 **attachments** | [**[Attachment]**](Attachment.md) |  | [optional] 
 **any string name** | **bool, date, datetime, dict, float, int, list, str, none_type** | any string name can be used but the value must be the correct type | [optional]
 

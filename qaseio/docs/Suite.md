@@ -6,8 +6,8 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **int** |  | [optional] 
 **title** | **str** |  | [optional] 
-**description** | **str** |  | [optional] 
-**preconditions** | **str** |  | [optional] 
+**description** | **str, none_type** |  | [optional] 
+**preconditions** | **str, none_type** |  | [optional] 
 **position** | **int** |  | [optional] 
 **cases_count** | **int** |  | [optional] 
 **parent_id** | **int, none_type** |  | [optional] 

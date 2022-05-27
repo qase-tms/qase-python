@@ -28,6 +28,7 @@ from qaseio.model.suite_create import SuiteCreate
 from qaseio.model.suite_delete import SuiteDelete
 from qaseio.model.suite_list_response import SuiteListResponse
 from qaseio.model.suite_response import SuiteResponse
+from qaseio.model.suite_update import SuiteUpdate
 
 
 class SuitesApi(object):
@@ -332,12 +333,12 @@ class SuitesApi(object):
                 'all': [
                     'code',
                     'id',
-                    'suite_create',
+                    'suite_update',
                 ],
                 'required': [
                     'code',
                     'id',
-                    'suite_create',
+                    'suite_update',
                 ],
                 'nullable': [
                 ],
@@ -361,8 +362,8 @@ class SuitesApi(object):
                         (str,),
                     'id':
                         (int,),
-                    'suite_create':
-                        (SuiteCreate,),
+                    'suite_update':
+                        (SuiteUpdate,),
                 },
                 'attribute_map': {
                     'code': 'code',
@@ -371,7 +372,7 @@ class SuitesApi(object):
                 'location_map': {
                     'code': 'path',
                     'id': 'path',
-                    'suite_create': 'body',
+                    'suite_update': 'body',
                 },
                 'collection_format_map': {
                 }
@@ -719,7 +720,7 @@ class SuitesApi(object):
         self,
         code,
         id,
-        suite_create,
+        suite_update,
         **kwargs
     ):
         """Update test suite.  # noqa: E501
@@ -728,13 +729,13 @@ class SuitesApi(object):
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.update_suite(code, id, suite_create, async_req=True)
+        >>> thread = api.update_suite(code, id, suite_update, async_req=True)
         >>> result = thread.get()
 
         Args:
             code (str): Code of project, where to search entities.
             id (int): Identifier.
-            suite_create (SuiteCreate):
+            suite_update (SuiteUpdate):
 
         Keyword Args:
             _return_http_data_only (bool): response data without head status
@@ -797,7 +798,7 @@ class SuitesApi(object):
             code
         kwargs['id'] = \
             id
-        kwargs['suite_create'] = \
-            suite_create
+        kwargs['suite_update'] = \
+            suite_update
         return self.update_suite_endpoint.call_with_http_info(**kwargs)
 

@@ -91,11 +91,11 @@ class Result(ModelNormal):
         lazy_import()
         return {
             'hash': (str,),  # noqa: E501
-            'comment': (str,),  # noqa: E501
-            'stacktrace': (str,),  # noqa: E501
+            'comment': (str, none_type,),  # noqa: E501
+            'stacktrace': (str, none_type,),  # noqa: E501
             'run_id': (int,),  # noqa: E501
             'case_id': (int,),  # noqa: E501
-            'steps': ([ResultSteps],),  # noqa: E501
+            'steps': ([ResultSteps], none_type,),  # noqa: E501
             'status': (str,),  # noqa: E501
             'is_api_result': (bool,),  # noqa: E501
             'time_spent_ms': (int,),  # noqa: E501
@@ -164,11 +164,11 @@ class Result(ModelNormal):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             hash (str): [optional]  # noqa: E501
-            comment (str): [optional]  # noqa: E501
-            stacktrace (str): [optional]  # noqa: E501
+            comment (str, none_type): [optional]  # noqa: E501
+            stacktrace (str, none_type): [optional]  # noqa: E501
             run_id (int): [optional]  # noqa: E501
             case_id (int): [optional]  # noqa: E501
-            steps ([ResultSteps]): [optional]  # noqa: E501
+            steps ([ResultSteps], none_type): [optional]  # noqa: E501
             status (str): [optional]  # noqa: E501
             is_api_result (bool): [optional]  # noqa: E501
             time_spent_ms (int): [optional]  # noqa: E501
@@ -256,11 +256,11 @@ class Result(ModelNormal):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             hash (str): [optional]  # noqa: E501
-            comment (str): [optional]  # noqa: E501
-            stacktrace (str): [optional]  # noqa: E501
+            comment (str, none_type): [optional]  # noqa: E501
+            stacktrace (str, none_type): [optional]  # noqa: E501
             run_id (int): [optional]  # noqa: E501
             case_id (int): [optional]  # noqa: E501
-            steps ([ResultSteps]): [optional]  # noqa: E501
+            steps ([ResultSteps], none_type): [optional]  # noqa: E501
             status (str): [optional]  # noqa: E501
             is_api_result (bool): [optional]  # noqa: E501
             time_spent_ms (int): [optional]  # noqa: E501

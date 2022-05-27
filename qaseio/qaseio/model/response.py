@@ -83,7 +83,6 @@ class Response(ModelNormal):
         """
         return {
             'status': (bool,),  # noqa: E501
-            'result': ({str: (bool, date, datetime, dict, float, int, list, str, none_type)},),  # noqa: E501
         }
 
     @cached_property
@@ -93,7 +92,6 @@ class Response(ModelNormal):
 
     attribute_map = {
         'status': 'status',  # noqa: E501
-        'result': 'result',  # noqa: E501
     }
 
     read_only_vars = {
@@ -138,7 +136,6 @@ class Response(ModelNormal):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             status (bool): [optional]  # noqa: E501
-            result ({str: (bool, date, datetime, dict, float, int, list, str, none_type)}): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -221,7 +218,6 @@ class Response(ModelNormal):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             status (bool): [optional]  # noqa: E501
-            result ({str: (bool, date, datetime, dict, float, int, list, str, none_type)}): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)

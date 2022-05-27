@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **int** |  | [optional] 
 **title** | **str** |  | [optional] 
-**description** | **str** |  | [optional] 
+**description** | **str, none_type** |  | [optional] 
 **status** | **int** |  | [optional] 
 **status_text** | **str** |  | [optional] 
 **start_time** | **datetime, none_type** |  | [optional] 

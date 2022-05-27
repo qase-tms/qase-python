@@ -108,13 +108,13 @@ class CustomFieldCreate(ModelNormal):
             'title': (str,),  # noqa: E501
             'entity': (int,),  # noqa: E501
             'type': (int,),  # noqa: E501
-            'projects_codes': ([str],),  # noqa: E501
             'value': ([CustomFieldCreateValue], none_type,),  # noqa: E501
             'placeholder': (str, none_type,),  # noqa: E501
             'default_value': (str, none_type,),  # noqa: E501
             'is_filterable': (bool,),  # noqa: E501
             'is_visible': (bool,),  # noqa: E501
             'is_required': (bool,),  # noqa: E501
+            'projects_codes': ([str],),  # noqa: E501
         }
 
     @cached_property
@@ -126,13 +126,13 @@ class CustomFieldCreate(ModelNormal):
         'title': 'title',  # noqa: E501
         'entity': 'entity',  # noqa: E501
         'type': 'type',  # noqa: E501
-        'projects_codes': 'projects_codes',  # noqa: E501
         'value': 'value',  # noqa: E501
         'placeholder': 'placeholder',  # noqa: E501
         'default_value': 'default_value',  # noqa: E501
         'is_filterable': 'is_filterable',  # noqa: E501
         'is_visible': 'is_visible',  # noqa: E501
         'is_required': 'is_required',  # noqa: E501
+        'projects_codes': 'projects_codes',  # noqa: E501
     }
 
     read_only_vars = {
@@ -142,14 +142,13 @@ class CustomFieldCreate(ModelNormal):
 
     @classmethod
     @convert_js_args_to_python_args
-    def _from_openapi_data(cls, title, entity, type, projects_codes, *args, **kwargs):  # noqa: E501
+    def _from_openapi_data(cls, title, entity, type, *args, **kwargs):  # noqa: E501
         """CustomFieldCreate - a model defined in OpenAPI
 
         Args:
             title (str):
             entity (int): Possible values: 0 - case; 1 - run; 2 - defect; 
             type (int): Possible values: 0 - number; 1 - string; 2 - text; 3 - selectbox; 4 - checkbox; 5 - radio; 6 - multiselect; 7 - url; 8 - user; 9 - datetime; 
-            projects_codes ([str]):
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -182,12 +181,13 @@ class CustomFieldCreate(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            value ([CustomFieldCreateValue], none_type): [optional]  # noqa: E501
+            value ([CustomFieldCreateValue], none_type): Required if type one of: 3 - selectbox; 5 - radio; 6 - multiselect; . [optional]  # noqa: E501
             placeholder (str, none_type): [optional]  # noqa: E501
             default_value (str, none_type): [optional]  # noqa: E501
             is_filterable (bool): [optional]  # noqa: E501
             is_visible (bool): [optional]  # noqa: E501
             is_required (bool): [optional]  # noqa: E501
+            projects_codes ([str]): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -218,7 +218,6 @@ class CustomFieldCreate(ModelNormal):
         self.title = title
         self.entity = entity
         self.type = type
-        self.projects_codes = projects_codes
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \
@@ -239,14 +238,13 @@ class CustomFieldCreate(ModelNormal):
     ])
 
     @convert_js_args_to_python_args
-    def __init__(self, title, entity, type, projects_codes, *args, **kwargs):  # noqa: E501
+    def __init__(self, title, entity, type, *args, **kwargs):  # noqa: E501
         """CustomFieldCreate - a model defined in OpenAPI
 
         Args:
             title (str):
             entity (int): Possible values: 0 - case; 1 - run; 2 - defect; 
             type (int): Possible values: 0 - number; 1 - string; 2 - text; 3 - selectbox; 4 - checkbox; 5 - radio; 6 - multiselect; 7 - url; 8 - user; 9 - datetime; 
-            projects_codes ([str]):
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -279,12 +277,13 @@ class CustomFieldCreate(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            value ([CustomFieldCreateValue], none_type): [optional]  # noqa: E501
+            value ([CustomFieldCreateValue], none_type): Required if type one of: 3 - selectbox; 5 - radio; 6 - multiselect; . [optional]  # noqa: E501
             placeholder (str, none_type): [optional]  # noqa: E501
             default_value (str, none_type): [optional]  # noqa: E501
             is_filterable (bool): [optional]  # noqa: E501
             is_visible (bool): [optional]  # noqa: E501
             is_required (bool): [optional]  # noqa: E501
+            projects_codes ([str]): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -313,7 +312,6 @@ class CustomFieldCreate(ModelNormal):
         self.title = title
         self.entity = entity
         self.type = type
-        self.projects_codes = projects_codes
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \

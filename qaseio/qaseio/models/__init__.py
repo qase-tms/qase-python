@@ -19,6 +19,7 @@ from qaseio.model.attachment_list_response_all_of_result import AttachmentListRe
 from qaseio.model.attachment_response import AttachmentResponse
 from qaseio.model.attachment_response_all_of import AttachmentResponseAllOf
 from qaseio.model.attachment_uploads_response import AttachmentUploadsResponse
+from qaseio.model.attachment_uploads_response_all_of import AttachmentUploadsResponseAllOf
 from qaseio.model.custom_field import CustomField
 from qaseio.model.custom_field_create import CustomFieldCreate
 from qaseio.model.custom_field_create_value import CustomFieldCreateValue
@@ -146,6 +147,7 @@ from qaseio.model.suite_list_response_all_of import SuiteListResponseAllOf
 from qaseio.model.suite_list_response_all_of_result import SuiteListResponseAllOfResult
 from qaseio.model.suite_response import SuiteResponse
 from qaseio.model.suite_response_all_of import SuiteResponseAllOf
+from qaseio.model.suite_update import SuiteUpdate
 from qaseio.model.tag_value import TagValue
 from qaseio.model.test_case import TestCase
 from qaseio.model.test_case_create import TestCaseCreate

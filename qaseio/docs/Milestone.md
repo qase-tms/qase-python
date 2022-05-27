@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **int** |  | [optional] 
 **title** | **str** |  | [optional] 
-**description** | **str** |  | [optional] 
+**description** | **str, none_type** |  | [optional] 
 **status** | **str** |  | [optional] 
 **due_date** | **datetime, none_type** |  | [optional] 
 **created** | **str** | Deprecated, use the &#x60;created_at&#x60; property instead. | [optional] 

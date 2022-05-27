@@ -84,9 +84,9 @@ class Environment(ModelNormal):
         return {
             'id': (int,),  # noqa: E501
             'title': (str,),  # noqa: E501
-            'description': (str,),  # noqa: E501
+            'description': (str, none_type,),  # noqa: E501
             'slug': (str,),  # noqa: E501
-            'host': (str,),  # noqa: E501
+            'host': (str, none_type,),  # noqa: E501
         }
 
     @cached_property
@@ -145,9 +145,9 @@ class Environment(ModelNormal):
                                 _visited_composed_classes = (Animal,)
             id (int): [optional]  # noqa: E501
             title (str): [optional]  # noqa: E501
-            description (str): [optional]  # noqa: E501
+            description (str, none_type): [optional]  # noqa: E501
             slug (str): [optional]  # noqa: E501
-            host (str): [optional]  # noqa: E501
+            host (str, none_type): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -231,9 +231,9 @@ class Environment(ModelNormal):
                                 _visited_composed_classes = (Animal,)
             id (int): [optional]  # noqa: E501
             title (str): [optional]  # noqa: E501
-            description (str): [optional]  # noqa: E501
+            description (str, none_type): [optional]  # noqa: E501
             slug (str): [optional]  # noqa: E501
-            host (str): [optional]  # noqa: E501
+            host (str, none_type): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)

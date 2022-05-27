@@ -13,6 +13,7 @@ docs/AttachmentListResponseAllOfResult.md
 docs/AttachmentResponse.md
 docs/AttachmentResponseAllOf.md
 docs/AttachmentUploadsResponse.md
+docs/AttachmentUploadsResponseAllOf.md
 docs/AttachmentsApi.md
 docs/CasesApi.md
 docs/CustomField.md
@@ -59,6 +60,7 @@ docs/HashResponseAllOfResult.md
 docs/IdResponse.md
 docs/IdResponseAllOf.md
 docs/IdResponseAllOfResult.md
+docs/InlineObject1.md
 docs/Milestone.md
 docs/MilestoneCreate.md
 docs/MilestoneListResponse.md
@@ -195,6 +197,7 @@ qaseio/model/attachment_list_response_all_of_result.py
 qaseio/model/attachment_response.py
 qaseio/model/attachment_response_all_of.py
 qaseio/model/attachment_uploads_response.py
+qaseio/model/attachment_uploads_response_all_of.py
 qaseio/model/custom_field.py
 qaseio/model/custom_field_create.py
 qaseio/model/custom_field_create_value.py
@@ -236,6 +239,7 @@ qaseio/model/hash_response_all_of_result.py
 qaseio/model/id_response.py
 qaseio/model/id_response_all_of.py
 qaseio/model/id_response_all_of_result.py
+qaseio/model/inline_object1.py
 qaseio/model/milestone.py
 qaseio/model/milestone_create.py
 qaseio/model/milestone_list_response.py
@@ -351,6 +355,7 @@ test/test_attachment_list_response_all_of_result.py
 test/test_attachment_response.py
 test/test_attachment_response_all_of.py
 test/test_attachment_uploads_response.py
+test/test_attachment_uploads_response_all_of.py
 test/test_attachments_api.py
 test/test_cases_api.py
 test/test_custom_field.py
@@ -397,6 +402,7 @@ test/test_hash_response_all_of_result.py
 test/test_id_response.py
 test/test_id_response_all_of.py
 test/test_id_response_all_of_result.py
+test/test_inline_object1.py
 test/test_milestone.py
 test/test_milestone_create.py
 test/test_milestone_list_response.py

@@ -721,7 +721,7 @@ class RunsApi(object):
             id (int): Identifier.
 
         Keyword Args:
-            include (str): Add this param to include a list of test cases into response. Possible value: cases . [optional]
+            include (str): Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects . [optional]
             _return_http_data_only (bool): response data without head status
                 code and headers. Default is True.
             _preload_content (bool): if False, the urllib3.HTTPResponse object
@@ -805,7 +805,7 @@ class RunsApi(object):
             filters (Filters5): [optional]
             limit (int): A number of entities in result set.. [optional] if omitted the server will use the default value of 10
             offset (int): How many entities should be skipped.. [optional] if omitted the server will use the default value of 0
-            include (str): Add this param to include a list of test cases into response. Possible value: cases . [optional]
+            include (str): Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects . [optional]
             _return_http_data_only (bool): response data without head status
                 code and headers. Default is True.
             _preload_content (bool): if False, the urllib3.HTTPResponse object

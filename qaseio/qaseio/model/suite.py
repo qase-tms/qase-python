@@ -84,8 +84,8 @@ class Suite(ModelNormal):
         return {
             'id': (int,),  # noqa: E501
             'title': (str,),  # noqa: E501
-            'description': (str,),  # noqa: E501
-            'preconditions': (str,),  # noqa: E501
+            'description': (str, none_type,),  # noqa: E501
+            'preconditions': (str, none_type,),  # noqa: E501
             'position': (int,),  # noqa: E501
             'cases_count': (int,),  # noqa: E501
             'parent_id': (int, none_type,),  # noqa: E501
@@ -157,8 +157,8 @@ class Suite(ModelNormal):
                                 _visited_composed_classes = (Animal,)
             id (int): [optional]  # noqa: E501
             title (str): [optional]  # noqa: E501
-            description (str): [optional]  # noqa: E501
-            preconditions (str): [optional]  # noqa: E501
+            description (str, none_type): [optional]  # noqa: E501
+            preconditions (str, none_type): [optional]  # noqa: E501
             position (int): [optional]  # noqa: E501
             cases_count (int): [optional]  # noqa: E501
             parent_id (int, none_type): [optional]  # noqa: E501
@@ -249,8 +249,8 @@ class Suite(ModelNormal):
                                 _visited_composed_classes = (Animal,)
             id (int): [optional]  # noqa: E501
             title (str): [optional]  # noqa: E501
-            description (str): [optional]  # noqa: E501
-            preconditions (str): [optional]  # noqa: E501
+            description (str, none_type): [optional]  # noqa: E501
+            preconditions (str, none_type): [optional]  # noqa: E501
             position (int): [optional]  # noqa: E501
             cases_count (int): [optional]  # noqa: E501
             parent_id (int, none_type): [optional]  # noqa: E501

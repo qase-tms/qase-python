@@ -97,9 +97,9 @@ class QqlTestCase(ModelNormal):
             'id': (int,),  # noqa: E501
             'position': (int,),  # noqa: E501
             'title': (str,),  # noqa: E501
-            'description': (str,),  # noqa: E501
-            'preconditions': (str,),  # noqa: E501
-            'postconditions': (str,),  # noqa: E501
+            'description': (str, none_type,),  # noqa: E501
+            'preconditions': (str, none_type,),  # noqa: E501
+            'postconditions': (str, none_type,),  # noqa: E501
             'severity': (int,),  # noqa: E501
             'priority': (int,),  # noqa: E501
             'type': (int,),  # noqa: E501
@@ -112,7 +112,7 @@ class QqlTestCase(ModelNormal):
             'suite_id': (int, none_type,),  # noqa: E501
             'custom_fields': ([CustomFieldValue],),  # noqa: E501
             'attachments': ([Attachment],),  # noqa: E501
-            'steps_type': (str,),  # noqa: E501
+            'steps_type': (str, none_type,),  # noqa: E501
             'steps': ([TestStep],),  # noqa: E501
             'params': (bool, date, datetime, dict, float, int, list, str, none_type,),  # noqa: E501
             'tags': ([TagValue],),  # noqa: E501
@@ -200,9 +200,9 @@ class QqlTestCase(ModelNormal):
             id (int): [optional]  # noqa: E501
             position (int): [optional]  # noqa: E501
             title (str): [optional]  # noqa: E501
-            description (str): [optional]  # noqa: E501
-            preconditions (str): [optional]  # noqa: E501
-            postconditions (str): [optional]  # noqa: E501
+            description (str, none_type): [optional]  # noqa: E501
+            preconditions (str, none_type): [optional]  # noqa: E501
+            postconditions (str, none_type): [optional]  # noqa: E501
             severity (int): [optional]  # noqa: E501
             priority (int): [optional]  # noqa: E501
             type (int): [optional]  # noqa: E501
@@ -215,7 +215,7 @@ class QqlTestCase(ModelNormal):
             suite_id (int, none_type): [optional]  # noqa: E501
             custom_fields ([CustomFieldValue]): [optional]  # noqa: E501
             attachments ([Attachment]): [optional]  # noqa: E501
-            steps_type (str): [optional]  # noqa: E501
+            steps_type (str, none_type): [optional]  # noqa: E501
             steps ([TestStep]): [optional]  # noqa: E501
             params (bool, date, datetime, dict, float, int, list, str, none_type): [optional]  # noqa: E501
             tags ([TagValue]): [optional]  # noqa: E501
@@ -307,9 +307,9 @@ class QqlTestCase(ModelNormal):
             id (int): [optional]  # noqa: E501
             position (int): [optional]  # noqa: E501
             title (str): [optional]  # noqa: E501
-            description (str): [optional]  # noqa: E501
-            preconditions (str): [optional]  # noqa: E501
-            postconditions (str): [optional]  # noqa: E501
+            description (str, none_type): [optional]  # noqa: E501
+            preconditions (str, none_type): [optional]  # noqa: E501
+            postconditions (str, none_type): [optional]  # noqa: E501
             severity (int): [optional]  # noqa: E501
             priority (int): [optional]  # noqa: E501
             type (int): [optional]  # noqa: E501
@@ -322,7 +322,7 @@ class QqlTestCase(ModelNormal):
             suite_id (int, none_type): [optional]  # noqa: E501
             custom_fields ([CustomFieldValue]): [optional]  # noqa: E501
             attachments ([Attachment]): [optional]  # noqa: E501
-            steps_type (str): [optional]  # noqa: E501
+            steps_type (str, none_type): [optional]  # noqa: E501
             steps ([TestStep]): [optional]  # noqa: E501
             params (bool, date, datetime, dict, float, int, list, str, none_type): [optional]  # noqa: E501
             tags ([TagValue]): [optional]  # noqa: E501

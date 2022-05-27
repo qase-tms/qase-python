@@ -5,11 +5,11 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **hash** | **str** |  | [optional] 
-**comment** | **str** |  | [optional] 
-**stacktrace** | **str** |  | [optional] 
+**comment** | **str, none_type** |  | [optional] 
+**stacktrace** | **str, none_type** |  | [optional] 
 **run_id** | **int** |  | [optional] 
 **case_id** | **int** |  | [optional] 
-**steps** | [**[ResultSteps]**](ResultSteps.md) |  | [optional] 
+**steps** | [**[ResultSteps], none_type**](ResultSteps.md) |  | [optional] 
 **status** | **str** |  | [optional] 
 **is_api_result** | **bool** |  | [optional] 
 **time_spent_ms** | **int** |  | [optional] 

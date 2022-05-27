@@ -88,7 +88,7 @@ class Milestone(ModelNormal):
         return {
             'id': (int,),  # noqa: E501
             'title': (str,),  # noqa: E501
-            'description': (str,),  # noqa: E501
+            'description': (str, none_type,),  # noqa: E501
             'status': (str,),  # noqa: E501
             'due_date': (datetime, none_type,),  # noqa: E501
             'created': (str,),  # noqa: E501
@@ -157,7 +157,7 @@ class Milestone(ModelNormal):
                                 _visited_composed_classes = (Animal,)
             id (int): [optional]  # noqa: E501
             title (str): [optional]  # noqa: E501
-            description (str): [optional]  # noqa: E501
+            description (str, none_type): [optional]  # noqa: E501
             status (str): [optional]  # noqa: E501
             due_date (datetime, none_type): [optional]  # noqa: E501
             created (str): Deprecated, use the `created_at` property instead.. [optional]  # noqa: E501
@@ -247,7 +247,7 @@ class Milestone(ModelNormal):
                                 _visited_composed_classes = (Animal,)
             id (int): [optional]  # noqa: E501
             title (str): [optional]  # noqa: E501
-            description (str): [optional]  # noqa: E501
+            description (str, none_type): [optional]  # noqa: E501
             status (str): [optional]  # noqa: E501
             due_date (datetime, none_type): [optional]  # noqa: E501
             created (str): Deprecated, use the `created_at` property instead.. [optional]  # noqa: E501
