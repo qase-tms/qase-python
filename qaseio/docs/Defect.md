@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **milestone_id** | **int, none_type** |  | [optional] 
 **custom_fields** | [**[CustomFieldValue]**](CustomFieldValue.md) |  | [optional] 
 **attachments** | [**[Attachment]**](Attachment.md) |  | [optional] 
-**resolved** | **datetime, none_type** |  | [optional] 
+**resolved_at** | **datetime, none_type** |  | [optional] 
 **project_id** | **int** |  | [optional] 
 **member_id** | **int** |  | [optional] 
 **external_data** | **str** |  | [optional] 

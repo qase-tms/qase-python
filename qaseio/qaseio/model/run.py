@@ -101,8 +101,8 @@ class Run(ModelNormal):
             'description': (str, none_type,),  # noqa: E501
             'status': (int,),  # noqa: E501
             'status_text': (str,),  # noqa: E501
-            'start_time': (str, none_type,),  # noqa: E501
-            'end_time': (str, none_type,),  # noqa: E501
+            'start_time': (datetime, none_type,),  # noqa: E501
+            'end_time': (datetime, none_type,),  # noqa: E501
             'public': (bool,),  # noqa: E501
             'stats': (RunStats,),  # noqa: E501
             'time_spent': (int,),  # noqa: E501
@@ -182,8 +182,8 @@ class Run(ModelNormal):
             description (str, none_type): [optional]  # noqa: E501
             status (int): [optional]  # noqa: E501
             status_text (str): [optional]  # noqa: E501
-            start_time (str, none_type): date in the 'Y-m-d H:i:s' format. [optional]  # noqa: E501
-            end_time (str, none_type): date in the 'Y-m-d H:i:s' format. [optional]  # noqa: E501
+            start_time (datetime, none_type): [optional]  # noqa: E501
+            end_time (datetime, none_type): [optional]  # noqa: E501
             public (bool): [optional]  # noqa: E501
             stats (RunStats): [optional]  # noqa: E501
             time_spent (int): Time in ms.. [optional]  # noqa: E501
@@ -278,8 +278,8 @@ class Run(ModelNormal):
             description (str, none_type): [optional]  # noqa: E501
             status (int): [optional]  # noqa: E501
             status_text (str): [optional]  # noqa: E501
-            start_time (str, none_type): date in the 'Y-m-d H:i:s' format. [optional]  # noqa: E501
-            end_time (str, none_type): date in the 'Y-m-d H:i:s' format. [optional]  # noqa: E501
+            start_time (datetime, none_type): [optional]  # noqa: E501
+            end_time (datetime, none_type): [optional]  # noqa: E501
             public (bool): [optional]  # noqa: E501
             stats (RunStats): [optional]  # noqa: E501
             time_spent (int): Time in ms.. [optional]  # noqa: E501

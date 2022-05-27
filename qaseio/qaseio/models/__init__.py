@@ -61,7 +61,6 @@ from qaseio.model.hash_response_all_of_result import HashResponseAllOfResult
 from qaseio.model.id_response import IdResponse
 from qaseio.model.id_response_all_of import IdResponseAllOf
 from qaseio.model.id_response_all_of_result import IdResponseAllOfResult
-from qaseio.model.inline_object1 import InlineObject1
 from qaseio.model.milestone import Milestone
 from qaseio.model.milestone_create import MilestoneCreate
 from qaseio.model.milestone_list_response import MilestoneListResponse
@@ -148,6 +147,7 @@ from qaseio.model.suite_list_response_all_of import SuiteListResponseAllOf
 from qaseio.model.suite_list_response_all_of_result import SuiteListResponseAllOfResult
 from qaseio.model.suite_response import SuiteResponse
 from qaseio.model.suite_response_all_of import SuiteResponseAllOf
+from qaseio.model.suite_update import SuiteUpdate
 from qaseio.model.tag_value import TagValue
 from qaseio.model.test_case import TestCase
 from qaseio.model.test_case_create import TestCaseCreate

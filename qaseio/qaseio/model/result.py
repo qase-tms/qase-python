@@ -99,7 +99,7 @@ class Result(ModelNormal):
             'status': (str,),  # noqa: E501
             'is_api_result': (bool,),  # noqa: E501
             'time_spent_ms': (int,),  # noqa: E501
-            'end_time': (str, none_type,),  # noqa: E501
+            'end_time': (datetime, none_type,),  # noqa: E501
             'attachments': ([Attachment],),  # noqa: E501
         }
 
@@ -172,7 +172,7 @@ class Result(ModelNormal):
             status (str): [optional]  # noqa: E501
             is_api_result (bool): [optional]  # noqa: E501
             time_spent_ms (int): [optional]  # noqa: E501
-            end_time (str, none_type): date in the 'Y-m-d H:i:s' format. [optional]  # noqa: E501
+            end_time (datetime, none_type): [optional]  # noqa: E501
             attachments ([Attachment]): [optional]  # noqa: E501
         """
 
@@ -264,7 +264,7 @@ class Result(ModelNormal):
             status (str): [optional]  # noqa: E501
             is_api_result (bool): [optional]  # noqa: E501
             time_spent_ms (int): [optional]  # noqa: E501
-            end_time (str, none_type): date in the 'Y-m-d H:i:s' format. [optional]  # noqa: E501
+            end_time (datetime, none_type): [optional]  # noqa: E501
             attachments ([Attachment]): [optional]  # noqa: E501
         """
 

@@ -119,7 +119,7 @@ class ResultCreate(ModelNormal):
             'attachments': ([str], none_type,),  # noqa: E501
             'stacktrace': (str, none_type,),  # noqa: E501
             'comment': (str, none_type,),  # noqa: E501
-            'param': ({str: (str,)},),  # noqa: E501
+            'param': ({str: (str,)}, none_type,),  # noqa: E501
             'steps': ([ResultCreateSteps], none_type,),  # noqa: E501
         }
 
@@ -194,7 +194,7 @@ class ResultCreate(ModelNormal):
             attachments ([str], none_type): [optional]  # noqa: E501
             stacktrace (str, none_type): [optional]  # noqa: E501
             comment (str, none_type): [optional]  # noqa: E501
-            param ({str: (str,)}): A map of parameters (name => value). [optional]  # noqa: E501
+            param ({str: (str,)}, none_type): A map of parameters (name => value). [optional]  # noqa: E501
             steps ([ResultCreateSteps], none_type): [optional]  # noqa: E501
         """
 
@@ -289,7 +289,7 @@ class ResultCreate(ModelNormal):
             attachments ([str], none_type): [optional]  # noqa: E501
             stacktrace (str, none_type): [optional]  # noqa: E501
             comment (str, none_type): [optional]  # noqa: E501
-            param ({str: (str,)}): A map of parameters (name => value). [optional]  # noqa: E501
+            param ({str: (str,)}, none_type): A map of parameters (name => value). [optional]  # noqa: E501
             steps ([ResultCreateSteps], none_type): [optional]  # noqa: E501
         """
 

@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 **status** | **str** |  | [optional] 
 **is_api_result** | **bool** |  | [optional] 
 **time_spent_ms** | **int** |  | [optional] 
-**end_time** | **str, none_type** | date in the &#39;Y-m-d H:i:s&#39; format | [optional] 
+**end_time** | **datetime, none_type** |  | [optional] 
 **attachments** | [**[Attachment]**](Attachment.md) |  | [optional] 
 **any string name** | **bool, date, datetime, dict, float, int, list, str, none_type** | any string name can be used but the value must be the correct type | [optional]
 

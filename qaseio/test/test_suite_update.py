@@ -13,11 +13,11 @@ import sys
 import unittest
 
 import qaseio
-from qaseio.model.inline_object1 import InlineObject1
+from qaseio.model.suite_update import SuiteUpdate
 
 
-class TestInlineObject1(unittest.TestCase):
-    """InlineObject1 unit test stubs"""
+class TestSuiteUpdate(unittest.TestCase):
+    """SuiteUpdate unit test stubs"""
 
     def setUp(self):
         pass
@@ -25,10 +25,10 @@ class TestInlineObject1(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def testInlineObject1(self):
-        """Test InlineObject1"""
+    def testSuiteUpdate(self):
+        """Test SuiteUpdate"""
         # FIXME: construct object with mandatory attributes with example values
-        # model = InlineObject1()  # noqa: E501
+        # model = SuiteUpdate()  # noqa: E501
         pass
 
 

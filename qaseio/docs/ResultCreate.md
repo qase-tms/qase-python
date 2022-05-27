@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 **attachments** | **[str], none_type** |  | [optional] 
 **stacktrace** | **str, none_type** |  | [optional] 
 **comment** | **str, none_type** |  | [optional] 
-**param** | **{str: (str,)}** | A map of parameters (name &#x3D;&gt; value) | [optional] 
+**param** | **{str: (str,)}, none_type** | A map of parameters (name &#x3D;&gt; value) | [optional] 
 **steps** | [**[ResultCreateSteps], none_type**](ResultCreateSteps.md) |  | [optional] 
 **any string name** | **bool, date, datetime, dict, float, int, list, str, none_type** | any string name can be used but the value must be the correct type | [optional]
 

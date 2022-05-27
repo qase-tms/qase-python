@@ -146,6 +146,9 @@ with qaseio.ApiClient(configuration) as api_client:
         tags=[
             "tags_example",
         ],
+        custom_field={
+            "key": "key_example",
+        },
     ) # RunCreate | 
 
     # example passing only required values which don't have defaults set
@@ -307,7 +310,7 @@ with qaseio.ApiClient(configuration) as api_client:
     api_instance = runs_api.RunsApi(api_client)
     code = "code_example" # str | Code of project, where to search entities.
     id = 1 # int | Identifier.
-    include = "include_example" # str | Add this param to include a list of test cases into response. Possible value: cases  (optional)
+    include = "include_example" # str | Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects  (optional)
 
     # example passing only required values which don't have defaults set
     try:
@@ -334,7 +337,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **code** | **str**| Code of project, where to search entities. |
  **id** | **int**| Identifier. |
- **include** | **str**| Add this param to include a list of test cases into response. Possible value: cases  | [optional]
+ **include** | **str**| Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects  | [optional]
 
 ### Return type
 
@@ -408,7 +411,7 @@ with qaseio.ApiClient(configuration) as api_client:
     } # Filters5 |  (optional)
     limit = 10 # int | A number of entities in result set. (optional) if omitted the server will use the default value of 10
     offset = 0 # int | How many entities should be skipped. (optional) if omitted the server will use the default value of 0
-    include = "include_example" # str | Add this param to include a list of test cases into response. Possible value: cases  (optional)
+    include = "include_example" # str | Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects  (optional)
 
     # example passing only required values which don't have defaults set
     try:
@@ -437,7 +440,7 @@ Name | Type | Description  | Notes
  **filters** | **Filters5**|  | [optional]
  **limit** | **int**| A number of entities in result set. | [optional] if omitted the server will use the default value of 10
  **offset** | **int**| How many entities should be skipped. | [optional] if omitted the server will use the default value of 0
- **include** | **str**| Add this param to include a list of test cases into response. Possible value: cases  | [optional]
+ **include** | **str**| Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects  | [optional]
 
 ### Return type
 
