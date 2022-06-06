@@ -24,7 +24,8 @@ QASE_MARKER = "qase"
 PYTEST_TO_QASE_STATUS = {
     "PASSED": TestRunResultStatus.PASSED,
     "FAILED": TestRunResultStatus.FAILED,
-    "SKIPPED": TestRunResultStatus.BLOCKED,
+    "SKIPPED": TestRunResultStatus.SKIPPED,
+    "BLOCKED": TestRunResultStatus.BLOCKED,
 }
 
 try:
@@ -322,7 +323,7 @@ class QasePytestPlugin:
                     None,
                     TestRunResultStatus.PASSED,
                 ):
-                    result("skipped")
+                    result(TestRunResultStatus.SKIPPED)
             else:
                 if self.nodes_with_ids[item.nodeid]["result"] is None:
                     result(TestRunResultStatus.PASSED)
