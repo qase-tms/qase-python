@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **title** | **str** |  | 
-**value** | [**[CustomFieldCreateValue], none_type**](CustomFieldCreateValue.md) |  | [optional] 
+**value** | [**[CustomFieldCreateValueInner], none_type**](CustomFieldCreateValueInner.md) |  | [optional] 
 **replace_values** | **{str: (str,)}, none_type** | Dictionary of old values and their replacemants | [optional] 
 **placeholder** | **str, none_type** |  | [optional] 
 **default_value** | **str, none_type** |  | [optional] 

@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **stacktrace** | **str, none_type** |  | [optional] 
 **run_id** | **int** |  | [optional] 
 **case_id** | **int** |  | [optional] 
-**steps** | [**[ResultSteps], none_type**](ResultSteps.md) |  | [optional] 
+**steps** | [**[ResultStepsInner], none_type**](ResultStepsInner.md) |  | [optional] 
 **status** | **str** |  | [optional] 
 **is_api_result** | **bool** |  | [optional] 
 **time_spent_ms** | **int** |  | [optional] 

@@ -376,7 +376,7 @@ This method allows to retrieve all runs stored in selected project.
 import time
 import qaseio
 from qaseio.api import runs_api
-from qaseio.model.filters5 import Filters5
+from qaseio.model.get_runs_filters_parameter import GetRunsFiltersParameter
 from qaseio.model.run_list_response import RunListResponse
 from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
@@ -401,14 +401,14 @@ with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = runs_api.RunsApi(api_client)
     code = "code_example" # str | Code of project, where to search entities.
-    filters = {
+    filters = GetRunsFiltersParameter(
         search="search_example",
         status="status_example",
         milestone=1,
         environment=1,
         from_start_time=1,
         to_start_time=1,
-    } # Filters5 |  (optional)
+    ) # GetRunsFiltersParameter |  (optional)
     limit = 10 # int | A number of entities in result set. (optional) if omitted the server will use the default value of 10
     offset = 0 # int | How many entities should be skipped. (optional) if omitted the server will use the default value of 0
     include = "include_example" # str | Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects  (optional)
@@ -437,7 +437,7 @@ with qaseio.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **code** | **str**| Code of project, where to search entities. |
- **filters** | **Filters5**|  | [optional]
+ **filters** | **GetRunsFiltersParameter**|  | [optional]
  **limit** | **int**| A number of entities in result set. | [optional] if omitted the server will use the default value of 10
  **offset** | **int**| How many entities should be skipped. | [optional] if omitted the server will use the default value of 0
  **include** | **str**| Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects  | [optional]

@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **attachments** | **[str], none_type** |  | [optional] 
 **stacktrace** | **str, none_type** |  | [optional] 
 **comment** | **str, none_type** |  | [optional] 
-**steps** | [**[ResultUpdateSteps], none_type**](ResultUpdateSteps.md) |  | [optional] 
+**steps** | [**[ResultUpdateStepsInner], none_type**](ResultUpdateStepsInner.md) |  | [optional] 
 **any string name** | **bool, date, datetime, dict, float, int, list, str, none_type** | any string name can be used but the value must be the correct type | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

@@ -32,9 +32,9 @@ from qaseio.exceptions import ApiAttributeError
 
 def lazy_import():
     from qaseio.model.result_create_case import ResultCreateCase
-    from qaseio.model.result_create_steps import ResultCreateSteps
+    from qaseio.model.result_create_steps_inner import ResultCreateStepsInner
     globals()['ResultCreateCase'] = ResultCreateCase
-    globals()['ResultCreateSteps'] = ResultCreateSteps
+    globals()['ResultCreateStepsInner'] = ResultCreateStepsInner
 
 
 class ResultCreate(ModelNormal):
@@ -120,7 +120,7 @@ class ResultCreate(ModelNormal):
             'stacktrace': (str, none_type,),  # noqa: E501
             'comment': (str, none_type,),  # noqa: E501
             'param': ({str: (str,)}, none_type,),  # noqa: E501
-            'steps': ([ResultCreateSteps], none_type,),  # noqa: E501
+            'steps': ([ResultCreateStepsInner], none_type,),  # noqa: E501
         }
 
     @cached_property
@@ -195,11 +195,11 @@ class ResultCreate(ModelNormal):
             stacktrace (str, none_type): [optional]  # noqa: E501
             comment (str, none_type): [optional]  # noqa: E501
             param ({str: (str,)}, none_type): A map of parameters (name => value). [optional]  # noqa: E501
-            steps ([ResultCreateSteps], none_type): [optional]  # noqa: E501
+            steps ([ResultCreateStepsInner], none_type): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
-        _spec_property_naming = kwargs.pop('_spec_property_naming', False)
+        _spec_property_naming = kwargs.pop('_spec_property_naming', True)
         _path_to_item = kwargs.pop('_path_to_item', ())
         _configuration = kwargs.pop('_configuration', None)
         _visited_composed_classes = kwargs.pop('_visited_composed_classes', ())
@@ -207,14 +207,18 @@ class ResultCreate(ModelNormal):
         self = super(OpenApiModel, cls).__new__(cls)
 
         if args:
-            raise ApiTypeError(
-                "Invalid positional arguments=%s passed to %s. Remove those invalid positional arguments." % (
-                    args,
-                    self.__class__.__name__,
-                ),
-                path_to_item=_path_to_item,
-                valid_classes=(self.__class__,),
-            )
+            for arg in args:
+                if isinstance(arg, dict):
+                    kwargs.update(arg)
+                else:
+                    raise ApiTypeError(
+                        "Invalid positional arguments=%s passed to %s. Remove those invalid positional arguments." % (
+                            args,
+                            self.__class__.__name__,
+                        ),
+                        path_to_item=_path_to_item,
+                        valid_classes=(self.__class__,),
+                    )
 
         self._data_store = {}
         self._check_type = _check_type
@@ -290,7 +294,7 @@ class ResultCreate(ModelNormal):
             stacktrace (str, none_type): [optional]  # noqa: E501
             comment (str, none_type): [optional]  # noqa: E501
             param ({str: (str,)}, none_type): A map of parameters (name => value). [optional]  # noqa: E501
-            steps ([ResultCreateSteps], none_type): [optional]  # noqa: E501
+            steps ([ResultCreateStepsInner], none_type): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -300,14 +304,18 @@ class ResultCreate(ModelNormal):
         _visited_composed_classes = kwargs.pop('_visited_composed_classes', ())
 
         if args:
-            raise ApiTypeError(
-                "Invalid positional arguments=%s passed to %s. Remove those invalid positional arguments." % (
-                    args,
-                    self.__class__.__name__,
-                ),
-                path_to_item=_path_to_item,
-                valid_classes=(self.__class__,),
-            )
+            for arg in args:
+                if isinstance(arg, dict):
+                    kwargs.update(arg)
+                else:
+                    raise ApiTypeError(
+                        "Invalid positional arguments=%s passed to %s. Remove those invalid positional arguments." % (
+                            args,
+                            self.__class__.__name__,
+                        ),
+                        path_to_item=_path_to_item,
+                        valid_classes=(self.__class__,),
+                    )
 
         self._data_store = {}
         self._check_type = _check_type

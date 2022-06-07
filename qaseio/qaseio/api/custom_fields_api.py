@@ -26,7 +26,7 @@ from qaseio.model.custom_field_create import CustomFieldCreate
 from qaseio.model.custom_field_response import CustomFieldResponse
 from qaseio.model.custom_field_update import CustomFieldUpdate
 from qaseio.model.custom_fields_response import CustomFieldsResponse
-from qaseio.model.filters1 import Filters1
+from qaseio.model.get_custom_fields_filters_parameter import GetCustomFieldsFiltersParameter
 from qaseio.model.id_response import IdResponse
 from qaseio.model.response import Response
 
@@ -240,7 +240,7 @@ class CustomFieldsApi(object):
                 },
                 'openapi_types': {
                     'filters':
-                        (Filters1,),
+                        (GetCustomFieldsFiltersParameter,),
                     'limit':
                         (int,),
                     'offset':
@@ -369,6 +369,10 @@ class CustomFieldsApi(object):
             _host_index (int/None): specifies the index of the server
                 that we want to use.
                 Default is read from the configuration.
+            _request_auths (list): set to override the auth_settings for an a single
+                request; this effectively ignores the authentication
+                in the spec for a single request.
+                Default is None
             async_req (bool): execute request asynchronously
 
         Returns:
@@ -400,6 +404,7 @@ class CustomFieldsApi(object):
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
+        kwargs['_request_auths'] = kwargs.get('_request_auths', None)
         kwargs['custom_field_create'] = \
             custom_field_create
         return self.create_custom_field_endpoint.call_with_http_info(**kwargs)
@@ -447,6 +452,10 @@ class CustomFieldsApi(object):
             _host_index (int/None): specifies the index of the server
                 that we want to use.
                 Default is read from the configuration.
+            _request_auths (list): set to override the auth_settings for an a single
+                request; this effectively ignores the authentication
+                in the spec for a single request.
+                Default is None
             async_req (bool): execute request asynchronously
 
         Returns:
@@ -478,6 +487,7 @@ class CustomFieldsApi(object):
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
+        kwargs['_request_auths'] = kwargs.get('_request_auths', None)
         kwargs['id'] = \
             id
         return self.delete_custom_field_endpoint.call_with_http_info(**kwargs)
@@ -525,6 +535,10 @@ class CustomFieldsApi(object):
             _host_index (int/None): specifies the index of the server
                 that we want to use.
                 Default is read from the configuration.
+            _request_auths (list): set to override the auth_settings for an a single
+                request; this effectively ignores the authentication
+                in the spec for a single request.
+                Default is None
             async_req (bool): execute request asynchronously
 
         Returns:
@@ -556,6 +570,7 @@ class CustomFieldsApi(object):
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
+        kwargs['_request_auths'] = kwargs.get('_request_auths', None)
         kwargs['id'] = \
             id
         return self.get_custom_field_endpoint.call_with_http_info(**kwargs)
@@ -575,7 +590,7 @@ class CustomFieldsApi(object):
 
 
         Keyword Args:
-            filters (Filters1): [optional]
+            filters (GetCustomFieldsFiltersParameter): [optional]
             limit (int): A number of entities in result set.. [optional] if omitted the server will use the default value of 10
             offset (int): How many entities should be skipped.. [optional] if omitted the server will use the default value of 0
             _return_http_data_only (bool): response data without head status
@@ -603,6 +618,10 @@ class CustomFieldsApi(object):
             _host_index (int/None): specifies the index of the server
                 that we want to use.
                 Default is read from the configuration.
+            _request_auths (list): set to override the auth_settings for an a single
+                request; this effectively ignores the authentication
+                in the spec for a single request.
+                Default is None
             async_req (bool): execute request asynchronously
 
         Returns:
@@ -634,6 +653,7 @@ class CustomFieldsApi(object):
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
+        kwargs['_request_auths'] = kwargs.get('_request_auths', None)
         return self.get_custom_fields_endpoint.call_with_http_info(**kwargs)
 
     def update_custom_field(
@@ -681,6 +701,10 @@ class CustomFieldsApi(object):
             _host_index (int/None): specifies the index of the server
                 that we want to use.
                 Default is read from the configuration.
+            _request_auths (list): set to override the auth_settings for an a single
+                request; this effectively ignores the authentication
+                in the spec for a single request.
+                Default is None
             async_req (bool): execute request asynchronously
 
         Returns:
@@ -712,6 +736,7 @@ class CustomFieldsApi(object):
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
+        kwargs['_request_auths'] = kwargs.get('_request_auths', None)
         kwargs['id'] = \
             id
         kwargs['custom_field_update'] = \

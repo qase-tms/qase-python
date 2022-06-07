@@ -22,7 +22,7 @@ from qaseio.model_utils import (  # noqa: F401
     none_type,
     validate_and_convert_types
 )
-from qaseio.model.filters7 import Filters7
+from qaseio.model.get_milestones_filters_parameter import GetMilestonesFiltersParameter
 from qaseio.model.id_response import IdResponse
 from qaseio.model.suite_create import SuiteCreate
 from qaseio.model.suite_delete import SuiteDelete
@@ -289,7 +289,7 @@ class SuitesApi(object):
                     'code':
                         (str,),
                     'filters':
-                        (Filters7,),
+                        (GetMilestonesFiltersParameter,),
                     'limit':
                         (int,),
                     'offset':
@@ -433,6 +433,10 @@ class SuitesApi(object):
             _host_index (int/None): specifies the index of the server
                 that we want to use.
                 Default is read from the configuration.
+            _request_auths (list): set to override the auth_settings for an a single
+                request; this effectively ignores the authentication
+                in the spec for a single request.
+                Default is None
             async_req (bool): execute request asynchronously
 
         Returns:
@@ -464,6 +468,7 @@ class SuitesApi(object):
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
+        kwargs['_request_auths'] = kwargs.get('_request_auths', None)
         kwargs['code'] = \
             code
         kwargs['suite_create'] = \
@@ -516,6 +521,10 @@ class SuitesApi(object):
             _host_index (int/None): specifies the index of the server
                 that we want to use.
                 Default is read from the configuration.
+            _request_auths (list): set to override the auth_settings for an a single
+                request; this effectively ignores the authentication
+                in the spec for a single request.
+                Default is None
             async_req (bool): execute request asynchronously
 
         Returns:
@@ -547,6 +556,7 @@ class SuitesApi(object):
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
+        kwargs['_request_auths'] = kwargs.get('_request_auths', None)
         kwargs['code'] = \
             code
         kwargs['id'] = \
@@ -598,6 +608,10 @@ class SuitesApi(object):
             _host_index (int/None): specifies the index of the server
                 that we want to use.
                 Default is read from the configuration.
+            _request_auths (list): set to override the auth_settings for an a single
+                request; this effectively ignores the authentication
+                in the spec for a single request.
+                Default is None
             async_req (bool): execute request asynchronously
 
         Returns:
@@ -629,6 +643,7 @@ class SuitesApi(object):
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
+        kwargs['_request_auths'] = kwargs.get('_request_auths', None)
         kwargs['code'] = \
             code
         kwargs['id'] = \
@@ -653,7 +668,7 @@ class SuitesApi(object):
             code (str): Code of project, where to search entities.
 
         Keyword Args:
-            filters (Filters7): [optional]
+            filters (GetMilestonesFiltersParameter): [optional]
             limit (int): A number of entities in result set.. [optional] if omitted the server will use the default value of 10
             offset (int): How many entities should be skipped.. [optional] if omitted the server will use the default value of 0
             _return_http_data_only (bool): response data without head status
@@ -681,6 +696,10 @@ class SuitesApi(object):
             _host_index (int/None): specifies the index of the server
                 that we want to use.
                 Default is read from the configuration.
+            _request_auths (list): set to override the auth_settings for an a single
+                request; this effectively ignores the authentication
+                in the spec for a single request.
+                Default is None
             async_req (bool): execute request asynchronously
 
         Returns:
@@ -712,6 +731,7 @@ class SuitesApi(object):
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
+        kwargs['_request_auths'] = kwargs.get('_request_auths', None)
         kwargs['code'] = \
             code
         return self.get_suites_endpoint.call_with_http_info(**kwargs)
@@ -763,6 +783,10 @@ class SuitesApi(object):
             _host_index (int/None): specifies the index of the server
                 that we want to use.
                 Default is read from the configuration.
+            _request_auths (list): set to override the auth_settings for an a single
+                request; this effectively ignores the authentication
+                in the spec for a single request.
+                Default is None
             async_req (bool): execute request asynchronously
 
         Returns:
@@ -794,6 +818,7 @@ class SuitesApi(object):
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
+        kwargs['_request_auths'] = kwargs.get('_request_auths', None)
         kwargs['code'] = \
             code
         kwargs['id'] = \

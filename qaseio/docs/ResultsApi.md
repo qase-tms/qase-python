@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 
 # **create_result**
-> bool, date, datetime, dict, float, int, list, str, none_type create_result(code, id, result_create)
+> CreateResult200Response create_result(code, id, result_create)
 
 Create test run result.
 
@@ -27,8 +27,8 @@ This method allows to create test run result by Run Id.
 import time
 import qaseio
 from qaseio.api import results_api
-from qaseio.model.response import Response
 from qaseio.model.result_create import ResultCreate
+from qaseio.model.create_result200_response import CreateResult200Response
 from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
@@ -75,7 +75,7 @@ with qaseio.ApiClient(configuration) as api_client:
             "key": "key_example",
         },
         steps=[
-            ResultCreateSteps(
+            ResultCreateStepsInner(
                 position=1,
                 status="passed",
                 comment="comment_example",
@@ -109,7 +109,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**bool, date, datetime, dict, float, int, list, str, none_type**
+[**CreateResult200Response**](CreateResult200Response.md)
 
 ### Authorization
 
@@ -194,7 +194,7 @@ with qaseio.ApiClient(configuration) as api_client:
                     "key": "key_example",
                 },
                 steps=[
-                    ResultCreateSteps(
+                    ResultCreateStepsInner(
                         position=1,
                         status="passed",
                         comment="comment_example",
@@ -427,8 +427,8 @@ This method allows to retrieve all test run results stored in selected project.
 import time
 import qaseio
 from qaseio.api import results_api
-from qaseio.model.filters4 import Filters4
 from qaseio.model.result_list_response import ResultListResponse
+from qaseio.model.get_results_filters_parameter import GetResultsFiltersParameter
 from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
@@ -452,7 +452,7 @@ with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = results_api.ResultsApi(api_client)
     code = "code_example" # str | Code of project, where to search entities.
-    filters = {
+    filters = GetResultsFiltersParameter(
         status="status_example",
         run="run_example",
         case_id="case_id_example",
@@ -460,7 +460,7 @@ with qaseio.ApiClient(configuration) as api_client:
         api=True,
         from_end_time="from_end_time_example",
         to_end_time="to_end_time_example",
-    } # Filters4 |  (optional)
+    ) # GetResultsFiltersParameter |  (optional)
     limit = 10 # int | A number of entities in result set. (optional) if omitted the server will use the default value of 10
     offset = 0 # int | How many entities should be skipped. (optional) if omitted the server will use the default value of 0
 
@@ -488,7 +488,7 @@ with qaseio.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **code** | **str**| Code of project, where to search entities. |
- **filters** | **Filters4**|  | [optional]
+ **filters** | **GetResultsFiltersParameter**|  | [optional]
  **limit** | **int**| A number of entities in result set. | [optional] if omitted the server will use the default value of 10
  **offset** | **int**| How many entities should be skipped. | [optional] if omitted the server will use the default value of 0
 
@@ -566,7 +566,7 @@ with qaseio.ApiClient(configuration) as api_client:
         stacktrace="stacktrace_example",
         comment="comment_example",
         steps=[
-            ResultUpdateSteps(
+            ResultUpdateStepsInner(
                 position=1,
                 status="passed",
                 comment="comment_example",

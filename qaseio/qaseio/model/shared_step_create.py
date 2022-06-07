@@ -31,8 +31,8 @@ from qaseio.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from qaseio.model.shared_step_create_steps import SharedStepCreateSteps
-    globals()['SharedStepCreateSteps'] = SharedStepCreateSteps
+    from qaseio.model.shared_step_create_steps_inner import SharedStepCreateStepsInner
+    globals()['SharedStepCreateStepsInner'] = SharedStepCreateStepsInner
 
 
 class SharedStepCreate(ModelNormal):
@@ -95,7 +95,7 @@ class SharedStepCreate(ModelNormal):
             'action': (str,),  # noqa: E501
             'expected_result': (str,),  # noqa: E501
             'data': (str,),  # noqa: E501
-            'steps': ([SharedStepCreateSteps],),  # noqa: E501
+            'steps': ([SharedStepCreateStepsInner],),  # noqa: E501
         }
 
     @cached_property
@@ -158,11 +158,11 @@ class SharedStepCreate(ModelNormal):
             action (str): Deprecated, use the `steps` property instead.. [optional]  # noqa: E501
             expected_result (str): Deprecated, use the `steps` property instead.. [optional]  # noqa: E501
             data (str): Deprecated, use the `steps` property instead.. [optional]  # noqa: E501
-            steps ([SharedStepCreateSteps]): [optional]  # noqa: E501
+            steps ([SharedStepCreateStepsInner]): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
-        _spec_property_naming = kwargs.pop('_spec_property_naming', False)
+        _spec_property_naming = kwargs.pop('_spec_property_naming', True)
         _path_to_item = kwargs.pop('_path_to_item', ())
         _configuration = kwargs.pop('_configuration', None)
         _visited_composed_classes = kwargs.pop('_visited_composed_classes', ())
@@ -170,14 +170,18 @@ class SharedStepCreate(ModelNormal):
         self = super(OpenApiModel, cls).__new__(cls)
 
         if args:
-            raise ApiTypeError(
-                "Invalid positional arguments=%s passed to %s. Remove those invalid positional arguments." % (
-                    args,
-                    self.__class__.__name__,
-                ),
-                path_to_item=_path_to_item,
-                valid_classes=(self.__class__,),
-            )
+            for arg in args:
+                if isinstance(arg, dict):
+                    kwargs.update(arg)
+                else:
+                    raise ApiTypeError(
+                        "Invalid positional arguments=%s passed to %s. Remove those invalid positional arguments." % (
+                            args,
+                            self.__class__.__name__,
+                        ),
+                        path_to_item=_path_to_item,
+                        valid_classes=(self.__class__,),
+                    )
 
         self._data_store = {}
         self._check_type = _check_type
@@ -247,7 +251,7 @@ class SharedStepCreate(ModelNormal):
             action (str): Deprecated, use the `steps` property instead.. [optional]  # noqa: E501
             expected_result (str): Deprecated, use the `steps` property instead.. [optional]  # noqa: E501
             data (str): Deprecated, use the `steps` property instead.. [optional]  # noqa: E501
-            steps ([SharedStepCreateSteps]): [optional]  # noqa: E501
+            steps ([SharedStepCreateStepsInner]): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -257,14 +261,18 @@ class SharedStepCreate(ModelNormal):
         _visited_composed_classes = kwargs.pop('_visited_composed_classes', ())
 
         if args:
-            raise ApiTypeError(
-                "Invalid positional arguments=%s passed to %s. Remove those invalid positional arguments." % (
-                    args,
-                    self.__class__.__name__,
-                ),
-                path_to_item=_path_to_item,
-                valid_classes=(self.__class__,),
-            )
+            for arg in args:
+                if isinstance(arg, dict):
+                    kwargs.update(arg)
+                else:
+                    raise ApiTypeError(
+                        "Invalid positional arguments=%s passed to %s. Remove those invalid positional arguments." % (
+                            args,
+                            self.__class__.__name__,
+                        ),
+                        path_to_item=_path_to_item,
+                        valid_classes=(self.__class__,),
+                    )
 
         self._data_store = {}
         self._check_type = _check_type

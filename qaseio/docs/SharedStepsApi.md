@@ -57,7 +57,7 @@ with qaseio.ApiClient(configuration) as api_client:
         expected_result="expected_result_example",
         data="data_example",
         steps=[
-            SharedStepCreateSteps(
+            SharedStepCreateStepsInner(
                 hash="hash_example",
                 action="action_example",
                 expected_result="expected_result_example",
@@ -283,8 +283,8 @@ This method allows to retrieve all shared steps stored in selected project.
 import time
 import qaseio
 from qaseio.api import shared_steps_api
-from qaseio.model.filters6 import Filters6
 from qaseio.model.shared_step_list_response import SharedStepListResponse
+from qaseio.model.get_milestones_filters_parameter import GetMilestonesFiltersParameter
 from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
@@ -308,9 +308,9 @@ with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = shared_steps_api.SharedStepsApi(api_client)
     code = "code_example" # str | Code of project, where to search entities.
-    filters = {
+    filters = GetMilestonesFiltersParameter(
         search="search_example",
-    } # Filters6 |  (optional)
+    ) # GetMilestonesFiltersParameter |  (optional)
     limit = 10 # int | A number of entities in result set. (optional) if omitted the server will use the default value of 10
     offset = 0 # int | How many entities should be skipped. (optional) if omitted the server will use the default value of 0
 
@@ -338,7 +338,7 @@ with qaseio.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **code** | **str**| Code of project, where to search entities. |
- **filters** | **Filters6**|  | [optional]
+ **filters** | **GetMilestonesFiltersParameter**|  | [optional]
  **limit** | **int**| A number of entities in result set. | [optional] if omitted the server will use the default value of 10
  **offset** | **int**| How many entities should be skipped. | [optional] if omitted the server will use the default value of 0
 
@@ -411,7 +411,7 @@ with qaseio.ApiClient(configuration) as api_client:
         expected_result="expected_result_example",
         data="data_example",
         steps=[
-            SharedStepCreateSteps(
+            SharedStepCreateStepsInner(
                 hash="hash_example",
                 action="action_example",
                 expected_result="expected_result_example",

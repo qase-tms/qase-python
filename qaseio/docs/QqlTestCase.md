@@ -24,7 +24,7 @@ Name | Type | Description | Notes
 **attachments** | [**[Attachment]**](Attachment.md) |  | [optional] 
 **steps_type** | **str, none_type** |  | [optional] 
 **steps** | [**[TestStep]**](TestStep.md) |  | [optional] 
-**params** | **bool, date, datetime, dict, float, int, list, str, none_type** |  | [optional] 
+**params** | [**TestCaseParams**](TestCaseParams.md) |  | [optional] 
 **tags** | [**[TagValue]**](TagValue.md) |  | [optional] 
 **member_id** | **int** |  | [optional] 
 **project_id** | **int** |  | [optional] 

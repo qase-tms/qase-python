@@ -31,8 +31,8 @@ from qaseio.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from qaseio.model.custom_field_create_value import CustomFieldCreateValue
-    globals()['CustomFieldCreateValue'] = CustomFieldCreateValue
+    from qaseio.model.custom_field_create_value_inner import CustomFieldCreateValueInner
+    globals()['CustomFieldCreateValueInner'] = CustomFieldCreateValueInner
 
 
 class CustomFieldUpdate(ModelNormal):
@@ -98,7 +98,7 @@ class CustomFieldUpdate(ModelNormal):
         lazy_import()
         return {
             'title': (str,),  # noqa: E501
-            'value': ([CustomFieldCreateValue], none_type,),  # noqa: E501
+            'value': ([CustomFieldCreateValueInner], none_type,),  # noqa: E501
             'replace_values': ({str: (str,)}, none_type,),  # noqa: E501
             'placeholder': (str, none_type,),  # noqa: E501
             'default_value': (str, none_type,),  # noqa: E501
@@ -169,7 +169,7 @@ class CustomFieldUpdate(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            value ([CustomFieldCreateValue], none_type): [optional]  # noqa: E501
+            value ([CustomFieldCreateValueInner], none_type): [optional]  # noqa: E501
             replace_values ({str: (str,)}, none_type): Dictionary of old values and their replacemants. [optional]  # noqa: E501
             placeholder (str, none_type): [optional]  # noqa: E501
             default_value (str, none_type): [optional]  # noqa: E501
@@ -180,7 +180,7 @@ class CustomFieldUpdate(ModelNormal):
         """
 
         _check_type = kwargs.pop('_check_type', True)
-        _spec_property_naming = kwargs.pop('_spec_property_naming', False)
+        _spec_property_naming = kwargs.pop('_spec_property_naming', True)
         _path_to_item = kwargs.pop('_path_to_item', ())
         _configuration = kwargs.pop('_configuration', None)
         _visited_composed_classes = kwargs.pop('_visited_composed_classes', ())
@@ -188,14 +188,18 @@ class CustomFieldUpdate(ModelNormal):
         self = super(OpenApiModel, cls).__new__(cls)
 
         if args:
-            raise ApiTypeError(
-                "Invalid positional arguments=%s passed to %s. Remove those invalid positional arguments." % (
-                    args,
-                    self.__class__.__name__,
-                ),
-                path_to_item=_path_to_item,
-                valid_classes=(self.__class__,),
-            )
+            for arg in args:
+                if isinstance(arg, dict):
+                    kwargs.update(arg)
+                else:
+                    raise ApiTypeError(
+                        "Invalid positional arguments=%s passed to %s. Remove those invalid positional arguments." % (
+                            args,
+                            self.__class__.__name__,
+                        ),
+                        path_to_item=_path_to_item,
+                        valid_classes=(self.__class__,),
+                    )
 
         self._data_store = {}
         self._check_type = _check_type
@@ -262,7 +266,7 @@ class CustomFieldUpdate(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            value ([CustomFieldCreateValue], none_type): [optional]  # noqa: E501
+            value ([CustomFieldCreateValueInner], none_type): [optional]  # noqa: E501
             replace_values ({str: (str,)}, none_type): Dictionary of old values and their replacemants. [optional]  # noqa: E501
             placeholder (str, none_type): [optional]  # noqa: E501
             default_value (str, none_type): [optional]  # noqa: E501
@@ -279,14 +283,18 @@ class CustomFieldUpdate(ModelNormal):
         _visited_composed_classes = kwargs.pop('_visited_composed_classes', ())
 
         if args:
-            raise ApiTypeError(
-                "Invalid positional arguments=%s passed to %s. Remove those invalid positional arguments." % (
-                    args,
-                    self.__class__.__name__,
-                ),
-                path_to_item=_path_to_item,
-                valid_classes=(self.__class__,),
-            )
+            for arg in args:
+                if isinstance(arg, dict):
+                    kwargs.update(arg)
+                else:
+                    raise ApiTypeError(
+                        "Invalid positional arguments=%s passed to %s. Remove those invalid positional arguments." % (
+                            args,
+                            self.__class__.__name__,
+                        ),
+                        path_to_item=_path_to_item,
+                        valid_classes=(self.__class__,),
+                    )
 
         self._data_store = {}
         self._check_type = _check_type

@@ -34,10 +34,12 @@ def lazy_import():
     from qaseio.model.attachment import Attachment
     from qaseio.model.custom_field_value import CustomFieldValue
     from qaseio.model.tag_value import TagValue
+    from qaseio.model.test_case_params import TestCaseParams
     from qaseio.model.test_step import TestStep
     globals()['Attachment'] = Attachment
     globals()['CustomFieldValue'] = CustomFieldValue
     globals()['TagValue'] = TagValue
+    globals()['TestCaseParams'] = TestCaseParams
     globals()['TestStep'] = TestStep
 
 
@@ -114,7 +116,7 @@ class TestCase(ModelNormal):
             'attachments': ([Attachment],),  # noqa: E501
             'steps_type': (str, none_type,),  # noqa: E501
             'steps': ([TestStep],),  # noqa: E501
-            'params': (bool, date, datetime, dict, float, int, list, str, none_type,),  # noqa: E501
+            'params': (TestCaseParams,),  # noqa: E501
             'tags': ([TagValue],),  # noqa: E501
             'member_id': (int,),  # noqa: E501
             'project_id': (int,),  # noqa: E501
@@ -223,7 +225,7 @@ class TestCase(ModelNormal):
             attachments ([Attachment]): [optional]  # noqa: E501
             steps_type (str, none_type): [optional]  # noqa: E501
             steps ([TestStep]): [optional]  # noqa: E501
-            params (bool, date, datetime, dict, float, int, list, str, none_type): [optional]  # noqa: E501
+            params (TestCaseParams): [optional]  # noqa: E501
             tags ([TagValue]): [optional]  # noqa: E501
             member_id (int): [optional]  # noqa: E501
             project_id (int): [optional]  # noqa: E501
@@ -235,7 +237,7 @@ class TestCase(ModelNormal):
         """
 
         _check_type = kwargs.pop('_check_type', True)
-        _spec_property_naming = kwargs.pop('_spec_property_naming', False)
+        _spec_property_naming = kwargs.pop('_spec_property_naming', True)
         _path_to_item = kwargs.pop('_path_to_item', ())
         _configuration = kwargs.pop('_configuration', None)
         _visited_composed_classes = kwargs.pop('_visited_composed_classes', ())
@@ -243,14 +245,18 @@ class TestCase(ModelNormal):
         self = super(OpenApiModel, cls).__new__(cls)
 
         if args:
-            raise ApiTypeError(
-                "Invalid positional arguments=%s passed to %s. Remove those invalid positional arguments." % (
-                    args,
-                    self.__class__.__name__,
-                ),
-                path_to_item=_path_to_item,
-                valid_classes=(self.__class__,),
-            )
+            for arg in args:
+                if isinstance(arg, dict):
+                    kwargs.update(arg)
+                else:
+                    raise ApiTypeError(
+                        "Invalid positional arguments=%s passed to %s. Remove those invalid positional arguments." % (
+                            args,
+                            self.__class__.__name__,
+                        ),
+                        path_to_item=_path_to_item,
+                        valid_classes=(self.__class__,),
+                    )
 
         self._data_store = {}
         self._check_type = _check_type
@@ -333,7 +339,7 @@ class TestCase(ModelNormal):
             attachments ([Attachment]): [optional]  # noqa: E501
             steps_type (str, none_type): [optional]  # noqa: E501
             steps ([TestStep]): [optional]  # noqa: E501
-            params (bool, date, datetime, dict, float, int, list, str, none_type): [optional]  # noqa: E501
+            params (TestCaseParams): [optional]  # noqa: E501
             tags ([TagValue]): [optional]  # noqa: E501
             member_id (int): [optional]  # noqa: E501
             project_id (int): [optional]  # noqa: E501
@@ -351,14 +357,18 @@ class TestCase(ModelNormal):
         _visited_composed_classes = kwargs.pop('_visited_composed_classes', ())
 
         if args:
-            raise ApiTypeError(
-                "Invalid positional arguments=%s passed to %s. Remove those invalid positional arguments." % (
-                    args,
-                    self.__class__.__name__,
-                ),
-                path_to_item=_path_to_item,
-                valid_classes=(self.__class__,),
-            )
+            for arg in args:
+                if isinstance(arg, dict):
+                    kwargs.update(arg)
+                else:
+                    raise ApiTypeError(
+                        "Invalid positional arguments=%s passed to %s. Remove those invalid positional arguments." % (
+                            args,
+                            self.__class__.__name__,
+                        ),
+                        path_to_item=_path_to_item,
+                        valid_classes=(self.__class__,),
+                    )
 
         self._data_store = {}
         self._check_type = _check_type

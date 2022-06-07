@@ -32,9 +32,9 @@ from qaseio.exceptions import ApiAttributeError
 
 def lazy_import():
     from qaseio.model.attachment_hash_list import AttachmentHashList
-    from qaseio.model.test_case_create_steps import TestCaseCreateSteps
+    from qaseio.model.test_case_create_steps_inner import TestCaseCreateStepsInner
     globals()['AttachmentHashList'] = AttachmentHashList
-    globals()['TestCaseCreateSteps'] = TestCaseCreateSteps
+    globals()['TestCaseCreateStepsInner'] = TestCaseCreateStepsInner
 
 
 class TestCaseCreate(ModelNormal):
@@ -108,7 +108,7 @@ class TestCaseCreate(ModelNormal):
             'automation': (int,),  # noqa: E501
             'status': (int,),  # noqa: E501
             'attachments': (AttachmentHashList,),  # noqa: E501
-            'steps': ([TestCaseCreateSteps],),  # noqa: E501
+            'steps': ([TestCaseCreateStepsInner],),  # noqa: E501
             'tags': ([str],),  # noqa: E501
             'custom_field': ({str: (str,)},),  # noqa: E501
         }
@@ -197,13 +197,13 @@ class TestCaseCreate(ModelNormal):
             automation (int): [optional]  # noqa: E501
             status (int): [optional]  # noqa: E501
             attachments (AttachmentHashList): [optional]  # noqa: E501
-            steps ([TestCaseCreateSteps]): [optional]  # noqa: E501
+            steps ([TestCaseCreateStepsInner]): [optional]  # noqa: E501
             tags ([str]): [optional]  # noqa: E501
             custom_field ({str: (str,)}): A map of custom fields values (id => value). [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
-        _spec_property_naming = kwargs.pop('_spec_property_naming', False)
+        _spec_property_naming = kwargs.pop('_spec_property_naming', True)
         _path_to_item = kwargs.pop('_path_to_item', ())
         _configuration = kwargs.pop('_configuration', None)
         _visited_composed_classes = kwargs.pop('_visited_composed_classes', ())
@@ -211,14 +211,18 @@ class TestCaseCreate(ModelNormal):
         self = super(OpenApiModel, cls).__new__(cls)
 
         if args:
-            raise ApiTypeError(
-                "Invalid positional arguments=%s passed to %s. Remove those invalid positional arguments." % (
-                    args,
-                    self.__class__.__name__,
-                ),
-                path_to_item=_path_to_item,
-                valid_classes=(self.__class__,),
-            )
+            for arg in args:
+                if isinstance(arg, dict):
+                    kwargs.update(arg)
+                else:
+                    raise ApiTypeError(
+                        "Invalid positional arguments=%s passed to %s. Remove those invalid positional arguments." % (
+                            args,
+                            self.__class__.__name__,
+                        ),
+                        path_to_item=_path_to_item,
+                        valid_classes=(self.__class__,),
+                    )
 
         self._data_store = {}
         self._check_type = _check_type
@@ -299,7 +303,7 @@ class TestCaseCreate(ModelNormal):
             automation (int): [optional]  # noqa: E501
             status (int): [optional]  # noqa: E501
             attachments (AttachmentHashList): [optional]  # noqa: E501
-            steps ([TestCaseCreateSteps]): [optional]  # noqa: E501
+            steps ([TestCaseCreateStepsInner]): [optional]  # noqa: E501
             tags ([str]): [optional]  # noqa: E501
             custom_field ({str: (str,)}): A map of custom fields values (id => value). [optional]  # noqa: E501
         """
@@ -311,14 +315,18 @@ class TestCaseCreate(ModelNormal):
         _visited_composed_classes = kwargs.pop('_visited_composed_classes', ())
 
         if args:
-            raise ApiTypeError(
-                "Invalid positional arguments=%s passed to %s. Remove those invalid positional arguments." % (
-                    args,
-                    self.__class__.__name__,
-                ),
-                path_to_item=_path_to_item,
-                valid_classes=(self.__class__,),
-            )
+            for arg in args:
+                if isinstance(arg, dict):
+                    kwargs.update(arg)
+                else:
+                    raise ApiTypeError(
+                        "Invalid positional arguments=%s passed to %s. Remove those invalid positional arguments." % (
+                            args,
+                            self.__class__.__name__,
+                        ),
+                        path_to_item=_path_to_item,
+                        valid_classes=(self.__class__,),
+                    )
 
         self._data_store = {}
         self._check_type = _check_type

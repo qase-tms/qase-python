@@ -13,8 +13,8 @@ import sys
 import unittest
 
 import qaseio
-from qaseio.model.result_update_steps import ResultUpdateSteps
-globals()['ResultUpdateSteps'] = ResultUpdateSteps
+from qaseio.model.result_update_steps_inner import ResultUpdateStepsInner
+globals()['ResultUpdateStepsInner'] = ResultUpdateStepsInner
 from qaseio.model.result_update import ResultUpdate
 
 
