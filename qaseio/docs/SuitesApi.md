@@ -21,7 +21,6 @@ This method is used to create a new test suite through API.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -90,7 +89,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of all projects. |  -  |
@@ -107,7 +105,6 @@ This method completely deletes a test suite with test cases from repository.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -184,7 +181,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result of operation. |  -  |
@@ -201,7 +197,6 @@ This method allows to retrieve a specific test suite.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -264,7 +259,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A Test Case. |  -  |
@@ -281,7 +275,6 @@ This method allows to retrieve all test suites stored in selected project..
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -360,7 +353,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of all suites of project. |  -  |
@@ -377,7 +369,6 @@ This method is used to update a test suite through API.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -448,7 +439,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result of operation. |  -  |

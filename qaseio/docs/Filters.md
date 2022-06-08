@@ -13,7 +13,6 @@ Name | Type | Description | Notes
 **behavior** | **str** | A list of behavior values separated by comma. Possible values: undefined, positive negative, destructive  | [optional] 
 **automation** | **str** | A list of values separated by comma. Possible values: is-not-automated, automated to-be-automated  | [optional] 
 **status** | **str** | A list of values separated by comma. Possible values: actual, draft deprecated  | [optional] 
-**any string name** | **bool, date, datetime, dict, float, int, list, str, none_type** | any string name can be used but the value must be the correct type | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

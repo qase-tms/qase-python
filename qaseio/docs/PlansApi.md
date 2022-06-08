@@ -21,7 +21,6 @@ This method allows to create a plan in selected project.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -91,7 +90,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result. |  -  |
@@ -108,7 +106,6 @@ This method completely deletes a plan from repository.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -171,7 +168,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A Result. |  -  |
@@ -188,7 +184,6 @@ This method allows to retrieve a specific plan.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -251,7 +246,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A plan. |  -  |
@@ -268,7 +262,6 @@ This method allows to retrieve all plans stored in selected project.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -342,7 +335,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of all plans. |  -  |
@@ -359,7 +351,6 @@ This method updates a plan.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -431,7 +422,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result. |  -  |

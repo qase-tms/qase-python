@@ -21,7 +21,6 @@ This method allows to create a shared step in selected project.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -101,7 +100,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result. |  -  |
@@ -118,7 +116,6 @@ This method completely deletes a shared step from repository.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -181,7 +178,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A Result. |  -  |
@@ -198,7 +194,6 @@ This method allows to retrieve a specific shared step.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -261,7 +256,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A shared step. |  -  |
@@ -278,7 +272,6 @@ This method allows to retrieve all shared steps stored in selected project.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -357,7 +350,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of all shared steps. |  -  |
@@ -374,7 +366,6 @@ This method updates a shared step.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -456,7 +447,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result. |  -  |

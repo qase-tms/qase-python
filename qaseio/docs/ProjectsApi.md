@@ -22,7 +22,6 @@ This method is used to create a new project through API.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -53,7 +52,7 @@ with qaseio.ApiClient(configuration) as api_client:
     api_instance = projects_api.ProjectsApi(api_client)
     project_create = ProjectCreate(
         title="title_example",
-        code="EiOTgsw",
+        code="EiOTgs",
         description="description_example",
         access="all",
         group="group_example",
@@ -90,7 +89,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result of project creation. |  -  |
@@ -107,7 +105,6 @@ This method allows to delete a specific project.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -168,7 +165,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result of project removal. |  -  |
@@ -185,7 +181,6 @@ This method allows to retrieve a specific project.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -246,7 +241,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A Project. |  -  |
@@ -263,7 +257,6 @@ This method allows to retrieve all projects available for your account. You can 
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -327,7 +320,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of all projects. |  -  |
@@ -344,7 +336,6 @@ This method allows to grant access to a specific project.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -410,7 +401,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Result of operation. |  -  |
@@ -427,7 +417,6 @@ This method allows to revoke access to a specific project.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -493,7 +482,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Result of operation. |  -  |
