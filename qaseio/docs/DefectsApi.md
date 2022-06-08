@@ -23,7 +23,6 @@ This method allows to create a defect in selected project.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -64,9 +63,7 @@ with qaseio.ApiClient(configuration) as api_client:
         custom_field={
             "key": "key_example",
         },
-        tags=[
-            "tags_example",
-        ],
+        tags=[],
     ) # DefectCreate | 
 
     # example passing only required values which don't have defaults set
@@ -101,7 +98,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result. |  -  |
@@ -118,7 +114,6 @@ This method completely deletes a defect from repository.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -181,7 +176,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A Result. |  -  |
@@ -198,7 +192,6 @@ This method allows to retrieve a specific defect.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -261,7 +254,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A defect. |  -  |
@@ -278,7 +270,6 @@ This method allows to retrieve all defects stored in selected project.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -357,7 +348,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of all defects. |  -  |
@@ -374,7 +364,6 @@ This method allows to resolve a specific defect.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -437,7 +426,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result. |  -  |
@@ -454,7 +442,6 @@ This method updates a defect.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -496,9 +483,7 @@ with qaseio.ApiClient(configuration) as api_client:
         custom_field={
             "key": "key_example",
         },
-        tags=[
-            "tags_example",
-        ],
+        tags=[],
     ) # DefectUpdate | 
 
     # example passing only required values which don't have defaults set
@@ -534,7 +519,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result. |  -  |
@@ -551,7 +535,6 @@ This method allows to update a specific defect status.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -619,7 +602,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result. |  -  |

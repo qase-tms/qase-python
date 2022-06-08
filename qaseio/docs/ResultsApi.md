@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 
 # **create_result**
-> bool, date, datetime, dict, float, int, list, str, none_type create_result(code, id, result_create)
+> object create_result(code, id, result_create)
 
 Create test run result.
 
@@ -22,12 +22,10 @@ This method allows to create test run result by Run Id.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
 from qaseio.api import results_api
-from qaseio.model.response import Response
 from qaseio.model.result_create import ResultCreate
 from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
@@ -79,9 +77,7 @@ with qaseio.ApiClient(configuration) as api_client:
                 position=1,
                 status="passed",
                 comment="comment_example",
-                attachments=[
-                    "attachments_example",
-                ],
+                attachments=None,
                 action="action_example",
                 expected_result="expected_result_example",
                 data="data_example",
@@ -109,7 +105,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**bool, date, datetime, dict, float, int, list, str, none_type**
+**object**
 
 ### Authorization
 
@@ -122,7 +118,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result |  -  |
@@ -139,7 +134,6 @@ This method allows to create a lot of test run result at once.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -198,9 +192,7 @@ with qaseio.ApiClient(configuration) as api_client:
                         position=1,
                         status="passed",
                         comment="comment_example",
-                        attachments=[
-                            "attachments_example",
-                        ],
+                        attachments=None,
                         action="action_example",
                         expected_result="expected_result_example",
                         data="data_example",
@@ -243,7 +235,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result |  -  |
@@ -260,7 +251,6 @@ This method allows to delete test run result.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -325,7 +315,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result |  -  |
@@ -342,7 +331,6 @@ This method allows to retrieve a specific test run result by Hash.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -405,7 +393,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A test run result. |  -  |
@@ -422,7 +409,6 @@ This method allows to retrieve all test run results stored in selected project.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -507,7 +493,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of all test run results. |  -  |
@@ -524,7 +509,6 @@ This method allows to update test run result.
 ### Example
 
 * Api Key Authentication (TokenAuth):
-
 ```python
 import time
 import qaseio
@@ -611,7 +595,6 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result |  -  |
