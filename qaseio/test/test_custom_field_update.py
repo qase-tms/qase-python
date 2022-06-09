@@ -13,8 +13,8 @@ import sys
 import unittest
 
 import qaseio
-from qaseio.model.custom_field_create_value import CustomFieldCreateValue
-globals()['CustomFieldCreateValue'] = CustomFieldCreateValue
+from qaseio.model.custom_field_create_value_inner import CustomFieldCreateValueInner
+globals()['CustomFieldCreateValueInner'] = CustomFieldCreateValueInner
 from qaseio.model.custom_field_update import CustomFieldUpdate
 
 

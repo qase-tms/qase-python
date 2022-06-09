@@ -21,6 +21,7 @@ This method allows to create an environment in selected project.
 ### Example
 
 * Api Key Authentication (TokenAuth):
+
 ```python
 import time
 import qaseio
@@ -89,6 +90,7 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result. |  -  |
@@ -105,6 +107,7 @@ This method completely deletes an environment from repository.
 ### Example
 
 * Api Key Authentication (TokenAuth):
+
 ```python
 import time
 import qaseio
@@ -167,6 +170,7 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A Result. |  -  |
@@ -183,6 +187,7 @@ This method allows to retrieve a specific environment.
 ### Example
 
 * Api Key Authentication (TokenAuth):
+
 ```python
 import time
 import qaseio
@@ -245,6 +250,7 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | An environment. |  -  |
@@ -261,6 +267,7 @@ This method allows to retrieve all environments stored in selected project.
 ### Example
 
 * Api Key Authentication (TokenAuth):
+
 ```python
 import time
 import qaseio
@@ -334,6 +341,7 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of all environments. |  -  |
@@ -350,6 +358,7 @@ This method updates an environment.
 ### Example
 
 * Api Key Authentication (TokenAuth):
+
 ```python
 import time
 import qaseio
@@ -420,6 +429,7 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result. |  -  |

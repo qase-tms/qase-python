@@ -14,9 +14,9 @@ import unittest
 
 import qaseio
 from qaseio.model.attachment_hash_list import AttachmentHashList
-from qaseio.model.test_case_create_steps import TestCaseCreateSteps
+from qaseio.model.test_case_create_steps_inner import TestCaseCreateStepsInner
 globals()['AttachmentHashList'] = AttachmentHashList
-globals()['TestCaseCreateSteps'] = TestCaseCreateSteps
+globals()['TestCaseCreateStepsInner'] = TestCaseCreateStepsInner
 from qaseio.model.test_case_update import TestCaseUpdate
 
 
