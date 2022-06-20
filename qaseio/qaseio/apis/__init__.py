@@ -6,7 +6,7 @@
 # raise a `RecursionError`.
 # In order to avoid this, import only the API that you directly need like:
 #
-#   from .api.attachments_api import AttachmentsApi
+#   from qaseio.api.attachments_api import AttachmentsApi
 #
 # or import this package, but before doing it, use:
 #
