@@ -23,6 +23,7 @@ This method allows to create a defect in selected project.
 ### Example
 
 * Api Key Authentication (TokenAuth):
+
 ```python
 import time
 import qaseio
@@ -63,7 +64,9 @@ with qaseio.ApiClient(configuration) as api_client:
         custom_field={
             "key": "key_example",
         },
-        tags=[],
+        tags=[
+            "tags_example",
+        ],
     ) # DefectCreate | 
 
     # example passing only required values which don't have defaults set
@@ -98,6 +101,7 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result. |  -  |
@@ -114,6 +118,7 @@ This method completely deletes a defect from repository.
 ### Example
 
 * Api Key Authentication (TokenAuth):
+
 ```python
 import time
 import qaseio
@@ -176,6 +181,7 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A Result. |  -  |
@@ -192,6 +198,7 @@ This method allows to retrieve a specific defect.
 ### Example
 
 * Api Key Authentication (TokenAuth):
+
 ```python
 import time
 import qaseio
@@ -254,6 +261,7 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A defect. |  -  |
@@ -270,12 +278,13 @@ This method allows to retrieve all defects stored in selected project.
 ### Example
 
 * Api Key Authentication (TokenAuth):
+
 ```python
 import time
 import qaseio
 from qaseio.api import defects_api
-from qaseio.model.filters2 import Filters2
 from qaseio.model.defect_list_response import DefectListResponse
+from qaseio.model.get_defects_filters_parameter import GetDefectsFiltersParameter
 from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
@@ -299,9 +308,9 @@ with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = defects_api.DefectsApi(api_client)
     code = "code_example" # str | Code of project, where to search entities.
-    filters = {
+    filters = GetDefectsFiltersParameter(
         status="open",
-    } # Filters2 |  (optional)
+    ) # GetDefectsFiltersParameter |  (optional)
     limit = 10 # int | A number of entities in result set. (optional) if omitted the server will use the default value of 10
     offset = 0 # int | How many entities should be skipped. (optional) if omitted the server will use the default value of 0
 
@@ -329,7 +338,7 @@ with qaseio.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **code** | **str**| Code of project, where to search entities. |
- **filters** | **Filters2**|  | [optional]
+ **filters** | **GetDefectsFiltersParameter**|  | [optional]
  **limit** | **int**| A number of entities in result set. | [optional] if omitted the server will use the default value of 10
  **offset** | **int**| How many entities should be skipped. | [optional] if omitted the server will use the default value of 0
 
@@ -348,6 +357,7 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of all defects. |  -  |
@@ -364,6 +374,7 @@ This method allows to resolve a specific defect.
 ### Example
 
 * Api Key Authentication (TokenAuth):
+
 ```python
 import time
 import qaseio
@@ -426,6 +437,7 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result. |  -  |
@@ -442,6 +454,7 @@ This method updates a defect.
 ### Example
 
 * Api Key Authentication (TokenAuth):
+
 ```python
 import time
 import qaseio
@@ -483,7 +496,9 @@ with qaseio.ApiClient(configuration) as api_client:
         custom_field={
             "key": "key_example",
         },
-        tags=[],
+        tags=[
+            "tags_example",
+        ],
     ) # DefectUpdate | 
 
     # example passing only required values which don't have defaults set
@@ -519,6 +534,7 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result. |  -  |
@@ -535,6 +551,7 @@ This method allows to update a specific defect status.
 ### Example
 
 * Api Key Authentication (TokenAuth):
+
 ```python
 import time
 import qaseio
@@ -602,6 +619,7 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result. |  -  |

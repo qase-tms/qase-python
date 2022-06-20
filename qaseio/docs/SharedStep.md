@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **title** | **str** |  | [optional] 
 **action** | **str** |  | [optional] 
 **expected_result** | **str** |  | [optional] 
-**steps** | [**[SharedStepSteps]**](SharedStepSteps.md) |  | [optional] 
+**steps** | [**[SharedStepStepsInner]**](SharedStepStepsInner.md) |  | [optional] 
 **data** | **str** |  | [optional] 
 **cases** | **[int]** |  | [optional] 
 **cases_count** | **int** |  | [optional] 
@@ -16,6 +16,7 @@ Name | Type | Description | Notes
 **updated** | **str** | Deprecated, use the &#x60;updated_at&#x60; property instead. | [optional] 
 **created_at** | **datetime** |  | [optional] 
 **updated_at** | **datetime** |  | [optional] 
+**any string name** | **bool, date, datetime, dict, float, int, list, str, none_type** | any string name can be used but the value must be the correct type | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

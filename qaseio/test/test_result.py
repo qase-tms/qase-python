@@ -14,9 +14,9 @@ import unittest
 
 import qaseio
 from qaseio.model.attachment import Attachment
-from qaseio.model.result_steps import ResultSteps
+from qaseio.model.result_steps_inner import ResultStepsInner
 globals()['Attachment'] = Attachment
-globals()['ResultSteps'] = ResultSteps
+globals()['ResultStepsInner'] = ResultStepsInner
 from qaseio.model.result import Result
 
 
