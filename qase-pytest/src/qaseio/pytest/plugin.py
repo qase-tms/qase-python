@@ -3,30 +3,38 @@ import pathlib
 import time
 from datetime import datetime
 from typing import Tuple, Union
-
+import platform
+import sys
+import pip
+from pkg_resources import DistributionNotFound, get_distribution
 import pytest
 
 import apitist
 from filelock import FileLock
 
-from qaseio.client import QaseApi
-from qaseio.client.models import (
-    TestRunCreate,
-    TestRunInclude,
-    TestRunInfo,
-    TestRunResultCreate,
-    TestRunResultStatus,
-    TestRunResultStepCreate,
-    TestRunResultUpdate,
-)
+from qaseio.api_client import ApiClient
+from qaseio.configuration import Configuration
+from qaseio.api.attachments_api import AttachmentsApi
+from qaseio.api.cases_api import CasesApi
+from qaseio.api.plans_api import PlansApi
+from qaseio.api.projects_api import ProjectsApi
+from qaseio.api.results_api import ResultsApi
+from qaseio.api.runs_api import RunsApi
+from qaseio.model.run_create import RunCreate
+from qaseio.model.result_create_bulk import ResultCreateBulk
+from qaseio.model.result_create_steps_inner import ResultCreateStepsInner
+from qaseio.rest import ApiException
+
 
 QASE_MARKER = "qase"
+
 PYTEST_TO_QASE_STATUS = {
-    "PASSED": TestRunResultStatus.PASSED,
-    "FAILED": TestRunResultStatus.FAILED,
-    "SKIPPED": TestRunResultStatus.SKIPPED,
-    "BLOCKED": TestRunResultStatus.BLOCKED,
+    "PASSED": 'passed',
+    "FAILED": 'failed',
+    "SKIPPED": 'skipped',
+    "BLOCKED": 'blocked',
 }
+
 
 try:
     from xdist import is_xdist_master
@@ -34,6 +42,14 @@ except ImportError:
 
     def is_xdist_master(*args, **kwargs):
         return True
+
+
+def package_version(name):
+    try:
+        version = get_distribution(name).version
+    except DistributionNotFound:
+        version = "unknown"
+    return version
 
 
 def get_ids_from_pytest_nodes(items):
@@ -58,21 +74,58 @@ class MissingStepIdentifierException(Exception):
     pass
 
 
+def get_step_position(identifier: Union[int, str], case):
+    if isinstance(identifier, int):
+        # We expect that this is correct position id
+        return identifier
+    if isinstance(identifier, str):
+        # Trying to guess that identifier is hash or step name
+        for pos, step in enumerate(case.steps):
+            if identifier in (step.get("hash"), step.get("action")):
+                return pos + 1
+    raise MissingStepIdentifierException(
+        "Missing step for identifier {}".format(identifier)
+    )
+
+
+def get_platform():
+    platform_data = {
+        'os': platform.system(),
+        'arch': platform.machine(),
+        'python': '.'.join(map(str, sys.version_info)),
+        'pip': pip.__version__
+    }
+    return ';'.join([f'{key}={value}' for key, value in platform_data.items()])
+
+
+def get_client():
+    client_data = {
+        'qaseapi': package_version('qaseio'),
+        'qase-pytest': package_version('qase-pytest'),
+        'pytest': pytest.__version__,
+    }
+    return ';'.join([f'{key}={value}' for key, value in client_data.items()])
+
+
 class QasePytestPlugin:
-    testrun: TestRunInfo = None
-    meta_run_file = pathlib.Path("qaseio.runid")
+    testrun = None
+    meta_run_file = pathlib.Path("src.runid")
 
     def __init__(
-        self,
-        api_token,
-        project,
-        testrun=None,
-        testplan=None,
-        create_run=False,
-        complete_run=False,
-        debug=False,
+            self,
+            api_token,
+            project,
+            testrun=None,
+            testplan=None,
+            create_run=False,
+            complete_run=False,
+            debug=False,
     ):
-        self.client = QaseApi(api_token)
+        configuration = Configuration()
+        configuration.api_key['TokenAuth'] = api_token
+        self.client = ApiClient(configuration)
+        self.client.set_default_header('X-Platform', get_platform())
+        self.client.set_default_header('X-Client', get_client())
         self.project_code = project
         self.testrun_id = testrun
         self.testplan_id = testplan
@@ -80,14 +133,13 @@ class QasePytestPlugin:
         self.complete_run = complete_run
         self.debug = debug
         self.nodes_with_ids = {}
+        self.results_for_send = {}
         self.cases_info = {}
         self.missing_ids = []
         self.existing_ids = []
         self.last_node = None
-        self.project = self.client.projects.exists(self.project_code)
+        self.project = self.get_project(self.project_code)
         self.comment = "Pytest Plugin Automation Run"
-        if not self.project:
-            raise ValueError("Unable to find given project code")
         self.check_testrun()
         if self.debug:
             logger = logging.getLogger(apitist.dist_name)
@@ -98,16 +150,27 @@ class QasePytestPlugin:
         """ Add extra-info in header """
         message = "qase: "
         if self.testrun_id:
-            message += "existing testrun #{} selected".format(self.testrun_id)
+            message += "existing test run #{} selected".format(self.testrun_id)
         else:
-            message += "a new testrun will be created"
+            message += "a new test run will be created"
         return message
 
+    def get_project(self, project_code):
+        api_instance = ProjectsApi(self.client)
+        try:
+            response = api_instance.get_project(project_code)
+            if hasattr(response, 'result'):
+                return response.result
+            raise ValueError("Unable to find given project code")
+        except ApiException as e:
+            print("Exception when calling ProjectApi->get_project: %s\n" % e)
+
     def check_case_ids(self, data):
+        api_instance = CasesApi(self.client)
         exist = []
         not_exist = []
         for _id in data.get("ids"):
-            case = self.client.cases.exists(self.project_code, _id)
+            case = api_instance.get_case(self.project_code, _id).result
             if case:
                 self.cases_info[case.id] = case
                 exist.append(_id)
@@ -128,12 +191,13 @@ class QasePytestPlugin:
                 "You should provide either use testrun or testplan"
             )
         if self.testplan_id:
-            testplan = self.client.plans.exists(
+            api_plans = PlansApi(self.client)
+            test_plan = api_plans.get_plan(
                 self.project_code, self.testplan_id
             )
-            if not testplan:
-                raise ValueError("Could not find testplan")
-            self.create_testrun([case.case_id for case in testplan.cases])
+            if not test_plan:
+                raise ValueError("Could not find test plan")
+            self.create_testrun([case.case_id for case in test_plan.cases])
         self.load_testrun()
         if not self.testrun and not self.create_run:
             raise ValueError(
@@ -146,22 +210,26 @@ class QasePytestPlugin:
             )
 
     def load_testrun(self):
+        api_runs = RunsApi(self.client)
         if self.testrun_id and self.testrun is None:
-            self.testrun = self.client.runs.exists(
-                self.project_code,
-                self.testrun_id,
-                include=TestRunInclude.CASES,
-            )
+            self.testrun = api_runs.get_run(
+                code=self.project_code,
+                id=self.testrun_id,
+                include='cases',
+            ).result
 
     def create_testrun(self, cases):
+        api_runs = RunsApi(self.client)
         if cases:
-            self.testrun_id = self.client.runs.create(
-                self.project_code,
-                TestRunCreate(
-                    "Automated Run {}".format(str(datetime.now())),
+            result = api_runs.create_run(
+                code=self.project_code,
+                run_create=RunCreate(
+                    title="Automated Run {}".format(str(datetime.now())),
                     cases=cases,
+                    is_autotest=True
                 ),
-            ).id
+            )
+            self.testrun_id = result.result.id
             print()
             print(
                 "Qase TMS: created testrun "
@@ -170,23 +238,10 @@ class QasePytestPlugin:
                 )
             )
 
-    def get_step_position(self, identifier: Union[int, str], case):
-        if isinstance(identifier, int):
-            # We expect that this is correct position id
-            return identifier
-        if isinstance(identifier, str):
-            # Trying to guess that identifier is hash or step name
-            for pos, step in enumerate(case.steps):
-                if identifier in (step.get("hash"), step.get("action")):
-                    return pos + 1
-        raise MissingStepIdentifierException(
-            "Missing step for identifier {}".format(identifier)
-        )
-
     def start_step(self, identifier):
         case_ids = self.nodes_with_ids[self.last_node].get("ids")
         if len(case_ids) > 1:
-            # We could not match steps with more then one case
+            # We could not match steps with more than one case
             raise MoreThenOneCaseIdException(
                 "Test case decorated with several ids: {}".format(
                     ", ".join(case_ids)
@@ -195,15 +250,15 @@ class QasePytestPlugin:
         elif case_ids[0] in self.missing_ids:
             return None
         case = self.cases_info.get(case_ids[0])
-        position = self.get_step_position(identifier, case)
+        position = get_step_position(identifier, case)
         return position
 
     def finish_step(self, position: int, exception=None):
         if not position:
             return
-        status = TestRunResultStatus.PASSED
+        status = PYTEST_TO_QASE_STATUS['PASSED']
         if exception:
-            status = TestRunResultStatus.FAILED
+            status = PYTEST_TO_QASE_STATUS['FAILED']
         steps = self.nodes_with_ids[self.last_node].get("steps", {})
         steps[position] = {}
         steps[position]["status"] = status
@@ -217,7 +272,7 @@ class QasePytestPlugin:
 
         Prints additional info at start of the run, if debug in True
         """
-        with FileLock("qaseio.lock"):
+        with FileLock("src.lock"):
             self.load_run_from_lock()
             self.load_testrun()
             self.nodes_with_ids, no_ids = get_ids_from_pytest_nodes(items)
@@ -286,6 +341,7 @@ class QasePytestPlugin:
 
     def pytest_sessionfinish(self, session, exitstatus):
         if is_xdist_master(session):
+            self.send_bulk_results()
             if self.complete_run:
                 self.load_run_from_lock()
                 self.complete()
@@ -315,70 +371,59 @@ class QasePytestPlugin:
 
             if report.failed:
                 if call.excinfo.typename != "AssertionError":
-                    result(TestRunResultStatus.BLOCKED)
+                    result(PYTEST_TO_QASE_STATUS['BLOCKED'])
                 else:
-                    result(TestRunResultStatus.FAILED)
+                    result(PYTEST_TO_QASE_STATUS['FAILED'])
             elif report.skipped:
                 if self.nodes_with_ids[item.nodeid]["result"] in (
-                    None,
-                    TestRunResultStatus.PASSED,
+                        None,
+                        PYTEST_TO_QASE_STATUS['PASSED'],
                 ):
-                    result(TestRunResultStatus.SKIPPED)
+                    result(PYTEST_TO_QASE_STATUS['SKIPPED'])
             else:
                 if self.nodes_with_ids[item.nodeid]["result"] is None:
-                    result(TestRunResultStatus.PASSED)
+                    result(PYTEST_TO_QASE_STATUS['PASSED'])
 
     def start_pytest_item(self, item):
         if item.nodeid in self.nodes_with_ids:
             self.last_node = item.nodeid
-            hashes = []
             for _id in self.nodes_with_ids[item.nodeid].get("ids", []):
                 if _id not in self.missing_ids:
-                    result = self.client.results.create(
-                        self.project_code,
-                        self.testrun_id,
-                        TestRunResultCreate(
-                            _id, TestRunResultStatus.IN_PROGRESS
-                        ),
-                    )
-                    hashes.append(result.hash)
-            self.nodes_with_ids[item.nodeid]["hashes"] = hashes
+                    self.results_for_send[_id] = {
+                        'case_id': _id,
+                        'status': 'in_progress',
+                        'is_api_result': True,
+                    }
             self.nodes_with_ids[item.nodeid]["started_at"] = time.time()
 
     def finish_pytest_item(self, item):
         if item.nodeid in self.nodes_with_ids:
             results = self.nodes_with_ids[item.nodeid]
-            hashes = results.get("hashes", [])
             attachments = results.get("attachments", [])
             steps = [
-                TestRunResultStepCreate(position=pos, **values)
+                ResultCreateStepsInner(position=pos, **values)
                 for pos, values in results.get("steps", {}).items()
             ]
             attached = []
+            api_attachments = AttachmentsApi(self.client)
             if attachments:
-                attached = self.client.attachments.upload(
-                    self.project_code, *attachments
-                )
-            for hash in hashes:
-                self.client.results.update(
-                    self.project_code,
-                    self.testrun_id,
-                    hash,
-                    TestRunResultUpdate(
-                        status=results.get("result"),
-                        comment=self.comment,
-                        stacktrace=results.get("error"),
-                        time_ms=int(
-                            (time.time() - results.get("started_at")) * 1000
-                        ),
-                        attachments=[attach.hash for attach in attached],
-                        steps=steps,
-                    ),
-                )
+                attached = api_attachments.upload_attachment(
+                    self.project_code, **attachments
+                ).result
+            for _id in self.nodes_with_ids[item.nodeid].get("ids", []):
+                if _id in self.results_for_send:
+                    self.results_for_send[_id]['status'] = results.get("result")
+                    self.results_for_send[_id]['comment'] = self.comment
+                    self.results_for_send[_id]['stacktrace'] = results.get("error")
+                    self.results_for_send[_id]['time_ms'] = int(
+                                (time.time() - results.get("started_at")) * 1000
+                            )
+                    self.results_for_send[_id]['attachments'] = [attach.hash for attach in attached]
+                    self.results_for_send[_id]['steps'] = steps
             self.last_node = None
 
     def add_attachments(
-        self, *files: Union[str, Tuple[str, str], Tuple[bytes, str, str]]
+            self, *files: Union[str, Tuple[str, str], Tuple[bytes, str, str]]
     ):
         if self.last_node:
             node = self.nodes_with_ids[self.last_node]
@@ -386,16 +431,33 @@ class QasePytestPlugin:
             attachments.extend(files)
             node["attachments"] = attachments
 
+    def send_bulk_results(self):
+        api_results = ResultsApi(self.client)
+        print()
+        print(f"Sending results to test run {self.testrun_id}...")
+        try:
+            api_results.create_result_bulk(
+                code=self.project_code,
+                id=self.testrun_id,
+                result_create_bulk=ResultCreateBulk(
+                    results=list(self.results_for_send.values())
+                )
+            )
+            print(f"Results of run {self.testrun_id} was sent")
+        except Exception as e:
+            print(f"Error at sending results for run {self.testrun_id}: {e}")
+
     def complete(self):
         if self.testrun_id and self.complete_run:
+            api_runs = RunsApi(self.client)
             print()
             print(f"Finishing run {self.testrun_id}")
-            res = self.client.runs.get(self.project_code, self.testrun_id)
+            res = api_runs.get_run(self.project_code, self.testrun_id).result
             if res.status == 1:
                 print(f"Run {self.testrun_id} already finished")
                 return
             try:
-                self.client.runs.complete(self.project_code, self.testrun_id)
+                api_runs.complete_run(self.project_code, self.testrun_id)
                 print(f"Run {self.testrun_id} was finished successfully")
             except Exception as e:
                 print(f"Run {self.testrun_id} was finished with error: {e}")
