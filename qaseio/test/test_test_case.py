@@ -16,10 +16,12 @@ import qaseio
 from qaseio.model.attachment import Attachment
 from qaseio.model.custom_field_value import CustomFieldValue
 from qaseio.model.tag_value import TagValue
+from qaseio.model.test_case_params import TestCaseParams
 from qaseio.model.test_step import TestStep
 globals()['Attachment'] = Attachment
 globals()['CustomFieldValue'] = CustomFieldValue
 globals()['TagValue'] = TagValue
+globals()['TestCaseParams'] = TestCaseParams
 globals()['TestStep'] = TestStep
 from qaseio.model.test_case import TestCase
 
