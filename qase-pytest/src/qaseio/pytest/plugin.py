@@ -20,10 +20,9 @@ from qaseio.api.plans_api import PlansApi
 from qaseio.api.projects_api import ProjectsApi
 from qaseio.api.results_api import ResultsApi
 from qaseio.api.runs_api import RunsApi
-from qaseio.models.run_create import RunCreate
-from qaseio.models.result import Result
-from qaseio.models.result_create_bulk import ResultCreateBulk
-from qaseio.models.result_create_steps import ResultCreateSteps
+from qaseio.model.run_create import RunCreate
+from qaseio.model.result_create_bulk import ResultCreateBulk
+from qaseio.model.result_create_steps_inner import ResultCreateStepsInner
 from qaseio.rest import ApiException
 
 
@@ -122,7 +121,7 @@ class QasePytestPlugin:
             debug=False,
     ):
         configuration = Configuration()
-        configuration.api_key['Token'] = api_token
+        configuration.api_key['TokenAuth'] = api_token
         self.client = ApiClient(configuration)
         self.client.set_default_header('X-Platform', get_platform())
         self.client.set_default_header('X-Client', get_client())
@@ -213,8 +212,8 @@ class QasePytestPlugin:
         api_runs = RunsApi(self.client)
         if self.testrun_id and self.testrun is None:
             self.testrun = api_runs.get_run(
-                self.project_code,
-                self.testrun_id,
+                code=self.project_code,
+                id=self.testrun_id,
                 include='cases',
             ).result
 
@@ -222,14 +221,13 @@ class QasePytestPlugin:
         api_runs = RunsApi(self.client)
         if cases:
             result = api_runs.create_run(
-                RunCreate(
+                code=self.project_code,
+                run_create=RunCreate(
                     title="Automated Run {}".format(str(datetime.now())),
                     cases=cases,
                     is_autotest=True
                 ),
-                self.project_code,
             )
-            print(result)
             self.testrun_id = result.result.id
             print()
             print(
@@ -402,7 +400,7 @@ class QasePytestPlugin:
             results = self.nodes_with_ids[item.nodeid]
             attachments = results.get("attachments", [])
             steps = [
-                ResultCreateSteps(position=pos, **values)
+                ResultCreateStepsInner(position=pos, **values)
                 for pos, values in results.get("steps", {}).items()
             ]
             attached = []
@@ -438,11 +436,11 @@ class QasePytestPlugin:
         print(f"Sending results to test run {self.testrun_id}...")
         try:
             api_results.create_result_bulk(
-                ResultCreateBulk(
-                    results=self.results_for_send
-                ),
-                self.project_code,
-                self.testrun_id
+                code=self.project_code,
+                id=self.testrun_id,
+                result_create_bulk=ResultCreateBulk(
+                    results=list(self.results_for_send.values())
+                )
             )
             print(f"Results of run {self.testrun_id} was sent")
         except Exception as e:
