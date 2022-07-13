@@ -12,7 +12,7 @@
 from setuptools import setup, find_packages  # noqa: H301
 
 NAME = "qaseio"
-VERSION = "3.0.0a3"
+VERSION = "3.0.0"
 # To install the library, run the following
 #
 # python setup.py install
