@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 
 # **create_result**
-> object create_result(code, id, result_create)
+> CreateResult200Response create_result(code, id, result_create)
 
 Create test run result.
 
@@ -22,11 +22,13 @@ This method allows to create test run result by Run Id.
 ### Example
 
 * Api Key Authentication (TokenAuth):
+
 ```python
 import time
 import qaseio
 from qaseio.api import results_api
 from qaseio.model.result_create import ResultCreate
+from qaseio.model.create_result200_response import CreateResult200Response
 from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
@@ -73,11 +75,13 @@ with qaseio.ApiClient(configuration) as api_client:
             "key": "key_example",
         },
         steps=[
-            ResultCreateSteps(
+            ResultCreateStepsInner(
                 position=1,
                 status="passed",
                 comment="comment_example",
-                attachments=None,
+                attachments=[
+                    "attachments_example",
+                ],
                 action="action_example",
                 expected_result="expected_result_example",
                 data="data_example",
@@ -105,7 +109,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**object**
+[**CreateResult200Response**](CreateResult200Response.md)
 
 ### Authorization
 
@@ -118,6 +122,7 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result |  -  |
@@ -134,6 +139,7 @@ This method allows to create a lot of test run result at once.
 ### Example
 
 * Api Key Authentication (TokenAuth):
+
 ```python
 import time
 import qaseio
@@ -188,11 +194,13 @@ with qaseio.ApiClient(configuration) as api_client:
                     "key": "key_example",
                 },
                 steps=[
-                    ResultCreateSteps(
+                    ResultCreateStepsInner(
                         position=1,
                         status="passed",
                         comment="comment_example",
-                        attachments=None,
+                        attachments=[
+                            "attachments_example",
+                        ],
                         action="action_example",
                         expected_result="expected_result_example",
                         data="data_example",
@@ -235,6 +243,7 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result |  -  |
@@ -251,6 +260,7 @@ This method allows to delete test run result.
 ### Example
 
 * Api Key Authentication (TokenAuth):
+
 ```python
 import time
 import qaseio
@@ -315,6 +325,7 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result |  -  |
@@ -331,6 +342,7 @@ This method allows to retrieve a specific test run result by Hash.
 ### Example
 
 * Api Key Authentication (TokenAuth):
+
 ```python
 import time
 import qaseio
@@ -393,6 +405,7 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A test run result. |  -  |
@@ -409,12 +422,13 @@ This method allows to retrieve all test run results stored in selected project.
 ### Example
 
 * Api Key Authentication (TokenAuth):
+
 ```python
 import time
 import qaseio
 from qaseio.api import results_api
-from qaseio.model.filters4 import Filters4
 from qaseio.model.result_list_response import ResultListResponse
+from qaseio.model.get_results_filters_parameter import GetResultsFiltersParameter
 from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
@@ -438,7 +452,7 @@ with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = results_api.ResultsApi(api_client)
     code = "code_example" # str | Code of project, where to search entities.
-    filters = {
+    filters = GetResultsFiltersParameter(
         status="status_example",
         run="run_example",
         case_id="case_id_example",
@@ -446,7 +460,7 @@ with qaseio.ApiClient(configuration) as api_client:
         api=True,
         from_end_time="from_end_time_example",
         to_end_time="to_end_time_example",
-    } # Filters4 |  (optional)
+    ) # GetResultsFiltersParameter |  (optional)
     limit = 10 # int | A number of entities in result set. (optional) if omitted the server will use the default value of 10
     offset = 0 # int | How many entities should be skipped. (optional) if omitted the server will use the default value of 0
 
@@ -474,7 +488,7 @@ with qaseio.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **code** | **str**| Code of project, where to search entities. |
- **filters** | **Filters4**|  | [optional]
+ **filters** | **GetResultsFiltersParameter**|  | [optional]
  **limit** | **int**| A number of entities in result set. | [optional] if omitted the server will use the default value of 10
  **offset** | **int**| How many entities should be skipped. | [optional] if omitted the server will use the default value of 0
 
@@ -493,6 +507,7 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of all test run results. |  -  |
@@ -509,6 +524,7 @@ This method allows to update test run result.
 ### Example
 
 * Api Key Authentication (TokenAuth):
+
 ```python
 import time
 import qaseio
@@ -550,7 +566,7 @@ with qaseio.ApiClient(configuration) as api_client:
         stacktrace="stacktrace_example",
         comment="comment_example",
         steps=[
-            ResultUpdateSteps(
+            ResultUpdateStepsInner(
                 position=1,
                 status="passed",
                 comment="comment_example",
@@ -595,6 +611,7 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result |  -  |

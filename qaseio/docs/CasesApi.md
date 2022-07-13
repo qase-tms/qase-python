@@ -21,6 +21,7 @@ This method allows to create a new test case in selected project.
 ### Example
 
 * Api Key Authentication (TokenAuth):
+
 ```python
 import time
 import qaseio
@@ -69,12 +70,14 @@ with qaseio.ApiClient(configuration) as api_client:
             "attachments_example",
         ]),
         steps=[
-            TestCaseCreateSteps(
+            TestCaseCreateStepsInner(
                 action="action_example",
                 expected_result="expected_result_example",
                 data="data_example",
                 position=1,
-                attachments=AttachmentHashList(AttachmentHashList),
+                attachments=AttachmentHashList([
+                    "attachments_example",
+                ]),
             ),
         ],
         tags=[
@@ -117,6 +120,7 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of all projects. |  -  |
@@ -133,6 +137,7 @@ This method completely deletes a test case from repository.
 ### Example
 
 * Api Key Authentication (TokenAuth):
+
 ```python
 import time
 import qaseio
@@ -195,6 +200,7 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A Test Case. |  -  |
@@ -211,6 +217,7 @@ This method allows to retrieve a specific test case.
 ### Example
 
 * Api Key Authentication (TokenAuth):
+
 ```python
 import time
 import qaseio
@@ -273,6 +280,7 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A Test Case. |  -  |
@@ -289,12 +297,13 @@ This method allows to retrieve all test cases stored in selected project.
 ### Example
 
 * Api Key Authentication (TokenAuth):
+
 ```python
 import time
 import qaseio
 from qaseio.api import cases_api
 from qaseio.model.test_case_list_response import TestCaseListResponse
-from qaseio.model.filters import Filters
+from qaseio.model.get_cases_filters_parameter import GetCasesFiltersParameter
 from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
@@ -318,7 +327,7 @@ with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cases_api.CasesApi(api_client)
     code = "code_example" # str | Code of project, where to search entities.
-    filters = {
+    filters = GetCasesFiltersParameter(
         search="search_example",
         milestone_id=1,
         suite_id=1,
@@ -328,7 +337,7 @@ with qaseio.ApiClient(configuration) as api_client:
         behavior="behavior_example",
         automation="automation_example",
         status="status_example",
-    } # Filters |  (optional)
+    ) # GetCasesFiltersParameter |  (optional)
     limit = 10 # int | A number of entities in result set. (optional) if omitted the server will use the default value of 10
     offset = 0 # int | How many entities should be skipped. (optional) if omitted the server will use the default value of 0
 
@@ -356,7 +365,7 @@ with qaseio.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **code** | **str**| Code of project, where to search entities. |
- **filters** | **Filters**|  | [optional]
+ **filters** | **GetCasesFiltersParameter**|  | [optional]
  **limit** | **int**| A number of entities in result set. | [optional] if omitted the server will use the default value of 10
  **offset** | **int**| How many entities should be skipped. | [optional] if omitted the server will use the default value of 0
 
@@ -375,6 +384,7 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of all projects. |  -  |
@@ -391,6 +401,7 @@ This method updates a test case.
 ### Example
 
 * Api Key Authentication (TokenAuth):
+
 ```python
 import time
 import qaseio
@@ -440,12 +451,14 @@ with qaseio.ApiClient(configuration) as api_client:
             "attachments_example",
         ]),
         steps=[
-            TestCaseCreateSteps(
+            TestCaseCreateStepsInner(
                 action="action_example",
                 expected_result="expected_result_example",
                 data="data_example",
                 position=1,
-                attachments=AttachmentHashList(AttachmentHashList),
+                attachments=AttachmentHashList([
+                    "attachments_example",
+                ]),
             ),
         ],
         tags=[
@@ -489,6 +502,7 @@ Name | Type | Description  | Notes
 
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A Test Case. |  -  |
