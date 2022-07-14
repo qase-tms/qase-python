@@ -23,12 +23,6 @@ def get_data(method, url):
             'result': {'code': project},
         }
 
-    if method == 'GET' and url.find(f'/v1/run/{project}/{run_id}'):
-        return {
-            'status': True,
-            'result': {'cases': [i for i in range(1, 16) if i not in [3]]},
-        }
-
 
 def make_response(method, url, *args, **kwargs):
     # Log a fake request for test output purposes
@@ -38,9 +32,6 @@ def make_response(method, url, *args, **kwargs):
         'url': url,
         'headers': kwargs['headers']
     })
-    print('Call:')
-    print(method)
-    print(url)
     # Create a new Mock to imitate a Response
     response_mock = MagicMock()
     response_mock.status = 200
@@ -54,9 +45,10 @@ def test_run_all_parameters_cli(mock_pm, testdir):
     calls = []
     mock_instance = mock_pm.return_value
     mock_instance.request.side_effect = make_response
-
     testdir.makepyfile(
         """
+    from qaseio.pytest import qase
+    @qase.id(1)
     def test_example():
         pass
     """
@@ -64,15 +56,10 @@ def test_run_all_parameters_cli(mock_pm, testdir):
     result = testdir.runpytest(
         "--qase",
         "--qase-project=PRJ",
-        "--qase-testrun=3",
+        "--qase-new-run",
         "--qase-api-token=12345",
         "--qase-debug",
     )
-
-    assert result.ret == 0
-    assert mock_instance.request.call_count == 2
-
-    assert len(calls) == 2
+    assert len(calls) == 1
     assert re.findall(r".*/project/PRJ", calls[0]['url'])
-    assert re.findall(r".*/run/PRJ/3", calls[1]['url'])
     assert calls[0]['headers'].get("Token") == "12345"

@@ -272,7 +272,7 @@ class QasePytestPlugin:
 
         Prints additional info at start of the run, if debug in True
         """
-        with FileLock("src.lock"):
+        with FileLock("qaseio.lock"):
             self.load_run_from_lock()
             self.load_testrun()
             self.nodes_with_ids, no_ids = get_ids_from_pytest_nodes(items)
