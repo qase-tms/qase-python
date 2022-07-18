@@ -1,208 +1,65 @@
 import re
+import json
+from unittest.mock import MagicMock, patch
 
 TEST_FILE = """
-from qaseio.pytest import qase
+from src.pytest import qase
 @qase.id(1)
 def test_example():
     pass
 """
 
+project = "PRJ"
+run_id = 3
+case_id = 1
 
-def test_run_all_parameters_cli(mock, default_mocks, testdir):
-    default_mocks()
-    testdir.makepyfile(
-        """
-    def test_example():
-        pass
-    """
-    )
-    result = testdir.runpytest(
-        "--qase",
-        "--qase-project=PRJ",
-        "--qase-testrun=3",
-        "--qase-api-token=12345",
-        "--qase-debug",
-    )
-    assert result.ret == 0
-    assert len(mock.request_history) == 2
-    assert re.findall(r".*/project/PRJ", mock.request_history[0].url)
-    assert re.findall(r".*/run/PRJ/3", mock.request_history[1].url)
-    assert mock.request_history[0].headers.get("Token") == "12345"
+calls = []
 
 
-def test_run_create_testrun_no_ids(mock, default_mocks, testdir):
-    default_mocks()
-    testdir.makepyfile(
-        """
-    from qaseio.pytest import qase
-    def test_example():
-        qase.attach((b'', "text/plain", "example.txt"))
-    """
-    )
-    result = testdir.runpytest(
-        "--qase",
-        "--qase-project=PRJ",
-        "--qase-new-run",
-        "--qase-api-token=12345",
-        "--qase-debug",
-    )
-    assert result.ret == 0
-    assert len(mock.request_history) == 1
-    assert re.findall(r".*/project/PRJ", mock.request_history[0].url)
-    assert mock.request_history[0].headers.get("Token") == "12345"
+def get_data(method, url):
+    if method == 'GET' and url.find(f'/v1/project/{project}'):
+        return {
+            'status': True,
+            'result': {'code': project},
+        }
 
 
-def test_run_create_testrun(
-    mock, default_mocks, cases_mocks, results_mocks, attachment_mocks, testdir
-):
-    default_mocks()
-    cases_mocks()
-    results_mocks()
-    attachment_mocks()
+def make_response(method, url, *args, **kwargs):
+    # Log a fake request for test output purposes
+    global calls
+    calls.append({
+        'method': method,
+        'url': url,
+        'headers': kwargs['headers']
+    })
+    # Create a new Mock to imitate a Response
+    response_mock = MagicMock()
+    response_mock.status = 200
+    response_mock.data = json.dumps(get_data(method, url))
+    return response_mock
+
+
+@patch('urllib3.PoolManager')
+def test_run_all_parameters_cli(mock_pm, testdir):
+    global calls
+    calls = []
+    mock_instance = mock_pm.return_value
+    mock_instance.request.side_effect = make_response
     testdir.makepyfile(
         """
     from qaseio.pytest import qase
     @qase.id(1)
     def test_example():
-        qase.attach((b'{}', "text/plain", "example.txt"))
-    """
-    )
-    result = testdir.runpytest(
-        "--qase",
-        "--qase-project=PRJ",
-        "--qase-new-run",
-        "--qase-api-token=12345",
-        "--qase-debug",
-    )
-    assert result.ret == 0
-    assert len(mock.request_history) == 7
-    assert re.findall(r".*/project/PRJ", mock.request_history[0].url)
-    assert mock.request_history[0].headers.get("Token") == "12345"
-
-
-def test_run_create_testrun_and_id(mock, default_mocks, testdir):
-    default_mocks()
-    testdir.makepyfile(TEST_FILE)
-    result = testdir.runpytest(
-        "--qase",
-        "--qase-project=PRJ",
-        "--qase-testrun=3",
-        "--qase-new-run",
-        "--qase-api-token=12345",
-        "--qase-debug",
-    )
-    assert result.ret != 0
-    assert len(mock.request_history) == 2
-
-
-def test_run_create_testrun_and_testplan(mock, default_mocks, testdir):
-    default_mocks()
-    testdir.makepyfile(TEST_FILE)
-    result = testdir.runpytest(
-        "--qase",
-        "--qase-project=PRJ",
-        "--qase-testplan=3",
-        "--qase-new-run",
-        "--qase-api-token=12345",
-        "--qase-debug",
-    )
-    assert result.ret != 0
-    assert len(mock.request_history) == 1
-
-
-def test_run_testrun_and_testplan(mock, default_mocks, testdir):
-    default_mocks()
-    testdir.makepyfile(TEST_FILE)
-    result = testdir.runpytest(
-        "--qase",
-        "--qase-project=PRJ",
-        "--qase-testplan=3",
-        "--qase-testrun=4",
-        "--qase-api-token=12345",
-        "--qase-debug",
-    )
-    assert result.ret != 0
-    assert len(mock.request_history) == 1
-
-
-def test_run_testrun_and_create_testrun_and_testplan(
-    mock, default_mocks, testdir
-):
-    default_mocks()
-    testdir.makepyfile(TEST_FILE)
-    result = testdir.runpytest(
-        "--qase",
-        "--qase-project=PRJ",
-        "--qase-testplan=3",
-        "--qase-testrun=4",
-        "--qase-new-run",
-        "--qase-api-token=12345",
-        "--qase-debug",
-    )
-    assert result.ret != 0
-    assert len(mock.request_history) == 1
-
-
-def test_run_not_enabled(mock, default_mocks, testdir):
-    default_mocks()
-    testdir.makepyfile(
-        """
-    from qaseio.pytest import qase
-    def test_example():
-        qase.attach((b'', "text/plain", "example.txt"))
-    """
-    )
-    result = testdir.runpytest()
-    assert result.ret == 0
-    assert not mock.called
-    assert len(mock.request_history) == 0
-
-
-def test_run_all_parameters_config(mock, default_mocks, testdir):
-    default_mocks()
-    testdir.makepyfile(
-        """
-    def test_example():
         pass
     """
     )
-    testdir.makefile(
-        ".ini",
-        pytest=(
-            "[pytest]\nqs_enabled=True\nqs_project_code=PRJ\n"
-            "qs_testrun_id=3\nqs_api_token=12345\nqs_debug=True"
-        ),
-    )
-    result = testdir.runpytest()
-    assert result.ret == 0
-    assert len(mock.request_history) == 2
-    assert re.findall(r".*/project/PRJ", mock.request_history[0].url)
-    assert re.findall(r".*/run/PRJ/3", mock.request_history[1].url)
-    assert mock.request_history[0].headers.get("Token") == "12345"
-
-
-def test_run_override_using_cli(mock, default_mocks, testdir):
-    default_mocks()
-    testdir.makepyfile(
-        """
-    def test_example():
-        pass
-    """
-    )
-    testdir.makefile(
-        ".ini",
-        pytest=(
-            "[pytest]\nqs_enabled=True\nqs_project_code=PRJCODE\n"
-            "qs_testrun_id=1\nqs_api_token=12345\nqs_debug=True"
-        ),
-    )
     result = testdir.runpytest(
+        "--qase",
         "--qase-project=PRJ",
-        "--qase-testrun=3",
-        "--qase-api-token=45678",
+        "--qase-new-run",
+        "--qase-api-token=12345",
+        "--qase-debug",
     )
-    assert result.ret == 0
-    assert len(mock.request_history) == 2
-    assert re.findall(r".*/project/PRJ", mock.request_history[0].url)
-    assert re.findall(r".*/run/PRJ/3", mock.request_history[1].url)
-    assert mock.request_history[0].headers.get("Token") == "45678"
+    assert len(calls) == 1
+    assert re.findall(r".*/project/PRJ", calls[0]['url'])
+    assert calls[0]['headers'].get("Token") == "12345"

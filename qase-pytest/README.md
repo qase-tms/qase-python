@@ -12,6 +12,15 @@ pip install qase-pytest
 
 ## Configuration
 
+You should have an active item in the project settings at
+```
+https://app.qase.io/project/QASE_PROJECT_CODE/settings/options
+```
+option in the `Test Runs` block:
+```
+Allow submitting results in bulk
+```
+---
 Configuration could be provided both by `pytest.ini`/`tox.ini` params
 and using command-line arguments:
 

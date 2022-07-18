@@ -98,7 +98,7 @@ def pytest_configure(config):
 
 
 def pytest_unconfigure(config):
-    qaseio = getattr(config, "qaseio", None)
+    qaseio = getattr(config, "src", None)
     if qaseio:
         del config.qaseio
         config.pluginmanager.unregister(qaseio)
