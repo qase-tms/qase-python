@@ -74,6 +74,10 @@ class MissingStepIdentifierException(Exception):
     pass
 
 
+class PluginNotInitializedException(Exception):
+    pass
+
+
 def get_step_position(identifier: Union[int, str], case):
     if isinstance(identifier, int):
         # We expect that this is correct position id
@@ -475,7 +479,7 @@ class QasePytestPluginSingleton:
     def get_instance() -> QasePytestPlugin:
         """ Static access method"""
         if QasePytestPluginSingleton._instance is None:
-            raise Exception("Init plugin first")
+            raise PluginNotInitializedException("Init plugin first")
         return QasePytestPluginSingleton._instance
 
     def __init__(self):
