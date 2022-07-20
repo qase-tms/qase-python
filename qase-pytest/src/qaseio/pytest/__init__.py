@@ -7,7 +7,7 @@ from typing import Tuple, Union
 
 import pytest
 
-from qaseio.pytest.plugin import QasePytestPluginSingleton, PluginNotInitializedException
+from qaseio.pytest.plugin import PluginNotInitializedException, QasePytestPluginSingleton
 
 try:
     # Change here if project is renamed and does not equal the package name
