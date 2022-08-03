@@ -106,6 +106,11 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Created Custom Field id. |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**422** | Unprocessable Entity. |  -  |
+**429** | Too Many Request. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -184,6 +189,11 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Custom Field removal result. |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**429** | Too Many Request. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -262,6 +272,11 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A Custom Field. |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**429** | Too Many Request. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -349,6 +364,10 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Custom Field list. |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**429** | Too Many Request. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -450,6 +469,12 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Custom Field update result. |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**422** | Unprocessable Entity. |  -  |
+**429** | Too Many Request. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

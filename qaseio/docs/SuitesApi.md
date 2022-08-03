@@ -94,6 +94,12 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of all projects. |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**422** | Unprocessable Entity. |  -  |
+**429** | Too Many Request. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -188,6 +194,11 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result of operation. |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**429** | Too Many Request. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -268,6 +279,11 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A Test Case. |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**429** | Too Many Request. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -276,7 +292,7 @@ Name | Type | Description  | Notes
 
 Get all test suites.
 
-This method allows to retrieve all test suites stored in selected project.. 
+This method allows to retrieve all test suites stored in selected project. 
 
 ### Example
 
@@ -364,6 +380,11 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of all suites of project. |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**429** | Too Many Request. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -452,6 +473,12 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result of operation. |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**422** | Unprocessable Entity. |  -  |
+**429** | Too Many Request. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

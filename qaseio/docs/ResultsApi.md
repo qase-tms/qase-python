@@ -126,6 +126,12 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**422** | Unprocessable Entity. |  -  |
+**429** | Too Many Request. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -134,7 +140,7 @@ Name | Type | Description  | Notes
 
 Bulk create test run result.
 
-This method allows to create a lot of test run result at once. 
+This method allows to create a lot of test run result at once.  If you try to send more than 2,000 results in a single bulk request, you will receive an error with code 413 - Payload Too Large.  If there is no free space left in your team account, when attempting to upload an attachment, e.g., through reporters, you will receive an error with code 507 - Insufficient Storage. 
 
 ### Example
 
@@ -247,6 +253,13 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**413** | Payload Too Large. |  -  |
+**422** | Unprocessable Entity. |  -  |
+**429** | Too Many Request. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -329,6 +342,11 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**429** | Too Many Request. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -409,6 +427,11 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A test run result. |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**429** | Too Many Request. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -511,6 +534,11 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of all test run results. |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**429** | Too Many Request. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -615,6 +643,12 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**422** | Unprocessable Entity. |  -  |
+**429** | Too Many Request. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

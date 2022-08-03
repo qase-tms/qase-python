@@ -85,6 +85,11 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A result. |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**429** | Too Many Request. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -162,7 +167,12 @@ Name | Type | Description  | Notes
 
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**200** | An attachments. |  -  |
+**200** | Single attachment. |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**429** | Too Many Request. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -244,6 +254,12 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of all attachments. |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**413** | Payload Too Large. |  -  |
+**429** | Too Many Request. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -335,6 +351,12 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | An attachments. |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**413** | Payload Too Large. |  -  |
+**429** | Too Many Request. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
