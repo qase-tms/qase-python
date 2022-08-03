@@ -276,7 +276,7 @@ Name | Type | Description  | Notes
 
 Get all test suites.
 
-This method allows to retrieve all test suites stored in selected project.. 
+This method allows to retrieve all test suites stored in selected project. 
 
 ### Example
 
