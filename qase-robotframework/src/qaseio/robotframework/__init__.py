@@ -49,6 +49,7 @@ class Envs(Enum):
     RUN_ID = "QASE_RUN_ID"
     RUN_NAME = "QASE_RUN_NAME"
     DEBUG = "QASE_DEBUG"
+    RUN_COMPLETE = "QASE_RUN_COMPLETE"
 
 
 class StartSuiteModel(TypedDict):
@@ -151,6 +152,7 @@ class Listener:
         self.results = {}
         self.history = []
         self.debug = bool(self.get_param(Envs.DEBUG))
+        self.complete_run = bool(self.get_param(Envs.RUN_COMPLETE))
         if self.debug:
             logger.setLevel(logging.DEBUG)
             ch = logging.StreamHandler()
@@ -229,6 +231,8 @@ class Listener:
                 self.api.results.update(
                     self.project_code, self.run_id, hash, req_data
                 )
+                if self.complete_run:
+                    self.complete()
             self.history.remove(self.results.get(attributes.get("id")))
 
     def end_keyword(self, name, attributes: EndKeywordModel):
@@ -264,6 +268,21 @@ class Listener:
                 )
         else:
             logger.debug("Skipping keyword '%s'", name)
+
+    def complete(self):
+        logger.info("complete run executing")
+        if self.run_id and self.complete_run:
+            print()
+            print(f"Finishing run {self.run_id}")
+            res = self.api.runs.get(self.project_code, self.run_id)
+            if res.status == 1:
+                print(f"Run {self.run_id} already finished")
+                return
+            try:
+                self.api.runs.complete(self.project_code, self.run_id)
+                print(f"Run {self.run_id} was finished successfully")
+            except Exception as e:
+                print(f"Run {self.run_id} was finished with error: {e}")
 
     def log_message(self, message):
         logger.debug("Log:", message)
