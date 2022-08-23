@@ -73,8 +73,7 @@ ENV variables:
 - `QASE_PROJECT` - Project code from Qase TMS
 - `QASE_RUN_ID` - Run ID if you want to add results to existing run
 - `QASE_RUN_NAME` - Set custom run name when no run ID is provided
-- `QASE_DEBUG` - If passed something - will enable debug logging for listener
-
+- `QASE_RUN_COMPLETE` - Will complete run after all tests are finished
 ### Usage:
 ```
 QASE_API_TOKEN=<API TOKEN> QASE_PROJECT=PRJCODE robot --listener qaseio.robotframework.Listener keyword_driven.robot data_driven.robot
@@ -88,6 +87,7 @@ qase_project=project_code
 qase_run_id=run_id
 qase_run_name=New Robot Framework Run
 qase_debug=True
+qase_run_complete=True
 ```
 Execution:
 ```
