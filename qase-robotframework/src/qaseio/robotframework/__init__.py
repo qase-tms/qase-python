@@ -231,8 +231,6 @@ class Listener:
                 self.api.results.update(
                     self.project_code, self.run_id, hash, req_data
                 )
-                if self.complete_run:
-                    self.complete()
             self.history.remove(self.results.get(attributes.get("id")))
 
     def end_keyword(self, name, attributes: EndKeywordModel):
@@ -268,6 +266,13 @@ class Listener:
                 )
         else:
             logger.debug("Skipping keyword '%s'", name)
+
+    def end_suite(self, name, attributes: EndSuiteModel):
+        logger.debug("Finishing suite '%s'", name)
+        if not self.history:
+            logger.info("Finishing run with name: %s", name)
+            if self.complete_run:
+                self.complete()
 
     def complete(self):
         logger.info("complete run executing")
