@@ -73,6 +73,7 @@ ENV variables:
 - `QASE_PROJECT` - Project code from Qase TMS
 - `QASE_RUN_ID` - Run ID if you want to add results to existing run
 - `QASE_RUN_NAME` - Set custom run name when no run ID is provided
+- `QASE_DEBUG` - If passed something - will enable debug logging for listener
 - `QASE_RUN_COMPLETE` - Will complete run after all tests are finished
 ### Usage:
 ```
