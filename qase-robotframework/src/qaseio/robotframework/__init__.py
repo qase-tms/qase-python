@@ -49,6 +49,7 @@ class Envs(Enum):
     RUN_ID = "QASE_RUN_ID"
     RUN_NAME = "QASE_RUN_NAME"
     DEBUG = "QASE_DEBUG"
+    RUN_COMPLETE = "QASE_RUN_COMPLETE"
 
 
 class StartSuiteModel(TypedDict):
@@ -150,7 +151,8 @@ class Listener:
         self.run_name = self.get_param(Envs.RUN_NAME)
         self.results = {}
         self.history = []
-        self.debug = bool(self.get_param(Envs.DEBUG))
+        self.debug = self.get_param(Envs.DEBUG).lower() in ['true', '1']
+        self.complete_run = self.get_param(Envs.RUN_COMPLETE).lower() in ['true', '1']
         if self.debug:
             logger.setLevel(logging.DEBUG)
             ch = logging.StreamHandler()
@@ -264,6 +266,28 @@ class Listener:
                 )
         else:
             logger.debug("Skipping keyword '%s'", name)
+
+    def end_suite(self, name, attributes: EndSuiteModel):
+        logger.debug("Finishing suite '%s'", name)
+        if not self.history:
+            logger.info("Finishing run with name: %s", name)
+            if self.complete_run:
+                self.complete()
+
+    def complete(self):
+        logger.info("complete run executing")
+        if self.run_id and self.complete_run:
+            print()
+            print(f"Finishing run {self.run_id}")
+            res = self.api.runs.get(self.project_code, self.run_id)
+            if res.status == 1:
+                print(f"Run {self.run_id} already finished")
+                return
+            try:
+                self.api.runs.complete(self.project_code, self.run_id)
+                print(f"Run {self.run_id} was finished successfully")
+            except Exception as e:
+                print(f"Run {self.run_id} was finished with error: {e}")
 
     def log_message(self, message):
         logger.debug("Log:", message)
