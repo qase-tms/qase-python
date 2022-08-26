@@ -151,8 +151,8 @@ class Listener:
         self.run_name = self.get_param(Envs.RUN_NAME)
         self.results = {}
         self.history = []
-        self.debug = bool(self.get_param(Envs.DEBUG))
-        self.complete_run = bool(self.get_param(Envs.RUN_COMPLETE))
+        self.debug = self.get_param(Envs.DEBUG).lower() in ['true', '1']
+        self.complete_run = self.get_param(Envs.RUN_COMPLETE).lower() in ['true', '1']
         if self.debug:
             logger.setLevel(logging.DEBUG)
             ch = logging.StreamHandler()
