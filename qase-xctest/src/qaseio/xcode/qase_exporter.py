@@ -35,6 +35,7 @@ class QaseExtractor:
     project_code: str = attr.ib()
     upload_attachments: bool = attr.ib(default=True)
     test_run_name: str = attr.ib(default="Run")
+    run_complete: bool = attr.ib(default=False)
 
     def __attrs_post_init__(self):
         self._ignored_attachment_names = [
@@ -138,6 +139,9 @@ class QaseExtractor:
                     print("case_id:", case_id, "error:", err)
             except Exception as err:
                 print("case_id:", case_id, "error:", err)
+
+        if self.run_complete:
+            qase.runs.complete(self.project_code, test_run.id)
 
     def __extract_qase_config(
         self, parser: p.XCReportParser, test_summary: p.ActionTestSummary
