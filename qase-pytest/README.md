@@ -227,5 +227,4 @@ For test test_complex_run.py::test_multiple_ids_fail could not find test cases i
 4. Check which tests does not have ids (debug: will list them all)
 5. Check every id exists in project (debug: will show which missing)
 6. Check every id present in testrun (debug: will show which missing)
-7. Execute tests and publish results in a runtime,
-not waiting all run to finish
+7. Executing tests and publishing the results after execution, waiting for all tests to be completed
