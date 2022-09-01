@@ -11,6 +11,7 @@ from qaseio.client.models import (
     TestRunResultCreate,
     TestRunResultStatus,
     TestRunResultStepCreate,
+    TestRunResultUpdate
 )
 from qaseio.client.services import BadRequestException
 from qaseio.xcreport import parser as p
@@ -69,6 +70,28 @@ class QaseExtractor:
         test_run = qase.runs.create(
             self.project_code, TestRunCreate(self.test_run_name, qase_ids)
         )
+        res_data = []
+
+        for case_id, test, parser in tests_with_qase:
+            steps: List[TestRunResultStepCreate] = []
+            # Find steps
+            position = 1
+            test_run_attachments: List[str] = []
+
+            result = qase.results.create(
+                self.project_code,
+                test_run.id,
+                TestRunResultCreate(
+                    case_id,
+                    TestRunResultStatus.IN_PROGRESS,
+                    int(test.duration),
+                    steps=steps,
+                    attachments=test_run_attachments,
+                ),
+            )
+            res_data.append(result)
+
+            # Create test result
 
         for case_id, test, parser in tests_with_qase:
             steps: List[TestRunResultStepCreate] = []
@@ -100,45 +123,44 @@ class QaseExtractor:
                 )
                 position += 1
 
-            # Create test result
-            try:
-                qase.results.create(
-                    self.project_code,
-                    test_run.id,
-                    TestRunResultCreate(
-                        case_id,
-                        ACTION_TEST_SUMMARY_TO_QASE_STATUS[test.test_status],
-                        int(test.duration),
-                        steps=steps,
-                        attachments=test_run_attachments,
-                    ),
-                )
-            except BadRequestException:
+            for qase_res in res_data:
                 try:
-                    # Try without steps
-                    qase.results.create(
+                    qase.results.update(
                         self.project_code,
                         test_run.id,
-                        TestRunResultCreate(
-                            case_id,
-                            ACTION_TEST_SUMMARY_TO_QASE_STATUS[
-                                test.test_status
-                            ],
+                        qase_res.hash,
+                        TestRunResultUpdate(
+                            TestRunResultStatus.IN_PROGRESS,
                             int(test.duration),
-                            comment="Check number of steps in your code. "
-                            "They are not equally.",
+                            steps=steps,
                             attachments=test_run_attachments,
                         ),
                     )
-                    print(
-                        "Check number of steps in your code. "
-                        "They are not equally. case_id:",
-                        case_id,
-                    )
+                except BadRequestException:
+                    try:
+                        # Try without steps
+                        qase.results.update(
+                            self.project_code,
+                            test_run.id,
+                            qase_res.hash,
+                            TestRunResultUpdate(
+                                TestRunResultStatus.IN_PROGRESS,
+
+                                int(test.duration),
+                                comment="Check number of steps in your code. "
+                                "They are not equally.",
+                                attachments=test_run_attachments,
+                            ),
+                        )
+                        print(
+                            "Check number of steps in your code. "
+                            "They are not equally. case_id:",
+                            case_id,
+                        )
+                    except Exception as err:
+                        print("case_id123:", case_id, "error:", err)
                 except Exception as err:
-                    print("case_id:", case_id, "error:", err)
-            except Exception as err:
-                print("case_id:", case_id, "error:", err)
+                    print("case_id12:", case_id, "error:", err)
 
         if self.run_complete:
             qase.runs.complete(self.project_code, test_run.id)
