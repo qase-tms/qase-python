@@ -2,7 +2,7 @@ import argparse
 import os
 import plistlib
 
-from qaseio.xcode.qase_exporter import QaseExtractor
+from .qase_exporter import QaseExtractor
 
 
 def find_report(project_folder):
@@ -48,6 +48,12 @@ def main():
         default=False,
     )
     parser.add_argument("--run_name", help="Qase Test Run Name", default="Run")
+    parser.add_argument(
+        "--run_complete",
+        action="store_true",
+        help="Complete test run",
+        default=False
+    )
 
     args = parser.parse_args()
 
@@ -63,5 +69,6 @@ def main():
         args.project_code,
         args.upload_attachments,
         args.run_name,
+        args.run_complete
     )
     extractor.process()

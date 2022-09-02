@@ -8,6 +8,7 @@ from qaseio.client.models import (
     AttachmentCreated,
     MimeTypes,
     TestRunCreate,
+    TestRunCreated,
     TestRunResultCreate,
     TestRunResultStatus,
     TestRunResultStepCreate,
@@ -35,6 +36,7 @@ class QaseExtractor:
     project_code: str = attr.ib()
     upload_attachments: bool = attr.ib(default=True)
     test_run_name: str = attr.ib(default="Run")
+    run_complete: bool = attr.ib(default=False)
 
     def __attrs_post_init__(self):
         self._ignored_attachment_names = [
@@ -120,9 +122,7 @@ class QaseExtractor:
                         test_run.id,
                         TestRunResultCreate(
                             case_id,
-                            ACTION_TEST_SUMMARY_TO_QASE_STATUS[
-                                test.test_status
-                            ],
+                            ACTION_TEST_SUMMARY_TO_QASE_STATUS[test.test_status],
                             int(test.duration),
                             comment="Check number of steps in your code. "
                             "They are not equally.",
@@ -138,6 +138,9 @@ class QaseExtractor:
                     print("case_id:", case_id, "error:", err)
             except Exception as err:
                 print("case_id:", case_id, "error:", err)
+
+        if self.run_complete:
+            self.__run_complete(qase, test_run)
 
     def __extract_qase_config(
         self, parser: p.XCReportParser, test_summary: p.ActionTestSummary
@@ -265,3 +268,16 @@ class QaseExtractor:
                 if attachment.name in self._ignored_attachment_names:
                     return True
         return False
+
+    def __run_complete(self, qase: QaseApi, test_run: TestRunCreated):
+        if self.test_run_name and self.run_complete:
+            result = qase.runs.get(self.project_code, test_run.id)
+            if result.status == 1:
+                print(f"Run {test_run.id}. {self.test_run_name} already finished")
+                return
+            try:
+                qase.runs.complete(self.project_code, test_run.id)
+                print(f"Run {test_run.id}. {self.test_run_name} was finished successfully")
+            except Exception as error:
+                print(f"Run {test_run.id}. {self.test_run_name} was finished with error: {error}")
+
