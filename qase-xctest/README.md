@@ -19,12 +19,15 @@ Always using this enviroment for `--build` arg.
 
 `--upload_attachments` - Send attachments from report.
 
+`--run_complete` - Complete run after all tests are finished.
+
 ```bash
 qasexcode --build $BUILD_ROOT \
   --api_token YOUR_API_TOKEN \
   --project_code YOUR_PROJECT_CODE \
   --run_name From_Xcode \
-  --upload_attachments
+  --upload_attachments \
+  --run_complete
 ```
 
 ### For CI
@@ -37,5 +40,6 @@ qasexcode --xcresults PathToReport/1.xcresult PathToReport/2.xcresult \
   --api_token YOUR_API_TOKEN \
   --project_code YOUR_PROJECT_CODE \
   --run_name From_ci \
-  --upload_attachments
+  --upload_attachments \
+  --run_complete
 ```
