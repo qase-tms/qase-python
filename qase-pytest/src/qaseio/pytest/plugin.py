@@ -127,8 +127,8 @@ class QasePytestPlugin:
         self.client.set_default_header('X-Platform', get_platform())
         self.client.set_default_header('X-Client', get_client())
         self.project_code = project
-        self.testrun_id = testrun
-        self.testplan_id = testplan
+        self.testrun_id = int(testrun)
+        self.testplan_id = int(testplan)
         self.create_run = create_run
         self.complete_run = complete_run
         self.debug = debug
@@ -435,6 +435,7 @@ class QasePytestPlugin:
         api_results = ResultsApi(self.client)
         print()
         print(f"Sending results to test run {self.testrun_id}...")
+        print(type(self.testrun_id))
         try:
             api_results.create_result_bulk(
                 code=self.project_code,
