@@ -48,9 +48,9 @@ and using command-line arguments:
                         default value for --qase-api-token
   qs_project_code (string):
                         default value for --qase-project
-  qs_testrun_id (string):
+  qs_testrun_id (int):
                         default value for --qase-testrun
-  qs_testplan_id (string):
+  qs_testplan_id (int):
                         default value for --qase-testplan
   qs_new_run (bool):    default value for --qase-new-run
   qs_complete_run (bool):
