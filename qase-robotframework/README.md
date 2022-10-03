@@ -75,6 +75,8 @@ ENV variables:
 - `QASE_RUN_NAME` - Set custom run name when no run ID is provided
 - `QASE_DEBUG` - If passed something - will enable debug logging for listener
 - `QASE_RUN_COMPLETE` - Will complete run after all tests are finished
+- `QASE_STEPS_RESULTS` - Will disable the reporting of results for each steps and hence will not show the warnings for testcase steps name mismatch. Overall testcase status shall be updated
+- `QASE_SCREENSHOT_PATH` - To fetch the latest screenshot and upload in failed testcase
 ### Usage:
 ```
 QASE_API_TOKEN=<API TOKEN> QASE_PROJECT=PRJCODE robot --listener qaseio.robotframework.Listener keyword_driven.robot data_driven.robot
@@ -89,7 +91,11 @@ qase_run_id=run_id
 qase_run_name=New Robot Framework Run
 qase_debug=True
 qase_run_complete=True
+qase_steps_results=True
+qase_screenshot_path=D:\\rf-demo\\results\\screenshots
 ```
+> Note: Please add proper slashes for the folder path depending on operating system
+
 Execution:
 ```
 robot --listener qaseio.robotframework.Listener someTest.robot

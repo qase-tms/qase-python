@@ -1,5 +1,6 @@
 import configparser
 import logging
+import glob
 import os
 import re
 import sys
@@ -51,6 +52,7 @@ class Envs(Enum):
     DEBUG = "QASE_DEBUG"
     RUN_COMPLETE = "QASE_RUN_COMPLETE"
     STEPS_RESULTS = "QASE_STEPS_RESULTS"
+    SCREENSHOT_PATH = "QASE_SCREENSHOT_PATH"
 
 
 class StartSuiteModel(TypedDict):
@@ -155,6 +157,7 @@ class Listener:
         self.debug = self.get_param(Envs.DEBUG).lower() in ['true', '1']
         self.complete_run = self.get_param(Envs.RUN_COMPLETE).lower() in ['true', '1']
         self.steps_results = self.get_param(Envs.STEPS_RESULTS).lower() in ['true', '1']
+        self.screenshot_path = self.get_param(Envs.SCREENSHOT_PATH)
         if self.debug:
             logger.setLevel(logging.DEBUG)
             ch = logging.StreamHandler()
@@ -222,6 +225,13 @@ class Listener:
                     attributes.get("status"),
                     attributes.get("message"),
                 )
+
+                # Only upload screenshot if testcase is failed
+                if attributes.get("status").lower() == "fail":
+                    attachment_hashes = self._upload_attachments_and_get_hashes(self._get_screenshots(self.screenshot_path))
+                else:
+                    attachment_hashes = []
+
                 req_data = TestRunResultUpdate(
                     STATUSES[attributes.get("status")],
                     time_ms=attributes.get("elapsedtime"),
@@ -230,6 +240,7 @@ class Listener:
                     steps=self.results.get(attributes.get("id"), {}).get(
                         "steps", []
                     ),
+                    attachments=attachment_hashes
                 )
                 self.api.results.update(
                     self.project_code, self.run_id, hash, req_data
@@ -316,3 +327,19 @@ class Listener:
             )
         )
         return None
+
+    def _upload_attachments_and_get_hashes(self, list_of_files):
+        hash_list = []
+        for eachFile in list_of_files:
+            attach_res = self.api.attachments.upload(self.project_code, eachFile)
+            hash_list.append(attach_res[0].hash)
+
+        return hash_list
+
+    # Since RobotFramework does not spit the screenshot filename or filepath when testcase are failed.
+    # Prerequisite for this functionality to work is to have a screenshot folder, setup when calling SeleniumLibrary
+    # from RobotFramework so as to pick the latest file assuming a screenshot was saved when testcase failed
+    def _get_screenshots(self, screenshotFolderPath):
+        files_path = os.path.join(screenshotFolderPath, '*')
+        files = sorted(glob.iglob(files_path), key=os.path.getctime, reverse=True)
+        return [files[0]]
