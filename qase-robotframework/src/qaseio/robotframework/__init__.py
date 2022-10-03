@@ -50,6 +50,7 @@ class Envs(Enum):
     RUN_NAME = "QASE_RUN_NAME"
     DEBUG = "QASE_DEBUG"
     RUN_COMPLETE = "QASE_RUN_COMPLETE"
+    STEPS_RESULTS = "QASE_STEPS_RESULTS"
 
 
 class StartSuiteModel(TypedDict):
@@ -153,6 +154,7 @@ class Listener:
         self.history = []
         self.debug = self.get_param(Envs.DEBUG).lower() in ['true', '1']
         self.complete_run = self.get_param(Envs.RUN_COMPLETE).lower() in ['true', '1']
+        self.steps_results = self.get_param(Envs.STEPS_RESULTS).lower() in ['true', '1']
         if self.debug:
             logger.setLevel(logging.DEBUG)
             ch = logging.StreamHandler()
@@ -223,7 +225,8 @@ class Listener:
                 req_data = TestRunResultUpdate(
                     STATUSES[attributes.get("status")],
                     time_ms=attributes.get("elapsedtime"),
-                    stacktrace=attributes.get("message"),
+                    stacktrace=f"Source : `{attributes.get('source')}` \n Line No : `{attributes.get('lineno')}` \n Message : `{attributes.get('message')}`",
+                    comment=attributes.get("message"),
                     steps=self.results.get(attributes.get("id"), {}).get(
                         "steps", []
                     ),
@@ -234,7 +237,7 @@ class Listener:
             self.history.remove(self.results.get(attributes.get("id")))
 
     def end_keyword(self, name, attributes: EndKeywordModel):
-        if self.history:
+        if self.history and self.steps_results:
             logger.debug("Finishing step '%s'", name)
             last_item = self.history[-1]
             case = last_item.get("case_info")
@@ -305,7 +308,7 @@ class Listener:
             if re.match(
                 r"{}.*".format(step_name.lower()), step.get("action").lower()
             ):
-                if pos >= previous_step:
+                if pos <= previous_step:
                     return pos + 1
         logger.warning(
             MissingStepIdentifierException(
