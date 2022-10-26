@@ -184,13 +184,16 @@ pytest \
 
 ## Creating new testrun according to current pytest run
 
-If you want to create a new test run in Qase TestOps for each execution, you can simply skip `--qase-to-run`
+If you want to create a new test run in Qase TestOps for each execution, you can simply 
+skip `--qase-to-run`. If you want to provide a custom name for this run, you can add an
+option `--qase-to-run-title` 
 
 ```bash
 pytest \
     --qase-mode=testops \
     --qase-to-api-token=<your api token here> \
     --qase-to-project=PRJCODE \ # project, where your testrun would be created
+    --qase-to-run-title=My\ First\ Automated\ Run
 ```
 
 ## Qase TestOps submission mode

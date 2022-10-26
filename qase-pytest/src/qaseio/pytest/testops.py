@@ -1,3 +1,4 @@
+from cProfile import run
 from qaseio.api_client import ApiClient
 from qaseio.configuration import Configuration
 from qaseio.api.attachments_api import AttachmentsApi
@@ -38,6 +39,7 @@ class TestOps:
             run_id=None,
             plan_id=None,
             mode="async",
+            run_title=None,
             complete_run=False) -> None:
         
         configuration = Configuration()
@@ -49,6 +51,11 @@ class TestOps:
         self.plan_id = plan_id
         self.mode =  mode
         self.complete_after_run = complete_run
+        
+        if run_title and run_title != '':
+            self.run_title = run_title
+        else:
+            self.run_title = "Automated Run {}".format(str(datetime.now()))
 
         self.run = None
 
@@ -160,7 +167,7 @@ class TestOps:
         result = api_runs.create_run(
             code=self.project_code,
             run_create=RunCreate(
-                title="Automated Run {}".format(str(datetime.now())),
+                title=self.run_title,
                 cases=cases,
                 is_autotest=True
             ),

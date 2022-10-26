@@ -58,6 +58,12 @@ def pytest_addoption(parser):
         help="Test Plan ID in Qase TestOps",
     )
     add_option_ini(
+        "--qase-to-run-title",
+        "qs_to_run_title",
+        type="string",
+        help="Define title for autocreated Test Run",
+    )
+    add_option_ini(
         "--qase-to-complete-run",
         "qs_to_complete_run",
         type="bool",
@@ -88,7 +94,8 @@ def pytest_configure(config):
             run_id=get_option_ini(config, "qs_to_run_id"),
             plan_id=get_option_ini(config, "qs_to_plan_id"),
             complete_run=get_option_ini(config, "qs_to_complete_run"),
-            mode=get_option_ini(config, "qs_to_mode")
+            mode=get_option_ini(config, "qs_to_mode"),
+            run_title=get_option_ini(config, "qs_to_run_title")
         )
 
         QasePytestPluginSingleton.init(
