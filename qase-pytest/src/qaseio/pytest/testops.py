@@ -61,7 +61,7 @@ class TestOps:
     def _get_project(self, project):
         api_instance = ProjectsApi(self.client)
         try:
-            response = api_instance.get_project(project)
+            response = api_instance.get_project(code=project)
             if hasattr(response, 'result'):
                 return response.result
             raise ValueError("Unable to find given project code")

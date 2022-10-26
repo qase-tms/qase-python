@@ -25,10 +25,9 @@ def pytest_addoption(parser):
     add_option_ini(
         "--qase-mode",
         "qs_mode",
-        default="testops",
+        default="off",
         type="string",
-        help="Define Qase reporter mode",
-        action="store_true",
+        help="Define Qase reporter mode: `off` or `testops`"
     )
 
     add_option_ini(
@@ -61,10 +60,10 @@ def pytest_addoption(parser):
     add_option_ini(
         "--qase-to-complete-run",
         "qs_to_complete_run",
-        default=False,
         type="bool",
+        default=False,
         help="Complete run after all tests are finished",
-        action="store_true",
+        action="store_false",
     )
     add_option_ini(
         "--qase-to-mode",
@@ -82,23 +81,24 @@ def pytest_configure(config):
     config.addinivalue_line("markers", "qase_title: mark test with title")
     config.addinivalue_line("markers", "qase_description: mark test with description")
 
-    reporter = TestOps(
-        api_token=get_option_ini(config, "qs_to_api_token"),
-        project_code=get_option_ini(config, "qs_to_project"),
-        run_id=get_option_ini(config, "qs_to_run_id"),
-        plan_id=get_option_ini(config, "qs_to_plan_id"),
-        complete_run=get_option_ini(config, "qs_to_complete_run"),
-        mode=get_option_ini(config, "qs_to_mode")
-    )
+    if get_option_ini(config, "qs_mode") == 'testops':
+        reporter = TestOps(
+            api_token=get_option_ini(config, "qs_to_api_token"),
+            project_code=get_option_ini(config, "qs_to_project"),
+            run_id=get_option_ini(config, "qs_to_run_id"),
+            plan_id=get_option_ini(config, "qs_to_plan_id"),
+            complete_run=get_option_ini(config, "qs_to_complete_run"),
+            mode=get_option_ini(config, "qs_to_mode")
+        )
 
-    QasePytestPluginSingleton.init(
-        reporter=reporter
-    )
-    config.qaseio = QasePytestPluginSingleton.get_instance()
-    config.pluginmanager.register(
-        config.qaseio,
-        name="qase-pytest",
-    ) 
+        QasePytestPluginSingleton.init(
+            reporter=reporter
+        )
+        config.qaseio = QasePytestPluginSingleton.get_instance()
+        config.pluginmanager.register(
+            config.qaseio,
+            name="qase-pytest",
+        ) 
 
 
 def pytest_unconfigure(config):
