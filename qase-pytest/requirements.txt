@@ -1,4 +1,3 @@
-apitist==4.3.0
 attrs==21.4.0
 cattrs==1.1.2
 certifi==2022.6.15
@@ -18,8 +17,7 @@ pytest==7.1.2
 pytest-cov==3.0.0
 python-dateutil==2.8.2
 pytzdata==2020.1
-qase-pytest==2.3.2
-qaseio==2.2.4
+qaseio==3.0.0
 requests==2.28.1
 six==1.16.0
 tomli==2.0.1

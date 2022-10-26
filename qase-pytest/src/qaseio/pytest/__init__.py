@@ -2,6 +2,7 @@
 import functools
 from contextlib import ContextDecorator as PyContextDecorator
 from contextlib import _GeneratorContextManager as GeneratorContextManager
+import uuid
 from pkg_resources import DistributionNotFound, get_distribution
 from typing import Tuple, Union
 
@@ -58,18 +59,46 @@ class qase:
     """Class with decorators for pytest"""
 
     @staticmethod
-    def id(*ids):
+    def id(id):
         """
         Define the test case link to Qase TMS
 
-        >>> @qase.id(1, 24)
+        >>> @qase.id(1)
         >>> def test_example():
         >>>     pass
 
-        :param ids: int ids of test cases
+        :param id: int id of test case
         :return: pytest.mark instance
         """
-        return pytest.mark.qase(ids=ids)
+        return pytest.mark.qase_id(id=id)
+
+    @staticmethod
+    def title(title):
+        """
+        Define the test case link to Qase TMS
+
+        >>> @qase.title("Sign up")
+        >>> def test_example():
+        >>>     pass
+
+        :param title: a string with test name
+        :return: pytest.mark instance
+        """
+        return pytest.mark.qase_title(title=title)
+
+    @staticmethod
+    def description(description):
+        """
+        Define the test case link to Qase TMS
+
+        >>> @qase.description("Sign up user using login and password")
+        >>> def test_example():
+        >>>     pass
+
+        :param description: a string with test full description. Markdown is supported.
+        :return: pytest.mark instance
+        """
+        return pytest.mark.qase_description(description=description)
 
     @staticmethod
     def attach(*files: Union[str, Tuple[str, str], Tuple[bytes, str, str]]):
@@ -94,7 +123,7 @@ class qase:
 
     @staticmethod
     @contextdecorator
-    def step(identifier=None):
+    def step(title):
         """
         Step context/decorator
 
@@ -107,20 +136,17 @@ class qase:
         >>> with qase.step("Second step"):
         ...     print("smthng")
         """
-        position = None
         plugin = None
+        id = str(uuid.uuid4())
         try:
             plugin = QasePytestPluginSingleton.get_instance()
-            position = plugin.start_step(identifier)
+            plugin.start_step(uuid=id)
+            yield
+            plugin.finish_step(uuid=id, title=title)
         except PluginNotInitializedException:
-            yield     
+            yield
         except AttributeError:
             yield
-        else:
-            try:
-                yield
-                plugin.finish_step(position)
-            except Exception as e:
-                if position:
-                    plugin.finish_step(position, exception=e)
-                raise e
+        except Exception as e:
+            plugin.finish_step(uuid=id, title=title, exception=e)
+            raise e

@@ -1,4 +1,4 @@
-# [Qase TMS](https://qase.io) Pytest Plugin
+# [Qase](https://qase.io) Pytest Plugin
 
 [![License](https://lxgaming.github.io/badges/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
@@ -10,71 +10,64 @@ pip install qase-pytest
 
 # Usage
 
-## Configuration
-
-You should have an active item in the project settings at
-```
-https://app.qase.io/project/QASE_PROJECT_CODE/settings/options
-```
-option in the `Test Runs` block:
-```
-Allow submitting results in bulk
-```
----
+### Command-line arguments
 Configuration could be provided both by `pytest.ini`/`tox.ini` params
 and using command-line arguments:
 
 * Command-line args:
 ```
-  --qase                Use Qase TMS
-  --qase-api-token=QS_API_TOKEN
-                        Api token for Qase TMS
-  --qase-project=QS_PROJECT_CODE
-                        Project code in Qase TMS
-  --qase-testrun=QS_TESTRUN_ID
-                        Testrun ID in Qase TMS
-  --qase-testplan=QS_TESTPLAN_ID
-                        Testplan ID in Qase TMS
-  --qase-new-run        Create new testrun, if no testrun id provided
-  --qase-complete-run   Complete run after all tests are finished
-  --qase-debug          Prints additional output of plugin
+  --qase-mode           Define mode: 'testops' to enable report
+  --qase-environment=QS_ENVIRONMENT
+                        Define execution environment ID
+  --qase-to-api-token=QS_TO_API_TOKEN
+                        Api token for Qase TestOps
+  --qase-to-project=QS_TO_PROJECT_CODE
+                        Project code in Qase TestOps
+  --qase-to-run=QS_TO_RUN_ID
+                        Test Run ID in Qase TestOps
+  --qase-to-plan=QS_TO_PLAN_ID
+                        Test Plan ID in Qase TestOps
+  --qase-to-complete-run
+                        Complete run after all tests are finished
+  --qase-to-mode=QS_TO_MODE
+                        You can choose `sync` or `async` mode for results publication. Default: async
 ```
 
 * INI file parameters:
 
 ```
-  qs_enabled (bool):    default value for --qase
-  qs_api_token (string):
-                        default value for --qase-api-token
-  qs_project_code (string):
-                        default value for --qase-project
-  qs_testrun_id (string):
-                        default value for --qase-testrun
-  qs_testplan_id (string):
-                        default value for --qase-testplan
-  qs_new_run (bool):    default value for --qase-new-run
-  qs_complete_run (bool):
-                        default value for --qase-complete-run
-  qs_debug (bool):      default value for --qase-debug
+  qs_mode (string):     default value for --qase-mode
+  qs_environment (string):
+                        default value for --qase-environmet
+  qs_to_api_token (string):
+                        default value for --qase-to-api-token
+  qs_to_project_code (string):
+                        default value for --qase-to-project
+  qs_to_run_id (string):
+                        default value for --qase-to-run
+  qs_to_plan_id (string):
+                        default value for --qase-to-plan
+  qs_to_complete_run (bool):
+                        default value for --qase-to-complete-run
+  qs_to_mode (string):
+                        default value for --qase-to-mode
 ```
 
-## Link tests with test-cases
+## Link tests with test cases in Qase TestOps
 
-To link tests with test-cases in Qase TMS you should use predefined decorator:
+To link tests in code with tests in Qase TestOps you can use predefined decorators:
 
 ```python
 from qaseio.pytest import qase
 
 @qase.id(13)
+@qase.title("My first test")
+@qase.description("Try to login in Qase TestOps using login and password")
 def test_example_1():
-    pass
-
-@qase.id(12, 156)
-def test_example_2():
     pass
 ```
 
-Each unique number can only be assigned once to the class or function being used. You could pass as much IDs as you need.
+Each unique number can only be assigned once to the class or function being used.
 
 ### Possible cases statuses
 
@@ -90,7 +83,6 @@ attachments:
 
 ```python
 import pytest
-from qaseio.client.models import MimeTypes
 from qaseio.pytest import qase
 
 
@@ -99,20 +91,20 @@ def driver():
     driver = webdriver.Chrome()
     yield driver
     logs = "\n".join(str(row) for row in driver.get_log('browser')).encode('utf-8')
-    qase.attach((logs, MimeTypes.TXT, "browser.log"))
+    qase.attach((logs, "text/plain", "browser.log"))
     driver.quit()
 
-@qase.id(13)
+@qase.title("My first test")
 def test_example_1():
     qase.attach("/path/to/file", "/path/to/file/2")
     qase.attach(
         ("/path/to/file/1", "application/json"),
-        ("/path/to/file/3", MimeTypes.XML),
+        ("/path/to/file/3", "application/xml"),
     )
 
-@qase.id(12, 156)
+@qase.id(12)
 def test_example_2(driver):
-    qase.attach((driver.get_screenshot_as_png(), MimeTypes.PNG, "result.png"))
+    qase.attach((driver.get_screenshot_as_png(), "image/png", "result.png"))
 ```
 
 You could pass as much files as you need.
@@ -122,7 +114,6 @@ pytest - attachment would not be uploaded:
 
 ```python
 import pytest
-from qaseio.client.models import MimeTypes
 from qaseio.pytest import qase
 
 
@@ -132,26 +123,22 @@ def driver():
     yield driver
     logs = "\n".join(str(row) for row in driver.get_log('browser')).encode('utf-8')
     # This would do nothing, because last test does not have case id link
-    qase.attach((logs, MimeTypes.TXT, "browser.log"))
+    qase.attach((logs, "text/plain", "browser.log"))
     driver.quit()
 
 def test_example_2(driver):
     # This would do nothing
-    qase.attach((driver.get_screenshot_as_png(), MimeTypes.PNG, "result.png"))
+    qase.attach((driver.get_screenshot_as_png(), "image/png", "result.png"))
 ```
 
 ## Linking code with steps
 
 It is possible to link test step with function, or using context.
-There is 3 variants to link code with step:
-- position in case
-- step name
-- step uniq hash
 
 ```python
 from qaseio.pytest import qase
 
-@qase.step(1)  # position
+@qase.step("First step") # test step name
 def some_step():
     sleep(5)
 
@@ -165,66 +152,51 @@ def test_example():
     some_step()
     another_step()
     # test step hash
-    with qase.step("2898ba7f3b4d857cec8bee4a852cdc85f8b33132"):
+    with qase.step("Third step"):
         sleep(1)
 ```
 
 ## Sending tests to existing testrun
 
-Testrun in TMS will contain only those test results, which are presented in testrun,
+Testrun in TestOps will contain only those test results, which are presented in testrun,
 but every test would be executed.
 
 ```bash
 pytest \
-    --qase \
-    --qase-api-token=<your api token here> \
-    --qase-project=PRJCODE \ # project, where your testrun exists in
-    --qase-testrun=3 # testrun id
+    --qase-mode=testops \
+    --qase-to-api-token=<your api token here> \
+    --qase-to-project=PRJCODE \ # project, where your testrun exists in
+    --qase-to-run=3 # testrun id
 ```
 
-## Creating testrun base on testplan
+## Creating test run base on test plan
 
-Create new testrun base on testplan. Testrun in TMS will contain only those
+Create new testrun base on testplan. Testrun in Qase TestOps will contain only those
 test results, which are presented in testrun, but every test would be executed.
 
 ```bash
 pytest \
-    --qase \
-    --qase-api-token=<your api token here> \
-    --qase-project=PRJCODE \ # project, where your testrun exists in
-    --qase-testplan=3 # testplan id
+    --qase-mode=testops \
+    --qase-to-api-token=<your api token here> \
+    --qase-to-project=PRJCODE \ # project, where your testrun exists in
+    --qase-to-plan=3 # testplan id
 ```
 
 ## Creating new testrun according to current pytest run
 
-Testrun in TMS will contain only those test results, which has correct case ids,
-but every test would be executed.
+If you want to create a new test run in Qase TestOps for each execution, you can simply skip `--qase-to-run`
 
 ```bash
 pytest \
-    --qase \
-    --qase-api-token=<your api token here> \
-    --qase-project=PRJCODE \ # project, where your testrun would be created
-    --qase-new-run
+    --qase-mode=testops \
+    --qase-to-api-token=<your api token here> \
+    --qase-to-project=PRJCODE \ # project, where your testrun would be created
 ```
 
-## Debug information
-If you specify `--qase-debug` parameter you would get additional output:
+## Qase TestOps submission mode
 
-```
-=================================== Qase TMS ===================================
-This tests does not have test case ids:
-test_no_deco
-For test test_complex_run.py::test_multiple_ids_fail could not find test cases in run: 3
-=========================== Qase TMS setup finished ============================
-```
+Qase Pytest plugin for TestOps can work in two different modes: `sync` or `async`. 
 
-## Execution logic
+*Sync* sends each result to Qase TestOps API right after particular test execution. This mode allows you to see the results in realtime, even before test run is fully executed. 
 
-1. Check project exists
-2. Check testrun exists
-3. Load all ids for each test-case
-4. Check which tests does not have ids (debug: will list them all)
-5. Check every id exists in project (debug: will show which missing)
-6. Check every id present in testrun (debug: will show which missing)
-7. Executing tests and publishing the results after execution, waiting for all tests to be completed
+*Async* mode sends the results of test execution when the test run is complete. It uses bulk method that dramatically reduces reporting time.
