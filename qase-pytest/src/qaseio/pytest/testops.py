@@ -45,7 +45,7 @@ class TestOps:
         self.client = ApiClient(configuration)
         
         self.project_code = project_code
-        self.run_id = run_id
+        self.run_id = int(run_id)
         self.plan_id = plan_id
         self.mode =  mode
         self.complete_after_run = complete_run
