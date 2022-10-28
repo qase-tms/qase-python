@@ -235,8 +235,7 @@ class Listener:
                 req_data = TestRunResultUpdate(
                     STATUSES[attributes.get("status")],
                     time_ms=attributes.get("elapsedtime"),
-                    stacktrace=f"Source : `{attributes.get('source')}` \n Line No : `{attributes.get('lineno')}` \n Message : `{attributes.get('message')}`",
-                    comment=attributes.get("message"),
+                    stacktrace=attributes.get("message"),
                     steps=self.results.get(attributes.get("id"), {}).get(
                         "steps", []
                     ),
@@ -248,7 +247,7 @@ class Listener:
             self.history.remove(self.results.get(attributes.get("id")))
 
     def end_keyword(self, name, attributes: EndKeywordModel):
-        if self.history and self.steps_results:
+        if self.history:
             logger.debug("Finishing step '%s'", name)
             last_item = self.history[-1]
             case = last_item.get("case_info")
@@ -319,7 +318,7 @@ class Listener:
             if re.match(
                 r"{}.*".format(step_name.lower()), step.get("action").lower()
             ):
-                if pos <= previous_step:
+                if pos >= previous_step:
                     return pos + 1
         logger.warning(
             MissingStepIdentifierException(
