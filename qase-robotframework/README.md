@@ -76,7 +76,7 @@ ENV variables:
 - `QASE_DEBUG` - If passed something - will enable debug logging for listener
 - `QASE_RUN_COMPLETE` - Will complete run after all tests are finished
 - `QASE_STEPS_RESULTS` - Will disable the reporting of results for each steps and hence will not show the warnings for testcase steps name mismatch. Overall testcase status shall be updated
-- `QASE_SCREENSHOT_PATH` - To fetch the latest screenshot and upload in failed testcase
+- `QASE_SCREENSHOT_PATH` - To fetch the latest screenshot and upload in failed testcase (Prerequisite: screenshot folder should be configured in selenium library)
 ### Usage:
 ```
 QASE_API_TOKEN=<API TOKEN> QASE_PROJECT=PRJCODE robot --listener qaseio.robotframework.Listener keyword_driven.robot data_driven.robot
