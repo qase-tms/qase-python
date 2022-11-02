@@ -128,11 +128,12 @@ class TestOps:
         if self.plan_id:
             api_plans = PlansApi(self.client)
             plan = api_plans.get_plan(
-                self.project_code, self.plan_id
+                code=self.project_code, 
+                id=int(self.plan_id)
             )
             if not plan:
                 raise ValueError("Could not find test plan")
-            self._create_run([case.case_id for case in plan.cases])
+            self._create_run(plan_id=self.plan_id)
         if not self.run_id and not self.plan_id:
             self._create_run()
             pass
@@ -155,15 +156,18 @@ class TestOps:
                 return True
             return False
 
-    def _create_run(self, cases=[]):
+    def _create_run(self, plan_id=None, cases=[]):
         api_runs = RunsApi(self.client)
-        result = api_runs.create_run(
-            code=self.project_code,
-            run_create=RunCreate(
+        kwargs = dict(
                 title="Automated Run {}".format(str(datetime.now())),
                 cases=cases,
+                plan_id=(int(plan_id) if plan_id else plan_id),
                 is_autotest=True
-            ),
+            )
+
+        result = api_runs.create_run(
+            code=self.project_code,
+            run_create=RunCreate(**{k: v for k, v in kwargs.items() if v is not None})
         )
         self.run_id = result.result.id
         self.run = result.result
