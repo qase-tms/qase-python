@@ -158,14 +158,16 @@ class TestOps:
 
     def _create_run(self, plan_id=None, cases=[]):
         api_runs = RunsApi(self.client)
-        result = api_runs.create_run(
-            code=self.project_code,
-            run_create=RunCreate(
+        kwargs = dict(
                 title="Automated Run {}".format(str(datetime.now())),
                 cases=cases,
-                plan_id=int(plan_id),
+                plan_id=(int(plan_id) if plan_id else plan_id),
                 is_autotest=True
-            ),
+            )
+
+        result = api_runs.create_run(
+            code=self.project_code,
+            run_create=RunCreate(**{k: v for k, v in kwargs.items() if v is not None})
         )
         self.run_id = result.result.id
         self.run = result.result
