@@ -31,8 +31,8 @@ from qaseio.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from qaseio.model.shared_step_create_steps_inner import SharedStepCreateStepsInner
-    globals()['SharedStepCreateStepsInner'] = SharedStepCreateStepsInner
+    from qaseio.model.shared_step_content_create import SharedStepContentCreate
+    globals()['SharedStepContentCreate'] = SharedStepContentCreate
 
 
 class SharedStepCreate(ModelNormal):
@@ -95,7 +95,7 @@ class SharedStepCreate(ModelNormal):
             'action': (str,),  # noqa: E501
             'expected_result': (str,),  # noqa: E501
             'data': (str,),  # noqa: E501
-            'steps': ([SharedStepCreateStepsInner],),  # noqa: E501
+            'steps': ([SharedStepContentCreate],),  # noqa: E501
         }
 
     @cached_property
@@ -158,7 +158,7 @@ class SharedStepCreate(ModelNormal):
             action (str): Deprecated, use the `steps` property instead.. [optional]  # noqa: E501
             expected_result (str): Deprecated, use the `steps` property instead.. [optional]  # noqa: E501
             data (str): Deprecated, use the `steps` property instead.. [optional]  # noqa: E501
-            steps ([SharedStepCreateStepsInner]): [optional]  # noqa: E501
+            steps ([SharedStepContentCreate]): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -251,7 +251,7 @@ class SharedStepCreate(ModelNormal):
             action (str): Deprecated, use the `steps` property instead.. [optional]  # noqa: E501
             expected_result (str): Deprecated, use the `steps` property instead.. [optional]  # noqa: E501
             data (str): Deprecated, use the `steps` property instead.. [optional]  # noqa: E501
-            steps ([SharedStepCreateStepsInner]): [optional]  # noqa: E501
+            steps ([SharedStepContentCreate]): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)

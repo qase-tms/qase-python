@@ -31,8 +31,8 @@ from qaseio.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from qaseio.model.result_update_steps_inner import ResultUpdateStepsInner
-    globals()['ResultUpdateStepsInner'] = ResultUpdateStepsInner
+    from qaseio.model.test_step_result_create import TestStepResultCreate
+    globals()['TestStepResultCreate'] = TestStepResultCreate
 
 
 class ResultUpdate(ModelNormal):
@@ -105,7 +105,7 @@ class ResultUpdate(ModelNormal):
             'attachments': ([str], none_type,),  # noqa: E501
             'stacktrace': (str, none_type,),  # noqa: E501
             'comment': (str, none_type,),  # noqa: E501
-            'steps': ([ResultUpdateStepsInner], none_type,),  # noqa: E501
+            'steps': ([TestStepResultCreate], none_type,),  # noqa: E501
         }
 
     @cached_property
@@ -170,7 +170,7 @@ class ResultUpdate(ModelNormal):
             attachments ([str], none_type): [optional]  # noqa: E501
             stacktrace (str, none_type): [optional]  # noqa: E501
             comment (str, none_type): [optional]  # noqa: E501
-            steps ([ResultUpdateStepsInner], none_type): [optional]  # noqa: E501
+            steps ([TestStepResultCreate], none_type): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -262,7 +262,7 @@ class ResultUpdate(ModelNormal):
             attachments ([str], none_type): [optional]  # noqa: E501
             stacktrace (str, none_type): [optional]  # noqa: E501
             comment (str, none_type): [optional]  # noqa: E501
-            steps ([ResultUpdateStepsInner], none_type): [optional]  # noqa: E501
+            steps ([TestStepResultCreate], none_type): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
