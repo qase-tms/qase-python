@@ -32,9 +32,9 @@ from qaseio.exceptions import ApiAttributeError
 
 def lazy_import():
     from qaseio.model.result_create_case import ResultCreateCase
-    from qaseio.model.result_create_steps_inner import ResultCreateStepsInner
+    from qaseio.model.test_step_result_create import TestStepResultCreate
     globals()['ResultCreateCase'] = ResultCreateCase
-    globals()['ResultCreateStepsInner'] = ResultCreateStepsInner
+    globals()['TestStepResultCreate'] = TestStepResultCreate
 
 
 class ResultCreate(ModelNormal):
@@ -120,7 +120,7 @@ class ResultCreate(ModelNormal):
             'stacktrace': (str, none_type,),  # noqa: E501
             'comment': (str, none_type,),  # noqa: E501
             'param': ({str: (str,)}, none_type,),  # noqa: E501
-            'steps': ([ResultCreateStepsInner], none_type,),  # noqa: E501
+            'steps': ([TestStepResultCreate], none_type,),  # noqa: E501
         }
 
     @cached_property
@@ -195,7 +195,7 @@ class ResultCreate(ModelNormal):
             stacktrace (str, none_type): [optional]  # noqa: E501
             comment (str, none_type): [optional]  # noqa: E501
             param ({str: (str,)}, none_type): A map of parameters (name => value). [optional]  # noqa: E501
-            steps ([ResultCreateStepsInner], none_type): [optional]  # noqa: E501
+            steps ([TestStepResultCreate], none_type): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -294,7 +294,7 @@ class ResultCreate(ModelNormal):
             stacktrace (str, none_type): [optional]  # noqa: E501
             comment (str, none_type): [optional]  # noqa: E501
             param ({str: (str,)}, none_type): A map of parameters (name => value). [optional]  # noqa: E501
-            steps ([ResultCreateStepsInner], none_type): [optional]  # noqa: E501
+            steps ([TestStepResultCreate], none_type): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)

@@ -14,12 +14,10 @@ import unittest
 
 import qaseio
 from qaseio.model.test_step_result_create import TestStepResultCreate
-globals()['TestStepResultCreate'] = TestStepResultCreate
-from qaseio.model.result_update import ResultUpdate
 
 
-class TestResultUpdate(unittest.TestCase):
-    """ResultUpdate unit test stubs"""
+class TestTestStepResultCreate(unittest.TestCase):
+    """TestStepResultCreate unit test stubs"""
 
     def setUp(self):
         pass
@@ -27,10 +25,10 @@ class TestResultUpdate(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def testResultUpdate(self):
-        """Test ResultUpdate"""
+    def testTestStepResultCreate(self):
+        """Test TestStepResultCreate"""
         # FIXME: construct object with mandatory attributes with example values
-        # model = ResultUpdate()  # noqa: E501
+        # model = TestStepResultCreate()  # noqa: E501
         pass
 
 

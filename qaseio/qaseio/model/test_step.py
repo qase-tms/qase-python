@@ -96,6 +96,7 @@ class TestStep(ModelNormal):
             'expected_result': (str, none_type,),  # noqa: E501
             'data': (str, none_type,),  # noqa: E501
             'attachments': ([Attachment],),  # noqa: E501
+            'steps': ([{str: (bool, date, datetime, dict, float, int, list, str, none_type)}],),  # noqa: E501
         }
 
     @cached_property
@@ -112,6 +113,7 @@ class TestStep(ModelNormal):
         'expected_result': 'expected_result',  # noqa: E501
         'data': 'data',  # noqa: E501
         'attachments': 'attachments',  # noqa: E501
+        'steps': 'steps',  # noqa: E501
     }
 
     read_only_vars = {
@@ -163,6 +165,7 @@ class TestStep(ModelNormal):
             expected_result (str, none_type): [optional]  # noqa: E501
             data (str, none_type): [optional]  # noqa: E501
             attachments ([Attachment]): [optional]  # noqa: E501
+            steps ([{str: (bool, date, datetime, dict, float, int, list, str, none_type)}]): Nested steps will be here. The same structure is used for them.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -256,6 +259,7 @@ class TestStep(ModelNormal):
             expected_result (str, none_type): [optional]  # noqa: E501
             data (str, none_type): [optional]  # noqa: E501
             attachments ([Attachment]): [optional]  # noqa: E501
+            steps ([{str: (bool, date, datetime, dict, float, int, list, str, none_type)}]): Nested steps will be here. The same structure is used for them.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)

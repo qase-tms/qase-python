@@ -104,15 +104,12 @@ from qaseio.model.result import Result
 from qaseio.model.result_create import ResultCreate
 from qaseio.model.result_create_bulk import ResultCreateBulk
 from qaseio.model.result_create_case import ResultCreateCase
-from qaseio.model.result_create_steps_inner import ResultCreateStepsInner
 from qaseio.model.result_list_response import ResultListResponse
 from qaseio.model.result_list_response_all_of import ResultListResponseAllOf
 from qaseio.model.result_list_response_all_of_result import ResultListResponseAllOfResult
 from qaseio.model.result_response import ResultResponse
 from qaseio.model.result_response_all_of import ResultResponseAllOf
-from qaseio.model.result_steps_inner import ResultStepsInner
 from qaseio.model.result_update import ResultUpdate
-from qaseio.model.result_update_steps_inner import ResultUpdateStepsInner
 from qaseio.model.run import Run
 from qaseio.model.run_create import RunCreate
 from qaseio.model.run_environment import RunEnvironment
@@ -131,14 +128,14 @@ from qaseio.model.search_response import SearchResponse
 from qaseio.model.search_response_all_of import SearchResponseAllOf
 from qaseio.model.search_response_all_of_result import SearchResponseAllOfResult
 from qaseio.model.shared_step import SharedStep
+from qaseio.model.shared_step_content import SharedStepContent
+from qaseio.model.shared_step_content_create import SharedStepContentCreate
 from qaseio.model.shared_step_create import SharedStepCreate
-from qaseio.model.shared_step_create_steps_inner import SharedStepCreateStepsInner
 from qaseio.model.shared_step_list_response import SharedStepListResponse
 from qaseio.model.shared_step_list_response_all_of import SharedStepListResponseAllOf
 from qaseio.model.shared_step_list_response_all_of_result import SharedStepListResponseAllOfResult
 from qaseio.model.shared_step_response import SharedStepResponse
 from qaseio.model.shared_step_response_all_of import SharedStepResponseAllOf
-from qaseio.model.shared_step_steps_inner import SharedStepStepsInner
 from qaseio.model.shared_step_update import SharedStepUpdate
 from qaseio.model.suite import Suite
 from qaseio.model.suite_create import SuiteCreate
@@ -152,7 +149,6 @@ from qaseio.model.suite_update import SuiteUpdate
 from qaseio.model.tag_value import TagValue
 from qaseio.model.test_case import TestCase
 from qaseio.model.test_case_create import TestCaseCreate
-from qaseio.model.test_case_create_steps_inner import TestCaseCreateStepsInner
 from qaseio.model.test_case_list_response import TestCaseListResponse
 from qaseio.model.test_case_list_response_all_of import TestCaseListResponseAllOf
 from qaseio.model.test_case_list_response_all_of_result import TestCaseListResponseAllOfResult
@@ -161,3 +157,6 @@ from qaseio.model.test_case_response import TestCaseResponse
 from qaseio.model.test_case_response_all_of import TestCaseResponseAllOf
 from qaseio.model.test_case_update import TestCaseUpdate
 from qaseio.model.test_step import TestStep
+from qaseio.model.test_step_create import TestStepCreate
+from qaseio.model.test_step_result import TestStepResult
+from qaseio.model.test_step_result_create import TestStepResultCreate
