@@ -13,13 +13,13 @@ import sys
 import unittest
 
 import qaseio
-from qaseio.model.test_step_result_create import TestStepResultCreate
-globals()['TestStepResultCreate'] = TestStepResultCreate
-from qaseio.model.result_update import ResultUpdate
+from qaseio.model.attachment_hash_list import AttachmentHashList
+globals()['AttachmentHashList'] = AttachmentHashList
+from qaseio.model.shared_step_content_create import SharedStepContentCreate
 
 
-class TestResultUpdate(unittest.TestCase):
-    """ResultUpdate unit test stubs"""
+class TestSharedStepContentCreate(unittest.TestCase):
+    """SharedStepContentCreate unit test stubs"""
 
     def setUp(self):
         pass
@@ -27,10 +27,10 @@ class TestResultUpdate(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def testResultUpdate(self):
-        """Test ResultUpdate"""
+    def testSharedStepContentCreate(self):
+        """Test SharedStepContentCreate"""
         # FIXME: construct object with mandatory attributes with example values
-        # model = ResultUpdate()  # noqa: E501
+        # model = SharedStepContentCreate()  # noqa: E501
         pass
 
 

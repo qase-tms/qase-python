@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **title** | **str** |  | [optional] 
 **action** | **str** |  | [optional] 
 **expected_result** | **str** |  | [optional] 
-**steps** | [**[SharedStepStepsInner]**](SharedStepStepsInner.md) |  | [optional] 
+**steps** | [**[SharedStepContent]**](SharedStepContent.md) |  | [optional] 
 **data** | **str** |  | [optional] 
 **cases** | **[int]** |  | [optional] 
 **cases_count** | **int** |  | [optional] 
