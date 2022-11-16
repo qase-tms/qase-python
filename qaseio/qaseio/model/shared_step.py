@@ -31,8 +31,8 @@ from qaseio.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from qaseio.model.shared_step_steps_inner import SharedStepStepsInner
-    globals()['SharedStepStepsInner'] = SharedStepStepsInner
+    from qaseio.model.shared_step_content import SharedStepContent
+    globals()['SharedStepContent'] = SharedStepContent
 
 
 class SharedStep(ModelNormal):
@@ -92,7 +92,7 @@ class SharedStep(ModelNormal):
             'title': (str,),  # noqa: E501
             'action': (str,),  # noqa: E501
             'expected_result': (str,),  # noqa: E501
-            'steps': ([SharedStepStepsInner],),  # noqa: E501
+            'steps': ([SharedStepContent],),  # noqa: E501
             'data': (str,),  # noqa: E501
             'cases': ([int],),  # noqa: E501
             'cases_count': (int,),  # noqa: E501
@@ -167,7 +167,7 @@ class SharedStep(ModelNormal):
             title (str): [optional]  # noqa: E501
             action (str): [optional]  # noqa: E501
             expected_result (str): [optional]  # noqa: E501
-            steps ([SharedStepStepsInner]): [optional]  # noqa: E501
+            steps ([SharedStepContent]): [optional]  # noqa: E501
             data (str): [optional]  # noqa: E501
             cases ([int]): [optional]  # noqa: E501
             cases_count (int): [optional]  # noqa: E501
@@ -264,7 +264,7 @@ class SharedStep(ModelNormal):
             title (str): [optional]  # noqa: E501
             action (str): [optional]  # noqa: E501
             expected_result (str): [optional]  # noqa: E501
-            steps ([SharedStepStepsInner]): [optional]  # noqa: E501
+            steps ([SharedStepContent]): [optional]  # noqa: E501
             data (str): [optional]  # noqa: E501
             cases ([int]): [optional]  # noqa: E501
             cases_count (int): [optional]  # noqa: E501
