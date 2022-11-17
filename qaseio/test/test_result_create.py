@@ -14,9 +14,9 @@ import unittest
 
 import qaseio
 from qaseio.model.result_create_case import ResultCreateCase
-from qaseio.model.result_create_steps_inner import ResultCreateStepsInner
+from qaseio.model.test_step_result_create import TestStepResultCreate
 globals()['ResultCreateCase'] = ResultCreateCase
-globals()['ResultCreateStepsInner'] = ResultCreateStepsInner
+globals()['TestStepResultCreate'] = TestStepResultCreate
 from qaseio.model.result_create import ResultCreate
 
 

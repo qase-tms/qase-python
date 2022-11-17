@@ -32,9 +32,9 @@ from qaseio.exceptions import ApiAttributeError
 
 def lazy_import():
     from qaseio.model.attachment_hash_list import AttachmentHashList
-    from qaseio.model.test_case_create_steps_inner import TestCaseCreateStepsInner
+    from qaseio.model.test_step_create import TestStepCreate
     globals()['AttachmentHashList'] = AttachmentHashList
-    globals()['TestCaseCreateStepsInner'] = TestCaseCreateStepsInner
+    globals()['TestStepCreate'] = TestStepCreate
 
 
 class TestCaseCreate(ModelNormal):
@@ -108,7 +108,7 @@ class TestCaseCreate(ModelNormal):
             'automation': (int,),  # noqa: E501
             'status': (int,),  # noqa: E501
             'attachments': (AttachmentHashList,),  # noqa: E501
-            'steps': ([TestCaseCreateStepsInner],),  # noqa: E501
+            'steps': ([TestStepCreate],),  # noqa: E501
             'tags': ([str],),  # noqa: E501
             'custom_field': ({str: (str,)},),  # noqa: E501
         }
@@ -197,7 +197,7 @@ class TestCaseCreate(ModelNormal):
             automation (int): [optional]  # noqa: E501
             status (int): [optional]  # noqa: E501
             attachments (AttachmentHashList): [optional]  # noqa: E501
-            steps ([TestCaseCreateStepsInner]): [optional]  # noqa: E501
+            steps ([TestStepCreate]): [optional]  # noqa: E501
             tags ([str]): [optional]  # noqa: E501
             custom_field ({str: (str,)}): A map of custom fields values (id => value). [optional]  # noqa: E501
         """
@@ -303,7 +303,7 @@ class TestCaseCreate(ModelNormal):
             automation (int): [optional]  # noqa: E501
             status (int): [optional]  # noqa: E501
             attachments (AttachmentHashList): [optional]  # noqa: E501
-            steps ([TestCaseCreateStepsInner]): [optional]  # noqa: E501
+            steps ([TestStepCreate]): [optional]  # noqa: E501
             tags ([str]): [optional]  # noqa: E501
             custom_field ({str: (str,)}): A map of custom fields values (id => value). [optional]  # noqa: E501
         """

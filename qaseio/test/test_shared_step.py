@@ -13,8 +13,8 @@ import sys
 import unittest
 
 import qaseio
-from qaseio.model.shared_step_steps_inner import SharedStepStepsInner
-globals()['SharedStepStepsInner'] = SharedStepStepsInner
+from qaseio.model.shared_step_content import SharedStepContent
+globals()['SharedStepContent'] = SharedStepContent
 from qaseio.model.shared_step import SharedStep
 
 
