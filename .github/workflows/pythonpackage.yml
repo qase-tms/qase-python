@@ -12,7 +12,7 @@ jobs:
         changed-dir: ["qaseio", "qase-pytest", "qase-robotframework"]
     name: Project ${{ matrix.changed-dir }} - Python ${{ matrix.python-version }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - uses: dorny/paths-filter@v2
       id: filter
       with:
@@ -44,7 +44,7 @@ jobs:
         prefix: [ "qaseio", "qase-pytest", "qase-robotframework", "qase-xctest" ]
     if: startsWith(github.event.ref, 'refs/tags')
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python 3.9
       if: contains(github.event.ref, matrix.prefix)
       uses: actions/setup-python@v1
