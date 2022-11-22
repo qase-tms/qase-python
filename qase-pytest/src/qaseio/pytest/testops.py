@@ -38,10 +38,13 @@ class TestOps:
             run_id=None,
             plan_id=None,
             mode="async",
+            host="https://api.qase.io/v1",
             complete_run=False) -> None:
         
         configuration = Configuration()
         configuration.api_key['TokenAuth'] = api_token
+        configuration.host = host
+
         self.client = ApiClient(configuration)
         
         self.project_code = project_code
@@ -234,6 +237,7 @@ class TestOps:
                 code=self.project_code,
                 id=self.run_id,
                 result_create=ResultCreate(
+                    case_id=result.get('case_id', 0),
                     status=result.get('status'),
                     stacktrace=result.get('stacktrace'),
                     time_ms=result.get('time_ms'),

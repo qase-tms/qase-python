@@ -152,7 +152,6 @@ class QasePytestPlugin:
         title = ''
         try:
             title = item.get_closest_marker("qase_title").kwargs.get("title")
-            self.result["case_id"] = int(case_id)
         except:
             pass
 
