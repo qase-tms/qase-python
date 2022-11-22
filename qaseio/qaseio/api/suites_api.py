@@ -657,7 +657,7 @@ class SuitesApi(object):
     ):
         """Get all test suites.  # noqa: E501
 
-        This method allows to retrieve all test suites stored in selected project..   # noqa: E501
+        This method allows to retrieve all test suites stored in selected project.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 

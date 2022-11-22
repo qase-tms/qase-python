@@ -70,7 +70,7 @@ with qaseio.ApiClient(configuration) as api_client:
             "attachments_example",
         ]),
         steps=[
-            TestCaseCreateStepsInner(
+            TestStepCreate(
                 action="action_example",
                 expected_result="expected_result_example",
                 data="data_example",
@@ -78,6 +78,9 @@ with qaseio.ApiClient(configuration) as api_client:
                 attachments=AttachmentHashList([
                     "attachments_example",
                 ]),
+                steps=[
+                    {},
+                ],
             ),
         ],
         tags=[
@@ -123,7 +126,13 @@ Name | Type | Description  | Notes
 
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**200** | A list of all projects. |  -  |
+**200** | A result. |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**422** | Unprocessable Entity. |  -  |
+**429** | Too Many Requests. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -204,6 +213,12 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A Test Case. |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**422** | Unprocessable Entity. |  -  |
+**429** | Too Many Requests. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -284,6 +299,12 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A Test Case. |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**422** | Unprocessable Entity. |  -  |
+**429** | Too Many Requests. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -387,7 +408,12 @@ Name | Type | Description  | Notes
 
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**200** | A list of all projects. |  -  |
+**200** | A list of all cases. |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**429** | Too Many Requests. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -451,7 +477,7 @@ with qaseio.ApiClient(configuration) as api_client:
             "attachments_example",
         ]),
         steps=[
-            TestCaseCreateStepsInner(
+            TestStepCreate(
                 action="action_example",
                 expected_result="expected_result_example",
                 data="data_example",
@@ -459,6 +485,9 @@ with qaseio.ApiClient(configuration) as api_client:
                 attachments=AttachmentHashList([
                     "attachments_example",
                 ]),
+                steps=[
+                    {},
+                ],
             ),
         ],
         tags=[
@@ -506,6 +535,12 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A Test Case. |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**422** | Unprocessable Entity. |  -  |
+**429** | Too Many Requests. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

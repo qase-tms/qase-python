@@ -39,15 +39,16 @@ class TestOps:
             run_id=None,
             plan_id=None,
             mode="async",
-            run_title=None,
             complete_run=False) -> None:
         
         configuration = Configuration()
         configuration.api_key['TokenAuth'] = api_token
+        configuration.host = host
+
         self.client = ApiClient(configuration)
         
         self.project_code = project_code
-        self.run_id = run_id
+        self.run_id = int(run_id) if run_id else run_id
         self.plan_id = plan_id
         self.mode =  mode
         self.complete_after_run = complete_run
@@ -135,11 +136,12 @@ class TestOps:
         if self.plan_id:
             api_plans = PlansApi(self.client)
             plan = api_plans.get_plan(
-                self.project_code, self.plan_id
+                code=self.project_code, 
+                id=int(self.plan_id)
             )
             if not plan:
                 raise ValueError("Could not find test plan")
-            self._create_run([case.case_id for case in plan.cases])
+            self._create_run(plan_id=self.plan_id)
         if not self.run_id and not self.plan_id:
             self._create_run()
             pass
@@ -149,7 +151,7 @@ class TestOps:
             )
 
     def set_run_id(self, run_id):
-        self.run_id = run_id
+        self.run_id = int(run_id)
 
     def _load_run(self):
         api_runs = RunsApi(self.client)
@@ -162,15 +164,17 @@ class TestOps:
                 return True
             return False
 
-    def _create_run(self, cases=[]):
+    def _create_run(self, plan_id=None, cases=[]):
         api_runs = RunsApi(self.client)
-        result = api_runs.create_run(
-            code=self.project_code,
-            run_create=RunCreate(
+        kwargs = dict(
                 title=self.run_title,
                 cases=cases,
+                plan_id=(int(plan_id) if plan_id else plan_id),
                 is_autotest=True
-            ),
+
+        result = api_runs.create_run(
+            code=self.project_code,
+            run_create=RunCreate(**{k: v for k, v in kwargs.items() if v is not None})
         )
         self.run_id = result.result.id
         self.run = result.result
@@ -237,6 +241,7 @@ class TestOps:
                 code=self.project_code,
                 id=self.run_id,
                 result_create=ResultCreate(
+                    case_id=result.get('case_id', 0),
                     status=result.get('status'),
                     stacktrace=result.get('stacktrace'),
                     time_ms=result.get('time_ms'),
