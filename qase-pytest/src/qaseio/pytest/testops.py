@@ -171,7 +171,7 @@ class TestOps:
                 cases=cases,
                 plan_id=(int(plan_id) if plan_id else plan_id),
                 is_autotest=True
-
+        )
         result = api_runs.create_run(
             code=self.project_code,
             run_create=RunCreate(**{k: v for k, v in kwargs.items() if v is not None})
