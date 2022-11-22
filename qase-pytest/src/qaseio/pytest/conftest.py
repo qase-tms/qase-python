@@ -73,6 +73,12 @@ def pytest_addoption(parser):
         help="Define Qase TestOps send mode"
     )
 
+    add_option_ini(
+        "--qase-to-host",
+        "qs_to_host",
+        default="https://api.qase.io/v1"
+    )
+
 
 def pytest_configure(config):
     if not hasattr(config, "workerinput"):
@@ -88,7 +94,8 @@ def pytest_configure(config):
             run_id=get_option_ini(config, "qs_to_run_id"),
             plan_id=get_option_ini(config, "qs_to_plan_id"),
             complete_run=get_option_ini(config, "qs_to_complete_run"),
-            mode=get_option_ini(config, "qs_to_mode")
+            mode=get_option_ini(config, "qs_to_mode"),
+            host=get_option_ini(config, "qs_to_host")
         )
 
         QasePytestPluginSingleton.init(

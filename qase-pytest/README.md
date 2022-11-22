@@ -31,6 +31,8 @@ and using command-line arguments:
                         Complete run after all tests are finished
   --qase-to-mode=QS_TO_MODE
                         You can choose `sync` or `async` mode for results publication. Default: async
+  --qase-to-host=QS_TO_HOST
+                        Qase TestOps Enterprise customers can set their own hosts. Default: https://api.qase.io/v1
 ```
 
 * INI file parameters:
@@ -51,6 +53,9 @@ and using command-line arguments:
                         default value for --qase-to-complete-run
   qs_to_mode (string):
                         default value for --qase-to-mode
+  qs_to_host (string):
+                        default value for --qase-to-host
+    
 ```
 
 ## Link tests with test cases in Qase TestOps
