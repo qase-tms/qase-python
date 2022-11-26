@@ -43,7 +43,8 @@ class QasePytestPlugin:
 
     def __init__(
             self,
-            reporter
+            reporter,
+            xdist_enabled = False
     ):
         self.reporter = reporter
         self.result = {}
@@ -51,6 +52,7 @@ class QasePytestPlugin:
         self.steps = {}
         self.step_uuid = None
         self.run_id = None
+        self.xdist_enabled = xdist_enabled
 
     def start_step(self, uuid):
         now = time.time()
@@ -84,7 +86,7 @@ class QasePytestPlugin:
             QasePytestPlugin.meta_run_file.unlink()
 
     def pytest_sessionstart(self, session):
-        if is_xdist_controller(session):
+        if (not self.xdist_enabled) or (self.xdist_enabled and is_xdist_controller(session)):
             self.run_id = self.reporter.start_run()
             with FileLock("qaseio.lock"):
                 if self.run_id:
@@ -95,7 +97,7 @@ class QasePytestPlugin:
 
     def pytest_sessionfinish(self, session, exitstatus):
         self.reporter.finish()
-        if is_xdist_controller(session):
+        if (not self.xdist_enabled) or (self.xdist_enabled and is_xdist_controller(session)):
             self.reporter.complete_run()
             QasePytestPlugin.drop_run_id()
 

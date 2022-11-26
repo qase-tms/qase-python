@@ -25,6 +25,8 @@ and using command-line arguments:
                         Project code in Qase TestOps
   --qase-to-run=QS_TO_RUN_ID
                         Test Run ID in Qase TestOps
+  --qase-to-run-title=QS_TO_RUN_TITLE
+                        Define a custom title for Qase Test Run
   --qase-to-plan=QS_TO_PLAN_ID
                         Test Plan ID in Qase TestOps
   --qase-to-complete-run
@@ -32,7 +34,7 @@ and using command-line arguments:
   --qase-to-mode=QS_TO_MODE
                         You can choose `sync` or `async` mode for results publication. Default: async
   --qase-to-host=QS_TO_HOST
-                        Qase TestOps Enterprise customers can set their own hosts. Default: https://api.qase.io/v1
+                        Qase TestOps Enterprise customers can set their own hosts. Default: https://api.qase.io/v1/
 ```
 
 * INI file parameters:
@@ -40,13 +42,15 @@ and using command-line arguments:
 ```
   qs_mode (string):     default value for --qase-mode
   qs_environment (string):
-                        default value for --qase-environmet
+                        default value for --qase-environment
   qs_to_api_token (string):
                         default value for --qase-to-api-token
   qs_to_project_code (string):
                         default value for --qase-to-project
   qs_to_run_id (string):
                         default value for --qase-to-run
+  qs_to_run_title (string):
+                        default value for --qase-to-run-title
   qs_to_plan_id (string):
                         default value for --qase-to-plan
   qs_to_complete_run (bool):
@@ -74,7 +78,7 @@ def test_example_1():
 
 Each unique number can only be assigned once to the class or function being used.
 
-### Possible cases statuses
+### Possible test result statuses
 
 - PASSED - when test passed
 - FAILED - when test failed with AssertionError

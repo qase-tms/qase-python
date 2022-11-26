@@ -2,6 +2,8 @@ from qaseio.pytest.plugin import QasePytestPlugin, QasePytestPluginSingleton
 
 from qaseio.pytest.testops import TestOps
 
+import os
+
 
 def get_option_ini(config, name):
     ret = config.getoption(name)  # 'default' arg won't work as expected
@@ -102,11 +104,13 @@ def pytest_configure(config):
             complete_run=get_option_ini(config, "qs_to_complete_run"),
             mode=get_option_ini(config, "qs_to_mode"),
             run_title=get_option_ini(config, "qs_to_run_title"),
-            host=get_option_ini(config, "qs_to_host")
+            host=get_option_ini(config, "qs_to_host"),
+            environment=get_option_ini(config, "qs_environment")
         )
 
         QasePytestPluginSingleton.init(
-            reporter=reporter
+            reporter=reporter,
+            xdist_enabled=is_xdist_enabled(config)
         )
         config.qaseio = QasePytestPluginSingleton.get_instance()
         config.pluginmanager.register(
@@ -114,6 +118,10 @@ def pytest_configure(config):
             name="qase-pytest",
         ) 
 
+def is_xdist_enabled(config):
+    if (config.pluginmanager.getplugin("xdist") is not None and os.getenv('PYTEST_XDIST_WORKER_COUNT') is not None):
+        return True
+    return False
 
 def pytest_unconfigure(config):
     qaseio = getattr(config, "src", None)
