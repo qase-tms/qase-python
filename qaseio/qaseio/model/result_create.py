@@ -81,10 +81,6 @@ class ResultCreate(ModelNormal):
             'inclusive_maximum': 31536000000,
             'inclusive_minimum': 0,
         },
-        ('param',): {
-            'max_items': 1,
-            'max_properties': 1,
-        },
     }
 
     @cached_property

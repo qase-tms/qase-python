@@ -1,3 +1,4 @@
+from ast import arg
 import pathlib
 import time
 from typing import Tuple, Union
@@ -6,6 +7,8 @@ import sys
 import pip
 import pytest
 import uuid
+
+from inspect import signature
 
 from filelock import FileLock
 
@@ -142,9 +145,16 @@ class QasePytestPlugin:
             'is_api_result': True,
             'case': {},
             'steps': {},
+            'param': {},
         }
         self.result['uuid'] = str(uuid.uuid4())
         self.result["started_at"] = time.time()
+
+        if item.callspec.params:
+            params = {}
+            for key, val in item.callspec.params.items():
+                params[key] = str(val)
+            self.result['param'] = params
 
         try:
             case_id = item.get_closest_marker("qase_id").kwargs.get("id")

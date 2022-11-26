@@ -250,14 +250,15 @@ class TestOps:
                     case_id=result.get('case_id', 0),
                     status=result.get('status'),
                     stacktrace=result.get('stacktrace'),
-                    time_ms=result.get('time_ms'),
-                    comment=result.get('comment'),
+                    time_ms=result.get('time_ms', 0),
+                    comment=result.get('comment', ''),
                     attachments = [attach.hash for attach in attached],
                     case=ResultCreateCase(
                         title=result.get('case').get('title'),
                         description=result.get('case').get('description', '')
                     ),
-                    steps=steps
+                    steps=steps,
+                    param=result.get('param', {})
                 )
             )
             print(f"Results of run {self.run_id} was sent")
