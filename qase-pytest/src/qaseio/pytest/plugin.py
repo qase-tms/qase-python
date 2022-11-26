@@ -96,10 +96,11 @@ class QasePytestPlugin:
             self.load_run_from_lock()
 
     def pytest_sessionfinish(self, session, exitstatus):
-        self.reporter.finish()
+        main = False
         if (not self.xdist_enabled) or (self.xdist_enabled and is_xdist_controller(session)):
-            self.reporter.complete_run()
+            main = True
             QasePytestPlugin.drop_run_id()
+        self.reporter.complete_run(main)
 
     @pytest.hookimpl(hookwrapper=True)
     def pytest_runtest_protocol(self, item):

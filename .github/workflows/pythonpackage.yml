@@ -9,7 +9,7 @@ jobs:
       max-parallel: 4
       matrix:
         python-version: [3.7, 3.8, 3.9]
-        changed-dir: ["qaseio", "qase-pytest", "qase-robotframework"]
+        changed-dir: ["qaseio", "qase-pytest", "qase-robotframework", "qase-python-commons"]
     name: Project ${{ matrix.changed-dir }} - Python ${{ matrix.python-version }}
     steps:
     - uses: actions/checkout@v3
@@ -41,7 +41,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        prefix: [ "qaseio", "qase-pytest", "qase-robotframework", "qase-xctest" ]
+        prefix: [ "qaseio", "qase-pytest", "qase-robotframework", "qase-python-commons" ]
     if: startsWith(github.event.ref, 'refs/tags')
     steps:
     - uses: actions/checkout@v3

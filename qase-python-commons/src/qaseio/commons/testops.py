@@ -1,4 +1,3 @@
-from cProfile import run
 from qaseio.api_client import ApiClient
 from qaseio.configuration import Configuration
 from qaseio.api.attachments_api import AttachmentsApi
@@ -31,6 +30,7 @@ def package_version(name):
 
 class TestOpsRunNotFoundException(Exception):
     pass
+
 class TestOps:
 
     def __init__(self, 
@@ -41,12 +41,12 @@ class TestOps:
             mode="async",
             run_title=None,
             environment=None,
-            host='https://api.qase.io/v1/',
+            host="qase.io",
             complete_run=False) -> None:
         
         configuration = Configuration()
         configuration.api_key['TokenAuth'] = api_token
-        configuration.host = host
+        configuration.host = f'http://api.{host}/v1' #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        
 
         self.client = ApiClient(configuration)
         
@@ -56,6 +56,7 @@ class TestOps:
         self.mode = mode
         self.complete_after_run = complete_run
         self.environment = int(environment) if environment else environment
+        self.host = host
         
         if run_title and run_title != '':
             self.run_title = run_title
@@ -187,8 +188,8 @@ class TestOps:
         print()
         print(
             "Qase TestOps: created test run "
-            "https://app.qase.io/run/{}/dashboard/{}".format(
-                self.project_code, self.run_id
+            "https://app.{}/run/{}/dashboard/{}".format(
+                self.host, self.project_code, self.run_id
             )
         )
     
@@ -270,12 +271,10 @@ class TestOps:
         self._check_run()
         return self.run_id
 
-    def finish(self):
+    def complete_run(self, is_main=True, exit_code=None):
         if self.mode == "async":
             self._send_bulk_results()
-    
-    def complete_run(self, exit_code = None):
-        if self.complete_after_run:
+        if self.complete_after_run and is_main:
             self._complete_run()
 
     def add_result(self, result, steps):
