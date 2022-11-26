@@ -10,7 +10,7 @@ from qaseio.model.run_create import RunCreate
 from qaseio.model.result_create_bulk import ResultCreateBulk
 from qaseio.model.result_create import ResultCreate
 from qaseio.model.result_create_case import ResultCreateCase
-from qaseio.model.result_create_steps_inner import ResultCreateStepsInner
+from qaseio.model.test_step_result_create import TestStepResultCreate
 from qaseio.rest import ApiException
 
 from datetime import datetime
@@ -39,6 +39,9 @@ class TestOps:
             run_id=None,
             plan_id=None,
             mode="async",
+            run_title=None,
+            environment=None,
+            host='https://api.qase.io/v1/',
             complete_run=False) -> None:
         
         configuration = Configuration()
@@ -50,8 +53,9 @@ class TestOps:
         self.project_code = project_code
         self.run_id = int(run_id) if run_id else run_id
         self.plan_id = plan_id
-        self.mode =  mode
+        self.mode = mode
         self.complete_after_run = complete_run
+        self.environment = int(environment) if environment else environment
         
         if run_title and run_title != '':
             self.run_title = run_title
@@ -141,9 +145,9 @@ class TestOps:
             )
             if not plan:
                 raise ValueError("Could not find test plan")
-            self._create_run(plan_id=self.plan_id)
+            self._create_run(plan_id=self.plan_id, environment_id=self.environment)
         if not self.run_id and not self.plan_id:
-            self._create_run()
+            self._create_run(environment_id=self.environment)
             pass
         if not self.run and not self._load_run:
             raise TestOpsRunNotFoundException(
@@ -164,11 +168,12 @@ class TestOps:
                 return True
             return False
 
-    def _create_run(self, plan_id=None, cases=[]):
+    def _create_run(self, plan_id=None, environment_id=None, cases=[]):
         api_runs = RunsApi(self.client)
         kwargs = dict(
                 title=self.run_title,
                 cases=cases,
+                environment_id=(int(environment_id) if environment_id else None),
                 plan_id=(int(plan_id) if plan_id else plan_id),
                 is_autotest=True
         )
@@ -275,7 +280,7 @@ class TestOps:
 
     def add_result(self, result, steps):
         result['steps'] = [
-                ResultCreateStepsInner(**values)
+                TestStepResultCreate(**values)
                 for uuid, values in steps.items()
             ]
         if self.mode == "sync":
