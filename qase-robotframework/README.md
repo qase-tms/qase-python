@@ -1,4 +1,4 @@
-> # Qase TMS Robot Framework Listener
+> # Qase Robot Framework Listener
 >
 > Publish results simple and easy.
 
@@ -10,7 +10,7 @@ pip install qase-robotframework
 
 ## Usage
 
-You must add Qase case IDs to robot framework tests.
+If you want to create a persistent link to Test Cases in Qase, you should add Qase test case IDs to robot framework tests.
 They should be added as a tags in form like `Q-<case id without project code>`. You can use upper and lower case to indicate the test case IDs. Example:
 
 ```robotframework
@@ -41,16 +41,6 @@ Subtraction           12 - 2 - 2    8
 ### Working with steps
 
 Listener supports reporting steps results:
-![](./example/screenshot/screenshot.png)
-But in order to use it, you should follow some rules:
-- Steps name in Qase TMS should match to the steps in Robot Framework
-- If step in RF has some parameters (e.g. Push Button `12`)
-parameter would be ignored and the comparison to step in TMS will be made like:
-step in TMS should start with step name in RF. So if your step in RF is
-`Open page` it will be matched to step `Open page https://qase.io` in TMS.
-- You should preserve the order of steps. You can skip steps in RF, but
-you shouldn't mix them or so on - Qase does not support creating steps
-on the fly yet.
 
 Example:
 ```robotframework
@@ -69,26 +59,30 @@ Initializing the test case                                                  ## T
 Listener supports loading configuration both from environment variables and from `tox.ini` file.
 
 ENV variables:
-- `QASE_TESTOPS_API_TOKEN` - API token to access Qase TMS
-- `QASE_TESTOPS_PROJECT` - Project code from Qase TMS
+- `QASE_MODE` - Define mode: `testops` to enable report
+- `QASE_ENVIRONMENT` - Environment ID for the run
+- `QASE_DEBUG` - If passed something - will enable debug logging for listener. Default: `False`
+- `QASE_TESTOPS_MODE` - You can switch between `sync` and `async` modes. Default is `async`
+- `QASE_TESTOPS_API_TOKEN` - API token to access Qase TestOps
+- `QASE_TESTOPS_PROJECT` - Project code from Qase TestOps
+- `QASE_TESTOPS_PLAN_ID` - Plan ID if you want to add results to existing run from Test Plan
 - `QASE_TESTOPS_RUN_ID` - Run ID if you want to add results to existing run
-- `QASE_TESTOPS_RUN_NAME` - Set custom run name when no run ID is provided
-- `QASE_DEBUG` - If passed something - will enable debug logging for listener
-- `QASE_TESTOPS_COMPLETE_RUN` - Will complete run after all tests are finished
+- `QASE_TESTOPS_RUN_TITLE` - Set custom run name when no run ID is provided
+- `QASE_TESTOPS_COMPLETE_RUN` - Will complete run after all tests are finished. Default: `False`
+- `QASE_TESTOPS_HOST` - Define a host for Qase TestOps. Default: `qase.io`
 ### Usage:
 ```
 QASE_API_TOKEN=<API TOKEN> QASE_PROJECT=PRJCODE robot --listener qaseio.robotframework.Listener keyword_driven.robot data_driven.robot
 ```
-![reporter](./example/screenshot/screenshot2.png "text")
 Moving variables to `tox.ini`, example configuration:
 ```ini
 [qase]
-qase_api_token=api_key
-qase_project=project_code
-qase_run_id=run_id
-qase_run_name=New Robot Framework Run
+qase_testops_api_token=api_key
+qase_testops_project=project_code
+qase_testops_run_id=run_id
+qase_testops_run_title=New Robot Framework Run
 qase_debug=True
-qase_run_complete=True
+qase_testops_complete_run=True
 ```
 Execution:
 ```

@@ -1,7 +1,7 @@
 from qaseio.pytest.plugin import QasePytestPlugin, QasePytestPluginSingleton
 
-from qaseio.commons.testops import TestOps
-from qaseio.commons.report import Report
+from qaseio.commons import QaseTestOps
+from qaseio.commons import QaseReport
 
 import os
 
@@ -106,7 +106,7 @@ def pytest_configure(config):
 
     if get_option_ini(config, "qs_mode"):
         if (get_option_ini(config, "qs_mode") == 'testops'):
-            reporter = TestOps(
+            reporter = QaseTestOps(
                 api_token=get_option_ini(config, "qs_to_api_token"),
                 project_code=get_option_ini(config, "qs_to_project"),
                 run_id=get_option_ini(config, "qs_to_run_id"),
@@ -118,7 +118,7 @@ def pytest_configure(config):
                 environment=get_option_ini(config, "qs_environment")
             )
         else:
-            reporter = Report(
+            reporter = QaseReport(
                 report_path=get_option_ini(config, "qs_report_path")
             )
 

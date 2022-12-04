@@ -16,7 +16,6 @@ from datetime import datetime
 from typing import Tuple, Union
 import mimetypes
 import ntpath
-import json
 
 from io import BytesIO 
 
@@ -32,7 +31,7 @@ def package_version(name):
 class TestOpsRunNotFoundException(Exception):
     pass
 
-class TestOps:
+class QaseTestOps:
 
     def __init__(self, 
             api_token,
@@ -47,7 +46,7 @@ class TestOps:
         
         configuration = Configuration()
         configuration.api_key['TokenAuth'] = api_token
-        configuration.host = f'https://api.{host}/v1'
+        configuration.host = f'http://api.{host}/v1'
 
         self.client = ApiClient(configuration)
         

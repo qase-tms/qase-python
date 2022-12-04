@@ -1,4 +1,4 @@
-class Utils:
+class QaseUtils:
 
     @staticmethod
     def build_tree(items):

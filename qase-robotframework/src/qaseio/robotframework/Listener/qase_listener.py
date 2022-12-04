@@ -9,8 +9,8 @@ from pkg_resources import DistributionNotFound, get_distribution
 from typing import List
 
 
-from qaseio.commons.testops import TestOps
-from qaseio.commons.utils import Utils
+from qaseio.commons import QaseTestOps
+from qaseio.commons import QaseUtils
 from .types import Envs, STATUSES
 from .models import * 
 
@@ -43,7 +43,7 @@ class QaseListener:
             if (self._get_param(Envs.TESTOPS_RUN_TITLE, None)):
                 run_title = self._get_param(Envs.TESTOPS_RUN_TITLE, None)
             
-            self.reporter = TestOps(
+            self.reporter = QaseTestOps(
                 api_token=token,
                 project_code=project_code,
                 run_id=self._get_param(Envs.TESTOPS_RUN_ID, None),
@@ -116,7 +116,7 @@ class QaseListener:
             self.result['case']['suite_title'] = self.suite.get('title', None)
             #self.result['case']['suite_description'] = self.suite.get('description', None) // Not support in Qase API yet
 
-        self.reporter.add_result(self.result, Utils().build_tree(self.steps))
+        self.reporter.add_result(self.result, QaseUtils().build_tree(self.steps))
 
         self.result = {}
         self.steps = {}

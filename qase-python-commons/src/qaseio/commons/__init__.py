@@ -1,9 +1,9 @@
-from qaseio.commons import TestOps
-from qaseio.commons import Report
-from qaseio.commons import Utils
+from qaseio.commons.testops import QaseTestOps
+from qaseio.commons.report import QaseReport
+from qaseio.commons.utils import QaseUtils
 
 __all__ = [
-    TestOps,
-    Report,
-    Utils
+    QaseTestOps,
+    QaseReport,
+    QaseUtils
 ]

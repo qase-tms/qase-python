@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from qaseio.robotframework import Listener
+from qaseio.robotframework import QaseListener
 
 
 @pytest.fixture
@@ -15,9 +15,9 @@ def setup_env():
 
 
 def test_init_listener(setup_env):
-    Listener()
+    QaseListener()
 
 
 def test_init_listener_error():
     with pytest.raises(ValueError):
-        Listener()
+        QaseListener()

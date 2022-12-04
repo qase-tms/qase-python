@@ -1,5 +1,5 @@
 from pathlib import Path
-class Report:
+class QaseReport:
     def __init__(
         self, 
         report_path = "build/qase-report"
@@ -17,7 +17,7 @@ class Report:
         # TBD
         pass
 
-    def start_run(self, hash):
+    def start_run(self):
         # TBD
         pass
 

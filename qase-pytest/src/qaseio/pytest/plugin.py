@@ -1,4 +1,3 @@
-from ast import arg
 import pathlib
 import time
 from typing import Tuple, Union
@@ -7,7 +6,7 @@ import sys
 import pip
 import pytest
 import uuid
-from qaseio.commons.utils import Utils
+from qaseio.commons import QaseUtils
 
 from filelock import FileLock
 
@@ -181,7 +180,7 @@ class QasePytestPlugin:
         self.result['time_ms'] = int((completed_at - self.result.get("started_at")) * 1000)
         self.result['completed_at'] = completed_at
 
-        self.reporter.add_result(self.result, Utils().build_tree(self.steps))
+        self.reporter.add_result(self.result, QaseUtils().build_tree(self.steps))
 
         self.result = {}  
         self.steps = {}
