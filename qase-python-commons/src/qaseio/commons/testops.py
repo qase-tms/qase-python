@@ -16,6 +16,7 @@ from datetime import datetime
 from typing import Tuple, Union
 import mimetypes
 import ntpath
+import json
 
 from io import BytesIO 
 
@@ -46,7 +47,7 @@ class TestOps:
         
         configuration = Configuration()
         configuration.api_key['TokenAuth'] = api_token
-        configuration.host = f'http://api.{host}/v1' #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        
+        configuration.host = f'https://api.{host}/v1'
 
         self.client = ApiClient(configuration)
         
@@ -57,6 +58,7 @@ class TestOps:
         self.complete_after_run = complete_run
         self.environment = int(environment) if environment else environment
         self.host = host
+        self.enabled = True
         
         if run_title and run_title != '':
             self.run_title = run_title
@@ -72,17 +74,19 @@ class TestOps:
         self._get_project(self.project_code)
 
     def _get_project(self, project):
-        api_instance = ProjectsApi(self.client)
-        try:
-            response = api_instance.get_project(code=project)
-            if hasattr(response, 'result'):
-                return response.result
-            raise ValueError("Unable to find given project code")
-        except ApiException as e:
-            print("Exception when calling ProjectApi->get_project: %s\n" % e)
+        if self.enabled:
+            api_instance = ProjectsApi(self.client)
+            try:
+                response = api_instance.get_project(code=project)
+                if hasattr(response, 'result'):
+                    return response.result
+                raise ValueError("Unable to find given project code")
+            except ApiException as e:
+                self.enabled = False
+                print("Disabling Qase TestOps reporter. Exception when calling ProjectApi->get_project: %s\n" % e)
 
     def _send_bulk_results(self):
-        if self.results:
+        if self.enabled and self.results:
             print()
             print(f"Uploading attachments for Run ID: {self.run_id}...")
             results = []
@@ -92,17 +96,15 @@ class TestOps:
                     attached.extend(self._upload(self.project_code, files))
                     result['attachments'] = [attach.hash for attach in attached]
                     
-
                 steps = []
-                for step in result.get('steps', []):
-                    attached_step = []
-                    for files in step.get('attachments', []):
-                        attached_step.extend(self._upload(self.project_code, files))
-                    step["attachments"] = [attach.hash for attach in attached_step]
-                    steps.extend([step])
+                for step in result['steps']:
+                    prepared = self._prepare_step(step)
+                    steps.append(prepared)
                         
                 result['steps'] = steps
-                results.extend([result])
+
+                results.append(result)
+            
 
             api_results = ResultsApi(self.client)
             print()
@@ -120,81 +122,87 @@ class TestOps:
                 print(f"Error at sending results for run {self.run_id}: {e}")
 
     def _complete_run(self):
-        api_runs = RunsApi(self.client)
-        print()
-        print(f"Completing run {self.run_id}")
-        res = api_runs.get_run(self.project_code, self.run_id).result
-        if res.status == 1:
-            print(f"Run ID:{self.run_id} already finished")
-            return
-        try:
-            api_runs.complete_run(self.project_code, self.run_id)
-            print(f"Run ID:{self.run_id} was finished successfully")
-        except Exception as e:
-            print(f"Run ID:{self.run_id} was finished with error: {e}")
+        if self.enabled:
+            api_runs = RunsApi(self.client)
+            print()
+            print(f"Completing run {self.run_id}")
+            res = api_runs.get_run(self.project_code, self.run_id).result
+            if res.status == 1:
+                print(f"Run ID:{self.run_id} already finished")
+                return
+            try:
+                api_runs.complete_run(self.project_code, self.run_id)
+                print(f"Run ID:{self.run_id} was finished successfully")
+            except Exception as e:
+                print(f"Run ID:{self.run_id} was finished with error: {e}")
     
     def _check_run(self):
-        if self.run_id and self.plan_id:
-            raise ValueError(
-                "You should provide either use test run or test plan"
-            )
-        if self.plan_id:
-            api_plans = PlansApi(self.client)
-            plan = api_plans.get_plan(
-                code=self.project_code, 
-                id=int(self.plan_id)
-            )
-            if not plan:
-                raise ValueError("Could not find test plan")
-            self._create_run(plan_id=self.plan_id, environment_id=self.environment)
-        if not self.run_id and not self.plan_id:
-            self._create_run(environment_id=self.environment)
-            pass
-        if not self.run and not self._load_run:
-            raise TestOpsRunNotFoundException(
-                "Unable to find given test run."
-            )
+        if self.enabled:
+            if self.run_id and self.plan_id:
+                raise ValueError(
+                    "You should provide either use test run or test plan"
+                )
+            if self.plan_id:
+                api_plans = PlansApi(self.client)
+                plan = api_plans.get_plan(
+                    code=self.project_code, 
+                    id=int(self.plan_id)
+                )
+                if not plan:
+                    raise ValueError("Could not find test plan")
+                self._create_run(plan_id=self.plan_id, environment_id=self.environment)
+            if not self.run_id and not self.plan_id:
+                self._create_run(environment_id=self.environment)
+                pass
+            if not self.run and not self._load_run:
+                raise TestOpsRunNotFoundException(
+                    "Unable to find given test run."
+                )
 
     def set_run_id(self, run_id):
         self.run_id = int(run_id)
 
     def _load_run(self):
-        api_runs = RunsApi(self.client)
-        if self.run_id:
-            run = api_runs.get_run(
-                code=self.project_code,
-                id=self.run_id,
-            ).result
-            if run.id:
-                return True
-            return False
+        if self.enabled:
+            api_runs = RunsApi(self.client)
+            if self.run_id:
+                run = api_runs.get_run(
+                    code=self.project_code,
+                    id=self.run_id,
+                ).result
+                if run.id:
+                    return True
+                return False
 
     def _create_run(self, plan_id=None, environment_id=None, cases=[]):
-        api_runs = RunsApi(self.client)
-        kwargs = dict(
-                title=self.run_title,
-                cases=cases,
-                environment_id=(int(environment_id) if environment_id else None),
-                plan_id=(int(plan_id) if plan_id else plan_id),
-                is_autotest=True
-        )
-        result = api_runs.create_run(
-            code=self.project_code,
-            run_create=RunCreate(**{k: v for k, v in kwargs.items() if v is not None})
-        )
-        self.run_id = result.result.id
-        self.run = result.result
-        
-        print()
-        print(
-            "Qase TestOps: created test run "
-            "https://app.{}/run/{}/dashboard/{}".format(
-                self.host, self.project_code, self.run_id
+        if self.enabled:
+            api_runs = RunsApi(self.client)
+            kwargs = dict(
+                    title=self.run_title,
+                    cases=cases,
+                    environment_id=(int(environment_id) if environment_id else None),
+                    plan_id=(int(plan_id) if plan_id else plan_id),
+                    is_autotest=True
             )
-        )
-    
-    def get_run_id(self):
-        return
+            try:
+                result = api_runs.create_run(
+                    code=self.project_code,
+                    run_create=RunCreate(**{k: v for k, v in kwargs.items() if v is not None})
+                )
+                self.run_id = result.result.id
+                self.run = result.result
+                
+                print()
+                print(
+                    "Qase TestOps: created test run "
+                    "https://app.{}/run/{}/dashboard/{}".format(
+                        self.host, self.project_code, self.run_id
+                    )
+                )
+            except Exception as e:
+                self.enabled = False
+                print()
+                print(f"Disabling Qase TestOps reporter. Unable to create test run: {e}")
 
     def _upload(
         self,
@@ -223,69 +231,90 @@ class TestOps:
                 self.project_code, file=[content],
             ).result
 
+    def _prepare_step(self, step):
+        if step['attachments']:
+            attached_step = []
+            for files in step['attachments']:
+                attached_step.extend(self._upload(self.project_code, files))
+            step["attachments"] = [attach.hash for attach in attached_step]
+        if step['steps']:
+            prepared = []
+            for substep in step['steps']:
+                prepared.append(self._prepare_step(substep))
+            step['steps'] = prepared
+        return step
 
     def _send_result(self, result):
-        api_results = ResultsApi(self.client)
-        print(f"Sending a result to test run {self.run_id}...")
+        if self.enabled:
+            api_results = ResultsApi(self.client)
+            print()
+            print(f"Sending a result to test run {self.run_id}...")
 
-        attachments = result.get("attachments", [])
-        attached = []
-        if attachments:
-            for files in attachments:
-                attached.extend(self._upload(self.project_code, files))
+            attachments = result.get("attachments", [])
+            attached = []
+            if attachments:
+                for files in attachments:
+                    attached.extend(self._upload(self.project_code, files))
 
-        steps = []
-        for step in result.get('steps', []):
-            if step.attachments:
-                attached_step = []
-                for files in step.get('attachments', []):
-                    attached_step.extend(self._upload(self.project_code, files))
-                step["attachments"] = [attach.hash for attach in attached_step]
-                steps.extend([step])
-        try:
-            api_results.create_result(
-                code=self.project_code,
-                id=self.run_id,
-                result_create=ResultCreate(
-                    case_id=result.get('case_id', 0),
-                    status=result.get('status'),
-                    stacktrace=result.get('stacktrace'),
-                    time_ms=result.get('time_ms', 0),
-                    comment=result.get('comment', ''),
-                    attachments = [attach.hash for attach in attached],
-                    case=ResultCreateCase(
-                        title=result.get('case').get('title'),
-                        description=result.get('case').get('description', '')
-                    ),
-                    steps=steps,
-                    param=result.get('param', {})
+            steps = []
+            for step in result['steps']:
+                prepared = self._prepare_step(step)
+                steps.append(prepared)
+
+            try:
+                api_results.create_result(
+                    code=self.project_code,
+                    id=self.run_id,
+                    result_create=ResultCreate(
+                        case_id=result.get('case_id', 0),
+                        status=result.get('status'),
+                        stacktrace=result.get('stacktrace'),
+                        time_ms=result.get('time_ms'),
+                        comment=result.get('comment', ''),
+                        attachments = [attach.hash for attach in attached],
+                        case=ResultCreateCase(
+                            title=result.get('case').get('title'),
+                            description=result.get('case').get('description', '')
+                        ),
+                        steps=steps,
+                        param=result.get('param', {})
+                    )
                 )
-            )
-            print(f"Results of run {self.run_id} was sent")
-        except Exception as e:
-            print(f"Error at sending results for run {self.run_id}: {e}")
-        pass
+                print(f"Results of run {self.run_id} was sent")
+            except Exception as e:
+                print(f"Error at sending results for run {self.run_id}: {e}")
+            pass
 
     # Lifecycle methods
     def start_run(self):
-        """Verify test run"""
-        self._check_run()
-        return self.run_id
+        if self.enabled:
+            """Verify test run"""
+            self._check_run()
+            return self.run_id
 
     def complete_run(self, is_main=True, exit_code=None):
-        if self.mode == "async":
-            self._send_bulk_results()
-        if self.complete_after_run and is_main:
-            self._complete_run()
+        if self.enabled:
+            if self.mode == "async":
+                self._send_bulk_results()
+            if self.complete_after_run and is_main:
+                self._complete_run()
 
     def add_result(self, result, steps):
-        result['steps'] = [
-                TestStepResultCreate(**values)
-                for uuid, values in steps.items()
-            ]
-        if self.mode == "sync":
-            self._send_result(result)
-            pass
-        else:
-            self.results.append(result)
-            pass
+        if self.enabled:
+            result['steps'] = self._get_steps(steps)
+            if self.mode == "sync":
+                self._send_result(result)
+                pass
+            else:
+                self.results.append(result)
+                pass
+
+    def _get_steps(self, steps):
+        tree = []
+        for uuid in steps:
+            branch = []
+            if steps[uuid].get('steps', []):
+                branch = self._get_steps(steps[uuid].get('steps', {}))
+            steps[uuid]['steps'] = branch
+            tree.append(TestStepResultCreate(**steps[uuid]))
+        return tree

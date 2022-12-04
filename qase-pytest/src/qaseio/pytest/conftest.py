@@ -30,7 +30,7 @@ def pytest_addoption(parser):
         "qs_mode",
         default="off",
         type="string",
-        help="Define Qase reporter mode: `off`, `report` or `testops`"
+        help="Define Qase reporter mode: `off` or `testops`"
     )
 
     add_option_ini(
