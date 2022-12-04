@@ -16,7 +16,7 @@ and using command-line arguments:
 
 * Command-line args:
 ```
-  --qase-mode           Define mode: 'testops' to enable report
+  --qase-mode           Define mode: `testops` to enable report
   --qase-environment=QS_ENVIRONMENT
                         Define execution environment ID
   --qase-to-api-token=QS_TO_API_TOKEN
@@ -32,9 +32,9 @@ and using command-line arguments:
   --qase-to-complete-run
                         Complete run after all tests are finished
   --qase-to-mode=QS_TO_MODE
-                        You can choose `sync` or `async` mode for results publication. Default: async
+                        You can choose `sync` or `async` mode for results publication. Default: `async`
   --qase-to-host=QS_TO_HOST
-                        Qase TestOps Enterprise customers can set their own hosts. Default: https://api.qase.io/v1/
+                        Qase TestOps Enterprise customers can set their own hosts. Default: `qase.io`
 ```
 
 * INI file parameters:

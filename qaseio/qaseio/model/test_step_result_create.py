@@ -94,7 +94,7 @@ class TestStepResultCreate(ModelNormal):
             'action': (str,),  # noqa: E501
             'expected_result': (str, none_type,),  # noqa: E501
             'data': (str, none_type,),  # noqa: E501
-            'steps': ([{str: (bool, date, datetime, dict, float, int, list, str, none_type)}],),  # noqa: E501
+            'steps': ([{str: (bool, date, datetime, dict, float, int, list, str, none_type)}], [TestStepResultCreate],),  # noqa: E501
         }
 
     @cached_property

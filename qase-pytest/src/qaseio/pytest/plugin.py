@@ -1,3 +1,4 @@
+from ast import arg
 import pathlib
 import time
 from typing import Tuple, Union
@@ -6,6 +7,7 @@ import sys
 import pip
 import pytest
 import uuid
+from qaseio.commons.utils import Utils
 
 from filelock import FileLock
 
@@ -48,7 +50,6 @@ class QasePytestPlugin:
     ):
         self.reporter = reporter
         self.result = {}
-        self.step_position = 1
         self.steps = {}
         self.step_uuid = None
         self.run_id = None
@@ -59,10 +60,12 @@ class QasePytestPlugin:
         self.steps[uuid] = {
             "uuid": uuid,
             "started_at": now,
-            "attachments": []
+            "attachments": [],
+            "steps": {},
+            "parent_id": None
         }
         if self.step_uuid:
-            self.steps[uuid]["parent_step_uuid"] = self.step_uuid
+            self.steps[uuid]["parent_id"] = self.step_uuid
 
         self.step_uuid = uuid
 
@@ -73,12 +76,10 @@ class QasePytestPlugin:
         
         self.steps[uuid]['status'] = status
         self.steps[uuid]['action'] = title
-        self.steps[uuid]['position'] = self.step_position
         completed_at = time.time()
         self.steps[uuid]['duration'] = int((completed_at - self.steps[uuid].get("started_at")) * 1000)
         
-        self.step_position = self.step_position+1
-        self.step_uuid = self.steps[uuid].get("parent_step_uuid", None)
+        self.step_uuid = self.steps[uuid].get("parent_id", None)
 
     @staticmethod
     def drop_run_id():
@@ -96,10 +97,11 @@ class QasePytestPlugin:
             self.load_run_from_lock()
 
     def pytest_sessionfinish(self, session, exitstatus):
-        self.reporter.finish()
+        main = False
         if (not self.xdist_enabled) or (self.xdist_enabled and is_xdist_controller(session)):
-            self.reporter.complete_run()
+            main = True
             QasePytestPlugin.drop_run_id()
+        self.reporter.complete_run(main)
 
     @pytest.hookimpl(hookwrapper=True)
     def pytest_runtest_protocol(self, item):
@@ -141,9 +143,16 @@ class QasePytestPlugin:
             'is_api_result': True,
             'case': {},
             'steps': {},
+            'param': {},
         }
         self.result['uuid'] = str(uuid.uuid4())
         self.result["started_at"] = time.time()
+
+        if hasattr(item, 'callspec'):
+            params = {}
+            for key, val in item.callspec.params.items():
+                params[key] = str(val)
+            self.result['param'] = params
 
         try:
             case_id = item.get_closest_marker("qase_id").kwargs.get("id")
@@ -172,7 +181,7 @@ class QasePytestPlugin:
         self.result['time_ms'] = int((completed_at - self.result.get("started_at")) * 1000)
         self.result['completed_at'] = completed_at
 
-        self.reporter.add_result(self.result, self.steps)
+        self.reporter.add_result(self.result, Utils().build_tree(self.steps))
 
         self.result = {}  
         self.steps = {}

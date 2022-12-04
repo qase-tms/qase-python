@@ -1,6 +1,7 @@
 from qaseio.pytest.plugin import QasePytestPlugin, QasePytestPluginSingleton
 
-from qaseio.pytest.testops import TestOps
+from qaseio.commons.testops import TestOps
+from qaseio.commons.report import Report
 
 import os
 
@@ -84,7 +85,15 @@ def pytest_addoption(parser):
     add_option_ini(
         "--qase-to-host",
         "qs_to_host",
-        default="https://api.qase.io/v1"
+        default="qase.io"
+    )
+
+    add_option_ini(
+        "--qase-report-path",
+        "qs_report_path",
+        type="string",
+        default='build/qase-report',
+        help="A path to report folder"
     )
 
 
@@ -95,18 +104,23 @@ def pytest_configure(config):
     config.addinivalue_line("markers", "qase_title: mark test with title")
     config.addinivalue_line("markers", "qase_description: mark test with description")
 
-    if get_option_ini(config, "qs_mode") == 'testops':
-        reporter = TestOps(
-            api_token=get_option_ini(config, "qs_to_api_token"),
-            project_code=get_option_ini(config, "qs_to_project"),
-            run_id=get_option_ini(config, "qs_to_run_id"),
-            plan_id=get_option_ini(config, "qs_to_plan_id"),
-            complete_run=get_option_ini(config, "qs_to_complete_run"),
-            mode=get_option_ini(config, "qs_to_mode"),
-            run_title=get_option_ini(config, "qs_to_run_title"),
-            host=get_option_ini(config, "qs_to_host"),
-            environment=get_option_ini(config, "qs_environment")
-        )
+    if get_option_ini(config, "qs_mode"):
+        if (get_option_ini(config, "qs_mode") == 'testops'):
+            reporter = TestOps(
+                api_token=get_option_ini(config, "qs_to_api_token"),
+                project_code=get_option_ini(config, "qs_to_project"),
+                run_id=get_option_ini(config, "qs_to_run_id"),
+                plan_id=get_option_ini(config, "qs_to_plan_id"),
+                complete_run=get_option_ini(config, "qs_to_complete_run"),
+                mode=get_option_ini(config, "qs_to_mode"),
+                run_title=get_option_ini(config, "qs_to_run_title"),
+                host=get_option_ini(config, "qs_to_host"),
+                environment=get_option_ini(config, "qs_environment")
+            )
+        else:
+            reporter = Report(
+                report_path=get_option_ini(config, "qs_report_path")
+            )
 
         QasePytestPluginSingleton.init(
             reporter=reporter,
