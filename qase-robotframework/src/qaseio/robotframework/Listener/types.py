@@ -14,6 +14,8 @@ class Envs(Enum):
     TESTOPS_RUN_TITLE = "QASE_TESTOPS_RUN_TITLE"
     TESTOPS_COMPLETE_RUN = "QASE_TESTOPS_COMPLETE_RUN"
 
+    REPORT_PATH = "QASE_REPORT_PATH"
+
 STATUSES = {
     "PASS": "passed",
     "FAIL": "failed",

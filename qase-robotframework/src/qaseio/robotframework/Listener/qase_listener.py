@@ -11,6 +11,7 @@ from typing import List
 
 from qaseio.commons import QaseTestOps
 from qaseio.commons import QaseUtils
+from qaseio.commons import QaseReport
 from .types import Envs, STATUSES
 from .models import * 
 
@@ -54,13 +55,15 @@ class QaseListener:
                 host=self._get_param(Envs.TESTOPS_HOST, 'qase.io'),
                 environment=self._get_param(Envs.ENVIRONMENT, None)
             )
+        else:
+            self.reporter = QaseReport(
+                report_path=self._get_param(Envs.REPORT_PATH, 'build/qase-report'),
+            )
 
         self.result = {}
         self.steps = {}
         self.step_uuid = None
         self.suite = {}
-
-        self.reporter.start_run()
 
         self.debug = self._get_param(Envs.DEBUG) and self._get_param(Envs.DEBUG).lower() in ['true', '1']
         if self.debug:
@@ -71,6 +74,8 @@ class QaseListener:
             )
             ch.setFormatter(formatter)
             logger.addHandler(ch)
+
+        self.reporter.start_run()
 
     def _get_param(self, param: Envs, default=None):
         param: str = param.value

@@ -16,8 +16,3 @@ def setup_env():
 
 def test_init_listener(setup_env):
     QaseListener()
-
-
-def test_init_listener_error():
-    with pytest.raises(ValueError):
-        QaseListener()

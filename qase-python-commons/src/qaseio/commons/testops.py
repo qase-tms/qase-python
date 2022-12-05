@@ -46,7 +46,7 @@ class QaseTestOps:
         
         configuration = Configuration()
         configuration.api_key['TokenAuth'] = api_token
-        configuration.host = f'http://api.{host}/v1'
+        configuration.host = f'https://api.{host}/v1'
 
         self.client = ApiClient(configuration)
         
