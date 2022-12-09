@@ -1,6 +1,6 @@
 attrs==21.4.0
 cattrs==1.1.2
-certifi==2022.6.15
+certifi==2022.12.7
 charset-normalizer==2.1.0
 convclasses==2.0.0
 coverage==6.4.2
