@@ -21,7 +21,7 @@ and using command-line arguments:
                         Define execution environment ID
   --qase-to-api-token=QS_TO_API_TOKEN
                         Api token for Qase TestOps
-  --qase-to-project=QS_TO_PROJECT_CODE
+  --qase-to-project=QS_TO_PROJECT
                         Project code in Qase TestOps
   --qase-to-run=QS_TO_RUN_ID
                         Test Run ID in Qase TestOps
@@ -45,7 +45,7 @@ and using command-line arguments:
                         default value for --qase-environment
   qs_to_api_token (string):
                         default value for --qase-to-api-token
-  qs_to_project_code (string):
+  qs_to_project (string):
                         default value for --qase-to-project
   qs_to_run_id (string):
                         default value for --qase-to-run
