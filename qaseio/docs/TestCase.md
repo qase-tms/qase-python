@@ -27,7 +27,6 @@ Name | Type | Description | Notes
 **params** | [**TestCaseParams**](TestCaseParams.md) |  | [optional] 
 **tags** | [**[TagValue]**](TagValue.md) |  | [optional] 
 **member_id** | **int** |  | [optional] 
-**project_id** | **int** |  | [optional] 
 **created_at** | **datetime** |  | [optional] 
 **updated_at** | **datetime** |  | [optional] 
 **deleted** | **str, none_type** |  | [optional] 

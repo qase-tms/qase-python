@@ -101,7 +101,6 @@ class Defect(ModelNormal):
             'custom_fields': ([CustomFieldValue],),  # noqa: E501
             'attachments': ([Attachment],),  # noqa: E501
             'resolved_at': (datetime, none_type,),  # noqa: E501
-            'project_id': (int,),  # noqa: E501
             'member_id': (int,),  # noqa: E501
             'external_data': (str,),  # noqa: E501
             'tags': ([TagValue],),  # noqa: E501
@@ -126,7 +125,6 @@ class Defect(ModelNormal):
         'custom_fields': 'custom_fields',  # noqa: E501
         'attachments': 'attachments',  # noqa: E501
         'resolved_at': 'resolved_at',  # noqa: E501
-        'project_id': 'project_id',  # noqa: E501
         'member_id': 'member_id',  # noqa: E501
         'external_data': 'external_data',  # noqa: E501
         'tags': 'tags',  # noqa: E501
@@ -186,7 +184,6 @@ class Defect(ModelNormal):
             custom_fields ([CustomFieldValue]): [optional]  # noqa: E501
             attachments ([Attachment]): [optional]  # noqa: E501
             resolved_at (datetime, none_type): [optional]  # noqa: E501
-            project_id (int): [optional]  # noqa: E501
             member_id (int): [optional]  # noqa: E501
             external_data (str): [optional]  # noqa: E501
             tags ([TagValue]): [optional]  # noqa: E501
@@ -288,7 +285,6 @@ class Defect(ModelNormal):
             custom_fields ([CustomFieldValue]): [optional]  # noqa: E501
             attachments ([Attachment]): [optional]  # noqa: E501
             resolved_at (datetime, none_type): [optional]  # noqa: E501
-            project_id (int): [optional]  # noqa: E501
             member_id (int): [optional]  # noqa: E501
             external_data (str): [optional]  # noqa: E501
             tags ([TagValue]): [optional]  # noqa: E501

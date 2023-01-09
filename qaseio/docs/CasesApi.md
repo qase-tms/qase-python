@@ -86,6 +86,11 @@ with qaseio.ApiClient(configuration) as api_client:
         tags=[
             "tags_example",
         ],
+        params={
+            "key": [
+                "key_example",
+            ],
+        },
         custom_field={
             "key": "key_example",
         },
@@ -493,6 +498,11 @@ with qaseio.ApiClient(configuration) as api_client:
         tags=[
             "tags_example",
         ],
+        params={
+            "key": [
+                "key_example",
+            ],
+        },
         custom_field={
             "key": "key_example",
         },

@@ -13,7 +13,6 @@ Name | Type | Description | Notes
 **custom_fields** | [**[CustomFieldValue]**](CustomFieldValue.md) |  | [optional] 
 **attachments** | [**[Attachment]**](Attachment.md) |  | [optional] 
 **resolved** | **datetime, none_type** |  | [optional] 
-**project_id** | **int** |  | [optional] 
 **member_id** | **int** |  | [optional] 
 **external_data** | **str** |  | [optional] 
 **tags** | [**[TagValue]**](TagValue.md) |  | [optional] 

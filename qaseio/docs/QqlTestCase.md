@@ -27,7 +27,6 @@ Name | Type | Description | Notes
 **params** | [**TestCaseParams**](TestCaseParams.md) |  | [optional] 
 **tags** | [**[TagValue]**](TagValue.md) |  | [optional] 
 **member_id** | **int** |  | [optional] 
-**project_id** | **int** |  | [optional] 
 **created_at** | **datetime** |  | [optional] 
 **updated_at** | **datetime** |  | [optional] 
 **any string name** | **bool, date, datetime, dict, float, int, list, str, none_type** | any string name can be used but the value must be the correct type | [optional]
