@@ -110,6 +110,7 @@ class TestCaseCreate(ModelNormal):
             'attachments': (AttachmentHashList,),  # noqa: E501
             'steps': ([TestStepCreate],),  # noqa: E501
             'tags': ([str],),  # noqa: E501
+            'params': ({str: ([str],)}, none_type,),  # noqa: E501
             'custom_field': ({str: (str,)},),  # noqa: E501
         }
 
@@ -136,6 +137,7 @@ class TestCaseCreate(ModelNormal):
         'attachments': 'attachments',  # noqa: E501
         'steps': 'steps',  # noqa: E501
         'tags': 'tags',  # noqa: E501
+        'params': 'params',  # noqa: E501
         'custom_field': 'custom_field',  # noqa: E501
     }
 
@@ -199,6 +201,7 @@ class TestCaseCreate(ModelNormal):
             attachments (AttachmentHashList): [optional]  # noqa: E501
             steps ([TestStepCreate]): [optional]  # noqa: E501
             tags ([str]): [optional]  # noqa: E501
+            params ({str: ([str],)}, none_type): [optional]  # noqa: E501
             custom_field ({str: (str,)}): A map of custom fields values (id => value). [optional]  # noqa: E501
         """
 
@@ -305,6 +308,7 @@ class TestCaseCreate(ModelNormal):
             attachments (AttachmentHashList): [optional]  # noqa: E501
             steps ([TestStepCreate]): [optional]  # noqa: E501
             tags ([str]): [optional]  # noqa: E501
+            params ({str: ([str],)}, none_type): [optional]  # noqa: E501
             custom_field ({str: (str,)}): A map of custom fields values (id => value). [optional]  # noqa: E501
         """
 

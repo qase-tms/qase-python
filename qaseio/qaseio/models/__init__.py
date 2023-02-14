@@ -20,6 +20,12 @@ from qaseio.model.attachment_response import AttachmentResponse
 from qaseio.model.attachment_response_all_of import AttachmentResponseAllOf
 from qaseio.model.attachment_uploads_response import AttachmentUploadsResponse
 from qaseio.model.attachment_uploads_response_all_of import AttachmentUploadsResponseAllOf
+from qaseio.model.author import Author
+from qaseio.model.author_list_response import AuthorListResponse
+from qaseio.model.author_list_response_all_of import AuthorListResponseAllOf
+from qaseio.model.author_list_response_all_of_result import AuthorListResponseAllOfResult
+from qaseio.model.author_response import AuthorResponse
+from qaseio.model.author_response_all_of import AuthorResponseAllOf
 from qaseio.model.create_result200_response import CreateResult200Response
 from qaseio.model.create_result200_response_all_of import CreateResult200ResponseAllOf
 from qaseio.model.create_result200_response_all_of_result import CreateResult200ResponseAllOfResult
@@ -50,6 +56,7 @@ from qaseio.model.environment_list_response_all_of_result import EnvironmentList
 from qaseio.model.environment_response import EnvironmentResponse
 from qaseio.model.environment_response_all_of import EnvironmentResponseAllOf
 from qaseio.model.environment_update import EnvironmentUpdate
+from qaseio.model.get_authors_filters_parameter import GetAuthorsFiltersParameter
 from qaseio.model.get_cases_filters_parameter import GetCasesFiltersParameter
 from qaseio.model.get_custom_fields_filters_parameter import GetCustomFieldsFiltersParameter
 from qaseio.model.get_defects_filters_parameter import GetDefectsFiltersParameter
