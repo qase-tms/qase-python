@@ -300,7 +300,6 @@ import time
 import qaseio
 from qaseio.api import defects_api
 from qaseio.model.defect_list_response import DefectListResponse
-from qaseio.model.get_defects_filters_parameter import GetDefectsFiltersParameter
 from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
@@ -324,9 +323,7 @@ with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = defects_api.DefectsApi(api_client)
     code = "code_example" # str | Code of project, where to search entities.
-    filters = GetDefectsFiltersParameter(
-        status="open",
-    ) # GetDefectsFiltersParameter |  (optional)
+    status = "open" # str |  (optional)
     limit = 10 # int | A number of entities in result set. (optional) if omitted the server will use the default value of 10
     offset = 0 # int | How many entities should be skipped. (optional) if omitted the server will use the default value of 0
 
@@ -342,7 +339,7 @@ with qaseio.ApiClient(configuration) as api_client:
     # and optional values
     try:
         # Get all defects.
-        api_response = api_instance.get_defects(code, filters=filters, limit=limit, offset=offset)
+        api_response = api_instance.get_defects(code, status=status, limit=limit, offset=offset)
         pprint(api_response)
     except qaseio.ApiException as e:
         print("Exception when calling DefectsApi->get_defects: %s\n" % e)
@@ -354,7 +351,7 @@ with qaseio.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **code** | **str**| Code of project, where to search entities. |
- **filters** | **GetDefectsFiltersParameter**|  | [optional]
+ **status** | **str**|  | [optional]
  **limit** | **int**| A number of entities in result set. | [optional] if omitted the server will use the default value of 10
  **offset** | **int**| How many entities should be skipped. | [optional] if omitted the server will use the default value of 0
 

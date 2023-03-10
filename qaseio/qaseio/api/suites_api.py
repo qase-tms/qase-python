@@ -22,7 +22,6 @@ from qaseio.model_utils import (  # noqa: F401
     none_type,
     validate_and_convert_types
 )
-from qaseio.model.get_milestones_filters_parameter import GetMilestonesFiltersParameter
 from qaseio.model.id_response import IdResponse
 from qaseio.model.suite_create import SuiteCreate
 from qaseio.model.suite_delete import SuiteDelete
@@ -249,7 +248,7 @@ class SuitesApi(object):
             params_map={
                 'all': [
                     'code',
-                    'filters',
+                    'search',
                     'limit',
                     'offset',
                 ],
@@ -288,8 +287,8 @@ class SuitesApi(object):
                 'openapi_types': {
                     'code':
                         (str,),
-                    'filters':
-                        (GetMilestonesFiltersParameter,),
+                    'search':
+                        (str,),
                     'limit':
                         (int,),
                     'offset':
@@ -297,13 +296,13 @@ class SuitesApi(object):
                 },
                 'attribute_map': {
                     'code': 'code',
-                    'filters': 'filters',
+                    'search': 'search',
                     'limit': 'limit',
                     'offset': 'offset',
                 },
                 'location_map': {
                     'code': 'path',
-                    'filters': 'query',
+                    'search': 'query',
                     'limit': 'query',
                     'offset': 'query',
                 },
@@ -668,7 +667,7 @@ class SuitesApi(object):
             code (str): Code of project, where to search entities.
 
         Keyword Args:
-            filters (GetMilestonesFiltersParameter): [optional]
+            search (str): Provide a string that will be used to search by name.. [optional]
             limit (int): A number of entities in result set.. [optional] if omitted the server will use the default value of 10
             offset (int): How many entities should be skipped.. [optional] if omitted the server will use the default value of 0
             _return_http_data_only (bool): response data without head status

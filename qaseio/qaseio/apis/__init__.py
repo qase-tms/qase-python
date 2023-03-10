@@ -15,6 +15,7 @@
 
 # Import APIs into API package:
 from qaseio.api.attachments_api import AttachmentsApi
+from qaseio.api.authors_api import AuthorsApi
 from qaseio.api.cases_api import CasesApi
 from qaseio.api.custom_fields_api import CustomFieldsApi
 from qaseio.api.defects_api import DefectsApi
