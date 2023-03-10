@@ -398,7 +398,6 @@ This method allows to retrieve all runs stored in selected project.
 import time
 import qaseio
 from qaseio.api import runs_api
-from qaseio.model.get_runs_filters_parameter import GetRunsFiltersParameter
 from qaseio.model.run_list_response import RunListResponse
 from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
@@ -423,14 +422,12 @@ with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = runs_api.RunsApi(api_client)
     code = "code_example" # str | Code of project, where to search entities.
-    filters = GetRunsFiltersParameter(
-        search="search_example",
-        status="status_example",
-        milestone=1,
-        environment=1,
-        from_start_time=1,
-        to_start_time=1,
-    ) # GetRunsFiltersParameter |  (optional)
+    search = "search_example" # str |  (optional)
+    status = "status_example" # str | A list of status values separated by comma. Possible values: active, complete, abort.  (optional)
+    milestone = 1 # int |  (optional)
+    environment = 1 # int |  (optional)
+    from_start_time = 1 # int |  (optional)
+    to_start_time = 1 # int |  (optional)
     limit = 10 # int | A number of entities in result set. (optional) if omitted the server will use the default value of 10
     offset = 0 # int | How many entities should be skipped. (optional) if omitted the server will use the default value of 0
     include = "include_example" # str | Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects  (optional)
@@ -447,7 +444,7 @@ with qaseio.ApiClient(configuration) as api_client:
     # and optional values
     try:
         # Get all runs.
-        api_response = api_instance.get_runs(code, filters=filters, limit=limit, offset=offset, include=include)
+        api_response = api_instance.get_runs(code, search=search, status=status, milestone=milestone, environment=environment, from_start_time=from_start_time, to_start_time=to_start_time, limit=limit, offset=offset, include=include)
         pprint(api_response)
     except qaseio.ApiException as e:
         print("Exception when calling RunsApi->get_runs: %s\n" % e)
@@ -459,7 +456,12 @@ with qaseio.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **code** | **str**| Code of project, where to search entities. |
- **filters** | **GetRunsFiltersParameter**|  | [optional]
+ **search** | **str**|  | [optional]
+ **status** | **str**| A list of status values separated by comma. Possible values: active, complete, abort.  | [optional]
+ **milestone** | **int**|  | [optional]
+ **environment** | **int**|  | [optional]
+ **from_start_time** | **int**|  | [optional]
+ **to_start_time** | **int**|  | [optional]
  **limit** | **int**| A number of entities in result set. | [optional] if omitted the server will use the default value of 10
  **offset** | **int**| How many entities should be skipped. | [optional] if omitted the server will use the default value of 0
  **include** | **str**| Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects  | [optional]

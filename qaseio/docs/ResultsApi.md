@@ -457,7 +457,6 @@ import time
 import qaseio
 from qaseio.api import results_api
 from qaseio.model.result_list_response import ResultListResponse
-from qaseio.model.get_results_filters_parameter import GetResultsFiltersParameter
 from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
@@ -481,15 +480,13 @@ with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = results_api.ResultsApi(api_client)
     code = "code_example" # str | Code of project, where to search entities.
-    filters = GetResultsFiltersParameter(
-        status="status_example",
-        run="run_example",
-        case_id="case_id_example",
-        member="member_example",
-        api=True,
-        from_end_time="from_end_time_example",
-        to_end_time="to_end_time_example",
-    ) # GetResultsFiltersParameter |  (optional)
+    status = "status_example" # str | A single test run result status. Possible values: in_progress, passed, failed, blocked, skipped, invalid.  (optional)
+    run = "run_example" # str | A list of run IDs separated by comma. (optional)
+    case_id = "case_id_example" # str | A list of case IDs separated by comma. (optional)
+    member = "member_example" # str | A list of member IDs separated by comma. (optional)
+    api = True # bool |  (optional)
+    from_end_time = "from_end_time_example" # str | Will return all results created after provided datetime. Allowed format: `Y-m-d H:i:s`.  (optional)
+    to_end_time = "to_end_time_example" # str | Will return all results created before provided datetime. Allowed format: `Y-m-d H:i:s`.  (optional)
     limit = 10 # int | A number of entities in result set. (optional) if omitted the server will use the default value of 10
     offset = 0 # int | How many entities should be skipped. (optional) if omitted the server will use the default value of 0
 
@@ -505,7 +502,7 @@ with qaseio.ApiClient(configuration) as api_client:
     # and optional values
     try:
         # Get all test run results.
-        api_response = api_instance.get_results(code, filters=filters, limit=limit, offset=offset)
+        api_response = api_instance.get_results(code, status=status, run=run, case_id=case_id, member=member, api=api, from_end_time=from_end_time, to_end_time=to_end_time, limit=limit, offset=offset)
         pprint(api_response)
     except qaseio.ApiException as e:
         print("Exception when calling ResultsApi->get_results: %s\n" % e)
@@ -517,7 +514,13 @@ with qaseio.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **code** | **str**| Code of project, where to search entities. |
- **filters** | **GetResultsFiltersParameter**|  | [optional]
+ **status** | **str**| A single test run result status. Possible values: in_progress, passed, failed, blocked, skipped, invalid.  | [optional]
+ **run** | **str**| A list of run IDs separated by comma. | [optional]
+ **case_id** | **str**| A list of case IDs separated by comma. | [optional]
+ **member** | **str**| A list of member IDs separated by comma. | [optional]
+ **api** | **bool**|  | [optional]
+ **from_end_time** | **str**| Will return all results created after provided datetime. Allowed format: &#x60;Y-m-d H:i:s&#x60;.  | [optional]
+ **to_end_time** | **str**| Will return all results created before provided datetime. Allowed format: &#x60;Y-m-d H:i:s&#x60;.  | [optional]
  **limit** | **int**| A number of entities in result set. | [optional] if omitted the server will use the default value of 10
  **offset** | **int**| How many entities should be skipped. | [optional] if omitted the server will use the default value of 0
 

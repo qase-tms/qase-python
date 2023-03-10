@@ -86,6 +86,11 @@ with qaseio.ApiClient(configuration) as api_client:
         tags=[
             "tags_example",
         ],
+        params={
+            "key": [
+                "key_example",
+            ],
+        },
         custom_field={
             "key": "key_example",
         },
@@ -324,7 +329,6 @@ import time
 import qaseio
 from qaseio.api import cases_api
 from qaseio.model.test_case_list_response import TestCaseListResponse
-from qaseio.model.get_cases_filters_parameter import GetCasesFiltersParameter
 from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
@@ -348,17 +352,15 @@ with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cases_api.CasesApi(api_client)
     code = "code_example" # str | Code of project, where to search entities.
-    filters = GetCasesFiltersParameter(
-        search="search_example",
-        milestone_id=1,
-        suite_id=1,
-        severity="severity_example",
-        priority="priority_example",
-        type="type_example",
-        behavior="behavior_example",
-        automation="automation_example",
-        status="status_example",
-    ) # GetCasesFiltersParameter |  (optional)
+    search = "search_example" # str | Provide a string that will be used to search by name. (optional)
+    milestone_id = 1 # int | ID of milestone. (optional)
+    suite_id = 1 # int | ID of test suite. (optional)
+    severity = "severity_example" # str | A list of severity values separated by comma. Possible values: undefined, blocker, critical, major, normal, minor, trivial  (optional)
+    priority = "priority_example" # str | A list of priority values separated by comma. Possible values: undefined, high, medium, low  (optional)
+    type = "type_example" # str | A list of type values separated by comma. Possible values: other, functional smoke, regression, security, usability, performance, acceptance  (optional)
+    behavior = "behavior_example" # str | A list of behavior values separated by comma. Possible values: undefined, positive negative, destructive  (optional)
+    automation = "automation_example" # str | A list of values separated by comma. Possible values: is-not-automated, automated to-be-automated  (optional)
+    status = "status_example" # str | A list of values separated by comma. Possible values: actual, draft deprecated  (optional)
     limit = 10 # int | A number of entities in result set. (optional) if omitted the server will use the default value of 10
     offset = 0 # int | How many entities should be skipped. (optional) if omitted the server will use the default value of 0
 
@@ -374,7 +376,7 @@ with qaseio.ApiClient(configuration) as api_client:
     # and optional values
     try:
         # Get all test cases.
-        api_response = api_instance.get_cases(code, filters=filters, limit=limit, offset=offset)
+        api_response = api_instance.get_cases(code, search=search, milestone_id=milestone_id, suite_id=suite_id, severity=severity, priority=priority, type=type, behavior=behavior, automation=automation, status=status, limit=limit, offset=offset)
         pprint(api_response)
     except qaseio.ApiException as e:
         print("Exception when calling CasesApi->get_cases: %s\n" % e)
@@ -386,7 +388,15 @@ with qaseio.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **code** | **str**| Code of project, where to search entities. |
- **filters** | **GetCasesFiltersParameter**|  | [optional]
+ **search** | **str**| Provide a string that will be used to search by name. | [optional]
+ **milestone_id** | **int**| ID of milestone. | [optional]
+ **suite_id** | **int**| ID of test suite. | [optional]
+ **severity** | **str**| A list of severity values separated by comma. Possible values: undefined, blocker, critical, major, normal, minor, trivial  | [optional]
+ **priority** | **str**| A list of priority values separated by comma. Possible values: undefined, high, medium, low  | [optional]
+ **type** | **str**| A list of type values separated by comma. Possible values: other, functional smoke, regression, security, usability, performance, acceptance  | [optional]
+ **behavior** | **str**| A list of behavior values separated by comma. Possible values: undefined, positive negative, destructive  | [optional]
+ **automation** | **str**| A list of values separated by comma. Possible values: is-not-automated, automated to-be-automated  | [optional]
+ **status** | **str**| A list of values separated by comma. Possible values: actual, draft deprecated  | [optional]
  **limit** | **int**| A number of entities in result set. | [optional] if omitted the server will use the default value of 10
  **offset** | **int**| How many entities should be skipped. | [optional] if omitted the server will use the default value of 0
 
@@ -493,6 +503,11 @@ with qaseio.ApiClient(configuration) as api_client:
         tags=[
             "tags_example",
         ],
+        params={
+            "key": [
+                "key_example",
+            ],
+        },
         custom_field={
             "key": "key_example",
         },

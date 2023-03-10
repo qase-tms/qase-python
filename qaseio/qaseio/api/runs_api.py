@@ -22,7 +22,6 @@ from qaseio.model_utils import (  # noqa: F401
     none_type,
     validate_and_convert_types
 )
-from qaseio.model.get_runs_filters_parameter import GetRunsFiltersParameter
 from qaseio.model.id_response import IdResponse
 from qaseio.model.response import Response
 from qaseio.model.run_create import RunCreate
@@ -311,7 +310,12 @@ class RunsApi(object):
             params_map={
                 'all': [
                     'code',
-                    'filters',
+                    'search',
+                    'status',
+                    'milestone',
+                    'environment',
+                    'from_start_time',
+                    'to_start_time',
                     'limit',
                     'offset',
                     'include',
@@ -351,8 +355,18 @@ class RunsApi(object):
                 'openapi_types': {
                     'code':
                         (str,),
-                    'filters':
-                        (GetRunsFiltersParameter,),
+                    'search':
+                        (str,),
+                    'status':
+                        (str,),
+                    'milestone':
+                        (int,),
+                    'environment':
+                        (int,),
+                    'from_start_time':
+                        (int,),
+                    'to_start_time':
+                        (int,),
                     'limit':
                         (int,),
                     'offset':
@@ -362,14 +376,24 @@ class RunsApi(object):
                 },
                 'attribute_map': {
                     'code': 'code',
-                    'filters': 'filters',
+                    'search': 'search',
+                    'status': 'status',
+                    'milestone': 'milestone',
+                    'environment': 'environment',
+                    'from_start_time': 'from_start_time',
+                    'to_start_time': 'to_start_time',
                     'limit': 'limit',
                     'offset': 'offset',
                     'include': 'include',
                 },
                 'location_map': {
                     'code': 'path',
-                    'filters': 'query',
+                    'search': 'query',
+                    'status': 'query',
+                    'milestone': 'query',
+                    'environment': 'query',
+                    'from_start_time': 'query',
+                    'to_start_time': 'query',
                     'limit': 'query',
                     'offset': 'query',
                     'include': 'query',
@@ -822,7 +846,12 @@ class RunsApi(object):
             code (str): Code of project, where to search entities.
 
         Keyword Args:
-            filters (GetRunsFiltersParameter): [optional]
+            search (str): [optional]
+            status (str): A list of status values separated by comma. Possible values: active, complete, abort. . [optional]
+            milestone (int): [optional]
+            environment (int): [optional]
+            from_start_time (int): [optional]
+            to_start_time (int): [optional]
             limit (int): A number of entities in result set.. [optional] if omitted the server will use the default value of 10
             offset (int): How many entities should be skipped.. [optional] if omitted the server will use the default value of 0
             include (str): Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects . [optional]

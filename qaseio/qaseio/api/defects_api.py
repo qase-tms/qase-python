@@ -27,7 +27,6 @@ from qaseio.model.defect_list_response import DefectListResponse
 from qaseio.model.defect_response import DefectResponse
 from qaseio.model.defect_status import DefectStatus
 from qaseio.model.defect_update import DefectUpdate
-from qaseio.model.get_defects_filters_parameter import GetDefectsFiltersParameter
 from qaseio.model.id_response import IdResponse
 from qaseio.model.response import Response
 
@@ -244,7 +243,7 @@ class DefectsApi(object):
             params_map={
                 'all': [
                     'code',
-                    'filters',
+                    'status',
                     'limit',
                     'offset',
                 ],
@@ -254,6 +253,7 @@ class DefectsApi(object):
                 'nullable': [
                 ],
                 'enum': [
+                    'status',
                 ],
                 'validation': [
                     'code',
@@ -279,12 +279,19 @@ class DefectsApi(object):
                     },
                 },
                 'allowed_values': {
+                    ('status',): {
+
+                        "OPEN": "open",
+                        "RESOLVED": "resolved",
+                        "IN_PROGRESS": "in_progress",
+                        "INVALID": "invalid"
+                    },
                 },
                 'openapi_types': {
                     'code':
                         (str,),
-                    'filters':
-                        (GetDefectsFiltersParameter,),
+                    'status':
+                        (str,),
                     'limit':
                         (int,),
                     'offset':
@@ -292,13 +299,13 @@ class DefectsApi(object):
                 },
                 'attribute_map': {
                     'code': 'code',
-                    'filters': 'filters',
+                    'status': 'status',
                     'limit': 'limit',
                     'offset': 'offset',
                 },
                 'location_map': {
                     'code': 'path',
-                    'filters': 'query',
+                    'status': 'query',
                     'limit': 'query',
                     'offset': 'query',
                 },
@@ -793,7 +800,7 @@ class DefectsApi(object):
             code (str): Code of project, where to search entities.
 
         Keyword Args:
-            filters (GetDefectsFiltersParameter): [optional]
+            status (str): [optional]
             limit (int): A number of entities in result set.. [optional] if omitted the server will use the default value of 10
             offset (int): How many entities should be skipped.. [optional] if omitted the server will use the default value of 0
             _return_http_data_only (bool): response data without head status

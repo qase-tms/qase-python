@@ -23,7 +23,6 @@ from qaseio.model_utils import (  # noqa: F401
     validate_and_convert_types
 )
 from qaseio.model.create_result200_response import CreateResult200Response
-from qaseio.model.get_results_filters_parameter import GetResultsFiltersParameter
 from qaseio.model.hash_response import HashResponse
 from qaseio.model.response import Response
 from qaseio.model.result_create import ResultCreate
@@ -326,7 +325,13 @@ class ResultsApi(object):
             params_map={
                 'all': [
                     'code',
-                    'filters',
+                    'status',
+                    'run',
+                    'case_id',
+                    'member',
+                    'api',
+                    'from_end_time',
+                    'to_end_time',
                     'limit',
                     'offset',
                 ],
@@ -365,8 +370,20 @@ class ResultsApi(object):
                 'openapi_types': {
                     'code':
                         (str,),
-                    'filters':
-                        (GetResultsFiltersParameter,),
+                    'status':
+                        (str,),
+                    'run':
+                        (str,),
+                    'case_id':
+                        (str,),
+                    'member':
+                        (str,),
+                    'api':
+                        (bool,),
+                    'from_end_time':
+                        (str,),
+                    'to_end_time':
+                        (str,),
                     'limit':
                         (int,),
                     'offset':
@@ -374,13 +391,25 @@ class ResultsApi(object):
                 },
                 'attribute_map': {
                     'code': 'code',
-                    'filters': 'filters',
+                    'status': 'status',
+                    'run': 'run',
+                    'case_id': 'case_id',
+                    'member': 'member',
+                    'api': 'api',
+                    'from_end_time': 'from_end_time',
+                    'to_end_time': 'to_end_time',
                     'limit': 'limit',
                     'offset': 'offset',
                 },
                 'location_map': {
                     'code': 'path',
-                    'filters': 'query',
+                    'status': 'query',
+                    'run': 'query',
+                    'case_id': 'query',
+                    'member': 'query',
+                    'api': 'query',
+                    'from_end_time': 'query',
+                    'to_end_time': 'query',
                     'limit': 'query',
                     'offset': 'query',
                 },
@@ -849,7 +878,13 @@ class ResultsApi(object):
             code (str): Code of project, where to search entities.
 
         Keyword Args:
-            filters (GetResultsFiltersParameter): [optional]
+            status (str): A single test run result status. Possible values: in_progress, passed, failed, blocked, skipped, invalid. . [optional]
+            run (str): A list of run IDs separated by comma.. [optional]
+            case_id (str): A list of case IDs separated by comma.. [optional]
+            member (str): A list of member IDs separated by comma.. [optional]
+            api (bool): [optional]
+            from_end_time (str): Will return all results created after provided datetime. Allowed format: `Y-m-d H:i:s`. . [optional]
+            to_end_time (str): Will return all results created before provided datetime. Allowed format: `Y-m-d H:i:s`. . [optional]
             limit (int): A number of entities in result set.. [optional] if omitted the server will use the default value of 10
             offset (int): How many entities should be skipped.. [optional] if omitted the server will use the default value of 0
             _return_http_data_only (bool): response data without head status

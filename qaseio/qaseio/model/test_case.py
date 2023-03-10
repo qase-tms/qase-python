@@ -119,7 +119,7 @@ class TestCase(ModelNormal):
             'params': (TestCaseParams,),  # noqa: E501
             'tags': ([TagValue],),  # noqa: E501
             'member_id': (int,),  # noqa: E501
-            'project_id': (int,),  # noqa: E501
+            'author_id': (int,),  # noqa: E501
             'created_at': (datetime,),  # noqa: E501
             'updated_at': (datetime,),  # noqa: E501
             'deleted': (str, none_type,),  # noqa: E501
@@ -156,7 +156,7 @@ class TestCase(ModelNormal):
         'params': 'params',  # noqa: E501
         'tags': 'tags',  # noqa: E501
         'member_id': 'member_id',  # noqa: E501
-        'project_id': 'project_id',  # noqa: E501
+        'author_id': 'author_id',  # noqa: E501
         'created_at': 'created_at',  # noqa: E501
         'updated_at': 'updated_at',  # noqa: E501
         'deleted': 'deleted',  # noqa: E501
@@ -227,8 +227,8 @@ class TestCase(ModelNormal):
             steps ([TestStep]): [optional]  # noqa: E501
             params (TestCaseParams): [optional]  # noqa: E501
             tags ([TagValue]): [optional]  # noqa: E501
-            member_id (int): [optional]  # noqa: E501
-            project_id (int): [optional]  # noqa: E501
+            member_id (int): Deprecated, use `author_id` instead.. [optional]  # noqa: E501
+            author_id (int): [optional]  # noqa: E501
             created_at (datetime): [optional]  # noqa: E501
             updated_at (datetime): [optional]  # noqa: E501
             deleted (str, none_type): [optional]  # noqa: E501
@@ -341,8 +341,8 @@ class TestCase(ModelNormal):
             steps ([TestStep]): [optional]  # noqa: E501
             params (TestCaseParams): [optional]  # noqa: E501
             tags ([TagValue]): [optional]  # noqa: E501
-            member_id (int): [optional]  # noqa: E501
-            project_id (int): [optional]  # noqa: E501
+            member_id (int): Deprecated, use `author_id` instead.. [optional]  # noqa: E501
+            author_id (int): [optional]  # noqa: E501
             created_at (datetime): [optional]  # noqa: E501
             updated_at (datetime): [optional]  # noqa: E501
             deleted (str, none_type): [optional]  # noqa: E501

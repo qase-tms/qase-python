@@ -6,9 +6,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 4
+      max-parallel: 5
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: [3.7, 3.8, 3.9, '3.10', 3.11]
         changed-dir: ["qaseio", "qase-pytest", "qase-robotframework", "qase-python-commons"]
     name: Project ${{ matrix.changed-dir }} - Python ${{ matrix.python-version }}
     steps:
@@ -29,7 +29,7 @@ jobs:
       if: steps.filter.outputs.changes == 'true'
       run: |
         python -m pip install --upgrade pip
-        pip install tox tox-pip-version
+        pip install tox
     - name: Lint with tox
       if: steps.filter.outputs.changes == 'true'
       working-directory: ./${{ matrix.changed-dir }}

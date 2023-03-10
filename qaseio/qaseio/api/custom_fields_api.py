@@ -26,7 +26,6 @@ from qaseio.model.custom_field_create import CustomFieldCreate
 from qaseio.model.custom_field_response import CustomFieldResponse
 from qaseio.model.custom_field_update import CustomFieldUpdate
 from qaseio.model.custom_fields_response import CustomFieldsResponse
-from qaseio.model.get_custom_fields_filters_parameter import GetCustomFieldsFiltersParameter
 from qaseio.model.id_response import IdResponse
 from qaseio.model.response import Response
 
@@ -209,7 +208,8 @@ class CustomFieldsApi(object):
             },
             params_map={
                 'all': [
-                    'filters',
+                    'entity',
+                    'type',
                     'limit',
                     'offset',
                 ],
@@ -217,6 +217,8 @@ class CustomFieldsApi(object):
                 'nullable': [
                 ],
                 'enum': [
+                    'entity',
+                    'type',
                 ],
                 'validation': [
                     'limit',
@@ -237,22 +239,45 @@ class CustomFieldsApi(object):
                     },
                 },
                 'allowed_values': {
+                    ('entity',): {
+
+                        "CASE": "case",
+                        "RUN": "run",
+                        "DEFECT": "defect"
+                    },
+                    ('type',): {
+
+                        "STRING": "string",
+                        "TEXT": "text",
+                        "NUMBER": "number",
+                        "CHECKBOX": "checkbox",
+                        "SELECTBOX": "selectbox",
+                        "RADIO": "radio",
+                        "MULTISELECT": "multiselect",
+                        "URL": "url",
+                        "USER": "user",
+                        "DATETIME": "datetime"
+                    },
                 },
                 'openapi_types': {
-                    'filters':
-                        (GetCustomFieldsFiltersParameter,),
+                    'entity':
+                        (str,),
+                    'type':
+                        (str,),
                     'limit':
                         (int,),
                     'offset':
                         (int,),
                 },
                 'attribute_map': {
-                    'filters': 'filters',
+                    'entity': 'entity',
+                    'type': 'type',
                     'limit': 'limit',
                     'offset': 'offset',
                 },
                 'location_map': {
-                    'filters': 'query',
+                    'entity': 'query',
+                    'type': 'query',
                     'limit': 'query',
                     'offset': 'query',
                 },
@@ -590,7 +615,8 @@ class CustomFieldsApi(object):
 
 
         Keyword Args:
-            filters (GetCustomFieldsFiltersParameter): [optional]
+            entity (str): [optional]
+            type (str): [optional]
             limit (int): A number of entities in result set.. [optional] if omitted the server will use the default value of 10
             offset (int): How many entities should be skipped.. [optional] if omitted the server will use the default value of 0
             _return_http_data_only (bool): response data without head status
