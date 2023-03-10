@@ -29,7 +29,7 @@ jobs:
       if: steps.filter.outputs.changes == 'true'
       run: |
         python -m pip install --upgrade pip
-        pip install tox tox-pip-version
+        pip install tox
     - name: Lint with tox
       if: steps.filter.outputs.changes == 'true'
       working-directory: ./${{ matrix.changed-dir }}
