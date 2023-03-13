@@ -13,18 +13,6 @@ import sys
 import unittest
 
 import qaseio
-from qaseio.model.qql_defect import QqlDefect
-from qaseio.model.qql_plan import QqlPlan
-from qaseio.model.qql_test_case import QqlTestCase
-from qaseio.model.requirement import Requirement
-from qaseio.model.result import Result
-from qaseio.model.run import Run
-globals()['QqlDefect'] = QqlDefect
-globals()['QqlPlan'] = QqlPlan
-globals()['QqlTestCase'] = QqlTestCase
-globals()['Requirement'] = Requirement
-globals()['Result'] = Result
-globals()['Run'] = Run
 from qaseio.model.search_response_all_of_result import SearchResponseAllOfResult
 
 
