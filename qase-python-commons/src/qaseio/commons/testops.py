@@ -9,7 +9,6 @@ from qaseio.model.run_create import RunCreate
 from qaseio.model.result_create_bulk import ResultCreateBulk
 from qaseio.model.result_create import ResultCreate
 from qaseio.model.result_create_case import ResultCreateCase
-from qaseio.model.test_step_result_create import TestStepResultCreate
 from qaseio.rest import ApiException
 
 from datetime import datetime
@@ -315,5 +314,5 @@ class QaseTestOps:
             if steps[uuid].get('steps', []):
                 branch = self._get_steps(steps[uuid].get('steps', {}))
             steps[uuid]['steps'] = branch
-            tree.append(TestStepResultCreate(**steps[uuid]))
+            tree.append({**steps[uuid]})
         return tree

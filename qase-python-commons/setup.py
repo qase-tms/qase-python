@@ -11,12 +11,10 @@ import sys
 from pkg_resources import VersionConflict, require
 from setuptools import setup
 
-VERSION = "1.0.2"
-
 try:
-    require("setuptools>=38.3")
+    require("setuptools>=42.0.0")
 except VersionConflict:
-    print("Error: version of setuptools is too old (<38.3)!")
+    print("Error: version of setuptools is too old (<42.0.0)!")
     sys.exit(1)
 
 
