@@ -1,4 +1,4 @@
-# [Qase TMS](https://qase.io) Python
+# [Qase](https://qase.io) Python
 
 This is a monorepo for all Python-related projects
 

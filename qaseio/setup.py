@@ -12,7 +12,7 @@
 from setuptools import setup, find_packages  # noqa: H301
 
 NAME = "qaseio"
-VERSION = "3.2.0"
+VERSION = "3.2.1"
 # To install the library, run the following
 #
 # python setup.py install
@@ -28,7 +28,7 @@ REQUIRES = [
 setup(
     name=NAME,
     version=VERSION,
-    description="Qase.io API",
+    description="Qase TestOps API",
     author="Qase.io",
     author_email="support@qase.io",
     url="https://github.com/qase-tms/qase-python",
@@ -39,6 +39,6 @@ setup(
     include_package_data=True,
     license="Apache 2.0",
     long_description="""\
-    Qase API Specification.  # noqa: E501
+    Qase TestOps API client.  # noqa: E501
     """
 )
