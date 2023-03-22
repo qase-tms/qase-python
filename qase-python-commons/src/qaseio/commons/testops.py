@@ -15,8 +15,9 @@ from datetime import datetime
 from typing import Tuple, Union
 import mimetypes
 import ntpath
+import certifi
 
-from io import BytesIO 
+from io import BytesIO
 
 from pkg_resources import DistributionNotFound, get_distribution
 
@@ -32,7 +33,7 @@ class TestOpsRunNotFoundException(Exception):
 
 class QaseTestOps:
 
-    def __init__(self, 
+    def __init__(self,
             api_token,
             project_code,
             run_id=None,
@@ -42,13 +43,14 @@ class QaseTestOps:
             environment=None,
             host="qase.io",
             complete_run=False) -> None:
-        
+
         configuration = Configuration()
         configuration.api_key['TokenAuth'] = api_token
         configuration.host = f'https://api.{host}/v1'
+        configuration.ssl_ca_cert = certifi.where()
 
         self.client = ApiClient(configuration)
-        
+
         self.project_code = project_code
         self.run_id = int(run_id) if run_id else run_id
         self.plan_id = plan_id
@@ -57,7 +59,7 @@ class QaseTestOps:
         self.environment = int(environment) if environment else environment
         self.host = host
         self.enabled = True
-        
+
         if run_title and run_title != '':
             self.run_title = run_title
         else:
@@ -93,16 +95,16 @@ class QaseTestOps:
                 for files in result.get('attachments', []):
                     attached.extend(self._upload(self.project_code, files))
                     result['attachments'] = [attach.hash for attach in attached]
-                    
+
                 steps = []
                 for step in result['steps']:
                     prepared = self._prepare_step(step)
                     steps.append(prepared)
-                        
+
                 result['steps'] = steps
 
                 results.append(result)
-            
+
 
             api_results = ResultsApi(self.client)
             print()
@@ -133,7 +135,7 @@ class QaseTestOps:
                 print(f"Run ID:{self.run_id} was finished successfully")
             except Exception as e:
                 print(f"Run ID:{self.run_id} was finished with error: {e}")
-    
+
     def _check_run(self):
         if self.enabled:
             if self.run_id and self.plan_id:
@@ -143,7 +145,7 @@ class QaseTestOps:
             if self.plan_id:
                 api_plans = PlansApi(self.client)
                 plan = api_plans.get_plan(
-                    code=self.project_code, 
+                    code=self.project_code,
                     id=int(self.plan_id)
                 )
                 if not plan:
@@ -189,7 +191,7 @@ class QaseTestOps:
                 )
                 self.run_id = result.result.id
                 self.run = result.result
-                
+
                 print()
                 print(
                     "Qase TestOps: created test run "
