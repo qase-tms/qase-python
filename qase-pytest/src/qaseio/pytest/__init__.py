@@ -61,7 +61,7 @@ class qase:
     @staticmethod
     def id(id):
         """
-        Define the test case link to Qase TMS
+        Define a persisent connection to Qase TestOps test case.
 
         >>> @qase.id(1)
         >>> def test_example():
@@ -75,8 +75,6 @@ class qase:
     @staticmethod
     def title(title):
         """
-        Define the test case link to Qase TMS
-
         >>> @qase.title("Sign up")
         >>> def test_example():
         >>>     pass
@@ -89,8 +87,6 @@ class qase:
     @staticmethod
     def description(description):
         """
-        Define the test case link to Qase TMS
-
         >>> @qase.description("Sign up user using login and password")
         >>> def test_example():
         >>>     pass
@@ -99,6 +95,77 @@ class qase:
         :return: pytest.mark instance
         """
         return pytest.mark.qase_description(description=description)
+
+    @staticmethod
+    def preconditions(preconditions):
+        """
+        >>> @qase.preconditions("Sign up user using login and password")
+        >>> def test_example():
+        >>>     pass
+
+        :param preconditions: a string with test preconditions. Markdown is supported.
+        :return: pytest.mark instance
+        """
+        return pytest.mark.qase_preconditions(preconditions=preconditions)
+    
+    @staticmethod
+    def postconditions(postconditions):
+        """
+        >>> @qase.postconditions("Sign up user using login and password")
+        >>> def test_example():
+        >>>     pass
+
+        :param postconditions: a string with test postconditions. Markdown is supported.
+        :return: pytest.mark instance
+        """
+        return pytest.mark.qase_postconditions(postconditions=postconditions)
+
+    @staticmethod
+    def severity(severity):
+        """
+        >>> @qase.severity("Critical")
+        >>> def test_example():
+        >>>     pass
+
+        :param severity: a string with test severity. Default values: Low, Medium, High.
+        :return: pytest.mark instance
+        """
+        return pytest.mark.qase_severity(severity=severity)
+
+    @staticmethod
+    def layer(layer):
+        """
+        >>> @qase.layer("E2E")
+        >>> def test_example():
+        >>>     pass
+
+        :param layer: a string with test layer. Default values: E2E, API, Unit.
+        :return: pytest.mark instance
+        """
+        return pytest.mark.qase_layer(layer=layer)
+    
+    @staticmethod
+    def ignore():
+        """
+        >>> @qase.ignore()
+        >>> def test_example():
+        >>>     pass
+
+        :return: pytest.mark instance
+        """
+        return pytest.mark.qase_ignore()
+    
+    @staticmethod
+    def muted():
+        """
+        >>> @qase.muted()
+        >>> def test_example():
+        >>>     pass
+
+        :return: pytest.mark instance
+        """
+        return pytest.mark.qase_muted()
+    
 
     @staticmethod
     def attach(*files: Union[str, Tuple[str, str], Tuple[bytes, str, str]]):
@@ -123,7 +190,7 @@ class qase:
 
     @staticmethod
     @contextdecorator
-    def step(title):
+    def step(title, expected=None):
         """
         Step context/decorator
 
@@ -142,11 +209,11 @@ class qase:
             plugin = QasePytestPluginSingleton.get_instance()
             plugin.start_step(uuid=id)
             yield
-            plugin.finish_step(uuid=id, title=title)
+            plugin.finish_step(uuid=id, title=title, expected=expected)
         except PluginNotInitializedException:
             yield
         except AttributeError:
             yield
         except Exception as e:
-            plugin.finish_step(uuid=id, title=title, exception=e)
+            plugin.finish_step(uuid=id, title=title, expected=expected, exception=e)
             raise e

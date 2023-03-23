@@ -2,9 +2,11 @@ from pathlib import Path
 class QaseReport:
     def __init__(
         self, 
-        report_path = "build/qase-report"
+        report_path = "build/qase-report",
+        format = "json"
     ):
         self.report_path = report_path
+        self.format = format
 
         self.results = []
         self.attachments = {}
