@@ -215,6 +215,11 @@ class QasePytestPlugin:
             pass
         
         try:
+            self.result["case"]["severity"] = item.get_closest_marker("qase_severity").kwargs.get("severity")
+        except:
+            pass
+        
+        try:
             self.result["muted"] = True if item.get_closest_marker("qase_muted") else False
         except:
             pass

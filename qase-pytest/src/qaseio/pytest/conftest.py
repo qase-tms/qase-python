@@ -118,12 +118,14 @@ def pytest_configure(config):
     config.addinivalue_line("markers", "qase_ignore: skip test from Qase TestOps \ Report")
     config.addinivalue_line("markers", "qase_muted: mark test as muted so it will not affect test run status")
 
-    if get_option_ini(config, "qs_mode"):
+    mode = get_option_ini(config, "qs_mode")
+
+    if mode:
         defaultReporter = QaseReport(
                 report_path=get_option_ini(config, "qs_report_path"),
                 format=get_option_ini(config, "qs_report_format"),
             )
-        if (get_option_ini(config, "qs_mode") == 'testops'):
+        if (mode == 'testops'):
             reporter = QaseTestOps(
                 api_token=get_option_ini(config, "qs_to_api_token"),
                 project_code=get_option_ini(config, "qs_to_project"),
