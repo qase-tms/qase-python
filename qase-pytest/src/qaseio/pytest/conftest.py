@@ -96,6 +96,14 @@ def pytest_addoption(parser):
         help="A path to report folder"
     )
 
+    add_option_ini(
+        "--qase-report-format",
+        "qs_report_format",
+        type="string",
+        default='json',
+        help="Define report format: `json` or `jsonp`"
+    )
+
 
 def pytest_configure(config):
     if not hasattr(config, "workerinput"):
@@ -103,9 +111,20 @@ def pytest_configure(config):
     config.addinivalue_line("markers", "qase_id: mark test to be associate with Qase TestOps \ Report")
     config.addinivalue_line("markers", "qase_title: mark test with title")
     config.addinivalue_line("markers", "qase_description: mark test with description")
+    config.addinivalue_line("markers", "qase_preconditions: mark test with preconditions")
+    config.addinivalue_line("markers", "qase_postconditions: mark test with postconditions")
+    config.addinivalue_line("markers", "qase_layer: mark test with layer")
+    config.addinivalue_line("markers", "qase_severity: mark test with severity")
+    config.addinivalue_line("markers", "qase_ignore: skip test from Qase TestOps \ Report")
+    config.addinivalue_line("markers", "qase_muted: mark test as muted so it will not affect test run status")
 
-    if get_option_ini(config, "qs_mode"):
-        if (get_option_ini(config, "qs_mode") == 'testops'):
+    mode = get_option_ini(config, "qs_mode")
+
+    if mode:
+        defaultReporter = QaseReport(
+                report_path=get_option_ini(config, "qs_report_path"),
+            )
+        if (mode == 'testops'):
             reporter = QaseTestOps(
                 api_token=get_option_ini(config, "qs_to_api_token"),
                 project_code=get_option_ini(config, "qs_to_project"),
@@ -117,13 +136,14 @@ def pytest_configure(config):
                 host=get_option_ini(config, "qs_to_host"),
                 environment=get_option_ini(config, "qs_environment")
             )
+            fallback = defaultReporter
         else:
-            reporter = QaseReport(
-                report_path=get_option_ini(config, "qs_report_path")
-            )
+            reporter = defaultReporter
+            fallback = None
 
         QasePytestPluginSingleton.init(
             reporter=reporter,
+            fallback=fallback,
             xdist_enabled=is_xdist_enabled(config)
         )
         config.qaseio = QasePytestPluginSingleton.get_instance()

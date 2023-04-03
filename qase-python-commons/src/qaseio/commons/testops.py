@@ -105,7 +105,6 @@ class QaseTestOps:
 
                 results.append(result)
 
-
             api_results = ResultsApi(self.client)
             print()
             print(f"Sending results to test run {self.run_id}...")
@@ -261,6 +260,19 @@ class QaseTestOps:
                 prepared = self._prepare_step(step)
                 steps.append(prepared)
 
+            case_data = {
+                "title": result.get('case').get('title'),
+                "description": result.get('case').get('description', ''),
+                "precondtions": result.get('case').get('precondtions', ''),
+                "postconditions": result.get('case').get('postconditions', ''),
+            }
+
+            if (result.get('case').get('severity', None)):
+                case_data["severity"] = result.get('case').get('severity')
+
+            if (result.get('case').get('layer', None)):
+                case_data["layer"] = result.get('case').get('layer')
+
             try:
                 api_results.create_result(
                     code=self.project_code,
@@ -273,8 +285,7 @@ class QaseTestOps:
                         comment=result.get('comment', ''),
                         attachments = [attach.hash for attach in attached],
                         case=ResultCreateCase(
-                            title=result.get('case').get('title'),
-                            description=result.get('case').get('description', '')
+                            **{k: v for k, v in case_data.items() if v is not None}
                         ),
                         steps=steps,
                         param=result.get('param', {})
@@ -282,7 +293,7 @@ class QaseTestOps:
                 )
                 print(f"Results of run {self.run_id} was sent")
             except Exception as e:
-                print(f"Error at sending results for run {self.run_id}: {e}")
+                print(f"Error dat sending results for run {self.run_id}: {e}")
             pass
 
     # Lifecycle methods

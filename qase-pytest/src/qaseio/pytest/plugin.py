@@ -25,6 +25,11 @@ try:
 except ImportError:
     def is_xdist_controller(*args, **kwargs):
         return True
+    
+try:
+    import pytest
+except ImportError:
+    raise ImportError("pytest is not installed")
 
 class PluginNotInitializedException(Exception):
     pass
@@ -45,6 +50,7 @@ class QasePytestPlugin:
     def __init__(
             self,
             reporter,
+            fallback,
             xdist_enabled = False
     ):
         self.reporter = reporter
@@ -53,6 +59,8 @@ class QasePytestPlugin:
         self.step_uuid = None
         self.run_id = None
         self.xdist_enabled = xdist_enabled
+        self.fallback = fallback
+        self.has_started = False
 
     def start_step(self, uuid):
         now = time.time()
@@ -68,7 +76,7 @@ class QasePytestPlugin:
 
         self.step_uuid = uuid
 
-    def finish_step(self, uuid, title, exception=None):
+    def finish_step(self, uuid, title, expected, exception=None):
         status = PYTEST_TO_QASE_STATUS['PASSED']
         if exception:
             status = PYTEST_TO_QASE_STATUS['FAILED']
@@ -77,8 +85,14 @@ class QasePytestPlugin:
         self.steps[uuid]['action'] = title
         completed_at = time.time()
         self.steps[uuid]['duration'] = int((completed_at - self.steps[uuid].get("started_at")) * 1000)
+
+        if expected:
+            self.steps[uuid]['expected_result'] = expected
         
         self.step_uuid = self.steps[uuid].get("parent_id", None)
+
+    def fallback():
+        pass
 
     @staticmethod
     def drop_run_id():
@@ -94,6 +108,7 @@ class QasePytestPlugin:
                         lock_file.write(str(self.run_id))
         else:
             self.load_run_from_lock()
+        self.has_started = True
 
     def pytest_sessionfinish(self, session, exitstatus):
         main = False
@@ -101,12 +116,21 @@ class QasePytestPlugin:
             main = True
             QasePytestPlugin.drop_run_id()
         self.reporter.complete_run(main)
+        self.has_started = False
 
     @pytest.hookimpl(hookwrapper=True)
     def pytest_runtest_protocol(self, item):
-        self.start_pytest_item(item)
-        yield
-        self.finish_pytest_item(item)
+        try:
+            ignore = item.get_closest_marker("qase_ignore")
+        except:
+            ignore = False
+
+        if not ignore:
+            self.start_pytest_item(item)
+            yield
+            self.finish_pytest_item(item)
+        else:
+            yield
 
     @pytest.hookimpl(hookwrapper=True)
     def pytest_runtest_makereport(self, item, call):
@@ -172,6 +196,31 @@ class QasePytestPlugin:
         
         try:
             self.result["case"]["description"] = item.get_closest_marker("qase_description").kwargs.get("description")
+        except:
+            pass
+        
+        try:
+            self.result["case"]["preconditions"] = item.get_closest_marker("qase_preconditions").kwargs.get("preconditions")
+        except:
+            pass
+        
+        try:
+            self.result["case"]["postconditions"] = item.get_closest_marker("qase_postconditions").kwargs.get("postconditions")
+        except:
+            pass
+        
+        try:
+            self.result["case"]["layer"] = item.get_closest_marker("qase_layer").kwargs.get("layer")
+        except:
+            pass
+        
+        try:
+            self.result["case"]["severity"] = item.get_closest_marker("qase_severity").kwargs.get("severity")
+        except:
+            pass
+        
+        try:
+            self.result["muted"] = True if item.get_closest_marker("qase_muted") else False
         except:
             pass
 

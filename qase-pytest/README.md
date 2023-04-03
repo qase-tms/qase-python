@@ -71,12 +71,26 @@ from qaseio.pytest import qase
 
 @qase.id(13)
 @qase.title("My first test")
+@qase.severity("critical")
+@qase.layer("unit")
+@qase.precondition("*Precondition 1*. Markdown is supported.")
 @qase.description("Try to login in Qase TestOps using login and password")
 def test_example_1():
     pass
 ```
 
 Each unique number can only be assigned once to the class or function being used.
+
+### Ignore a particular test
+If you want to exclude a particular test from the report, you can use the `@qase.ignore` decorator:
+
+```python
+from qaseio.pytest import qase
+
+@qase.ignore
+def test_example_1():
+    pass
+```
 
 ### Possible test result statuses
 
