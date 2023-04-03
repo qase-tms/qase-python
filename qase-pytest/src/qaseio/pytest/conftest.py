@@ -123,7 +123,6 @@ def pytest_configure(config):
     if mode:
         defaultReporter = QaseReport(
                 report_path=get_option_ini(config, "qs_report_path"),
-                format=get_option_ini(config, "qs_report_format"),
             )
         if (mode == 'testops'):
             reporter = QaseTestOps(
