@@ -1,4 +1,4 @@
-from typing import Optional, Union
+from typing import Optional, Union, Dict, List, Type
 import time
 import uuid
 from qaseio.commons.models.attachment import Attachment
@@ -21,7 +21,7 @@ class StepGherkinData(object):
         self.line = line
 
 class StepRequestData(object):
-    def __init__(self, request_body: str, request_headers: dict[str, str], request_method: str, request_url: str):
+    def __init__(self, request_body: str, request_headers: Dict[str, str], request_method: str, request_url: str):
         if (isinstance(request_body, bytes)):
             request_body = request_body.decode('utf-8')
         self.request_body = request_body
@@ -31,9 +31,9 @@ class StepRequestData(object):
         self.request_method = request_method
         self.request_url = request_url
 
-    def add_response(self, status_code: int, response_body: Optional[str] = None, response_headers: Optional[dict[str, str]] = None):
+    def add_response(self, status_code: int, response_body: Optional[str] = None, response_headers: Optional[Dict[str, str]] = None):
         self.status_code = status_code
-        
+
         if (isinstance(response_body, bytes)):
             response_body = response_body.decode('utf-8')
         self.response_body = response_body
@@ -104,10 +104,10 @@ class Step(object):
     def set_data(self, data: Union[StepTextData, StepAssertData, StepGherkinData, StepRequestData]):
         self.data = data
 
-    def add_step(self, step: type['Step']):
+    def add_step(self, step: Type['Step']):
         self.steps.append(step)
 
-    def set_steps(self, steps: list[type['Step']]):
+    def set_steps(self, steps: List[Type['Step']]):
         self.steps = steps
 
     def add_attachment(self, attachment: Attachment):

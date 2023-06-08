@@ -1,4 +1,4 @@
-from typing import Type, Optional, Union
+from typing import Type, Optional, Union, Dict, List
 import time
 import uuid
 import json
@@ -47,9 +47,9 @@ class Request(object):
             method: str,
             url: str,
             status: int,
-            request_headers: dict[str, str],
+            request_headers: Dict[str, str],
             request_body: str,
-            response_headers: dict[str, str],
+            response_headers: Dict[str, str],
             response_body: str):
         self.method = method
         self.url = url
@@ -67,12 +67,12 @@ class Result(object):
         self.run_id: Optional[str] = None
         self.testops_id: Optional[int] = None
         self.execution: Type[Execution] = Execution()
-        self.fields: dict[Type[Field]] = {}
-        self.attachments: list[Attachment] = []
-        self.steps: list[Type[Step]] = []
+        self.fields: Dict[Type[Field]] = {}
+        self.attachments: List[Attachment] = []
+        self.steps: List[Type[Step]] = []
         self.params: Optional[dict] = {}
         self.author: Optional[str] = None
-        self.relations: list[Type[Relation]] = []
+        self.relations: List[Type[Relation]] = []
         self.muted: bool = False
         self.message: Optional[str] = None
         QaseUtils.get_host_data()
@@ -83,7 +83,7 @@ class Result(object):
     def add_field(self, field: Type[Field]) -> None:
         self.fields[field.name] = field.value
 
-    def add_steps(self, steps: list[Type[Step]]) -> None:
+    def add_steps(self, steps: List[Type[Step]]) -> None:
         self.steps = QaseUtils().build_tree(steps)
 
     def add_attachment(self, attachment: Attachment) -> None:

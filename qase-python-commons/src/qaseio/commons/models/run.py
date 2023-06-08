@@ -1,5 +1,5 @@
 import json
-from typing import Optional
+from typing import Optional, List
 
 class RunExecution(object):
     def __init__(self,
@@ -44,9 +44,9 @@ class Run(object):
                  title: str,
                  start_time: float,
                  end_time: float,
-                 results: list[str] = [],
-                 threads: list[str] = [],
-                 suites: list[str] = [],
+                 results: List[str] = [],
+                 threads: List[str] = [],
+                 suites: List[str] = [],
                  environment: Optional[str] = None
                  ):
         self.title = title
