@@ -1,4 +1,3 @@
-import pytest
 from mock import Mock
 import os
 import threading

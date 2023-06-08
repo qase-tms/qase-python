@@ -1,5 +1,3 @@
-import pytest
-import os
 from unittest.mock import MagicMock, patch
 from qaseio.commons import QaseReport
 

@@ -2,7 +2,7 @@ import os
 import json
 import unittest
 from unittest.mock import patch, mock_open
-from qaseio.commons.config import ConfigManager  # replace 'your_module' with the actual module name
+from qaseio.commons.config import ConfigManager
 
 class TestConfigManager(unittest.TestCase):
     def setUp(self):
