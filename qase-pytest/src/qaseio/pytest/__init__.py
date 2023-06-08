@@ -9,6 +9,7 @@ from typing import Tuple, Union
 import pytest
 
 from qaseio.pytest.plugin import PluginNotInitializedException, QasePytestPluginSingleton
+from qaseio.commons.models.step import Step, StepTextData
 
 try:
     # Change here if project is renamed and does not equal the package name
@@ -83,6 +84,48 @@ class qase:
         :return: pytest.mark instance
         """
         return pytest.mark.qase_title(title=title)
+    
+    @staticmethod
+    def fields(*fields: Tuple[str, str]):
+        """
+        >>> @qase.fields(
+                ("priority", "high"),
+                ("layer", "API")
+                ("custom_field", "custom_value")
+            )
+        >>> def test_example():
+        >>>     pass
+
+        :param name: a string with field name
+        :param value: a string with field value
+        :return: pytest.mark instance
+        """
+        return pytest.mark.qase_fields(fields=fields)
+    
+    @staticmethod
+    def suite(title: str, description: str = None):
+        """
+        >>> @qase.suite("Sign up")
+        >>> def test_example():
+        >>>     pass
+
+        :param title: a string with suite name. You can use dot notation to create nested suites.
+        :param description: a string with suite description
+        :return: pytest.mark instance
+        """
+        return pytest.mark.qase_suite(title=title, description=description)
+    
+    @staticmethod
+    def author(author):
+        """
+        >>> @qase.author("John Doe")
+        >>> def test_example():
+        >>>     pass
+
+        :param author: a string with test author
+        :return: pytest.mark instance
+        """
+        return pytest.mark.qase_author(author=author)
 
     @staticmethod
     def description(description):
@@ -123,14 +166,26 @@ class qase:
     @staticmethod
     def severity(severity):
         """
-        >>> @qase.severity("Critical")
+        >>> @qase.severity("critical")
         >>> def test_example():
         >>>     pass
 
-        :param severity: a string with test severity. Default values: Low, Medium, High.
+        :param severity: a string with test severity. Default values: blocker, critical, major, normal, minor, trivial.
         :return: pytest.mark instance
         """
         return pytest.mark.qase_severity(severity=severity)
+
+    @staticmethod
+    def priority(priority):
+        """
+        >>> @qase.priority("Critical")
+        >>> def test_example():
+        >>>     pass
+
+        :param priority: a string with test priority. Default values: low, medium, high.
+        :return: pytest.mark instance
+        """
+        return pytest.mark.qase_priority(priority=priority)
 
     @staticmethod
     def layer(layer):
@@ -143,6 +198,18 @@ class qase:
         :return: pytest.mark instance
         """
         return pytest.mark.qase_layer(layer=layer)
+    
+    @staticmethod
+    def tags(*tags):
+        """
+        >>> @qase.tags("tag1", "tag2")
+        >>> def test_example():
+        >>>     pass
+
+        :param tags: a list of strings with test tags.
+        :return: pytest.mark instance
+        """
+        return pytest.mark.qase_tags(tags=tags)
     
     @staticmethod
     def ignore():
@@ -166,7 +233,6 @@ class qase:
         """
         return pytest.mark.qase_muted()
     
-
     @staticmethod
     def attach(*files: Union[str, Tuple[str, str], Tuple[bytes, str, str]]):
         """
@@ -186,6 +252,7 @@ class qase:
             plugin = QasePytestPluginSingleton.get_instance()
             plugin.add_attachments(*files)
         except Exception:
+            print("Failed to add attachments")
             pass
 
     @staticmethod
@@ -207,13 +274,21 @@ class qase:
         id = str(uuid.uuid4())
         try:
             plugin = QasePytestPluginSingleton.get_instance()
-            plugin.start_step(uuid=id)
+            step = Step(
+                step_type = 'text', 
+                id = id,
+                data = StepTextData(
+                    action = title,
+                    expected_result = expected if (expected) else None,
+                )
+            )
+            plugin.start_step(step)
             yield
-            plugin.finish_step(uuid=id, title=title, expected=expected)
+            plugin.finish_step(id=step.id)
         except PluginNotInitializedException:
             yield
         except AttributeError:
             yield
         except Exception as e:
-            plugin.finish_step(uuid=id, title=title, expected=expected, exception=e)
+            plugin.finish_step(id=id, exception=e)
             raise e

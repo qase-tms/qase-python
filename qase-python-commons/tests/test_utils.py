@@ -1,62 +1,47 @@
 import pytest
-from qaseio.commons import QaseUtils
+from mock import Mock
+import os
+import threading
+import sys
+import pip
 
-def test_build_tree_empty_items():
-    items = {}
-    tree = QaseUtils.build_tree(items)
-    assert tree == {}
+from qaseio.commons import QaseUtils  # Replace with the actual import
 
-def test_build_tree_no_parent():
-    items = {
-        '1': {'name': 'step1'},
-        '2': {'name': 'step2'}
-    }
-    tree = QaseUtils.build_tree(items)
-    assert tree == items
+def test_build_tree():
+    # Mocking item objects
+    item1 = Mock()
+    item1.id = 1
+    item1.parent_id = None
+    item1.steps = []
 
-def test_build_tree_with_parent():
-    items = {
-        '1': {'name': 'step1', 'steps': {}},
-        '2': {'name': 'step2', 'parent_id': '1', 'steps': {}}
-    }
-    tree = QaseUtils.build_tree(items)
-    expected_tree = {
-        '1': {
-            'name': 'step1',
-            'steps': {
-                '2': {
-                    'name': 'step2',
-                    'parent_id': '1',
-                    'steps': {}
-                }
-            }
-        }
-    }
-    assert tree == expected_tree
+    item2 = Mock()
+    item2.id = 2
+    item2.parent_id = 1
+    item2.steps = []
 
-def test_build_tree_multiple_levels():
-    items = {
-        '1': {'name': 'step1', 'steps': {}},
-        '2': {'name': 'step2', 'parent_id': '1', 'steps': {}},
-        '3': {'name': 'step3', 'parent_id': '2', 'steps': {}}
-    }
-    tree = QaseUtils.build_tree(items)
-    expected_tree = {
-        '1': {
-            'name': 'step1',
-            'steps': {
-                '2': {
-                    'name': 'step2',
-                    'parent_id': '1',
-                    'steps': {
-                        '3': {
-                            'name': 'step3',
-                            'parent_id': '2',
-                            'steps': {}
-                        }
-                    }
-                }
-            }
-        }
-    }
-    assert tree == expected_tree
+    items = [item1, item2]
+
+    roots = QaseUtils.build_tree(items)
+    assert len(roots) == 1
+    assert roots[0] is item1
+    assert roots[0].steps[0] is item2
+
+def test_get_thread_name():
+    thread_name = QaseUtils.get_thread_name()
+    assert thread_name == f"{os.getpid()}-{threading.current_thread().name}"
+
+def test_get_host_data():
+    host_data = QaseUtils.get_host_data()
+
+    assert host_data['system'] == os.uname().sysname
+    assert host_data['node'] == os.uname().nodename
+    assert host_data['release'] == os.uname().release
+    assert host_data['version'] == os.uname().version
+    assert host_data['machine'] == os.uname().machine
+    assert host_data['python'] == '.'.join(map(str, sys.version_info))
+    assert host_data['pip'] == pip.__version__
+
+def test_get_filename():
+    path = '/path/to/file.txt'
+    filename = QaseUtils.get_filename(path)
+    assert filename == 'file.txt'
