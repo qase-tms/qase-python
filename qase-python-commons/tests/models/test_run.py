@@ -2,7 +2,7 @@ from mock import Mock
 import json
 import time
 
-from qaseio.commons.models.run import RunExecution, RunStats, Run  # Replace with the actual import
+from qaseio.commons.models.run import RunExecution, RunStats, Run
 
 def test_run_execution():
     start_time = time.time()
