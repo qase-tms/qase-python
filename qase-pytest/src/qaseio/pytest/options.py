@@ -146,6 +146,26 @@ class QasePytestOptions:
             default="json",
             help="Define local format for report directory: `json` or `jsonp`"
         )
+
+        QasePytestOptions.add_option_ini(
+            parser,
+            group,
+            "--qase-framework-pytest-capture-logs",
+            dest="qase_framework_pytest_capture_logs",
+            type="bool",
+            default=False,
+            help="Capture logs on fail for each test"
+        )
+
+        QasePytestOptions.add_option_ini(
+            parser,
+            group,
+            "--qase-framework-pytest-capture-http",
+            dest="qase_framework_pytest_capture_http",
+            type="bool",
+            default=False,
+            help="Capture http requests for each test and save them as steps"
+        )
     
     @staticmethod
     def add_option_ini(parser, group, option, dest, default=None, type=None, **kwargs):

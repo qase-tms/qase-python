@@ -1,5 +1,5 @@
 from unittest.mock import MagicMock, patch
-from qaseio.commons import QaseReport
+from qaseio.commons.report import QaseReport
 
 def test_QaseReport_init():
     report = QaseReport(report_path="custom_path", format="json", environment="env1")

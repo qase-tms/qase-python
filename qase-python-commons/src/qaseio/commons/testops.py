@@ -1,7 +1,6 @@
 from qaseio.api_client import ApiClient
 from qaseio.configuration import Configuration
 from qaseio.api.attachments_api import AttachmentsApi
-from qaseio.api.environments_api import EnvironmentsApi
 from qaseio.api.projects_api import ProjectsApi
 from qaseio.api.results_api import ResultsApi
 from qaseio.api.runs_api import RunsApi
