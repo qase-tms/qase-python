@@ -13,6 +13,14 @@ A new version of qase-pytest reporter has breaking changes. Follow these [guide]
 
 ## Configuration
 
+Qase Pytest Plugin can be configured in multiple ways:
+ - using a config file `qase.config.json`
+ - using environment variables
+ - using CLI options
+
+All configuration options are listed in the following doc: [Configuration](../README.md#configuration).
+
+
 ### Example: qase.config.json
 
 ```
