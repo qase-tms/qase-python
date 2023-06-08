@@ -25,15 +25,15 @@ class RunStats(object):
         self.total = 0
         
     def track(self, result: dict):
-        match result["execution"]["status"]:
-            case "passed":
-                self.passed += 1
-            case "failed":
-                self.failed += 1
-            case "skipped":
-                self.skipped += 1
-            case "broken":
-                self.broken += 1
+        status = result["execution"]["status"]
+        if status == "passed":
+            self.passed += 1
+        elif status == "failed":
+            self.failed += 1
+        elif status == "skipped":
+            self.skipped += 1
+        elif status == "broken":
+            self.broken += 1
         self.total += 1
         if result.get('muted', False):
             self.muted += 1
