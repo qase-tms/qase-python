@@ -1,0 +1,78 @@
+import json
+from typing import Optional
+
+class RunExecution(object):
+    def __init__(self,
+                 start_time: float,
+                 end_time: float,
+                 cumulative_duration: int = 0,
+                 ) -> None:
+        self.start_time = start_time
+        self.end_time = end_time
+        self.duration = int((end_time - start_time)*1000)
+        self.cumulative_duration = cumulative_duration
+
+    def track(self, result: dict):
+        self.cumulative_duration += result["execution"]["duration"]
+
+class RunStats(object):
+    def __init__(self) -> None:
+        self.passed = 0
+        self.failed = 0
+        self.skipped = 0
+        self.broken = 0
+        self.muted = 0
+        self.total = 0
+        
+    def track(self, result: dict):
+        match result["execution"]["status"]:
+            case "passed":
+                self.passed += 1
+            case "failed":
+                self.failed += 1
+            case "skipped":
+                self.skipped += 1
+            case "broken":
+                self.broken += 1
+        self.total += 1
+        if result.get('muted', False):
+            self.muted += 1
+            
+
+class Run(object):
+    def __init__(self, 
+                 title: str,
+                 start_time: float,
+                 end_time: float,
+                 results: list[str] = [],
+                 threads: list[str] = [],
+                 suites: list[str] = [],
+                 environment: Optional[str] = None
+                 ):
+        self.title = title
+        self.execution = RunExecution(start_time=start_time, end_time=end_time)
+        self.stats = RunStats()
+        self.results = results
+        self.threads = threads
+        self.suites = suites
+        self.environment = environment
+    
+    def to_json(self) -> str:
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=False, indent=4)
+    
+    def add_result(self, result: dict):
+        compact_result = {
+            "id": result["id"],
+            "title": result["title"],
+            "status": result["execution"]["status"],
+            "duration": result["execution"]["duration"],
+            "thread": result["execution"]["thread"]
+        }
+        self.results.append(compact_result)
+        self.execution.track(result)
+        self.stats.track(result)
+        if (result["execution"]["thread"] not in self.threads):
+            self.threads.append(result["execution"]["thread"])
+
+    def add_host_data(self, host_data: dict):
+        self.host_data = host_data

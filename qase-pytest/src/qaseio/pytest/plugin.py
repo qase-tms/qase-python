@@ -1,16 +1,15 @@
 import pathlib
-import time
 from typing import Tuple, Union
-import platform
-import sys
-import pip
 import pytest
-import uuid
-from qaseio.commons import QaseUtils
+import mimetypes
+import re
+
+from qaseio.commons.models.result import Result, Field
+from qaseio.commons.models.attachment import Attachment
+from qaseio.commons.utils import QaseUtils
+from qaseio.commons.models.runtime import Runtime
 
 from filelock import FileLock
-
-QASE_MARKER = "qase"
 
 PYTEST_TO_QASE_STATUS = {
     "PASSED": 'passed',
@@ -34,15 +33,6 @@ except ImportError:
 class PluginNotInitializedException(Exception):
     pass
 
-def get_platform():
-    platform_data = {
-        'os': platform.system(),
-        'arch': platform.machine(),
-        'python': '.'.join(map(str, sys.version_info)),
-        'pip': pip.__version__
-    }
-    return ';'.join([f'{key}={value}' for key, value in platform_data.items()])
-
 class QasePytestPlugin:
     run = None
     meta_run_file = pathlib.Path("src.run")
@@ -51,53 +41,46 @@ class QasePytestPlugin:
             self,
             reporter,
             fallback,
-            xdist_enabled = False
+            xdist_enabled = False,
+            capture_logs = False,
+            execution_plan = None,
+            intercept_requests = False,
     ):
+        self.runtime = Runtime()
         self.reporter = reporter
-        self.result = {}
-        self.steps = {}
-        self.step_uuid = None
         self.run_id = None
         self.xdist_enabled = xdist_enabled
         self.fallback = fallback
-        self.has_started = False
+        self.capture_logs = capture_logs
+        self.debug = True
+        self.execution_plan = execution_plan
+        self.intercept_requests = intercept_requests
+        self.interceptor = None
+        if self.intercept_requests:
+            # Lazy import
+            from qaseio.commons.interceptor import InterceptorSingleton
+            InterceptorSingleton.init(runtime=self.runtime)
+            self.interceptor = InterceptorSingleton.get_instance()
 
-    def start_step(self, uuid):
-        now = time.time()
-        self.steps[uuid] = {
-            "uuid": uuid,
-            "started_at": now,
-            "attachments": [],
-            "steps": {},
-            "parent_id": None
-        }
-        if self.step_uuid:
-            self.steps[uuid]["parent_id"] = self.step_uuid
+    def start_step(self, step):
+        self.runtime.add_step(step)
 
-        self.step_uuid = uuid
-
-    def finish_step(self, uuid, title, expected, exception=None):
+    def finish_step(self, id, exception=None):
         status = PYTEST_TO_QASE_STATUS['PASSED']
         if exception:
             status = PYTEST_TO_QASE_STATUS['FAILED']
-        
-        self.steps[uuid]['status'] = status
-        self.steps[uuid]['action'] = title
-        completed_at = time.time()
-        self.steps[uuid]['duration'] = int((completed_at - self.steps[uuid].get("started_at")) * 1000)
 
-        if expected:
-            self.steps[uuid]['expected_result'] = expected
-        
-        self.step_uuid = self.steps[uuid].get("parent_id", None)
-
-    def fallback():
-        pass
+        self.runtime.finish_step(id, status=status)
 
     @staticmethod
     def drop_run_id():
         if QasePytestPlugin.meta_run_file.exists():
             QasePytestPlugin.meta_run_file.unlink()
+
+    def pytest_collection_modifyitems(self, session, config, items):
+        # Filter test cases based on ids
+        if (self.execution_plan):
+            items[:] = [item for item in items if item.get_closest_marker('qase_id') and item.get_closest_marker('qase_id').kwargs.get("id") in self.execution_plan]
 
     def pytest_sessionstart(self, session):
         if (not self.xdist_enabled) or (self.xdist_enabled and is_xdist_controller(session)):
@@ -120,70 +103,108 @@ class QasePytestPlugin:
 
     @pytest.hookimpl(hookwrapper=True)
     def pytest_runtest_protocol(self, item):
-        try:
-            ignore = item.get_closest_marker("qase_ignore")
-        except:
-            ignore = False
+        self.ignore = True if item.get_closest_marker("qase_ignore") else False
 
-        if not ignore:
+        if not self.ignore:
+            # Capture HTTP requests inside test
+            if self.interceptor:
+                self.interceptor.enable()
             self.start_pytest_item(item)
             yield
+            if self.interceptor:
+                self.interceptor.disable()
             self.finish_pytest_item(item)
         else:
             yield
 
     @pytest.hookimpl(hookwrapper=True)
     def pytest_runtest_makereport(self, item, call):
-        report = (yield).get_result()
-        def result(res):
-            self.result["status"] = res
+        if not self.ignore:
+            report = (yield).get_result()
+            def set_result(res):
+                self.runtime.result.execution.status = res
 
-        if report.longrepr:
-            self.result["stacktrace"] = report.longreprtext
+            if report.longrepr:
+                self.runtime.result.execution.stacktrace = report.longreprtext
 
-        # Defining test result
-        if report.when == "setup":
-            result(None)
-
-        if report.failed:
-            if call.excinfo.typename != "AssertionError":
-                result(PYTEST_TO_QASE_STATUS['BROKEN'])
+            if report.failed:
+                if call.excinfo.typename != "AssertionError":
+                    set_result(PYTEST_TO_QASE_STATUS['BROKEN'])
+                else:
+                    set_result(PYTEST_TO_QASE_STATUS['FAILED'])
+                self.runtime.result.add_message(call.excinfo.exconly())
+            elif report.skipped:
+                if self.runtime.result.execution.status in (
+                        None,
+                        PYTEST_TO_QASE_STATUS['PASSED'],
+                ):
+                    set_result(PYTEST_TO_QASE_STATUS['SKIPPED'])
             else:
-                result(PYTEST_TO_QASE_STATUS['FAILED'])
-            self.result["comment"] = call.excinfo.exconly()
-        elif report.skipped:
-            if self.result["status"] in (
-                    None,
-                    PYTEST_TO_QASE_STATUS['PASSED'],
-            ):
-                result(PYTEST_TO_QASE_STATUS['SKIPPED'])
+                if self.runtime.result.execution.status is None:
+                    set_result(PYTEST_TO_QASE_STATUS['PASSED'])
+
+            if self.capture_logs and report.when == "call":
+                if report.caplog:
+                    self.add_attachments((report.caplog, "text/plain", "log.txt"))
+                if report.capstdout:
+                    self.add_attachments((report.capstdout, "text/plain", "stdout.txt"))
+                if report.capstderr:
+                    self.add_attachments((report.capstderr, "text/plain", "stderr.txt"))
         else:
-            if self.result["status"] is None:
-                result(PYTEST_TO_QASE_STATUS['PASSED'])
-    
+            yield
+
     def start_pytest_item(self, item):
-        self.result = {
-            'is_api_result': True,
-            'case': {},
-            'steps': {},
-            'param': {},
-        }
-        self.result['uuid'] = str(uuid.uuid4())
-        self.result["started_at"] = time.time()
+        self.runtime.result = Result(
+            title = self._get_title(item), 
+            signature = self._get_signature(item),
+            )
+        self._set_fields(item)
+        self._set_tags(item)
+        self._set_author(item)
+        self._set_muted(item)
+        self._set_testops_id(item)
+        self._set_params(item)
 
-        if hasattr(item, 'callspec'):
-            params = {}
-            for key, val in item.callspec.params.items():
-                params[key] = str(val)
-            self.result['param'] = params
+    def finish_pytest_item(self, item):
+        self.runtime.result.execution.complete()
+        self.runtime.result.add_steps([step for key, step in self.runtime.steps.items()])
+        self.reporter.add_result(self.runtime.result)
 
-        try:
-            case_id = item.get_closest_marker("qase_id").kwargs.get("id")
-            self.result["case_id"] = int(case_id)
-        except:
-            pass
-        
-        title = ''
+        self.runtime = Runtime()
+
+    def add_attachments(
+            self, *files: Union[str, Tuple[str, str], Tuple[bytes, str, str]]
+    ):
+        for file in files:
+            filename = None
+            content = None
+            file_path = None
+
+            if isinstance(file, tuple):
+                if len(file) == 2:
+                    file_path, mime = file
+                    filename = QaseUtils.get_filename(file_path)
+                else:
+                    content, mime, filename = file
+            elif isinstance(file, str):
+                file_path = file
+                mime = mimetypes.guess_type(file)[0]
+                filename = QaseUtils.get_filename(file_path)
+
+            attachment = Attachment(file_name=filename, content=content, mime_type=mime, file_path=file_path)
+            self.runtime.add_attachment(attachment)
+
+    def load_run_from_lock(self):
+        if QasePytestPlugin.meta_run_file.exists():
+            with open(QasePytestPlugin.meta_run_file, "r") as lock_file:
+                try:
+                    self.run_id = str(lock_file.read())
+                    self.reporter.set_run_id(self.run_id)
+                except ValueError:
+                    pass
+    
+    def _get_title(self, item):
+        title = None
         try:
             title = item.get_closest_marker("qase_title").kwargs.get("title")
         except:
@@ -191,70 +212,61 @@ class QasePytestPlugin:
 
         if not title:
             title = item.originalname
-        
-        self.result["case"]["title"] = str(title)
-        
+
+        return str(title)
+    
+    def _get_signature(self, item) -> str:
+        return re.sub(r'\[.*?\]', '', item.nodeid)
+    
+    def _set_relations(self, item) -> None:
+        # TODO: Add support for relations
+        pass
+    
+    def _set_fields(self, item) -> None:
+        # Legacy fields support
+        for name in ["description", "preconditions", "postconditions", "layer", "severity", "priority"]:
+            try:
+                self.runtime.result.add_field(Field(name, item.get_closest_marker("qase_" + name).kwargs.get(name)))
+            except:
+                pass
+
         try:
-            self.result["case"]["description"] = item.get_closest_marker("qase_description").kwargs.get("description")
-        except:
-            pass
-        
-        try:
-            self.result["case"]["preconditions"] = item.get_closest_marker("qase_preconditions").kwargs.get("preconditions")
-        except:
-            pass
-        
-        try:
-            self.result["case"]["postconditions"] = item.get_closest_marker("qase_postconditions").kwargs.get("postconditions")
-        except:
-            pass
-        
-        try:
-            self.result["case"]["layer"] = item.get_closest_marker("qase_layer").kwargs.get("layer")
-        except:
-            pass
-        
-        try:
-            self.result["case"]["severity"] = item.get_closest_marker("qase_severity").kwargs.get("severity")
-        except:
-            pass
-        
-        try:
-            self.result["muted"] = True if item.get_closest_marker("qase_muted") else False
+            fields = item.get_closest_marker("qase_fields").kwargs.get("fields")
+            for name, field in fields:
+                self.runtime.result.add_field(Field(name, field))
         except:
             pass
 
-    def finish_pytest_item(self, item):
-        completed_at = time.time()
-        self.result['time_ms'] = int((completed_at - self.result.get("started_at")) * 1000)
-        self.result['completed_at'] = completed_at
+    def _set_tags(self, item) -> None:
+        try:
+            tags = item.get_closest_marker("qase_tags").kwargs.get("tags")
+            for tag in tags:
+                self.runtime.result.add_tag(tag)
+        except:
+            pass
 
-        self.reporter.add_result(self.result, QaseUtils().build_tree(self.steps))
+    def _set_author(self, item) -> None:
+        try:
+            self.runtime.result.author = str(item.get_closest_marker("qase_author").kwargs.get("author"))
+        except:
+            pass
 
-        self.result = {}  
-        self.steps = {}
+    def _set_muted(self, item) -> None:
+        try:
+            self.runtime.result.muted = True if item.get_closest_marker("qase_muted").kwargs.get("muted") else False
+        except:
+            pass
 
-    def add_attachments(
-            self, *files: Union[str, Tuple[str, str], Tuple[bytes, str, str]]
-    ):
-        if self.result:
-            if self.step_uuid:
-                attachments: list = self.steps[self.step_uuid].get("attachments", [])
-                attachments.extend(files)
-                self.steps[self.step_uuid]["attachments"] = attachments
-            else:
-                attachments: list = self.result.get("attachments", [])
-                attachments.extend(files)
-                self.result["attachments"] = attachments
+    def _set_testops_id(self, item) -> None:
+        try:
+            self.runtime.result.testops_id = int(item.get_closest_marker("qase_id").kwargs.get("id"))
+        except:
+            pass
 
-    def load_run_from_lock(self):
-        if QasePytestPlugin.meta_run_file.exists():
-            with open(QasePytestPlugin.meta_run_file, "r") as lock_file:
-                try:
-                    self.run_id = int(lock_file.read())
-                    self.reporter.set_run_id(self.run_id)
-                except ValueError:
-                    pass
+    def _set_params(self, item) -> None:
+        if hasattr(item, 'callspec'):
+            for key, val in item.callspec.params.items():
+                self.runtime.result.add_param(key, str(val))
 
 class QasePytestPluginSingleton:
     _instance = None

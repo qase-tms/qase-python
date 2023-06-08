@@ -1,7 +1,7 @@
 from qaseio.api_client import ApiClient
 from qaseio.configuration import Configuration
 from qaseio.api.attachments_api import AttachmentsApi
-from qaseio.api.plans_api import PlansApi
+from qaseio.api.environments_api import EnvironmentsApi
 from qaseio.api.projects_api import ProjectsApi
 from qaseio.api.results_api import ResultsApi
 from qaseio.api.runs_api import RunsApi
@@ -10,14 +10,14 @@ from qaseio.model.result_create_bulk import ResultCreateBulk
 from qaseio.model.result_create import ResultCreate
 from qaseio.model.result_create_case import ResultCreateCase
 from qaseio.rest import ApiException
+from qaseio.commons.models.attachment import Attachment
+from qaseio.commons.models.step import Step
+
+from qaseio.commons.models.result import Result
 
 from datetime import datetime
-from typing import Tuple, Union
-import mimetypes
-import ntpath
+import more_itertools
 import certifi
-
-from io import BytesIO
 
 from pkg_resources import DistributionNotFound, get_distribution
 
@@ -38,11 +38,13 @@ class QaseTestOps:
             project_code,
             run_id=None,
             plan_id=None,
-            mode="async",
+            bulk=True,
             run_title=None,
             environment=None,
             host="qase.io",
-            complete_run=False) -> None:
+            complete_run=False,
+            defect=False,
+            chunk_size=200) -> None:
 
         configuration = Configuration()
         configuration.api_key['TokenAuth'] = api_token
@@ -54,11 +56,19 @@ class QaseTestOps:
         self.project_code = project_code
         self.run_id = int(run_id) if run_id else run_id
         self.plan_id = plan_id
-        self.mode = mode
+        self.bulk = bulk
+        self.defect = defect
         self.complete_after_run = complete_run
-        self.environment = int(environment) if environment else environment
+        if environment:
+            if isinstance(environment, str):
+                self.environment = self._get_environment(environment)
+            elif isinstance(environment, int):
+                self.environment_id = environment
         self.host = host
         self.enabled = True
+        if (chunk_size > 2000):
+            chunk_size = 2000
+        self.chunk_size = chunk_size
 
         if run_title and run_title != '':
             self.run_title = run_title
@@ -83,72 +93,100 @@ class QaseTestOps:
                 raise ValueError("Unable to find given project code")
             except ApiException as e:
                 self.enabled = False
-                print("Disabling Qase TestOps reporter. Exception when calling ProjectApi->get_project: %s\n" % e)
+                print("[Qase] ⚠️  Disabling Qase TestOps reporter. Exception when calling ProjectApi->get_project: %s\n" % e)
+
+    # Method loads environment by name and returns environment id
+    def _get_environment(self, environment: str):
+        # TODO: Add support for environment lookup by name
+        return None
 
     def _send_bulk_results(self):
         if self.enabled and self.results:
             print()
-            print(f"Uploading attachments for Run ID: {self.run_id}...")
+            print(f"[Qase] Uploading attachments for Run ID: {self.run_id}...")
             results = []
             for result in self.results:
                 attached = []
-                for files in result.get('attachments', []):
-                    attached.extend(self._upload(self.project_code, files))
-                    result['attachments'] = [attach.hash for attach in attached]
+                if result.attachments:
+                    for attachment in result.attachments:
+                        attached.extend(self._upload(attachment))
 
                 steps = []
-                for step in result['steps']:
+                for step in result.steps:
                     prepared = self._prepare_step(step)
                     steps.append(prepared)
 
-                result['steps'] = steps
+                case_data = {
+                    "title": result.get_title(),
+                    "description": result.get_field('description'),
+                    "precondtions": result.get_field('precondtions'),
+                    "postconditions": result.get_field('postconditions'),
+                }
 
-                results.append(result)
+                for key, param in result.params.items():
+                    # Hack to match old TestOps API
+                    if param == "": result.params[key] = "empty"
+
+                if (result.get_field('severity')):
+                    case_data["severity"] = result.get_field('severity')
+
+                if (result.get_field('priority')):
+                    case_data["priority"] = result.get_field('priority')
+
+                if (result.get_field('layer')):
+                    case_data["layer"] = result.get_field('layer')
+
+                results.append({
+                    "case_id": result.get_testops_id(),
+                    "status": result.execution.status,
+                    "stacktrace": result.execution.stacktrace,
+                    "time_ms": result.execution.duration,
+                    "comment": result.message,
+                    "attachments": [attach.hash for attach in attached],
+                    "case": case_data,
+                    "steps": steps,
+                    "param": result.params,
+                    "defect": self.defect
+                })
 
             api_results = ResultsApi(self.client)
-            print()
-            print(f"Sending results to test run {self.run_id}...")
-            try:
-                api_results.create_result_bulk(
-                    code=self.project_code,
-                    id=self.run_id,
-                    result_create_bulk=ResultCreateBulk(
-                        results=results
+            print(f"[Qase] Sending results to test run {self.run_id}. Total results: {len(results)}. Results in a chunk: {self.chunk_size}.")
+
+            i = 1
+
+            for chunk in more_itertools.chunked(results, self.chunk_size):
+                try:
+                    print(f"[Qase] Sending chunk #{i}. Chunk size: {len(chunk)}... ")
+                    api_results.create_result_bulk(
+                        code=self.project_code,
+                        id=self.run_id,
+                        result_create_bulk=ResultCreateBulk(
+                            results=chunk
+                        )
                     )
-                )
-                print(f"Results of run {self.run_id} are sent")
-            except Exception as e:
-                print(f"Error at sending results for run {self.run_id}: {e}")
+                    print(f"[Qase] Chunk #{i} was sent successfully.")
+                    i = i+1
+                except Exception as e:
+                    print(f"[Qase] ⚠️  Error at sending results for run {self.run_id} (Chunk #{i}): {e}")
+                    raise e
 
     def _complete_run(self):
         if self.enabled:
             api_runs = RunsApi(self.client)
-            print()
-            print(f"Completing run {self.run_id}")
+            print(f"[Qase] Completing run {self.run_id}")
             res = api_runs.get_run(self.project_code, self.run_id).result
             if res.status == 1:
-                print(f"Run ID:{self.run_id} already finished")
+                print(f"[Qase] Run ID:{self.run_id} already finished")
                 return
             try:
                 api_runs.complete_run(self.project_code, self.run_id)
-                print(f"Run ID:{self.run_id} was finished successfully")
+                print(f"[Qase] Run ID:{self.run_id} was completed successfully")
             except Exception as e:
-                print(f"Run ID:{self.run_id} was finished with error: {e}")
+                print(f"[Qase] ⚠️  Run ID:{self.run_id} was completed with error: {e}")
 
     def _check_run(self):
         if self.enabled:
-            if self.run_id and self.plan_id:
-                raise ValueError(
-                    "You should provide either use test run or test plan"
-                )
-            if self.plan_id:
-                api_plans = PlansApi(self.client)
-                plan = api_plans.get_plan(
-                    code=self.project_code,
-                    id=int(self.plan_id)
-                )
-                if not plan:
-                    raise ValueError("Could not find test plan")
+            if self.plan_id and not self.run_id:
                 self._create_run(plan_id=self.plan_id, environment_id=self.environment)
             if not self.run_id and not self.plan_id:
                 self._create_run(environment_id=self.environment)
@@ -193,7 +231,7 @@ class QaseTestOps:
 
                 print()
                 print(
-                    "Qase TestOps: created test run "
+                    "[Qase] TestOps: created test run "
                     "https://app.{}/run/{}/dashboard/{}".format(
                         self.host, self.project_code, self.run_id
                     )
@@ -201,100 +239,115 @@ class QaseTestOps:
             except Exception as e:
                 self.enabled = False
                 print()
-                print(f"Disabling Qase TestOps reporter. Unable to create test run: {e}")
+                print(f"[Qase] ⚠️  Disabling Qase TestOps reporter. Unable to create test run: {e}")
 
-    def _upload(
-        self,
-        code: str,
-        *file_infos: Union[str, Tuple[str, str], Tuple[bytes, str, str]],
-    ):
+    def _upload(self, attachment: Attachment):
         api_attachments = AttachmentsApi(self.client)
-        for _id, file in enumerate(file_infos):
-            filename = None
-            if isinstance(file, tuple):
-                if len(file) == 2:
-                    path, mime = file
-                else:
-                    path, mime, filename = file
-            else:
-                path = file
-                mime = mimetypes.guess_type(file)[0]
-            if isinstance(path, bytes):
-                content = BytesIO(path)
-                content.name = filename or ntpath.basename(path)
-                content.mime = mime
-            else:
-                content = open(path, "rb")
 
-            return api_attachments.upload_attachment(
-                self.project_code, file=[content],
+        return api_attachments.upload_attachment(
+                self.project_code, file=[attachment.get_for_upload()],
             ).result
+    
+    # This method contains a lot of hacks to match old TestOps API.
+    def _prepare_step(self, step: Step):
+        prepared_children = []
 
-    def _prepare_step(self, step):
-        if step['attachments']:
-            attached_step = []
-            for files in step['attachments']:
-                attached_step.extend(self._upload(self.project_code, files))
-            step["attachments"] = [attach.hash for attach in attached_step]
-        if step['steps']:
-            prepared = []
-            for substep in step['steps']:
-                prepared.append(self._prepare_step(substep))
-            step['steps'] = prepared
-        return step
+        prepared_step = {
+            "time": step.execution.duration,
+        }
+        
+        prepared_step["status"] = step.execution.status
+        if step.execution.status == 'untested':
+            prepared_step["status"] = 'passed'
+        
+        if step.step_type == "text":
+            prepared_step['action'] = step.data.action
+            if step.data.expected_result:
+                prepared_step['expected_result'] = step.data.expected_result
+        
+        if step.step_type == "request":
+            prepared_step['action'] = step.data.request_method + " " + step.data.request_url
+            if (step.data.request_body):
+                step.attachments.append(Attachment(file_name='request_body.txt', content=step.data.request_body, mime_type='text/plain'))
+            if (step.data.request_headers):
+                step.attachments.append(Attachment(file_name='request_headers.txt', content=step.data.request_headers, mime_type='text/plain'))
+            if (step.data.response_body):
+                step.attachments.append(Attachment(file_name='response_body.txt', content=step.data.response_body, mime_type='text/plain'))
+            if (step.data.response_headers):
+                step.attachments.append(Attachment(file_name='response_headers.txt', content=step.data.response_headers, mime_type='text/plain'))
 
-    def _send_result(self, result):
+        if step.attachments:
+            uploaded_attachments = []
+            for file in step.attachments:
+                uploaded_attachments.extend(self._upload(file))
+            prepared_step['attachments'] = [attach.hash for attach in uploaded_attachments]
+
+        if step.steps:
+            for substep in step.steps:
+                prepared_children.append(self._prepare_step(substep))
+            prepared_step["steps"] = prepared_children
+        return prepared_step
+
+    def _send_result(self, result: Result):
         if self.enabled:
             api_results = ResultsApi(self.client)
             print()
-            print(f"Sending a result to test run {self.run_id}...")
+            print(f"[Qase] Sending a result to test run {self.run_id}...")
 
-            attachments = result.get("attachments", [])
             attached = []
-            if attachments:
-                for files in attachments:
-                    attached.extend(self._upload(self.project_code, files))
+            if result.attachments:
+                for attachment in result.attachments:
+                    attached.extend(self._upload(attachment))
 
             steps = []
-            for step in result['steps']:
+            for step in result.steps:
                 prepared = self._prepare_step(step)
                 steps.append(prepared)
 
             case_data = {
-                "title": result.get('case').get('title'),
-                "description": result.get('case').get('description', ''),
-                "precondtions": result.get('case').get('precondtions', ''),
-                "postconditions": result.get('case').get('postconditions', ''),
+                "title": result.get_title(),
+                "description": result.get_field('description'),
+                "precondtions": result.get_field('precondtions'),
+                "postconditions": result.get_field('postconditions'),
             }
 
-            if (result.get('case').get('severity', None)):
-                case_data["severity"] = result.get('case').get('severity')
+            for key, param in result.params.items():
+                # Hack to match old TestOps API
+                if param == "":
+                    result.params[key] = "empty"
 
-            if (result.get('case').get('layer', None)):
-                case_data["layer"] = result.get('case').get('layer')
+            if (result.get_field('severity')):
+                case_data["severity"] = result.get_field('severity')
+
+            if (result.get_field('priority')):
+                case_data["priority"] = result.get_field('priority')
+
+            if (result.get_field('layer')):
+                case_data["layer"] = result.get_field('layer')
 
             try:
                 api_results.create_result(
                     code=self.project_code,
                     id=self.run_id,
                     result_create=ResultCreate(
-                        case_id=result.get('case_id', 0),
-                        status=result.get('status'),
-                        stacktrace=result.get('stacktrace'),
-                        time_ms=result.get('time_ms'),
-                        comment=result.get('comment', ''),
+                        case_id=result.get_testops_id(),
+                        status=result.execution.status,
+                        stacktrace=result.execution.stacktrace,
+                        time_ms=result.execution.duration,
+                        comment=result.message,
                         attachments = [attach.hash for attach in attached],
+                        defect=self.defect,
                         case=ResultCreateCase(
                             **{k: v for k, v in case_data.items() if v is not None}
                         ),
                         steps=steps,
-                        param=result.get('param', {})
+                        param=result.params
                     )
                 )
-                print(f"Results of run {self.run_id} was sent")
+                print(f"[Qase] Results of run {self.run_id} was sent")
             except Exception as e:
-                print(f"Error dat sending results for run {self.run_id}: {e}")
-            pass
+                print(f"[Qase] ⚠️  Error at sending results for run {self.run_id}: {e}")
+                raise e
 
     # Lifecycle methods
     def start_run(self):
@@ -305,27 +358,14 @@ class QaseTestOps:
 
     def complete_run(self, is_main=True, exit_code=None):
         if self.enabled:
-            if self.mode == "async":
+            if self.bulk:
                 self._send_bulk_results()
             if self.complete_after_run and is_main:
                 self._complete_run()
 
-    def add_result(self, result, steps):
+    def add_result(self, result: Result):
         if self.enabled:
-            result['steps'] = self._get_steps(steps)
-            if self.mode == "sync":
-                self._send_result(result)
-                pass
-            else:
+            if self.bulk:
                 self.results.append(result)
-                pass
-
-    def _get_steps(self, steps):
-        tree = []
-        for uuid in steps:
-            branch = []
-            if steps[uuid].get('steps', []):
-                branch = self._get_steps(steps[uuid].get('steps', {}))
-            steps[uuid]['steps'] = branch
-            tree.append({**steps[uuid]})
-        return tree
+            else:
+                self._send_result(result)

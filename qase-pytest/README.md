@@ -2,67 +2,65 @@
 
 [![License](https://lxgaming.github.io/badges/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
-# Installation
+## Installation
 
 ```
 pip install qase-pytest
 ```
 
-# Usage
+## Upgrade from 4.x to 5.x
+A new version of qase-pytest reporter has breaking changes. Follow these [guide](UPGRADE.md) that will help you to migrate to a new version.
 
-### Command-line arguments
-Configuration could be provided both by `pytest.ini`/`tox.ini` params
-and using command-line arguments:
+## Configuration
 
-* Command-line args:
-```
-  --qase-mode           Define mode: `testops` to enable report
-  --qase-environment=QS_ENVIRONMENT
-                        Define execution environment ID
-  --qase-to-api-token=QS_TO_API_TOKEN
-                        Api token for Qase TestOps
-  --qase-to-project=QS_TO_PROJECT
-                        Project code in Qase TestOps
-  --qase-to-run=QS_TO_RUN_ID
-                        Test Run ID in Qase TestOps
-  --qase-to-run-title=QS_TO_RUN_TITLE
-                        Define a custom title for Qase Test Run
-  --qase-to-plan=QS_TO_PLAN_ID
-                        Test Plan ID in Qase TestOps
-  --qase-to-complete-run
-                        Complete run after all tests are finished
-  --qase-to-mode=QS_TO_MODE
-                        You can choose `sync` or `async` mode for results publication. Default: `async`
-  --qase-to-host=QS_TO_HOST
-                        Qase TestOps Enterprise customers can set their own hosts. Default: `qase.io`
-```
-
-* INI file parameters:
+### Example: qase.config.json
 
 ```
-  qs_mode (string):     default value for --qase-mode
-  qs_environment (string):
-                        default value for --qase-environment
-  qs_to_api_token (string):
-                        default value for --qase-to-api-token
-  qs_to_project (string):
-                        default value for --qase-to-project
-  qs_to_run_id (string):
-                        default value for --qase-to-run
-  qs_to_run_title (string):
-                        default value for --qase-to-run-title
-  qs_to_plan_id (string):
-                        default value for --qase-to-plan
-  qs_to_complete_run (bool):
-                        default value for --qase-to-complete-run
-  qs_to_mode (string):
-                        default value for --qase-to-mode
-  qs_to_host (string):
-                        default value for --qase-to-host
-    
+{
+	"mode": "testops", 
+	"fallback": "report",
+	"report": {
+		"driver": "local",
+		"connection": {
+			"local": {
+				"path": "./build/qase-report",
+				"format": "json" 
+			}
+		}
+	},
+	"testops": {
+		"bulk": true,
+		"api": {
+			"token": "YOUR_API_TOKEN",
+			"host": "qase.io"
+		},
+		"run": {
+            "id": 1,
+			"title": "Test run title",
+			"complete": true
+		},
+        "plan": {
+            "id": 1
+        },
+		"defect": true,
+		"project": "YOUR_PROJECT_CODE",
+		"chunk": 200
+	},
+	"framework": {
+		"pytest": {
+			"capture": {
+				"logs": true,
+				"http": true
+			}
+		}
+	},
+	"environment": "local"
+}
 ```
 
-## Link tests with test cases in Qase TestOps
+## Usage
+
+### Link tests with test cases in Qase TestOps
 
 To link tests in code with tests in Qase TestOps you can use predefined decorators:
 
@@ -71,10 +69,13 @@ from qaseio.pytest import qase
 
 @qase.id(13)
 @qase.title("My first test")
-@qase.severity("critical")
-@qase.layer("unit")
-@qase.precondition("*Precondition 1*. Markdown is supported.")
-@qase.description("Try to login in Qase TestOps using login and password")
+@qase.fields(
+    ("severity", "critical"),
+    ("priority", "hight"),
+    ("layer", "unit"),
+    ("description", "Try to login in Qase TestOps using login and password"),
+    ("description", "*Precondition 1*. Markdown is supported."),
+)
 def test_example_1():
     pass
 ```
@@ -99,7 +100,12 @@ def test_example_1():
 - BLOCKED - when test failed with any other exception
 - SKIPPED - when test has been skipped
 
-## Add attachments to test results
+### Capture network logs
+In order to capture network logs, you need to enable the `http` option in the `capture` section of the `framework` section in the config file.
+
+Qase Pytest reporter will capture all requests and responses and save as a test step automatically.
+
+### Add attachments to test results
 
 When you need to push some additional information to server you could use
 attachments:
@@ -107,7 +113,6 @@ attachments:
 ```python
 import pytest
 from qaseio.pytest import qase
-
 
 @pytest.fixture(scope="session")
 def driver():
@@ -139,7 +144,6 @@ pytest - attachment would not be uploaded:
 import pytest
 from qaseio.pytest import qase
 
-
 @pytest.fixture(scope="session")
 def driver():
     driver = webdriver.Chrome()
@@ -154,7 +158,7 @@ def test_example_2(driver):
     qase.attach((driver.get_screenshot_as_png(), "image/png", "result.png"))
 ```
 
-## Linking code with steps
+### Linking code with steps
 
 It is possible to link test step with function, or using context.
 
@@ -179,7 +183,7 @@ def test_example():
         sleep(1)
 ```
 
-## Sending tests to existing testrun
+### Sending tests to existing testrun
 
 Testrun in TestOps will contain only those test results, which are presented in testrun,
 but every test would be executed.
@@ -187,42 +191,34 @@ but every test would be executed.
 ```bash
 pytest \
     --qase-mode=testops \
-    --qase-to-api-token=<your api token here> \
-    --qase-to-project=PRJCODE \ # project, where your testrun exists in
-    --qase-to-run=3 # testrun id
+    --qase-testops-api-token=<your api token here> \
+    --qase-testops-project=PRJCODE \ # project, where your testrun exists in
+    --qase-testops-run-id=3 # testrun id
 ```
 
-## Creating test run base on test plan
+### Creating test run base on test plan (selective launch)
 
 Create new testrun base on testplan. Testrun in Qase TestOps will contain only those
-test results, which are presented in testrun, but every test would be executed.
+test results. `qase-pytest` supports selective execution
 
 ```bash
 pytest \
     --qase-mode=testops \
-    --qase-to-api-token=<your api token here> \
-    --qase-to-project=PRJCODE \ # project, where your testrun exists in
-    --qase-to-plan=3 # testplan id
+    --qase-testops-api-token=<your api token here> \
+    --qase-testops-project=PRJCODE \ # project, where your testrun exists in
+    --qase-testops-plan-id=3 # testplan id
 ```
 
-## Creating new testrun according to current pytest run
+### Creating new testrun according to current pytest run
 
 If you want to create a new test run in Qase TestOps for each execution, you can simply 
-skip `--qase-to-run`. If you want to provide a custom name for this run, you can add an
-option `--qase-to-run-title` 
+skip `--qase-testops-run` option. If you want to provide a custom name for this run, you can add an
+option `--qase-testops-run-title` 
 
 ```bash
 pytest \
     --qase-mode=testops \
-    --qase-to-api-token=<your api token here> \
-    --qase-to-project=PRJCODE \ # project, where your testrun would be created
-    --qase-to-run-title=My\ First\ Automated\ Run
+    --qase-testops-api-token=<your api token here> \
+    --qase-testops-project=PRJCODE \ # project, where your testrun would be created
+    --qase-testops-run-title=My\ First\ Automated\ Run
 ```
-
-## Qase TestOps submission mode
-
-Qase Pytest plugin for TestOps can work in two different modes: `sync` or `async`. 
-
-*Sync* sends each result to Qase TestOps API right after particular test execution. This mode allows you to see the results in realtime, even before test run is fully executed. 
-
-*Async* mode sends the results of test execution when the test run is complete. It uses bulk method that dramatically reduces reporting time.
