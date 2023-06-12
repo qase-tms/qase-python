@@ -1,4 +1,5 @@
 import os
+import platform
 import threading
 import sys
 import pip
@@ -35,15 +36,18 @@ class QaseUtils:
     
     @staticmethod
     def get_host_data() -> dict:
-        return {
-            "system": os.uname().sysname,
-            "node": os.uname().nodename,
-            "release": os.uname().release,
-            "version": os.uname().version,
-            "machine": os.uname().machine,
-            'python': '.'.join(map(str, sys.version_info)),
-            'pip': pip.__version__
-        }
+        try: 
+            return {
+                "system": platform.uname().system,
+                "node": platform.uname().node,
+                "release": platform.uname().release,
+                "version": platform.uname().version,
+                "machine": platform.uname().machine,
+                'python': '.'.join(map(str, sys.version_info)),
+                'pip': pip.__version__
+            }
+        except Exception as e:
+            return {}
     
     @staticmethod
     def get_filename(path) -> str:
