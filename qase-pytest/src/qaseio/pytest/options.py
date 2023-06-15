@@ -42,6 +42,14 @@ class QasePytestOptions:
         QasePytestOptions.add_option_ini(
             parser,
             group,
+            "--qase-testops-project",
+            dest="qase_testops_project",
+            help="Project code in Qase TestOps"
+        )
+
+        QasePytestOptions.add_option_ini(
+            parser,
+            group,
             "--qase-testops-api-token",
             dest="qase_testops_api_token",
             help="API token for Qase TestOps"
@@ -54,6 +62,14 @@ class QasePytestOptions:
             dest="qase_testops_api_host",
             default="qase.io",
             help="API host for Qase TestOps"
+        )
+
+        QasePytestOptions.add_option_ini(
+            parser,
+            group,
+            "--qase-testops-plan-id",
+            dest="qase_testops_plan_id",
+            help="Test Plan ID in Qase TestOps"
         )
 
         QasePytestOptions.add_option_ini(

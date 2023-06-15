@@ -58,6 +58,7 @@ class QaseTestOps:
         self.bulk = bulk
         self.defect = defect
         self.complete_after_run = complete_run
+        self.environment = None
         if environment:
             if isinstance(environment, str):
                 self.environment = self._get_environment(environment)
