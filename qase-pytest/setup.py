@@ -11,7 +11,7 @@ import sys
 from pkg_resources import VersionConflict, require
 from setuptools import setup
 
-VERSION = "5.0.0"
+VERSION = "5.0.1"
 
 try:
     require("setuptools>=38.3")
