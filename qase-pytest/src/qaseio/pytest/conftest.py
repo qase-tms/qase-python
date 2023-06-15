@@ -68,7 +68,8 @@ def pytest_configure(config):
                         api_token=config.getoption("qase_testops_api_token"),
                         host=config.getoption("qase_testops_api_host", "qase.io"),
                     )
-                    execution_plan = loader.load(config.getoption("qase_testops_project"), config.getoption("qase_testops_plan_id"))
+                    execution_plan = loader.load(config.getoption("qase_testops_project"),
+                                                 int(config.getoption("qase_testops_plan_id")))
 
                 reporter = QaseTestOps(
                     api_token=config.getoption("qase_testops_api_token"),
