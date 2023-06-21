@@ -26,6 +26,12 @@ from qaseio.model.author_list_response_all_of import AuthorListResponseAllOf
 from qaseio.model.author_list_response_all_of_result import AuthorListResponseAllOfResult
 from qaseio.model.author_response import AuthorResponse
 from qaseio.model.author_response_all_of import AuthorResponseAllOf
+from qaseio.model.bulk200_response import Bulk200Response
+from qaseio.model.bulk200_response_all_of import Bulk200ResponseAllOf
+from qaseio.model.bulk200_response_all_of_result import Bulk200ResponseAllOfResult
+from qaseio.model.bulk_request import BulkRequest
+from qaseio.model.bulk_request_cases_inner import BulkRequestCasesInner
+from qaseio.model.bulk_request_cases_inner_all_of import BulkRequestCasesInnerAllOf
 from qaseio.model.create_result200_response import CreateResult200Response
 from qaseio.model.create_result200_response_all_of import CreateResult200ResponseAllOf
 from qaseio.model.create_result200_response_all_of_result import CreateResult200ResponseAllOfResult
