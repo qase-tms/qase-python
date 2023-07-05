@@ -75,7 +75,6 @@ class Result(object):
         self.relations: List[Type[Relation]] = []
         self.muted: bool = False
         self.message: Optional[str] = None
-        QaseUtils.get_host_data()
 
     def add_message(self, message: str) -> None:
         self.message = message

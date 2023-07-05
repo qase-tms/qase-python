@@ -116,7 +116,7 @@ class qase:
         return pytest.mark.qase_suite(title=title, description=description)
     
     @staticmethod
-    def author(author):
+    def author(author: str):
         """
         >>> @qase.author("John Doe")
         >>> def test_example():
@@ -126,6 +126,18 @@ class qase:
         :return: pytest.mark instance
         """
         return pytest.mark.qase_author(author=author)
+    
+    @staticmethod
+    def project(project: str):
+        """
+        >>> @qase.project("DEMO")
+        >>> def test_example():
+        >>>     pass
+
+        :param project: a string with project code
+        :return: pytest.mark instance
+        """
+        return pytest.mark.qase_project(project=project)
 
     @staticmethod
     def description(description):
@@ -254,6 +266,39 @@ class qase:
         except Exception:
             print("Failed to add attachments")
             pass
+
+    @staticmethod
+    @contextdecorator
+    def step_id(position):
+        """
+        This method is used for users who were using old version of reporter.
+        In old versions, step information was taken from Qase TestOps and used in reporter.
+        Step method was used to link step in Qase TestOps and step in test.
+
+        Position in step should be unique for each step in test and match data from Qase TestOps.
+
+        Usage: 
+        >>> @qase.step_id(1)
+        ... def first_step():
+        ...     print("smthng")
+
+        ... with qase.step_id(2):
+        ...     print("smthng")
+        """
+        plugin = None
+        id = str(uuid.uuid4())
+        try:
+            plugin = QasePytestPluginSingleton.get_instance()
+            plugin.start_step(step)
+            yield
+            plugin.finish_step(id=step.id)
+        except PluginNotInitializedException:
+            yield
+        except AttributeError:
+            yield
+        except Exception as e:
+            plugin.finish_step(id=id, exception=e)
+            raise e
 
     @staticmethod
     @contextdecorator
