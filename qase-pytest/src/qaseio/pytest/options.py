@@ -110,11 +110,11 @@ class QasePytestOptions:
         QasePytestOptions.add_option_ini(
             parser,
             group,
-            "--qase-testops-bulk",
-            dest="qase_testops_bulk",
+            "--qase-testops-sync",
+            dest="qase_testops_sync",
             type="bool",
-            default=True,
-            help="Send results in bulk after tests execution or one by one after each test"
+            default=False,
+            help="Send result after each test execution"
         )
 
         QasePytestOptions.add_option_ini(

@@ -20,6 +20,8 @@ Qase Pytest Plugin can be configured in multiple ways:
 
 All configuration options are listed in the following doc: [Configuration](../README.md#configuration).
 
+Important notice: if you are using CLI options, use `--qase-testops-defect` or `--qase-testops-run-complete` or `--qase-testops-sync` to set them as `true`. Otherwise, they will be treated as `false`.
+
 
 ### Example: qase.config.json
 
@@ -37,7 +39,7 @@ All configuration options are listed in the following doc: [Configuration](../RE
 		}
 	},
 	"testops": {
-		"bulk": true,
+		"sync": false,
 		"api": {
 			"token": "YOUR_API_TOKEN",
 			"host": "qase.io"

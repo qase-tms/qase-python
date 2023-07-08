@@ -76,7 +76,7 @@ def pytest_configure(config):
                     run_id=config.getoption("qase_testops_run_id", None),
                     plan_id=config.getoption("qase_testops_plan_id", None),
                     complete_run=config.getoption("qase_testops_run_complete", False),
-                    bulk=config.getoption("qase_testops_bulk", True),
+                    sync=config.getoption("qase_testops_sync", False),
                     run_title=config.getoption("qase_testops_run_title", None),
                     host=config.getoption("qase_testops_api_host", "qase.io"),
                     chunk_size=config.getoption("qase_testops_chunk", 200),

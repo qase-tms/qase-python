@@ -37,7 +37,7 @@ class QaseTestOps:
             project_code,
             run_id=None,
             plan_id=None,
-            bulk=True,
+            sync=False,
             run_title=None,
             environment=None,
             host="qase.io",
@@ -55,7 +55,7 @@ class QaseTestOps:
         self.project_code = project_code
         self.run_id = int(run_id) if run_id else run_id
         self.plan_id = plan_id
-        self.bulk = bulk
+        self.sync = sync
         self.defect = defect
         self.complete_after_run = complete_run
         self.environment = None
@@ -358,14 +358,14 @@ class QaseTestOps:
 
     def complete_run(self, is_main=True, exit_code=None):
         if self.enabled:
-            if self.bulk:
+            if not self.sync:
                 self._send_bulk_results()
             if self.complete_after_run and is_main:
                 self._complete_run()
 
     def add_result(self, result: Result):
         if self.enabled:
-            if self.bulk:
+            if not self.sync:
                 self.results.append(result)
             else:
                 self._send_result(result)

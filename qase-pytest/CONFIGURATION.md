@@ -24,11 +24,11 @@ All configuration options are listed in the table below:
 | TestOps test run ID | `testops.run.id` | `QASE_TESTOPS_RUN_ID` | `--qase-testops-run-id` |  | No | Any integer |
 | TestOps test run title | `testops.run.title` | `QASE_TESTOPS_RUN_TITLE` | `--qase-testops-run-title` |  | No | Any string |
 | TestOps test run description | `testops.run.description` | `QASE_TESTOPS_RUN_DESCRIPTION` | `--qase-testops-run-description` |  | No | Any string |
-| TestOps test run complete | `testops.run.complete` | `QASE_TESTOPS_RUN_COMPLETE` | `--qase-testops-run-complete` | `True` | No | `true`, `false` |
+| TestOps test run complete | `testops.run.complete` | `QASE_TESTOPS_RUN_COMPLETE` | `--qase-testops-run-complete` | `False` | No | `true`, `false` |
 | TestOps test plan ID | `testops.plan.id` | `QASE_TESTOPS_PLAN_ID` | `--qase-testops-plan-id` |  | No | Any integer |
 | Execution chunk size | `testops.chunk` | `QASE_TESTOPS_CHUNK` | `--qase-testops-chunk` | `200` | No | Any integer |
-| TestOps defect | `testops.defect` | `QASE_TESTOPS_DEFECT` | `--qase-testops-defect` | `True` | No | `true`, `false` |
-| TestOps bulk | `testops.bulk` | `QASE_TESTOPS_BULK` | `--qase-testops-bulk` | `True` | No | `true`, `false` |
+| TestOps defect | `testops.defect` | `QASE_TESTOPS_DEFECT` | `--qase-testops-defect` | `False` | No | `true`, `false` |
+| TestOps sync | `testops.sync` | `QASE_TESTOPS_SYNC` | `--qase-testops-sync` | `False` | No | `true`, `false` |
 | **Framework specific options** |
 | **Pytest** |
 | Capture logs | `pytest.capture_logs` | `QASE_PYTEST_CAPTURE_LOGS` | `--qase-pytest-capture-logs` | `False` | No | `true`, `false` |
