@@ -52,12 +52,14 @@ class QaseTestOps:
 
         self.client = ApiClient(configuration)
 
+        parseBool = lambda d : d in ("y", "yes", "true", "1", 1, True)
+
         self.project_code = project_code
         self.run_id = int(run_id) if run_id else run_id
-        self.plan_id = plan_id
-        self.bulk = bulk
-        self.defect = defect
-        self.complete_after_run = complete_run
+        self.plan_id = int(plan_id) if plan_id else plan_id
+        self.bulk = parseBool(bulk)
+        self.defect = parseBool(defect)
+        self.complete_after_run = parseBool(complete_run)
         self.environment = None
         if environment:
             if isinstance(environment, str):
@@ -68,7 +70,7 @@ class QaseTestOps:
         self.enabled = True
         if (chunk_size > 2000):
             chunk_size = 2000
-        self.chunk_size = chunk_size
+        self.chunk_size = int(chunk_size)
 
         if run_title and run_title != '':
             self.run_title = run_title
