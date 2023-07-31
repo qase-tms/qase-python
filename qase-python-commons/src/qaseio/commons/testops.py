@@ -68,9 +68,7 @@ class QaseTestOps:
                 self.environment_id = environment
         self.host = host
         self.enabled = True
-        if (chunk_size > 2000):
-            chunk_size = 2000
-        self.chunk_size = int(chunk_size)
+        self.chunk_size = min(2000, max(10, int(chunk_size)))
 
         if run_title and run_title != '':
             self.run_title = run_title
