@@ -112,6 +112,8 @@ class TestCaseCreate(ModelNormal):
             'tags': ([str],),  # noqa: E501
             'params': ({str: ([str],)}, none_type,),  # noqa: E501
             'custom_field': ({str: (str,)},),  # noqa: E501
+            'created_at': (str,),  # noqa: E501
+            'updated_at': (str,),  # noqa: E501
         }
 
     @cached_property
@@ -139,6 +141,8 @@ class TestCaseCreate(ModelNormal):
         'tags': 'tags',  # noqa: E501
         'params': 'params',  # noqa: E501
         'custom_field': 'custom_field',  # noqa: E501
+        'created_at': 'created_at',  # noqa: E501
+        'updated_at': 'updated_at',  # noqa: E501
     }
 
     read_only_vars = {
@@ -203,6 +207,8 @@ class TestCaseCreate(ModelNormal):
             tags ([str]): [optional]  # noqa: E501
             params ({str: ([str],)}, none_type): [optional]  # noqa: E501
             custom_field ({str: (str,)}): A map of custom fields values (id => value). [optional]  # noqa: E501
+            created_at (str): [optional]  # noqa: E501
+            updated_at (str): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -310,6 +316,8 @@ class TestCaseCreate(ModelNormal):
             tags ([str]): [optional]  # noqa: E501
             params ({str: ([str],)}, none_type): [optional]  # noqa: E501
             custom_field ({str: (str,)}): A map of custom fields values (id => value). [optional]  # noqa: E501
+            created_at (str): [optional]  # noqa: E501
+            updated_at (str): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)

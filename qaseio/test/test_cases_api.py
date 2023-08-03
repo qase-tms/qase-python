@@ -24,6 +24,13 @@ class TestCasesApi(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def test_bulk(self):
+        """Test case for bulk
+
+        Create test cases in bulk.  # noqa: E501
+        """
+        pass
+
     def test_create_case(self):
         """Test case for create_case
 

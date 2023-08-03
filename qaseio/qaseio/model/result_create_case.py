@@ -85,6 +85,8 @@ class ResultCreateCase(ModelNormal):
             'title': (str,),  # noqa: E501
             'suite_title': (str, none_type,),  # noqa: E501
             'description': (str, none_type,),  # noqa: E501
+            'preconditions': (str, none_type,),  # noqa: E501
+            'postconditions': (str, none_type,),  # noqa: E501
             'layer': (str,),  # noqa: E501
             'severity': (str,),  # noqa: E501
         }
@@ -98,6 +100,8 @@ class ResultCreateCase(ModelNormal):
         'title': 'title',  # noqa: E501
         'suite_title': 'suite_title',  # noqa: E501
         'description': 'description',  # noqa: E501
+        'preconditions': 'preconditions',  # noqa: E501
+        'postconditions': 'postconditions',  # noqa: E501
         'layer': 'layer',  # noqa: E501
         'severity': 'severity',  # noqa: E501
     }
@@ -146,6 +150,8 @@ class ResultCreateCase(ModelNormal):
             title (str): [optional]  # noqa: E501
             suite_title (str, none_type): Nested suites should be separated with `TAB` symbol.. [optional]  # noqa: E501
             description (str, none_type): [optional]  # noqa: E501
+            preconditions (str, none_type): [optional]  # noqa: E501
+            postconditions (str, none_type): [optional]  # noqa: E501
             layer (str): [optional]  # noqa: E501
             severity (str): [optional]  # noqa: E501
         """
@@ -236,6 +242,8 @@ class ResultCreateCase(ModelNormal):
             title (str): [optional]  # noqa: E501
             suite_title (str, none_type): Nested suites should be separated with `TAB` symbol.. [optional]  # noqa: E501
             description (str, none_type): [optional]  # noqa: E501
+            preconditions (str, none_type): [optional]  # noqa: E501
+            postconditions (str, none_type): [optional]  # noqa: E501
             layer (str): [optional]  # noqa: E501
             severity (str): [optional]  # noqa: E501
         """

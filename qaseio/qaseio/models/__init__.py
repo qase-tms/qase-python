@@ -4,7 +4,7 @@
 # if you have many models here with many references from one model to another this may
 # raise a RecursionError
 # to avoid this, import only the models that you directly need like:
-# from qaseio.model.pet import Pet
+# from from qaseio.model.pet import Pet
 # or import this package, but before doing it, use:
 # import sys
 # sys.setrecursionlimit(n)
@@ -26,9 +26,17 @@ from qaseio.model.author_list_response_all_of import AuthorListResponseAllOf
 from qaseio.model.author_list_response_all_of_result import AuthorListResponseAllOfResult
 from qaseio.model.author_response import AuthorResponse
 from qaseio.model.author_response_all_of import AuthorResponseAllOf
+from qaseio.model.bulk200_response import Bulk200Response
+from qaseio.model.bulk200_response_all_of import Bulk200ResponseAllOf
+from qaseio.model.bulk200_response_all_of_result import Bulk200ResponseAllOfResult
+from qaseio.model.bulk_request import BulkRequest
+from qaseio.model.bulk_request_cases_inner import BulkRequestCasesInner
+from qaseio.model.bulk_request_cases_inner_all_of import BulkRequestCasesInnerAllOf
 from qaseio.model.create_result200_response import CreateResult200Response
 from qaseio.model.create_result200_response_all_of import CreateResult200ResponseAllOf
 from qaseio.model.create_result200_response_all_of_result import CreateResult200ResponseAllOfResult
+from qaseio.model.create_results_request_v2 import CreateResultsRequestV2
+from qaseio.model.create_results_request_v2_results_inner import CreateResultsRequestV2ResultsInner
 from qaseio.model.custom_field import CustomField
 from qaseio.model.custom_field_create import CustomFieldCreate
 from qaseio.model.custom_field_create_value_inner import CustomFieldCreateValueInner
@@ -98,17 +106,25 @@ from qaseio.model.project_response_all_of import ProjectResponseAllOf
 from qaseio.model.qql_defect import QqlDefect
 from qaseio.model.qql_plan import QqlPlan
 from qaseio.model.qql_test_case import QqlTestCase
+from qaseio.model.relation_suite import RelationSuite
+from qaseio.model.relation_suite_item import RelationSuiteItem
 from qaseio.model.requirement import Requirement
 from qaseio.model.response import Response
 from qaseio.model.result import Result
+from qaseio.model.result_attachment import ResultAttachment
 from qaseio.model.result_create import ResultCreate
 from qaseio.model.result_create_bulk import ResultCreateBulk
 from qaseio.model.result_create_case import ResultCreateCase
+from qaseio.model.result_execution import ResultExecution
 from qaseio.model.result_list_response import ResultListResponse
 from qaseio.model.result_list_response_all_of import ResultListResponseAllOf
 from qaseio.model.result_list_response_all_of_result import ResultListResponseAllOfResult
+from qaseio.model.result_relations import ResultRelations
 from qaseio.model.result_response import ResultResponse
 from qaseio.model.result_response_all_of import ResultResponseAllOf
+from qaseio.model.result_step import ResultStep
+from qaseio.model.result_step_data import ResultStepData
+from qaseio.model.result_step_execution import ResultStepExecution
 from qaseio.model.result_update import ResultUpdate
 from qaseio.model.run import Run
 from qaseio.model.run_create import RunCreate

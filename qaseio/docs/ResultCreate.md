@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 **status** | **str** |  | 
 **case_id** | **int** |  | [optional] 
 **case** | [**ResultCreateCase**](ResultCreateCase.md) |  | [optional] 
+**start_time** | **int, none_type** |  | [optional] 
 **time** | **int, none_type** |  | [optional] 
 **time_ms** | **int, none_type** |  | [optional] 
 **defect** | **bool, none_type** |  | [optional] 

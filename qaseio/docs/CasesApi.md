@@ -4,12 +4,104 @@ All URIs are relative to *https://api.qase.io/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**bulk**](CasesApi.md#bulk) | **POST** /case/{code}/bulk | Create test cases in bulk.
 [**create_case**](CasesApi.md#create_case) | **POST** /case/{code} | Create a new test case.
 [**delete_case**](CasesApi.md#delete_case) | **DELETE** /case/{code}/{id} | Delete test case.
 [**get_case**](CasesApi.md#get_case) | **GET** /case/{code}/{id} | Get a specific test case.
 [**get_cases**](CasesApi.md#get_cases) | **GET** /case/{code} | Get all test cases.
 [**update_case**](CasesApi.md#update_case) | **PATCH** /case/{code}/{id} | Update test case.
 
+
+# **bulk**
+> Bulk200Response bulk(code, bulk_request)
+
+Create test cases in bulk.
+
+This method allows to bulk create new test cases in a project. 
+
+### Example
+
+* Api Key Authentication (TokenAuth):
+
+```python
+import time
+import qaseio
+from qaseio.api import cases_api
+from qaseio.model.bulk200_response import Bulk200Response
+from qaseio.model.bulk_request import BulkRequest
+from pprint import pprint
+# Defining the host is optional and defaults to https://api.qase.io/v1
+# See configuration.py for a list of all supported configuration parameters.
+configuration = qaseio.Configuration(
+    host = "https://api.qase.io/v1"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: TokenAuth
+configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['TokenAuth'] = 'Bearer'
+
+# Enter a context with an instance of the API client
+with qaseio.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = cases_api.CasesApi(api_client)
+    code = "code_example" # str | Code of project, where to search entities.
+    bulk_request = BulkRequest(
+        cases=[
+            BulkRequestCasesInner(None),
+        ],
+    ) # BulkRequest | 
+
+    # example passing only required values which don't have defaults set
+    try:
+        # Create test cases in bulk.
+        api_response = api_instance.bulk(code, bulk_request)
+        pprint(api_response)
+    except qaseio.ApiException as e:
+        print("Exception when calling CasesApi->bulk: %s\n" % e)
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **code** | **str**| Code of project, where to search entities. |
+ **bulk_request** | [**BulkRequest**](BulkRequest.md)|  |
+
+### Return type
+
+[**Bulk200Response**](Bulk200Response.md)
+
+### Authorization
+
+[TokenAuth](../README.md#TokenAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | List of IDs of the created cases. |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**422** | Unprocessable Entity. |  -  |
+**429** | Too Many Requests. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create_case**
 > IdResponse create_case(code, test_case_create)
@@ -94,6 +186,8 @@ with qaseio.ApiClient(configuration) as api_client:
         custom_field={
             "key": "key_example",
         },
+        created_at="created_at_example",
+        updated_at="updated_at_example",
     ) # TestCaseCreate | 
 
     # example passing only required values which don't have defaults set

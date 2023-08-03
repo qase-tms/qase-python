@@ -77,7 +77,7 @@ class ApiClient(object):
             self.default_headers[header_name] = header_value
         self.cookie = cookie
         # Set default User-Agent.
-        self.user_agent = 'OpenAPI-Generator/3.2.1/python'
+        self.user_agent = 'OpenAPI-Generator/3.3.1/python'
 
     def __enter__(self):
         return self
@@ -287,10 +287,8 @@ class ApiClient(object):
             return obj.isoformat()
         elif isinstance(obj, ModelSimple):
             return cls.sanitize_for_serialization(obj.value)
-        elif isinstance(obj, list):
+        elif isinstance(obj, (list, tuple)):
             return [cls.sanitize_for_serialization(item) for item in obj]
-        elif isinstance(obj, tuple):
-            return tuple(cls.sanitize_for_serialization(item) for item in obj)
         if isinstance(obj, dict):
             return {key: cls.sanitize_for_serialization(val) for key, val in obj.items()}
         raise ApiValueError(

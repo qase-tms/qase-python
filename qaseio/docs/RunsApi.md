@@ -155,6 +155,8 @@ with qaseio.ApiClient(configuration) as api_client:
         custom_field={
             "key": "key_example",
         },
+        start_time="start_time_example",
+        end_time="end_time_example",
     ) # RunCreate | 
 
     # example passing only required values which don't have defaults set
