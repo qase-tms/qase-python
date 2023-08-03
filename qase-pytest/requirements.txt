@@ -1,5 +1,5 @@
 attrs==21.4.0
 cattrs==1.1.2
 pytest~=7.2.2
-qase-python-commons>=2.0.0,<2.1.0
+qase-python-commons>=2.1.0
 filelock==3.10.7

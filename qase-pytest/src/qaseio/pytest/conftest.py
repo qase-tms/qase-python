@@ -1,6 +1,6 @@
 from qaseio.pytest.plugin import QasePytestPlugin, QasePytestPluginSingleton
 
-from qaseio.commons import QaseTestOps, QaseReport, ConfigManager
+from qaseio.commons import QaseTestOps, QaseTestOpsV2, QaseReport, ConfigManager
 from qaseio.pytest.options import QasePytestOptions
 
 import os
@@ -72,6 +72,37 @@ def pytest_configure(config):
                                                  int(config.getoption("qase_testops_plan_id")))
 
                 reporter = QaseTestOps(
+                    api_token=config.getoption("qase_testops_api_token"),
+                    project_code=config.getoption("qase_testops_project"),
+                    run_id=config.getoption("qase_testops_run_id", None),
+                    plan_id=config.getoption("qase_testops_plan_id", None),
+                    complete_run=config.getoption("qase_testops_run_complete", False),
+                    bulk=config.getoption("qase_testops_bulk", True),
+                    run_title=config.getoption("qase_testops_run_title", None),
+                    host=config.getoption("qase_testops_api_host", "qase.io"),
+                    chunk_size=config.getoption("qase_testops_chunk", 200),
+                    environment=config.getoption("qase_environment", None),
+                    defect=config.getoption("qase_testops_defect", False),
+                )
+                fallback = defaultReporter
+            else:
+                print('⚠️  Switching to local report mode')
+                reporter = defaultReporter
+                fallback = None
+        elif (mode == 'testops-v2'):
+            if validate_testops_options(config):
+                if (config.getoption("qase_testops_plan_id", None) is not None):
+                    from qaseio.commons import TestOpsPlanLoader
+
+                    # Load test plan data from Qase TestOps
+                    loader = TestOpsPlanLoader(
+                        api_token=config.getoption("qase_testops_api_token"),
+                        host=config.getoption("qase_testops_api_host", "qase.io"),
+                    )
+                    execution_plan = loader.load(config.getoption("qase_testops_project"),
+                                                 int(config.getoption("qase_testops_plan_id")))
+
+                reporter = QaseTestOpsV2(
                     api_token=config.getoption("qase_testops_api_token"),
                     project_code=config.getoption("qase_testops_project"),
                     run_id=config.getoption("qase_testops_run_id", None),
