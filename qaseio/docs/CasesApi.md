@@ -4,7 +4,7 @@ All URIs are relative to *https://api.qase.io/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**bulk**](CasesApi.md#bulk) | **POST** /case/{code}/bulk | Create test cases in bulk.
+[**bulk**](CasesApi.md#bulk) | **POST** /case/{code}/bulk | Create new test cases.
 [**create_case**](CasesApi.md#create_case) | **POST** /case/{code} | Create a new test case.
 [**delete_case**](CasesApi.md#delete_case) | **DELETE** /case/{code}/{id} | Delete test case.
 [**get_case**](CasesApi.md#get_case) | **GET** /case/{code}/{id} | Get a specific test case.
@@ -15,7 +15,7 @@ Method | HTTP request | Description
 # **bulk**
 > Bulk200Response bulk(code, bulk_request)
 
-Create test cases in bulk.
+Create new test cases.
 
 This method allows to bulk create new test cases in a project. 
 
@@ -60,7 +60,7 @@ with qaseio.ApiClient(configuration) as api_client:
 
     # example passing only required values which don't have defaults set
     try:
-        # Create test cases in bulk.
+        # Create new test cases.
         api_response = api_instance.bulk(code, bulk_request)
         pprint(api_response)
     except qaseio.ApiException as e:

@@ -99,7 +99,7 @@ Class | Method | HTTP request | Description
 *AttachmentsApi* | [**upload_attachment**](docs/AttachmentsApi.md#upload_attachment) | **POST** /attachment/{code} | Upload attachment.
 *AuthorsApi* | [**get_author**](docs/AuthorsApi.md#get_author) | **GET** /author/{id} | Get a specific author.
 *AuthorsApi* | [**get_authors**](docs/AuthorsApi.md#get_authors) | **GET** /author | Get all authors.
-*CasesApi* | [**bulk**](docs/CasesApi.md#bulk) | **POST** /case/{code}/bulk | Create test cases in bulk.
+*CasesApi* | [**bulk**](docs/CasesApi.md#bulk) | **POST** /case/{code}/bulk | Create a new test cases.
 *CasesApi* | [**create_case**](docs/CasesApi.md#create_case) | **POST** /case/{code} | Create a new test case.
 *CasesApi* | [**delete_case**](docs/CasesApi.md#delete_case) | **DELETE** /case/{code}/{id} | Delete test case.
 *CasesApi* | [**get_case**](docs/CasesApi.md#get_case) | **GET** /case/{code}/{id} | Get a specific test case.

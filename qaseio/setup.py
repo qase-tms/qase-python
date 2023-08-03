@@ -32,7 +32,7 @@ setup(
     author="Qase.io",
     author_email="support@qase.io",
     url="https://github.com/qase-tms/qase-python",
-    keywords=["OpenAPI", "OpenAPI-Generator", "Qase.io API"],
+    keywords=["OpenAPI", "OpenAPI-Generator", "Qase TestOps API"],
     python_requires=">=3.6",
     install_requires=REQUIRES,
     packages=find_packages(exclude=["test", "tests"]),
