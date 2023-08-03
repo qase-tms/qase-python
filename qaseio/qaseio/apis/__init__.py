@@ -23,6 +23,7 @@ from qaseio.api.environments_api import EnvironmentsApi
 from qaseio.api.milestones_api import MilestonesApi
 from qaseio.api.plans_api import PlansApi
 from qaseio.api.projects_api import ProjectsApi
+from qaseio.api.result_api import ResultApi
 from qaseio.api.results_api import ResultsApi
 from qaseio.api.runs_api import RunsApi
 from qaseio.api.search_api import SearchApi

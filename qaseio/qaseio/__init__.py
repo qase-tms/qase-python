@@ -11,7 +11,7 @@
 """
 
 
-__version__ = "3.3.0"
+__version__ = "3.3.1"
 
 # import ApiClient
 from qaseio.api_client import ApiClient

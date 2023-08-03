@@ -116,8 +116,8 @@ class BulkRequestCasesInner(ModelComposed):
             'tags': ([str],),  # noqa: E501
             'params': ({str: ([str],)}, none_type,),  # noqa: E501
             'custom_field': ({str: (str,)},),  # noqa: E501
-            'created_at': (datetime,),  # noqa: E501
-            'updated_at': (datetime,),  # noqa: E501
+            'created_at': (str,),  # noqa: E501
+            'updated_at': (str,),  # noqa: E501
             'id': (int, none_type,),  # noqa: E501
         }
 
@@ -209,8 +209,8 @@ class BulkRequestCasesInner(ModelComposed):
             tags ([str]): [optional]  # noqa: E501
             params ({str: ([str],)}, none_type): [optional]  # noqa: E501
             custom_field ({str: (str,)}): A map of custom fields values (id => value). [optional]  # noqa: E501
-            created_at (datetime): [optional]  # noqa: E501
-            updated_at (datetime): [optional]  # noqa: E501
+            created_at (str): [optional]  # noqa: E501
+            updated_at (str): [optional]  # noqa: E501
             id (int, none_type): [optional]  # noqa: E501
         """
 
@@ -334,8 +334,8 @@ class BulkRequestCasesInner(ModelComposed):
             tags ([str]): [optional]  # noqa: E501
             params ({str: ([str],)}, none_type): [optional]  # noqa: E501
             custom_field ({str: (str,)}): A map of custom fields values (id => value). [optional]  # noqa: E501
-            created_at (datetime): [optional]  # noqa: E501
-            updated_at (datetime): [optional]  # noqa: E501
+            created_at (str): [optional]  # noqa: E501
+            updated_at (str): [optional]  # noqa: E501
             id (int, none_type): [optional]  # noqa: E501
         """
 

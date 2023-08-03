@@ -107,8 +107,8 @@ class RunCreate(ModelNormal):
             'plan_id': (int,),  # noqa: E501
             'tags': ([str],),  # noqa: E501
             'custom_field': ({str: (str,)},),  # noqa: E501
-            'start_time': (datetime,),  # noqa: E501
-            'end_time': (datetime,),  # noqa: E501
+            'start_time': (str,),  # noqa: E501
+            'end_time': (str,),  # noqa: E501
         }
 
     @cached_property
@@ -184,8 +184,8 @@ class RunCreate(ModelNormal):
             plan_id (int): [optional]  # noqa: E501
             tags ([str]): [optional]  # noqa: E501
             custom_field ({str: (str,)}): A map of custom fields values (id => value). [optional]  # noqa: E501
-            start_time (datetime): [optional]  # noqa: E501
-            end_time (datetime): [optional]  # noqa: E501
+            start_time (str): [optional]  # noqa: E501
+            end_time (str): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -284,8 +284,8 @@ class RunCreate(ModelNormal):
             plan_id (int): [optional]  # noqa: E501
             tags ([str]): [optional]  # noqa: E501
             custom_field ({str: (str,)}): A map of custom fields values (id => value). [optional]  # noqa: E501
-            start_time (datetime): [optional]  # noqa: E501
-            end_time (datetime): [optional]  # noqa: E501
+            start_time (str): [optional]  # noqa: E501
+            end_time (str): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)

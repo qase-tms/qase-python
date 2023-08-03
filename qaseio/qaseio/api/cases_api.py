@@ -491,7 +491,7 @@ class CasesApi(object):
         bulk_request,
         **kwargs
     ):
-        """Create a new test cases.  # noqa: E501
+        """Create new test cases.  # noqa: E501
 
         This method allows to bulk create new test cases in a project.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
