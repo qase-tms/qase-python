@@ -93,6 +93,7 @@ with qaseio.ApiClient(configuration) as api_client:
                 ],
             ),
         ],
+        author_id=1,
     ) # ResultCreate | 
 
     # example passing only required values which don't have defaults set
@@ -224,6 +225,7 @@ with qaseio.ApiClient(configuration) as api_client:
                         ],
                     ),
                 ],
+                author_id=1,
             ),
         ],
     ) # ResultCreateBulk | 

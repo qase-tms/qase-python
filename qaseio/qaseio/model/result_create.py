@@ -121,6 +121,7 @@ class ResultCreate(ModelNormal):
             'comment': (str, none_type,),  # noqa: E501
             'param': ({str: (str,)}, none_type,),  # noqa: E501
             'steps': ([TestStepResultCreate], none_type,),  # noqa: E501
+            'author_id': (int, none_type,),  # noqa: E501
         }
 
     @cached_property
@@ -141,6 +142,7 @@ class ResultCreate(ModelNormal):
         'comment': 'comment',  # noqa: E501
         'param': 'param',  # noqa: E501
         'steps': 'steps',  # noqa: E501
+        'author_id': 'author_id',  # noqa: E501
     }
 
     read_only_vars = {
@@ -198,6 +200,7 @@ class ResultCreate(ModelNormal):
             comment (str, none_type): [optional]  # noqa: E501
             param ({str: (str,)}, none_type): A map of parameters (name => value). [optional]  # noqa: E501
             steps ([TestStepResultCreate], none_type): [optional]  # noqa: E501
+            author_id (int, none_type): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -298,6 +301,7 @@ class ResultCreate(ModelNormal):
             comment (str, none_type): [optional]  # noqa: E501
             param ({str: (str,)}, none_type): A map of parameters (name => value). [optional]  # noqa: E501
             steps ([TestStepResultCreate], none_type): [optional]  # noqa: E501
+            author_id (int, none_type): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
