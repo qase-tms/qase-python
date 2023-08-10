@@ -73,6 +73,9 @@ class ResultCreate(ModelNormal):
     }
 
     validations = {
+        ('start_time',): {
+            'inclusive_minimum': 0,
+        },
         ('time',): {
             'inclusive_maximum': 31536000,
             'inclusive_minimum': 0,
@@ -109,6 +112,7 @@ class ResultCreate(ModelNormal):
             'status': (str,),  # noqa: E501
             'case_id': (int,),  # noqa: E501
             'case': (ResultCreateCase,),  # noqa: E501
+            'start_time': (int, none_type,),  # noqa: E501
             'time': (int, none_type,),  # noqa: E501
             'time_ms': (int, none_type,),  # noqa: E501
             'defect': (bool, none_type,),  # noqa: E501
@@ -128,6 +132,7 @@ class ResultCreate(ModelNormal):
         'status': 'status',  # noqa: E501
         'case_id': 'case_id',  # noqa: E501
         'case': 'case',  # noqa: E501
+        'start_time': 'start_time',  # noqa: E501
         'time': 'time',  # noqa: E501
         'time_ms': 'time_ms',  # noqa: E501
         'defect': 'defect',  # noqa: E501
@@ -184,6 +189,7 @@ class ResultCreate(ModelNormal):
                                 _visited_composed_classes = (Animal,)
             case_id (int): [optional]  # noqa: E501
             case (ResultCreateCase): [optional]  # noqa: E501
+            start_time (int, none_type): [optional]  # noqa: E501
             time (int, none_type): [optional]  # noqa: E501
             time_ms (int, none_type): [optional]  # noqa: E501
             defect (bool, none_type): [optional]  # noqa: E501
@@ -283,6 +289,7 @@ class ResultCreate(ModelNormal):
                                 _visited_composed_classes = (Animal,)
             case_id (int): [optional]  # noqa: E501
             case (ResultCreateCase): [optional]  # noqa: E501
+            start_time (int, none_type): [optional]  # noqa: E501
             time (int, none_type): [optional]  # noqa: E501
             time_ms (int, none_type): [optional]  # noqa: E501
             defect (bool, none_type): [optional]  # noqa: E501
