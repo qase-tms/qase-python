@@ -6,6 +6,7 @@ import re
 
 from qaseio.commons.models.result import Result, Field
 from qaseio.commons.models.attachment import Attachment
+from qaseio.commons.models.suite import Suite
 from qaseio.commons.utils import QaseUtils
 from qaseio.commons.models.runtime import Runtime
 
@@ -164,6 +165,7 @@ class QasePytestPlugin:
         self._set_muted(item)
         self._set_testops_id(item)
         self._set_params(item)
+        self._set_suite(item)
 
     def finish_pytest_item(self, item):
         self.runtime.result.execution.complete()
@@ -267,6 +269,12 @@ class QasePytestPlugin:
         if hasattr(item, 'callspec'):
             for key, val in item.callspec.params.items():
                 self.runtime.result.add_param(key, str(val))
+
+    def _set_suite(self, item) -> None:
+        marker = item.get_closest_marker("qase_suite")
+        if marker:
+            self.runtime.suite = Suite(marker.kwargs.get("title"), marker.kwargs.get("description"))
+
 
 class QasePytestPluginSingleton:
     _instance = None

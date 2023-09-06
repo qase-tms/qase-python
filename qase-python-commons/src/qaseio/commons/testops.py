@@ -136,6 +136,9 @@ class QaseTestOps:
                 if (result.get_field('layer')):
                     case_data["layer"] = result.get_field('layer')
 
+                if result.get_suite_title():
+                    case_data["suite_title"] = "\t".join(result.get_suite_title().split("."))
+
                 results.append({
                     "case_id": result.get_testops_id(),
                     "status": result.execution.status,
@@ -324,6 +327,9 @@ class QaseTestOps:
 
             if (result.get_field('layer')):
                 case_data["layer"] = result.get_field('layer')
+
+            if result.get_suite_title():
+                case_data["suite_title"] = "\t".join(result.get_suite_title().split("."))
 
             try:
                 api_results.create_result(
