@@ -3,6 +3,7 @@ import time
 import uuid
 import json
 from qaseio.commons.models.step import Step
+from qaseio.commons.models.suite import Suite
 from qaseio.commons.models.relation import Relation
 from qaseio.commons.models.attachment import Attachment
 from qaseio.commons.utils import QaseUtils
@@ -75,6 +76,7 @@ class Result(object):
         self.relations: List[Type[Relation]] = []
         self.muted: bool = False
         self.message: Optional[str] = None
+        self.suite: Optional[Type[Suite]] = None
         QaseUtils.get_host_data()
 
     def add_message(self, message: str) -> None:
@@ -98,6 +100,9 @@ class Result(object):
     def add_relation(self, relation: Type[Relation]) -> None:
         self.relations.append(relation)
 
+    def add_suite(self, suite: Type[Suite]) -> None:
+        self.suite = suite
+
     def get_status(self) -> Optional[str]:
         return self.execution.status
     
@@ -120,7 +125,11 @@ class Result(object):
     
     def get_duration(self) -> int:
         return self.execution.duration
-    
+
+    def get_suite_title(self) -> Optional[str]:
+        if self.suite:
+            return self.suite.title
+
     def set_run_id(self, run_id: str) -> None:
         self.run_id = run_id
 
