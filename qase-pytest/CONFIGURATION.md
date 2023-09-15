@@ -31,5 +31,8 @@ All configuration options are listed in the table below:
 | TestOps bulk | `testops.bulk` | `QASE_TESTOPS_BULK` | `--qase-testops-bulk` | `True` | No | `true`, `false` |
 | **Framework specific options** |
 | **Pytest** |
-| Capture logs | `pytest.capture_logs` | `QASE_PYTEST_CAPTURE_LOGS` | `--qase-pytest-capture-logs` | `False` | No | `true`, `false` |
-| Capture HTTP traffic | `pytest.capture_http` | `QASE_PYTEST_CAPTURE_HTTP` | `--qase-pytest-capture-http` | `False` | No | `true`, `false` |
+| Capture logs | `pytest.capture_logs` | `QASE_PYTEST_CAPTURE_LOGS` | `--qase-framework-pytest-capture-logs` | `False` |
+No | `true`, `false` |
+| Capture HTTP
+traffic | `pytest.capture_http` | `QASE_PYTEST_CAPTURE_HTTP` | `--qase-framework-pytest-capture-http` | `False` |
+No | `true`, `false` |
