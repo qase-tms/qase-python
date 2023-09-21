@@ -214,6 +214,16 @@ class QasePytestPlugin:
 
         if not title:
             title = item.originalname
+        if title:
+            try:
+                from lib_testbed.generic.util.common import get_modified_params
+                from allure_commons.utils import SafeFormatter
+
+                params = get_modified_params(item)
+                # Override allure title implementation to use parametrize id instead of parametrize value
+                title = SafeFormatter().format(title, **{**item.funcargs, **params})
+            except ImportError:
+                pass
 
         return str(title)
     
