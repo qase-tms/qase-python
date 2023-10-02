@@ -20,6 +20,9 @@ import certifi
 
 from pkg_resources import DistributionNotFound, get_distribution
 
+from qaseio.qaseio.api.environments_api import EnvironmentsApi
+
+
 def package_version(name):
     try:
         version = get_distribution(name).version
@@ -61,14 +64,14 @@ class QaseTestOps:
         self.defect = parseBool(defect)
         self.complete_after_run = parseBool(complete_run)
         self.environment = None
-        if environment:
-            if isinstance(environment, str):
-                self.environment = self._get_environment(environment)
-            elif isinstance(environment, int):
-                self.environment_id = environment
         self.host = host
         self.enabled = True
         self.chunk_size = min(2000, max(10, int(chunk_size)))
+        if environment:
+            if isinstance(environment, int) or (isinstance(environment, str) and environment.isnumeric()):
+                self.environment = environment
+            if isinstance(environment, str):
+                self.environment = self._get_environment(environment, self.project_code)
 
         if run_title and run_title != '':
             self.run_title = run_title
@@ -96,8 +99,14 @@ class QaseTestOps:
                 print("[Qase] ⚠️  Disabling Qase TestOps reporter. Exception when calling ProjectApi->get_project: %s\n" % e)
 
     # Method loads environment by name and returns environment id
-    def _get_environment(self, environment: str):
-        # TODO: Add support for environment lookup by name
+    def _get_environment(self, environment: str, project: str):
+        if self.enabled:
+            api_instance = EnvironmentsApi(self.client)
+            response = api_instance.get_environments(code=project)
+            if hasattr(response, 'result'):
+                for env in response["result"]["entities"]:
+                    if env["slug"] == environment:
+                        return env["id"]
         return None
 
     def _send_bulk_results(self):
