@@ -86,7 +86,7 @@ qase_testops_complete_run=True
 ```
 Execution:
 ```
-robot --listener qaseio.robotframework.Listener someTest.robot
+robot --listener qaseio.robotframework.QaseListener someTest.robot
 ```
 ## Contribution
 
