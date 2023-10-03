@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qaseio"
+version = "3.4.1"
+description = "Qase TestOps API"
+authors = [{ "name" = "Qase.io", email = "support@qase.io" }]
+requires-python = ">=3.6"
+license = { text = "Apache 2.0" }
+keywords = ["OpenAPI", "OpenAPI-Generator", "Qase TestOps API"]
+urls = { Documentation = "https://github.com/qase-tms/qase-python" }
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+[tool.setuptools.packages]
+find = { exclude = ["test", "tests"] }
