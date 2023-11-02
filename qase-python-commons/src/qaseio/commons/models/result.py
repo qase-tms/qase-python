@@ -77,6 +77,9 @@ class Result(object):
         self.muted: bool = False
         self.message: Optional[str] = None
         self.suite: Optional[Type[Suite]] = None
+        self.class_execution: Optional[List[Execution]] = []
+        self.test_class: bool = False
+        self.test_class_completed: Optional[bool] = False
         QaseUtils.get_host_data()
 
     def add_message(self, message: str) -> None:

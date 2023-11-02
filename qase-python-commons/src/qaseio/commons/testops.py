@@ -20,6 +20,10 @@ import certifi
 
 from pkg_resources import DistributionNotFound, get_distribution
 
+
+QASE_STATUS_IDS = {"skipped": 0, "passed": 1, "failed": 2, "blocked": 3, "invalid": 4}
+
+
 def package_version(name):
     try:
         version = get_distribution(name).version
@@ -292,6 +296,9 @@ class QaseTestOps:
         return prepared_step
 
     def _send_result(self, result: Result):
+        # Wait to complete a whole test-class
+        if result.test_class and not result.test_class_completed:
+            return
         if self.enabled:
             api_results = ResultsApi(self.client)
             print()
@@ -371,7 +378,71 @@ class QaseTestOps:
 
     def add_result(self, result: Result):
         if self.enabled:
-            if self.bulk:
+            add_result = True
+            if result.test_class:
+                result, add_result = self.merge_class_results(result)
+            if self.bulk and add_result:
                 self.results.append(result)
-            else:
+            elif not self.bulk:
                 self._send_result(result)
+
+    # Treat results from test-class as a single test-case
+    def merge_class_results(self, result: Result) -> [Result, bool]:
+        add_result = True
+        class_result = next(filter(lambda all_results: result.testops_id == all_results.testops_id, self.results), None)
+        # Nothing to merge
+        if not class_result:
+            result.class_execution.append(result.execution)
+            return result, add_result
+        # class result is already collected in self.results list()
+        add_result = False
+        class_result.attachments.extend(result.attachments)
+        class_result.class_execution.append(result.execution)
+
+        if not result.test_class_completed:
+            return class_result, add_result
+
+        # Sort subtests by their statuses. Worst result at the end.
+        subtests_status = [execution.status for execution in class_result.class_execution]
+        subtests_status = list(set(subtests_status))
+        subtests_status.sort(key=lambda subtest_status: QASE_STATUS_IDS[subtest_status])
+
+        # Leave only last status to report
+        status_name_to_report = subtests_status[-1]
+        class_result.execution = next(
+            filter(
+                lambda subtest_execution: subtest_execution.status == status_name_to_report,
+                class_result.class_execution
+            )
+        )
+
+        # Merge log execution attachments
+        self.merge_log_execution_attachments(class_result)
+
+        # Merge stacktrace
+        if "failed" in subtests_status:
+            self.merge_stacktrace(class_result)
+
+        return class_result, add_result
+
+    @staticmethod
+    def merge_log_execution_attachments(class_result: Result, file_name: str = "log.txt") -> None:
+        log_execution_content = list()
+        for log_execution_attach in class_result.attachments[:]:
+            if log_execution_attach.file_name == file_name:
+                log_execution_content.append(log_execution_attach.content)
+                class_result.attachments.remove(log_execution_attach)
+        class_result.attachments.append(
+            Attachment(
+                file_name=file_name, content="\n".join(log_execution_content), mime_type="text/plain", file_path=None
+            )
+        )
+
+    @staticmethod
+    def merge_stacktrace(class_result: Result) -> None:
+        subtests_stacktrace = [
+            subtest_execution.stacktrace
+            for subtest_execution in class_result.class_execution
+            if subtest_execution.stacktrace
+        ]
+        class_result.execution.stacktrace = "\n\n".join(subtests_stacktrace)

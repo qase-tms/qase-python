@@ -103,7 +103,7 @@ class QasePytestPlugin:
         self.has_started = False
 
     @pytest.hookimpl(hookwrapper=True)
-    def pytest_runtest_protocol(self, item):
+    def pytest_runtest_protocol(self, item, nextitem):
         self.ignore = True if item.get_closest_marker("qase_ignore") else False
 
         if not self.ignore:
@@ -114,6 +114,7 @@ class QasePytestPlugin:
             yield
             if self.interceptor:
                 self.interceptor.disable()
+            self._set_test_class_completed(nextitem)
             self.finish_pytest_item(item)
         else:
             yield
@@ -166,6 +167,7 @@ class QasePytestPlugin:
         self._set_testops_id(item)
         self._set_params(item)
         self._set_suite(item)
+        self._set_test_class_execution(item)
 
     def finish_pytest_item(self, item):
         self.runtime.result.execution.complete()
@@ -226,10 +228,15 @@ class QasePytestPlugin:
                 pass
 
         return str(title)
-    
+
     def _get_signature(self, item) -> str:
-        return re.sub(r'\[.*?\]', '', item.nodeid)
-    
+        if not item.cls:
+            test_signature = re.sub(r'\[.*?\]', '', item.nodeid)
+        else:
+            # Treat results from test-class as a single test-case
+            test_signature = item.parent.nodeid
+        return test_signature
+
     def _set_relations(self, item) -> None:
         # TODO: Add support for relations
         pass
@@ -269,11 +276,8 @@ class QasePytestPlugin:
         except:
             pass
 
-    def _set_testops_id(self, item) -> None:
-        try:
-            self.runtime.result.testops_id = int(item.get_closest_marker("qase_id").kwargs.get("id"))
-        except:
-            pass
+    def _set_testops_id(self, item: pytest.Item) -> None:
+        self.runtime.result.testops_id = self.get_testops_id(item)
 
     def _set_params(self, item) -> None:
         if hasattr(item, 'callspec'):
@@ -284,6 +288,24 @@ class QasePytestPlugin:
         marker = item.get_closest_marker("qase_suite")
         if marker:
             self.runtime.suite = Suite(marker.kwargs.get("title"), marker.kwargs.get("description"))
+
+    def _set_test_class_execution(self, item: pytest.Item) -> None:
+        if item.cls:
+            self.runtime.result.test_class = True
+            self.runtime.result.test_class_completed = False
+
+    def _set_test_class_completed(self, nextitem: pytest.Item) -> None:
+        if not self.runtime.result.test_class:
+            return None
+        if not nextitem or (self.runtime.result.testops_id != self.get_testops_id(nextitem)):
+            self.runtime.result.test_class_completed = True
+
+    @staticmethod
+    def get_testops_id(item: pytest.Item) -> int | None:
+        if qase_marker := item.get_closest_marker("qase_id"):
+            return int(qase_marker.kwargs.get("id"))
+        else:
+            return None
 
 
 class QasePytestPluginSingleton:
