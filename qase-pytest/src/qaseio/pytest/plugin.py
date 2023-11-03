@@ -3,7 +3,7 @@ from typing import Tuple, Union
 import pytest
 import mimetypes
 import re
-
+import os
 from qaseio.commons.models.result import Result, Field
 from qaseio.commons.models.attachment import Attachment
 from qaseio.commons.models.suite import Suite
@@ -134,7 +134,6 @@ class QasePytestPlugin:
                     set_result(PYTEST_TO_QASE_STATUS['BROKEN'])
                 else:
                     set_result(PYTEST_TO_QASE_STATUS['FAILED'])
-                self.runtime.result.add_message(call.excinfo.exconly())
             elif report.skipped:
                 if self.runtime.result.execution.status in (
                         None,
@@ -152,6 +151,7 @@ class QasePytestPlugin:
                     self.add_attachments((report.capstdout, "text/plain", "stdout.txt"))
                 if report.capstderr:
                     self.add_attachments((report.capstderr, "text/plain", "stderr.txt"))
+                self.add_result_message(call, report)
         else:
             yield
 
@@ -306,6 +306,14 @@ class QasePytestPlugin:
             return int(qase_marker.kwargs.get("id"))
         else:
             return None
+
+    def add_result_message(self, call, report):
+        """Add a comment message to the result. Comment message can be customized by QASE_CUSTOM_MSG env variable."""
+        if qase_custom_msg := os.getenv("QASE_CUSTOM_MSG"):
+            self.runtime.result.add_message(qase_custom_msg)
+            del os.environ["QASE_CUSTOM_MSG"]
+        elif report.failed:
+            self.runtime.result.add_message(call.excinfo.exconly())
 
 
 class QasePytestPluginSingleton:
