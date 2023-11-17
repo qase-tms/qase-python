@@ -79,9 +79,9 @@ from qaseio.pytest import qase
 @qase.title("My first test")
 @qase.fields(
     ("severity", "critical"),
-    ("priority", "hight"),
+    ("priority", "high"),
     ("layer", "unit"),
-    ("description", "Try to login in Qase TestOps using login and password"),
+    ("description", "Try to login to Qase TestOps using login and password"),
     ("description", "*Precondition 1*. Markdown is supported."),
 )
 def test_example_1():
@@ -111,11 +111,11 @@ def test_example_1():
 ### Capture network logs
 In order to capture network logs, you need to enable the `http` option in the `capture` section of the `framework` section in the config file.
 
-Qase Pytest reporter will capture all requests and responses and save as a test step automatically.
+The Qase Pytest reporter will capture all requests and responses and save as a test step automatically.
 
 ### Add attachments to test results
 
-When you need to push some additional information to server you could use
+When you need to push some additional information to the server you could use
 attachments:
 
 ```python
@@ -143,10 +143,10 @@ def test_example_2(driver):
     qase.attach((driver.get_screenshot_as_png(), "image/png", "result.png"))
 ```
 
-You could pass as much files as you need.
+You can pass as many files as you need.
 
-Also you should know, that if no case id is associated with current test in
-pytest - attachment would not be uploaded:
+**Note:** If no case ID is associated with the current test in pytest,
+the attachment will not be uploaded:
 
 ```python
 import pytest
@@ -168,7 +168,7 @@ def test_example_2(driver):
 
 ### Linking code with steps
 
-It is possible to link test step with function, or using context.
+It is possible to link the test step using a function, or using context.
 
 ```python
 from qaseio.pytest import qase
@@ -204,10 +204,10 @@ pytest \
     --qase-testops-run-id=3 # testrun id
 ```
 
-### Creating test run base on test plan (selective launch)
+### Creating test run based on test plan (selective launch)
 
-Create new testrun base on testplan. Testrun in Qase TestOps will contain only those
-test results. `qase-pytest` supports selective execution
+Create a new testrun base on a testplan. Testrun in Qase TestOps will contain only those
+test results. `qase-pytest` supports selective execution.
 
 ```bash
 pytest \
@@ -220,8 +220,8 @@ pytest \
 ### Creating new testrun according to current pytest run
 
 If you want to create a new test run in Qase TestOps for each execution, you can simply 
-skip `--qase-testops-run` option. If you want to provide a custom name for this run, you can add an
-option `--qase-testops-run-title` 
+skip `--qase-testops-run` option. If you want to provide a custom name for this run, you can add
+the option `--qase-testops-run-title`.
 
 ```bash
 pytest \
