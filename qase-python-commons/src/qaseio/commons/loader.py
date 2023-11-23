@@ -22,6 +22,9 @@ class TestOpsPlanLoader:
         # if run_id is specified check first if there are tests, if they are, ignore plan_id and use cases from there
         # if run_id is empty, get all cases from plan_id (Jenkins plugin)
 
+        if type(rerun) is not bool:
+            rerun = True if rerun in ['true', 'True', '1', 1] else False
+
         if rerun and run_id is None:
             raise EnvironmentError("RUN ID needs to be specified for rerun")
         test_run_cases = []
@@ -38,9 +41,11 @@ class TestOpsPlanLoader:
         # nothing to do
         else:
             self.case_list = []
+        print(f"[Qase] ⚠️  {code} test case list to start: {self.case_list}")
         return self.case_list
 
     def _get_cases_from_test_plan(self, code: str, plan_id: int):
+        print(f"[Qase] ⚠️  Getting {code} tests cases from test plan: {plan_id}")
         api_instance = PlansApi(self.client)
         try:
             response = api_instance.get_plan(code=code, id=plan_id)
@@ -52,6 +57,7 @@ class TestOpsPlanLoader:
         return []
 
     def _get_cases_form_test_run(self, code: str, run_id: int, rerun: bool):
+        print(f"[Qase] ⚠️  Getting {code} tests cases from run: {run_id}, {rerun=}")
         run_api_instance = RunsApi(self.client)
         try:
             response = run_api_instance.get_run(code, run_id, include="cases")
