@@ -104,7 +104,17 @@ class QasePytestOptions:
             dest="qase_testops_run_description",
             type="bool",
             default=False,
-            help="Complete run after tests execution"
+            help="Complete run after tests execution",
+        )
+
+        QasePytestOptions.add_option_ini(
+            parser,
+            group,
+            "--qase-testops-rerun-failures",
+            dest="qase_testops_rerun_failures",
+            type="bool",
+            default=False,
+            help="DOES NOT WORK YET Select only not PASSED test cases from specified run id",
         )
 
         QasePytestOptions.add_option_ini(

@@ -60,7 +60,9 @@ def pytest_configure(config):
             )
         if (mode == 'testops'):
             if validate_testops_options(config):
-                if (config.getoption("qase_testops_plan_id", None) is not None):
+                if config.getoption(
+                        "qase_testops_plan_id"
+                ) or config.getoption("qase_testops_run_id"):
                     from qaseio.commons import TestOpsPlanLoader
 
                     # Load test plan data from Qase TestOps
@@ -68,8 +70,12 @@ def pytest_configure(config):
                         api_token=config.getoption("qase_testops_api_token"),
                         host=config.getoption("qase_testops_api_host", "qase.io"),
                     )
-                    execution_plan = loader.load(config.getoption("qase_testops_project"),
-                                                 int(config.getoption("qase_testops_plan_id")))
+                    execution_plan = loader.load(
+                        config.getoption("qase_testops_project"),
+                        int(config.getoption("qase_testops_plan_id")),
+                        config.getoption("qase_testops_run_id"),
+                        config.getoption("qase_testops_rerun_failures"),
+                    )
 
                 reporter = QaseTestOps(
                     api_token=config.getoption("qase_testops_api_token"),
