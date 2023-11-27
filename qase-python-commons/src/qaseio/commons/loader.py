@@ -2,8 +2,12 @@ from qaseio.api_client import ApiClient
 from qaseio.configuration import Configuration
 from qaseio.api.plans_api import PlansApi
 from qaseio.api.runs_api import RunsApi
+from qaseio.api.results_api import ResultsApi
 from qaseio.rest import ApiException
 import certifi
+
+API_LIMIT = 100
+
 
 class TestOpsPlanLoader:
     def __init__(self, api_token, host = 'qase.io'):
@@ -41,11 +45,11 @@ class TestOpsPlanLoader:
         # nothing to do
         else:
             self.case_list = []
-        print(f"[Qase] ⚠️  {code} test case list to start: {self.case_list}")
+        print(f"[Qase]  {code} test case list to start: {self.case_list}")
         return self.case_list
 
     def _get_cases_from_test_plan(self, code: str, plan_id: int):
-        print(f"[Qase] ⚠️  Getting {code} tests cases from test plan: {plan_id}")
+        print(f"[Qase]  Getting {code} tests cases from test plan: {plan_id}")
         api_instance = PlansApi(self.client)
         try:
             response = api_instance.get_plan(code=code, id=plan_id)
@@ -57,13 +61,34 @@ class TestOpsPlanLoader:
         return []
 
     def _get_cases_form_test_run(self, code: str, run_id: int, rerun: bool):
-        print(f"[Qase] ⚠️  Getting {code} tests cases from run: {run_id}, {rerun=}")
+        print(f"[Qase]  Getting {code} tests cases from run: {run_id}, {rerun=}")
         run_api_instance = RunsApi(self.client)
+        run_cases = []
         try:
             response = run_api_instance.get_run(code, run_id, include="cases")
             if hasattr(response, "result"):
-                return response.result.cases
-                # TODO: check test case status, API provides only list of cases
         except ApiException as e:
             print("Unable to load test run data: %s\n" % e)
-        return []
+        if not run_cases:
+            return []
+        if not rerun:
+            return run_cases
+        results_api_instance = ResultsApi(self.client)
+        data = {"limit": API_LIMIT}
+        passed_results = []
+        try:
+            # TODO: add thread wrapper
+            for i in range(0, len(run_cases), API_LIMIT):
+                data["offset"] = i
+                ret = results_api_instance.get_results(code, status="passed", run=str(run_id), **data)
+                if passed_cases := ret.get("result", {}).get("entities", []):
+                    passed_results.extend([passed_case['case_id'] for passed_case in passed_cases])
+                else:
+                    break
+                # if there is fewer results then limit, no need to do another call
+                if ret.get("result", {}).get("total") < API_LIMIT:
+                    break
+        except ApiException as e:
+            print("Unable to load test run results data: %s\n" % e)
+            return run_cases
+        return list(set(run_cases).difference(passed_results))
