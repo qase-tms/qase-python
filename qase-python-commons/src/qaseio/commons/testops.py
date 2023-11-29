@@ -432,11 +432,15 @@ class QaseTestOps:
             if log_execution_attach.file_name == file_name:
                 log_execution_content.append(log_execution_attach.content)
                 class_result.attachments.remove(log_execution_attach)
-        class_result.attachments.append(
-            Attachment(
-                file_name=file_name, content="\n".join(log_execution_content), mime_type="text/plain", file_path=None
+        if log_execution_content:
+            class_result.attachments.append(
+                Attachment(
+                    file_name=file_name,
+                    content="\n".join(log_execution_content),
+                    mime_type="text/plain",
+                    file_path=None
+                )
             )
-        )
 
     @staticmethod
     def merge_stacktrace(class_result: Result) -> None:
