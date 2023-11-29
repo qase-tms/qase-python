@@ -21,7 +21,7 @@ class TestOpsPlanLoader:
         configuration.ssl_ca_cert = certifi.where()
 
     def load(
-            self, code: str, plan_id: int, run_id: str | None, rerun: bool
+            self, code: str, plan_id: int | None, run_id: str | None, rerun: bool
     ) -> list:
         # if run_id is specified check first if there are tests, if they are, ignore plan_id and use cases from there
         # if run_id is empty, get all cases from plan_id (Jenkins plugin)
@@ -40,8 +40,8 @@ class TestOpsPlanLoader:
         if test_run_cases:
             self.case_list = test_run_cases
         # if run was empty or fully completed in case of rerun use cases from the test plan_id
-        elif rerun is False:
-            self.case_list = self._get_cases_from_test_plan(code, plan_id)
+        elif rerun is False and plan_id:
+            self.case_list = self._get_cases_from_test_plan(code, int(plan_id))
         # nothing to do
         else:
             self.case_list = []

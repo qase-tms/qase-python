@@ -72,7 +72,7 @@ def pytest_configure(config):
                     )
                     execution_plan = loader.load(
                         config.getoption("qase_testops_project"),
-                        int(config.getoption("qase_testops_plan_id")),
+                        config.getoption("qase_testops_plan_id"),
                         config.getoption("qase_testops_run_id"),
                         config.getoption("qase_testops_rerun_failures"),
                     )
