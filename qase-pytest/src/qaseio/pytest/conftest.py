@@ -89,6 +89,7 @@ def pytest_configure(config):
                     host=config.getoption("qase_testops_api_host", "qase.io"),
                     chunk_size=config.getoption("qase_testops_chunk", 200),
                     environment=config.getoption("qase_environment", None),
+                    publish_params=config.getoption("qase_publish_params", None),
                     defect=config.getoption("qase_testops_defect", False),
                 )
                 fallback = defaultReporter

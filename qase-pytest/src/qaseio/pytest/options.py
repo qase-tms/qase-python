@@ -23,6 +23,16 @@ class QasePytestOptions:
         QasePytestOptions.add_option_ini(
             parser,
             group,
+            "--qase-publish-params",
+            dest="qase_publish_params",
+            type="bool",
+            default=True,
+            help="Publish item parameters (parametrization)"
+        )
+
+        QasePytestOptions.add_option_ini(
+            parser,
+            group,
             "--qase-debug",
             dest="qase_debug",
             type="bool",

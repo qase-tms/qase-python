@@ -44,6 +44,7 @@ class QaseTestOps:
             bulk=True,
             run_title=None,
             environment=None,
+            publish_params=True,
             host="qase.io",
             complete_run=False,
             dont_publish_results=False,
@@ -72,6 +73,7 @@ class QaseTestOps:
                 self.environment = self._get_environment(environment)
             elif isinstance(environment, int):
                 self.environment_id = environment
+        self.publish_params = parseBool(publish_params)
         self.host = host
         self.enabled = not self.dont_publish_results
         self.chunk_size = min(2000, max(10, int(chunk_size)))
@@ -356,7 +358,7 @@ class QaseTestOps:
                             **{k: v for k, v in case_data.items() if v is not None}
                         ),
                         steps=steps,
-                        param=result.params
+                        param=result.params if self.publish_params else {}
                     )
                 )
                 print(f"[Qase] Results of run {self.run_id} was sent")
