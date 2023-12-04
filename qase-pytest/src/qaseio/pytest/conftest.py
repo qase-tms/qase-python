@@ -97,7 +97,7 @@ def pytest_configure(config):
             reporter=reporter,
             fallback=fallback,
             xdist_enabled=is_xdist_enabled(config),
-            capture_logs=config.getoption("qase_framework_pytest_capture_logs", False),
+            capture_logs=config.getoption("qase_framework_pytest_capture_logs", "off"),
             intercept_requests=config.getoption("qase_framework_pytest_capture_http", False),
             execution_plan=execution_plan,
         )
