@@ -143,7 +143,7 @@ class QasePytestPlugin:
                     set_result(PYTEST_TO_QASE_STATUS['FAILED'])
                 self.runtime.result.add_message(call.excinfo.exconly())
                 if self.capture_logs == "failed" and report.when == "call":
-                    self._attach_logs()
+                    _attach_logs()
             elif report.skipped:
                 if self.runtime.result.execution.status in (
                         None,
