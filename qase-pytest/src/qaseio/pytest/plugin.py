@@ -155,7 +155,7 @@ class QasePytestPlugin:
                     set_result(PYTEST_TO_QASE_STATUS['PASSED'])
 
             if self.capture_logs == "always" and report.when == "call":
-                self._attach_logs()
+                _attach_logs()
         else:
             yield
 
