@@ -231,12 +231,7 @@ class QasePytestPlugin:
         return str(title)
 
     def _get_signature(self, item) -> str:
-        if not item.cls:
-            test_signature = re.sub(r'\[.*?\]', '', item.nodeid)
-        else:
-            # Treat results from test-class as a single test-case
-            test_signature = item.parent.nodeid
-        return test_signature
+        return re.sub(r'\[.*?\]', '', item.nodeid)
 
     def _set_relations(self, item) -> None:
         # TODO: Add support for relations
