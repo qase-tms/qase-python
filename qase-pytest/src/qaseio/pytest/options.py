@@ -100,8 +100,18 @@ class QasePytestOptions:
         QasePytestOptions.add_option_ini(
             parser,
             group,
+            "--qase-testops-dont-publish-results",
+            dest="qase_testops_dont_publish_results",
+            type="bool",
+            default=False,
+            help="Do not publish test results",
+        )
+
+        QasePytestOptions.add_option_ini(
+            parser,
+            group,
             "--qase-testops-run-complete",
-            dest="qase_testops_run_description",
+            dest="qase_testops_run_complete",
             type="bool",
             default=False,
             help="Complete run after tests execution",

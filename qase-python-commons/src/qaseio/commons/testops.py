@@ -46,6 +46,7 @@ class QaseTestOps:
             environment=None,
             host="qase.io",
             complete_run=False,
+            dont_publish_results=False,
             defect=False,
             chunk_size=200) -> None:
 
@@ -64,6 +65,7 @@ class QaseTestOps:
         self.bulk = parseBool(bulk)
         self.defect = parseBool(defect)
         self.complete_after_run = parseBool(complete_run)
+        self.dont_publish_results = parseBool(dont_publish_results)
         self.environment = None
         if environment:
             if isinstance(environment, str):
@@ -71,7 +73,7 @@ class QaseTestOps:
             elif isinstance(environment, int):
                 self.environment_id = environment
         self.host = host
-        self.enabled = True
+        self.enabled = not self.dont_publish_results
         self.chunk_size = min(2000, max(10, int(chunk_size)))
 
         if run_title and run_title != '':
