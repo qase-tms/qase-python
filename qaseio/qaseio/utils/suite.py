@@ -1,7 +1,7 @@
 import functools
 
 from qaseio.api.cases_api import CasesApi
-from qaseio.utils.common import MAX_NUMBER_OF_SUITES, API_LIMIT, call_threaded, QaseClient, logger
+from qaseio.utils.common import MAX_NUMBER_OF_SUITES, API_LIMIT, call_threaded, QaseClient, logger, get_result
 from qaseio.api.suites_api import SuitesApi
 
 
@@ -35,7 +35,7 @@ class Suite(QaseClient):
                 thread = call_threaded(CasesApi(self.client).get_cases, code=self.project, **data)
                 threads.append(thread)
             for thread in threads:
-                ret = thread.result().result
+                ret = get_result(thread.result())
                 if ret.count == 0:
                     continue
                 for case in ret.entities:
@@ -60,7 +60,7 @@ class Suite(QaseClient):
             thread = call_threaded(suites_api.get_suites, code=self.project, **data)
             threads.append(thread)
         for thread in threads:
-            ret = thread.result().result
+            ret = get_result(thread.result())
             for suite in ret.entities:
                 all_suites.append(
                     {

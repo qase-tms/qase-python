@@ -4,11 +4,10 @@ import logging
 import os
 from functools import wraps
 import certifi
+
+from qaseio.exceptions import ApiValueError
 from qaseio.api_client import ApiClient
 from qaseio.configuration import Configuration
-from qaseio.model.result_list_response import ResultListResponse
-from qaseio.model.run_response import RunResponse
-from qaseio.model_utils import OpenApiModel
 
 QASE_ID_TAG = "qase.id"
 QASE_ID_TAG_NAME = "qase.id(%d)"
@@ -48,19 +47,6 @@ class QaseClient:
         configuration.ssl_ca_cert = certifi.where()
         self.client = ApiClient(configuration)
 
-    @staticmethod
-    def get_result(response):
-        """Get result for api response"""
-        if isinstance(response, OpenApiModel):
-            return response.result
-        # In case this is not api response (that is based on OpenApiModel), assume that response
-        # is already an extracted result
-        return response
-
-    @staticmethod
-    def get_value(response):
-        return json.loads(QaseClient.get_result(response).value)
-
 
 def threaded(f, executor=None) -> concurrent.futures.Future:
     """Decorator starting a select function in a thread.
@@ -96,3 +82,30 @@ def threaded(f, executor=None) -> concurrent.futures.Future:
 @threaded
 def call_threaded(fn, *args, **kwargs):
     return fn(*args, **kwargs)
+
+
+def get_result(response, *args, **kwargs):
+    result = getattr(response, "result", None)
+    if not result:
+        api = f"{args[0].__class__.__name__}::{kwargs}" if args else None
+        raise ApiValueError(f"Unexpected response from qase_api: {api}\nresponse: {response}")
+    if response.status is not True:
+        raise ApiValueError(f"Unexpected response status: {response.status}")
+    return result
+
+
+def api_result(api_call):
+    def wrapper(*args, **kwargs):
+        response = api_call(*args, **kwargs)
+        return get_result(response, *args, **kwargs)
+
+    return wrapper
+
+
+def json_value(api_call):
+    def wrapper(*args, **kwargs):
+        response = api_call(*args, **kwargs)
+        result = get_result(response, *args, **kwargs)
+        return json.loads(result.value)
+
+    return wrapper
