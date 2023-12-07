@@ -81,7 +81,7 @@ class QasePytestPlugin:
     def pytest_collection_modifyitems(self, session, config, items):
         # Filter test cases based on ids
         if config.option.qase_testops_plan_id or config.option.qase_testops_run_id:
-            items[:] = [item for item in items if item.get_closest_marker('qase_id') and
+            items[:] = [item for item in items if item.get_closest_marker('qase_id') and self.execution_plan and
                         item.get_closest_marker('qase_id').kwargs.get("id") in self.execution_plan]
 
     def pytest_sessionstart(self, session):
