@@ -1,3 +1,4 @@
+import logging
 import pathlib
 from typing import Tuple, Union
 import pytest
@@ -13,39 +14,43 @@ from qaseio.commons.models.runtime import Runtime
 from filelock import FileLock
 
 PYTEST_TO_QASE_STATUS = {
-    "PASSED": 'passed',
-    "FAILED": 'failed',
-    "SKIPPED": 'skipped',
-    "BLOCKED": 'blocked',
-    "BROKEN": 'invalid'
+    "PASSED": "passed",
+    "FAILED": "failed",
+    "SKIPPED": "skipped",
+    "BLOCKED": "blocked",
+    "BROKEN": "invalid",
 }
 
 try:
     from xdist import is_xdist_controller
 except ImportError:
+
     def is_xdist_controller(*args, **kwargs):
         return True
-    
+
+
 try:
     import pytest
 except ImportError:
     raise ImportError("pytest is not installed")
 
+
 class PluginNotInitializedException(Exception):
     pass
+
 
 class QasePytestPlugin:
     run = None
     meta_run_file = pathlib.Path("src.run")
 
     def __init__(
-            self,
-            reporter,
-            fallback,
-            xdist_enabled = False,
-            capture_logs = False,
-            execution_plan = None,
-            intercept_requests = False,
+        self,
+        reporter,
+        fallback,
+        xdist_enabled=False,
+        capture_logs=False,
+        execution_plan=None,
+        intercept_requests=False,
     ):
         self.runtime = Runtime()
         self.reporter = reporter
@@ -60,6 +65,7 @@ class QasePytestPlugin:
         if self.intercept_requests:
             # Lazy import
             from qaseio.commons.interceptor import InterceptorSingleton
+
             InterceptorSingleton.init(runtime=self.runtime)
             self.interceptor = InterceptorSingleton.get_instance()
 
@@ -67,9 +73,9 @@ class QasePytestPlugin:
         self.runtime.add_step(step)
 
     def finish_step(self, id, exception=None):
-        status = PYTEST_TO_QASE_STATUS['PASSED']
+        status = PYTEST_TO_QASE_STATUS["PASSED"]
         if exception:
-            status = PYTEST_TO_QASE_STATUS['FAILED']
+            status = PYTEST_TO_QASE_STATUS["FAILED"]
 
         self.runtime.finish_step(id, status=status)
 
@@ -80,9 +86,13 @@ class QasePytestPlugin:
 
     def pytest_collection_modifyitems(self, session, config, items):
         # Filter test cases based on ids
-        if config.option.qase_testops_plan_id or config.option.qase_testops_run_id:
-            items[:] = [item for item in items if item.get_closest_marker('qase_id') and self.execution_plan and
-                        item.get_closest_marker('qase_id').kwargs.get("id") in self.execution_plan]
+        if self.execution_plan and (config.option.qase_testops_plan_id or config.option.qase_testops_run_id):
+            items[:] = [
+                item
+                for item in items
+                if item.get_closest_marker("qase_id")
+                and item.get_closest_marker("qase_id").kwargs.get("id") in self.execution_plan
+            ]
 
     def pytest_sessionstart(self, session):
         if (not self.xdist_enabled) or (self.xdist_enabled and is_xdist_controller(session)):
@@ -111,12 +121,18 @@ class QasePytestPlugin:
             # Capture HTTP requests inside test
             if self.interceptor:
                 self.interceptor.enable()
-            self.start_pytest_item(item)
+            try:
+                self.start_pytest_item(item)
+            except Exception:
+                logging.exception("\n\n!!! Qaseio plugin problem. FIX ME !!!\n\n")
             yield
             if self.interceptor:
                 self.interceptor.disable()
             self._set_test_class_completed(nextitem)
-            self.finish_pytest_item(item)
+            try:
+                self.finish_pytest_item(item)
+            except Exception:
+                logging.exception("\n\n!!! Qaseio plugin problem. FIX ME !!!\n\n")
         else:
             yield
 
@@ -124,6 +140,7 @@ class QasePytestPlugin:
     def pytest_runtest_makereport(self, item, call):
         if not self.ignore:
             report = (yield).get_result()
+
             def set_result(res):
                 self.runtime.result.execution.status = res
 
@@ -132,18 +149,18 @@ class QasePytestPlugin:
 
             if report.failed:
                 if call.excinfo.typename != "AssertionError":
-                    set_result(PYTEST_TO_QASE_STATUS['BROKEN'])
+                    set_result(PYTEST_TO_QASE_STATUS["BROKEN"])
                 else:
-                    set_result(PYTEST_TO_QASE_STATUS['FAILED'])
+                    set_result(PYTEST_TO_QASE_STATUS["FAILED"])
             elif report.skipped:
                 if self.runtime.result.execution.status in (
-                        None,
-                        PYTEST_TO_QASE_STATUS['PASSED'],
+                    None,
+                    PYTEST_TO_QASE_STATUS["PASSED"],
                 ):
-                    set_result(PYTEST_TO_QASE_STATUS['SKIPPED'])
+                    set_result(PYTEST_TO_QASE_STATUS["SKIPPED"])
             else:
                 if self.runtime.result.execution.status is None:
-                    set_result(PYTEST_TO_QASE_STATUS['PASSED'])
+                    set_result(PYTEST_TO_QASE_STATUS["PASSED"])
 
             if self.capture_logs and report.when == "call":
                 if report.caplog:
@@ -158,9 +175,9 @@ class QasePytestPlugin:
 
     def start_pytest_item(self, item):
         self.runtime.result = Result(
-            title = self._get_title(item), 
-            signature = self._get_signature(item),
-            )
+            title=self._get_title(item),
+            signature=self._get_signature(item),
+        )
         self._set_fields(item)
         self._set_tags(item)
         self._set_author(item)
@@ -177,9 +194,7 @@ class QasePytestPlugin:
 
         self.runtime = Runtime()
 
-    def add_attachments(
-            self, *files: Union[str, Tuple[str, str], Tuple[bytes, str, str]]
-    ):
+    def add_attachments(self, *files: Union[str, Tuple[str, str], Tuple[bytes, str, str]]):
         for file in files:
             filename = None
             content = None
@@ -207,7 +222,7 @@ class QasePytestPlugin:
                     self.reporter.set_run_id(self.run_id)
                 except ValueError:
                     pass
-    
+
     def _get_title(self, item):
         title = None
         try:
@@ -231,12 +246,12 @@ class QasePytestPlugin:
         return str(title)
 
     def _get_signature(self, item) -> str:
-        return re.sub(r'\[.*?\]', '', item.nodeid)
+        return re.sub(r"\[.*?\]", "", item.nodeid)
 
     def _set_relations(self, item) -> None:
         # TODO: Add support for relations
         pass
-    
+
     def _set_fields(self, item) -> None:
         # Legacy fields support
         for name in ["description", "preconditions", "postconditions", "layer", "severity", "priority"]:
@@ -276,7 +291,7 @@ class QasePytestPlugin:
         self.runtime.result.testops_id = self.get_testops_id(item)
 
     def _set_params(self, item) -> None:
-        if hasattr(item, 'callspec'):
+        if hasattr(item, "callspec"):
             for key, val in item.callspec.params.items():
                 self.runtime.result.add_param(key, str(val))
 
@@ -322,11 +337,11 @@ class QasePytestPluginSingleton:
 
     @staticmethod
     def get_instance() -> QasePytestPlugin:
-        """ Static access method"""
+        """Static access method"""
         if QasePytestPluginSingleton._instance is None:
             raise PluginNotInitializedException("Init plugin first")
         return QasePytestPluginSingleton._instance
 
     def __init__(self):
-        """ Virtually private constructor"""
+        """Virtually private constructor"""
         raise Exception("Use get_instance()")
