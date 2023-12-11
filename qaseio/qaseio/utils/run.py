@@ -1,6 +1,6 @@
 import os
 from qaseio.api.runs_api import RunsApi
-from qaseio.utils.common import QaseClient, logger, api_result
+from qaseio.utils.common import QaseClient, api_result
 from qaseio.utils.web.web import Web
 
 

@@ -1,6 +1,5 @@
 import concurrent.futures
 import json
-import logging
 import os
 from functools import wraps
 import certifi
@@ -9,6 +8,15 @@ from qaseio.exceptions import ApiValueError
 from qaseio.api_client import ApiClient
 from qaseio.configuration import Configuration
 
+try:
+    # TODO: find a way to not use lib_testbed module
+    # It's used to solve the problem with missing logs when using xdist
+    from lib_testbed.generic.util.logger import log as logger
+except ImportError:
+    import logging
+
+    logger = logging.getLogger("qaseio.utils")
+
 QASE_ID_TAG = "qase.id"
 QASE_ID_TAG_NAME = "qase.id(%d)"
 QASE_TITLE_TAG_NAME = "qase.title(%s)"
@@ -16,10 +24,13 @@ ALLURE_TITLE = "@allure.title("
 API_LIMIT = 100
 KEEP_ALLURE_TITLE = False
 MAX_NUMBER_OF_SUITES = 10000
+MAX_WORKERS = 5
+MAX_THREAD_RESULTS = 20
 
-_DEFAULT_THREAD_EXECUTOR = concurrent.futures.ThreadPoolExecutor()
+# max_workers = min(5, (os.cpu_count() or 1) + 4)
+_DEFAULT_THREAD_EXECUTOR = concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
-logger = logging.getLogger("qaseio.utils")
+log = logger
 
 
 class QaseClient:

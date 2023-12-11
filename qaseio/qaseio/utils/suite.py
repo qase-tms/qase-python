@@ -1,7 +1,13 @@
 import functools
-
 from qaseio.api.cases_api import CasesApi
-from qaseio.utils.common import MAX_NUMBER_OF_SUITES, API_LIMIT, call_threaded, QaseClient, logger, get_result
+from qaseio.utils.common import (
+    MAX_NUMBER_OF_SUITES,
+    API_LIMIT,
+    call_threaded,
+    QaseClient,
+    get_result,
+    MAX_THREAD_RESULTS,
+)
 from qaseio.api.suites_api import SuitesApi
 
 
@@ -10,15 +16,10 @@ class Suite(QaseClient):
 
     def get_cases(self):
         """Get cases included in specified parent suite id"""
-        logger.info(
-            f"Fetching: %s cases for qaseio project: %s, parent_suite_id: %s",
-            self.count_cases(),
-            self.project,
-            self.parent_suite_id,
-        )
+        counted_cases = self.count_cases()
         data = {"limit": API_LIMIT}
         all_cases = []
-        if self.count_cases() < 100:
+        if counted_cases < 100:
             suites = self.all
         else:
             suites = [{"id": None, "cases_count": self.count_cases(self.all_project_suites)}]
@@ -30,19 +31,17 @@ class Suite(QaseClient):
             if suite_id:
                 data["suite_id"] = suite_id
             threads = []
-            for offset in range(0, case_count, API_LIMIT):
+            suites_ids = self.get_ids()
+            for i, offset in enumerate(range(0, case_count, API_LIMIT)):
                 data["offset"] = offset
                 thread = call_threaded(CasesApi(self.client).get_cases, code=self.project, **data)
                 threads.append(thread)
-            for thread in threads:
-                ret = get_result(thread.result())
-                if ret.count == 0:
-                    continue
-                for case in ret.entities:
-                    if case.suite_id in self.get_ids():
-                        all_cases.append(case)
+                if i and not (i % MAX_THREAD_RESULTS):
+                    all_cases.extend(get_cases_from_thread_results(threads, suites_ids))
+                    threads = []
+            all_cases.extend(get_cases_from_thread_results(threads, suites_ids))
 
-        if len(all_cases) != self.count_cases():
+        if len(all_cases) != counted_cases:
             raise RuntimeError("Not all cases where successfully collected")
         return all_cases
 
@@ -126,3 +125,15 @@ class Suite(QaseClient):
         for suite_data in self.all:
             suites_ids.add(suite_data["id"])
         return suites_ids
+
+
+def get_cases_from_thread_results(threads, suites_ids):
+    all_cases = []
+    for thread in threads:
+        ret = get_result(thread.result())
+        if ret.count == 0:
+            continue
+        for case in ret.entities:
+            if case.suite_id in suites_ids:
+                all_cases.append(case)
+    return all_cases
