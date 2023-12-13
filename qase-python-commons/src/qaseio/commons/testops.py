@@ -451,6 +451,6 @@ class QaseTestOps:
         subtests_stacktrace = [
             subtest_execution.stacktrace
             for subtest_execution in class_result.class_execution
-            if subtest_execution.stacktrace
+            if subtest_execution.stacktrace and subtest_execution.status == "failed"
         ]
         class_result.execution.stacktrace = "\n\n".join(subtests_stacktrace)
