@@ -382,30 +382,29 @@ class QaseTestOps:
 
     def add_result(self, result: Result):
         if self.enabled:
-            add_result = True
             if result.test_class:
-                result, add_result = self.merge_class_results(result)
-            if self.bulk and add_result:
+                result = self.merge_class_results(result)
+            # Test-class results are added to self.results within merge_class_results()
+            if self.bulk and not result.test_class:
                 self.results.append(result)
             elif not self.bulk:
                 self._send_result(result)
 
     # Treat results from test-class as a single test-case
-    def merge_class_results(self, result: Result) -> [Result, bool]:
-        add_result = True
+    def merge_class_results(self, result: Result) -> Result:
         class_result = next(filter(lambda all_results: result.testops_id == all_results.testops_id, self.results), None)
         # Nothing to merge
         if not class_result:
             result.class_execution.append(result.execution)
-            return result, add_result
-        # class result is already collected in self.results list()
-        add_result = False
+            self.results.append(result)
+            return result
+
         class_result.attachments.extend(result.attachments)
         class_result.class_execution.append(result.execution)
-
         if not result.test_class_completed:
-            return class_result, add_result
+            return class_result
 
+        class_result.test_class_completed = True
         # Sort subtests by their statuses. Worst result at the end.
         subtests_status = [execution.status for execution in class_result.class_execution]
         subtests_status = list(set(subtests_status))
@@ -427,7 +426,7 @@ class QaseTestOps:
         if "failed" in subtests_status:
             self.merge_stacktrace(class_result)
 
-        return class_result, add_result
+        return class_result
 
     @staticmethod
     def merge_log_execution_attachments(class_result: Result, file_name: str = "log.txt") -> None:
