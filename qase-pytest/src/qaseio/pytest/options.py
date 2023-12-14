@@ -26,7 +26,7 @@ class QasePytestOptions:
             "--qase-publish-params",
             dest="qase_publish_params",
             type="bool",
-            default=True,
+            default=False,
             help="Publish item parameters (parametrization)"
         )
 
