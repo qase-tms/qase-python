@@ -101,7 +101,7 @@ class RESTClientObject(object):
 
     def request(self, method, url, query_params=None, headers=None,
                 body=None, post_params=None, _preload_content=True,
-                _request_timeout=None):
+                _request_timeout=5 * 60):
         """Perform requests.
 
         :param method: http request method
