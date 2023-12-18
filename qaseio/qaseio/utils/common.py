@@ -1,7 +1,5 @@
-import concurrent.futures
 import json
 import os
-from functools import wraps
 import certifi
 
 from qaseio.exceptions import ApiValueError
@@ -22,13 +20,7 @@ QASE_ID_TAG_NAME = "qase.id(%d)"
 QASE_TITLE_TAG_NAME = "qase.title(%s)"
 ALLURE_TITLE = "@allure.title("
 API_LIMIT = 100
-KEEP_ALLURE_TITLE = False
 MAX_NUMBER_OF_SUITES = 10000
-MAX_WORKERS = 5
-MAX_THREAD_RESULTS = 20
-
-# max_workers = min(5, (os.cpu_count() or 1) + 4)
-_DEFAULT_THREAD_EXECUTOR = concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
 log = logger
 
@@ -57,42 +49,6 @@ class QaseClient:
         configuration.api_key["TokenAuth"] = token
         configuration.ssl_ca_cert = certifi.where()
         self.client = ApiClient(configuration)
-
-
-def threaded(f, executor=None) -> concurrent.futures.Future:
-    """Decorator starting a select function in a thread.
-    Returns a :py:class:`concurrent.futures.Future` object with
-    task executed in a parallel executor, the default executor
-    is :py:class:`concurrent.futures.ThreadPoolExecutor`.
-
-    Usage:
-
-    .. code-block:: py
-
-        @threaded
-        def my_concurrent_task(dev):
-            res = dev.run("timeout 30 tcpdump -i eth0", timeout=60)
-            return res
-
-        # this does not block, just runs the task in a thread:
-        y = my_concurrent_task(dev)
-        print(y)
-
-        # this blocks waiting for the result:
-        result = y.result()  # this is how to access the actual result
-        print(result)
-    """
-
-    @wraps(f)
-    def wrap(*args, **kwargs):
-        return (executor or _DEFAULT_THREAD_EXECUTOR).submit(f, *args, **kwargs)
-
-    return wrap
-
-
-@threaded
-def call_threaded(fn, *args, **kwargs):
-    return fn(*args, **kwargs)
 
 
 def get_result(response, *args, **kwargs):
