@@ -1,5 +1,6 @@
-import concurrent
 import functools
+from concurrent.futures import ThreadPoolExecutor
+
 from qaseio.api.cases_api import CasesApi
 from qaseio.api.suites_api import SuitesApi
 from qaseio.utils.common import (
@@ -37,7 +38,7 @@ class Suite(QaseClient):
 
             suites_ids = self.get_ids()
 
-            with concurrent.futures.ThreadPoolExecutor() as executor:
+            with ThreadPoolExecutor() as executor:
                 data_iter = [(data, offset) for offset in range(0, case_count, API_LIMIT)]
                 responses = list(executor.map(self._get_cases, data_iter, timeout=5 * 60))
                 for response in responses:
@@ -63,7 +64,7 @@ class Suite(QaseClient):
         all_suites = []
         data = {"limit": API_LIMIT}
 
-        with concurrent.futures.ThreadPoolExecutor() as executor:
+        with ThreadPoolExecutor() as executor:
             data_iter = [(data, offset) for offset in range(0, MAX_NUMBER_OF_SUITES, API_LIMIT)]
             responses = list(executor.map(self._get_suites, data_iter, timeout=5 * 60))
             for response in responses:

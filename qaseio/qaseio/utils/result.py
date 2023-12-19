@@ -1,4 +1,4 @@
-import concurrent
+from concurrent.futures import ThreadPoolExecutor
 
 from qaseio.utils.common import API_LIMIT, get_result
 from qaseio.api.results_api import ResultsApi
@@ -30,7 +30,7 @@ class Result(Run):
         number_of_results = \
             get_result(self.results_api.get_results(code=self.project, run=str(self.run_id), **one_data))["filtered"]
 
-        with concurrent.futures.ThreadPoolExecutor() as executor:
+        with ThreadPoolExecutor() as executor:
             data_iter = [(data, offset) for offset in range(0, number_of_results, API_LIMIT)]
             responses = list(executor.map(self._get_results, data_iter, timeout=5 * 60))
             for response in responses:
