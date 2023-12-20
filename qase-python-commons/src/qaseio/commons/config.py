@@ -3,7 +3,13 @@ import json
 
 class ConfigManager:
 
-    def __init__(self, config_file = './qase.config.json', env_vars_prefix = 'QASE_'):
+    def __init__(self, config_file=None, env_vars_prefix = 'QASE_'):
+        if not config_file:
+            try:
+                from lib.util.common import BASE_DIR
+                config_file = BASE_DIR / "qase.config.json"
+            except ImportError:
+                config_file = './qase.config.json'
         self.config_file = config_file
         self.env_vars_prefix = env_vars_prefix
         self.config = {}
