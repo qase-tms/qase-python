@@ -31,6 +31,7 @@ class WebApi:
             web_session = os.getenv("QASE_WEB_SESSION")
             if not web_session:
                 raise EnvironmentError("Set environment variable QASE_WEB_SESSION")
+            web_session = {web_session_name: web_session}
 
         self.srf_token = srf_token
         self.host_session = host_session
