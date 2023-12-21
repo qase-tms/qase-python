@@ -106,6 +106,7 @@ def pytest_configure(config):
             fallback=fallback,
             xdist_enabled=is_xdist_enabled(config),
             capture_logs=config.getoption("qase_framework_pytest_capture_logs", False),
+            mark_invalid=config.getoption("qase_testops_mark_failed_as_invalid", False),
             intercept_requests=config.getoption("qase_framework_pytest_capture_http", False),
             execution_plan=execution_plan,
         )
