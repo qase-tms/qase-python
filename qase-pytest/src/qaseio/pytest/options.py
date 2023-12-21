@@ -134,7 +134,17 @@ class QasePytestOptions:
             dest="qase_testops_rerun_failures",
             type="bool",
             default=False,
-            help="DOES NOT WORK YET Select only not PASSED test cases from specified run id",
+            help="Select only not PASSED test cases from specified run id",
+        )
+
+        QasePytestOptions.add_option_ini(
+            parser,
+            group,
+            "--qase-testops-mark-failed-as-invalid",
+            dest="qase_testops_mark_failed_as_invalid",
+            type="bool",
+            default=False,
+            help="Set invalid status for failed test cases",
         )
 
         QasePytestOptions.add_option_ini(
