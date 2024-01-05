@@ -7,36 +7,18 @@
     PyScaffold helps you to put up the scaffold of your new Python project.
     Learn more under: https://pyscaffold.org/
 """
-from setuptools import setup, find_packages
+import sys
+from pkg_resources import VersionConflict, require
+from setuptools import setup
 
-NAME = "qase-robotframework"
 VERSION = "2.0.0"
-# To install the library, run the following
-#
-# python setup.py install
-#
-# prerequisite: setuptools
-# http://pypi.python.org/pypi/setuptools
 
-REQUIRES = [
-  "qase-python-commons>=1.0.2",
-  "python-dateutil",
-]
+try:
+    require("setuptools>=38.3")
+except VersionConflict:
+    print("Error: version of setuptools is too old (<38.3)!")
+    sys.exit(1)
 
-setup(
-    name=NAME,
-    version=VERSION,
-    description="Qase Robot Framework Listener",
-    author="Qase Team",
-    author_email="support@qase.io",
-    url="https://github.com/qase-tms/qase-python/tree/master/qase-robotframework",
-    keywords=["Qase Listener", "Qase TestOps API"],
-    python_requires=">=3.7",
-    install_requires=REQUIRES,
-    packages=find_packages(exclude=["test", "tests"]),
-    include_package_data=True,
-    license="Apache 2.0",
-    long_description="""\
-    Qase Robot Framework Listener.  # noqa: E501
-    """
-)
+
+if __name__ == "__main__":
+    setup(use_pyscaffold=True)
