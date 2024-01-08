@@ -24,11 +24,13 @@ This method allows to create an environment in selected project.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import environments_api
-from qaseio.model.id_response import IdResponse
-from qaseio.model.environment_create import EnvironmentCreate
+from qaseio.models.environment_create import EnvironmentCreate
+from qaseio.models.id_response import IdResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -41,7 +43,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -49,31 +51,28 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = environments_api.EnvironmentsApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
-    environment_create = EnvironmentCreate(
-        title="title_example",
-        description="description_example",
-        slug="slug_example",
-        host="host_example",
-    ) # EnvironmentCreate | 
+    api_instance = qaseio.EnvironmentsApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    environment_create = qaseio.EnvironmentCreate() # EnvironmentCreate | 
 
-    # example passing only required values which don't have defaults set
     try:
         # Create a new environment.
         api_response = api_instance.create_environment(code, environment_create)
+        print("The response of EnvironmentsApi->create_environment:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling EnvironmentsApi->create_environment: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
- **environment_create** | [**EnvironmentCreate**](EnvironmentCreate.md)|  |
+ **code** | **str**| Code of project, where to search entities. | 
+ **environment_create** | [**EnvironmentCreate**](EnvironmentCreate.md)|  | 
 
 ### Return type
 
@@ -87,7 +86,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: application/json
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -116,10 +114,12 @@ This method completely deletes an environment from repository.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import environments_api
-from qaseio.model.id_response import IdResponse
+from qaseio.models.id_response import IdResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -132,7 +132,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -140,26 +140,28 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = environments_api.EnvironmentsApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
-    id = 1 # int | Identifier.
+    api_instance = qaseio.EnvironmentsApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    id = 56 # int | Identifier.
 
-    # example passing only required values which don't have defaults set
     try:
         # Delete environment.
         api_response = api_instance.delete_environment(code, id)
+        print("The response of EnvironmentsApi->delete_environment:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling EnvironmentsApi->delete_environment: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
- **id** | **int**| Identifier. |
+ **code** | **str**| Code of project, where to search entities. | 
+ **id** | **int**| Identifier. | 
 
 ### Return type
 
@@ -173,7 +175,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -201,10 +202,12 @@ This method allows to retrieve a specific environment.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import environments_api
-from qaseio.model.environment_response import EnvironmentResponse
+from qaseio.models.environment_response import EnvironmentResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -217,7 +220,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -225,26 +228,28 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = environments_api.EnvironmentsApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
-    id = 1 # int | Identifier.
+    api_instance = qaseio.EnvironmentsApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    id = 56 # int | Identifier.
 
-    # example passing only required values which don't have defaults set
     try:
         # Get a specific environment.
         api_response = api_instance.get_environment(code, id)
+        print("The response of EnvironmentsApi->get_environment:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling EnvironmentsApi->get_environment: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
- **id** | **int**| Identifier. |
+ **code** | **str**| Code of project, where to search entities. | 
+ **id** | **int**| Identifier. | 
 
 ### Return type
 
@@ -258,7 +263,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -274,7 +278,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_environments**
-> EnvironmentListResponse get_environments(code)
+> EnvironmentListResponse get_environments(code, limit=limit, offset=offset)
 
 Get all environments.
 
@@ -286,10 +290,12 @@ This method allows to retrieve all environments stored in selected project.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import environments_api
-from qaseio.model.environment_list_response import EnvironmentListResponse
+from qaseio.models.environment_list_response import EnvironmentListResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -302,7 +308,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -310,37 +316,30 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = environments_api.EnvironmentsApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
-    limit = 10 # int | A number of entities in result set. (optional) if omitted the server will use the default value of 10
-    offset = 0 # int | How many entities should be skipped. (optional) if omitted the server will use the default value of 0
+    api_instance = qaseio.EnvironmentsApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    limit = 10 # int | A number of entities in result set. (optional) (default to 10)
+    offset = 0 # int | How many entities should be skipped. (optional) (default to 0)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # Get all environments.
-        api_response = api_instance.get_environments(code)
-        pprint(api_response)
-    except qaseio.ApiException as e:
-        print("Exception when calling EnvironmentsApi->get_environments: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # Get all environments.
         api_response = api_instance.get_environments(code, limit=limit, offset=offset)
+        print("The response of EnvironmentsApi->get_environments:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling EnvironmentsApi->get_environments: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
- **limit** | **int**| A number of entities in result set. | [optional] if omitted the server will use the default value of 10
- **offset** | **int**| How many entities should be skipped. | [optional] if omitted the server will use the default value of 0
+ **code** | **str**| Code of project, where to search entities. | 
+ **limit** | **int**| A number of entities in result set. | [optional] [default to 10]
+ **offset** | **int**| How many entities should be skipped. | [optional] [default to 0]
 
 ### Return type
 
@@ -354,7 +353,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -382,11 +380,13 @@ This method updates an environment.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import environments_api
-from qaseio.model.environment_update import EnvironmentUpdate
-from qaseio.model.id_response import IdResponse
+from qaseio.models.environment_update import EnvironmentUpdate
+from qaseio.models.id_response import IdResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -399,7 +399,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -407,33 +407,30 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = environments_api.EnvironmentsApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
-    id = 1 # int | Identifier.
-    environment_update = EnvironmentUpdate(
-        title="title_example",
-        description="description_example",
-        slug="slug_example",
-        host="host_example",
-    ) # EnvironmentUpdate | 
+    api_instance = qaseio.EnvironmentsApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    id = 56 # int | Identifier.
+    environment_update = qaseio.EnvironmentUpdate() # EnvironmentUpdate | 
 
-    # example passing only required values which don't have defaults set
     try:
         # Update environment.
         api_response = api_instance.update_environment(code, id, environment_update)
+        print("The response of EnvironmentsApi->update_environment:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling EnvironmentsApi->update_environment: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
- **id** | **int**| Identifier. |
- **environment_update** | [**EnvironmentUpdate**](EnvironmentUpdate.md)|  |
+ **code** | **str**| Code of project, where to search entities. | 
+ **id** | **int**| Identifier. | 
+ **environment_update** | [**EnvironmentUpdate**](EnvironmentUpdate.md)|  | 
 
 ### Return type
 
@@ -447,7 +444,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: application/json
  - **Accept**: application/json
-
 
 ### HTTP response details
 

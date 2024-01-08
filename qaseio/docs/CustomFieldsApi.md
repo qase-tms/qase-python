@@ -24,11 +24,13 @@ This method allows to create custom field.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import custom_fields_api
-from qaseio.model.custom_field_create import CustomFieldCreate
-from qaseio.model.id_response import IdResponse
+from qaseio.models.custom_field_create import CustomFieldCreate
+from qaseio.models.id_response import IdResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -41,7 +43,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -49,43 +51,26 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = custom_fields_api.CustomFieldsApi(api_client)
-    custom_field_create = CustomFieldCreate(
-        title="title_example",
-        value=[
-            CustomFieldCreateValueInner(
-                id=1,
-                title="title_example",
-            ),
-        ],
-        entity=0,
-        type=0,
-        placeholder="placeholder_example",
-        default_value="default_value_example",
-        is_filterable=True,
-        is_visible=True,
-        is_required=True,
-        is_enabled_for_all_projects=True,
-        projects_codes=[
-            "projects_codes_example",
-        ],
-    ) # CustomFieldCreate | 
+    api_instance = qaseio.CustomFieldsApi(api_client)
+    custom_field_create = qaseio.CustomFieldCreate() # CustomFieldCreate | 
 
-    # example passing only required values which don't have defaults set
     try:
         # Create new Custom Field.
         api_response = api_instance.create_custom_field(custom_field_create)
+        print("The response of CustomFieldsApi->create_custom_field:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling CustomFieldsApi->create_custom_field: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **custom_field_create** | [**CustomFieldCreate**](CustomFieldCreate.md)|  |
+ **custom_field_create** | [**CustomFieldCreate**](CustomFieldCreate.md)|  | 
 
 ### Return type
 
@@ -99,7 +84,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: application/json
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -115,7 +99,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **delete_custom_field**
-> Response delete_custom_field(id)
+> BaseResponse delete_custom_field(id)
 
 Delete Custom Field by id.
 
@@ -127,10 +111,12 @@ This method allows to delete custom field.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import custom_fields_api
-from qaseio.model.response import Response
+from qaseio.models.base_response import BaseResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -143,7 +129,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -151,28 +137,30 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = custom_fields_api.CustomFieldsApi(api_client)
-    id = 1 # int | Identifier.
+    api_instance = qaseio.CustomFieldsApi(api_client)
+    id = 56 # int | Identifier.
 
-    # example passing only required values which don't have defaults set
     try:
         # Delete Custom Field by id.
         api_response = api_instance.delete_custom_field(id)
+        print("The response of CustomFieldsApi->delete_custom_field:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling CustomFieldsApi->delete_custom_field: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **int**| Identifier. |
+ **id** | **int**| Identifier. | 
 
 ### Return type
 
-[**Response**](Response.md)
+[**BaseResponse**](BaseResponse.md)
 
 ### Authorization
 
@@ -182,7 +170,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -210,10 +197,12 @@ This method allows to retrieve custom field.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import custom_fields_api
-from qaseio.model.custom_field_response import CustomFieldResponse
+from qaseio.models.custom_field_response import CustomFieldResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -226,7 +215,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -234,24 +223,26 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = custom_fields_api.CustomFieldsApi(api_client)
-    id = 1 # int | Identifier.
+    api_instance = qaseio.CustomFieldsApi(api_client)
+    id = 56 # int | Identifier.
 
-    # example passing only required values which don't have defaults set
     try:
         # Get Custom Field by id.
         api_response = api_instance.get_custom_field(id)
+        print("The response of CustomFieldsApi->get_custom_field:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling CustomFieldsApi->get_custom_field: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **int**| Identifier. |
+ **id** | **int**| Identifier. | 
 
 ### Return type
 
@@ -265,7 +256,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -281,7 +271,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_custom_fields**
-> CustomFieldsResponse get_custom_fields()
+> CustomFieldListResponse get_custom_fields(entity=entity, type=type, limit=limit, offset=offset)
 
 Get all Custom Fields.
 
@@ -293,10 +283,12 @@ This method allows to retrieve and filter custom fields.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import custom_fields_api
-from qaseio.model.custom_fields_response import CustomFieldsResponse
+from qaseio.models.custom_field_list_response import CustomFieldListResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -309,7 +301,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -317,35 +309,36 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = custom_fields_api.CustomFieldsApi(api_client)
-    entity = "case" # str |  (optional)
-    type = "string" # str |  (optional)
-    limit = 10 # int | A number of entities in result set. (optional) if omitted the server will use the default value of 10
-    offset = 0 # int | How many entities should be skipped. (optional) if omitted the server will use the default value of 0
+    api_instance = qaseio.CustomFieldsApi(api_client)
+    entity = 'entity_example' # str |  (optional)
+    type = 'type_example' # str |  (optional)
+    limit = 10 # int | A number of entities in result set. (optional) (default to 10)
+    offset = 0 # int | How many entities should be skipped. (optional) (default to 0)
 
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # Get all Custom Fields.
         api_response = api_instance.get_custom_fields(entity=entity, type=type, limit=limit, offset=offset)
+        print("The response of CustomFieldsApi->get_custom_fields:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling CustomFieldsApi->get_custom_fields: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **entity** | **str**|  | [optional]
- **type** | **str**|  | [optional]
- **limit** | **int**| A number of entities in result set. | [optional] if omitted the server will use the default value of 10
- **offset** | **int**| How many entities should be skipped. | [optional] if omitted the server will use the default value of 0
+ **entity** | **str**|  | [optional] 
+ **type** | **str**|  | [optional] 
+ **limit** | **int**| A number of entities in result set. | [optional] [default to 10]
+ **offset** | **int**| How many entities should be skipped. | [optional] [default to 0]
 
 ### Return type
 
-[**CustomFieldsResponse**](CustomFieldsResponse.md)
+[**CustomFieldListResponse**](CustomFieldListResponse.md)
 
 ### Authorization
 
@@ -355,7 +348,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -370,7 +362,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **update_custom_field**
-> Response update_custom_field(id, custom_field_update)
+> BaseResponse update_custom_field(id, custom_field_update)
 
 Update Custom Field by id.
 
@@ -382,11 +374,13 @@ This method allows to update custom field.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import custom_fields_api
-from qaseio.model.response import Response
-from qaseio.model.custom_field_update import CustomFieldUpdate
+from qaseio.models.base_response import BaseResponse
+from qaseio.models.custom_field_update import CustomFieldUpdate
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -399,7 +393,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -407,50 +401,32 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = custom_fields_api.CustomFieldsApi(api_client)
-    id = 1 # int | Identifier.
-    custom_field_update = CustomFieldUpdate(
-        title="title_example",
-        value=[
-            CustomFieldCreateValueInner(
-                id=1,
-                title="title_example",
-            ),
-        ],
-        replace_values={
-            "key": "key_example",
-        },
-        placeholder="placeholder_example",
-        default_value="default_value_example",
-        is_filterable=True,
-        is_visible=True,
-        is_required=True,
-        is_enabled_for_all_projects=True,
-        projects_codes=[
-            "projects_codes_example",
-        ],
-    ) # CustomFieldUpdate | 
+    api_instance = qaseio.CustomFieldsApi(api_client)
+    id = 56 # int | Identifier.
+    custom_field_update = qaseio.CustomFieldUpdate() # CustomFieldUpdate | 
 
-    # example passing only required values which don't have defaults set
     try:
         # Update Custom Field by id.
         api_response = api_instance.update_custom_field(id, custom_field_update)
+        print("The response of CustomFieldsApi->update_custom_field:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling CustomFieldsApi->update_custom_field: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **int**| Identifier. |
- **custom_field_update** | [**CustomFieldUpdate**](CustomFieldUpdate.md)|  |
+ **id** | **int**| Identifier. | 
+ **custom_field_update** | [**CustomFieldUpdate**](CustomFieldUpdate.md)|  | 
 
 ### Return type
 
-[**Response**](Response.md)
+[**BaseResponse**](BaseResponse.md)
 
 ### Authorization
 
@@ -460,7 +436,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: application/json
  - **Accept**: application/json
-
 
 ### HTTP response details
 

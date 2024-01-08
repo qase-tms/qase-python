@@ -26,11 +26,13 @@ This method allows to create a defect in selected project.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import defects_api
-from qaseio.model.defect_create import DefectCreate
-from qaseio.model.id_response import IdResponse
+from qaseio.models.defect_create import DefectCreate
+from qaseio.models.id_response import IdResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -43,7 +45,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -51,40 +53,28 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = defects_api.DefectsApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
-    defect_create = DefectCreate(
-        title="title_example",
-        actual_result="actual_result_example",
-        severity=1,
-        milestone_id=1,
-        attachments=[
-            "attachments_example",
-        ],
-        custom_field={
-            "key": "key_example",
-        },
-        tags=[
-            "tags_example",
-        ],
-    ) # DefectCreate | 
+    api_instance = qaseio.DefectsApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    defect_create = qaseio.DefectCreate() # DefectCreate | 
 
-    # example passing only required values which don't have defaults set
     try:
         # Create a new defect.
         api_response = api_instance.create_defect(code, defect_create)
+        print("The response of DefectsApi->create_defect:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling DefectsApi->create_defect: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
- **defect_create** | [**DefectCreate**](DefectCreate.md)|  |
+ **code** | **str**| Code of project, where to search entities. | 
+ **defect_create** | [**DefectCreate**](DefectCreate.md)|  | 
 
 ### Return type
 
@@ -98,7 +88,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: application/json
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -127,10 +116,12 @@ This method completely deletes a defect from repository.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import defects_api
-from qaseio.model.id_response import IdResponse
+from qaseio.models.id_response import IdResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -143,7 +134,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -151,26 +142,28 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = defects_api.DefectsApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
-    id = 1 # int | Identifier.
+    api_instance = qaseio.DefectsApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    id = 56 # int | Identifier.
 
-    # example passing only required values which don't have defaults set
     try:
         # Delete defect.
         api_response = api_instance.delete_defect(code, id)
+        print("The response of DefectsApi->delete_defect:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling DefectsApi->delete_defect: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
- **id** | **int**| Identifier. |
+ **code** | **str**| Code of project, where to search entities. | 
+ **id** | **int**| Identifier. | 
 
 ### Return type
 
@@ -184,7 +177,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -212,10 +204,12 @@ This method allows to retrieve a specific defect.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import defects_api
-from qaseio.model.defect_response import DefectResponse
+from qaseio.models.defect_response import DefectResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -228,7 +222,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -236,26 +230,28 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = defects_api.DefectsApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
-    id = 1 # int | Identifier.
+    api_instance = qaseio.DefectsApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    id = 56 # int | Identifier.
 
-    # example passing only required values which don't have defaults set
     try:
         # Get a specific defect.
         api_response = api_instance.get_defect(code, id)
+        print("The response of DefectsApi->get_defect:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling DefectsApi->get_defect: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
- **id** | **int**| Identifier. |
+ **code** | **str**| Code of project, where to search entities. | 
+ **id** | **int**| Identifier. | 
 
 ### Return type
 
@@ -269,7 +265,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -285,7 +280,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_defects**
-> DefectListResponse get_defects(code)
+> DefectListResponse get_defects(code, status=status, limit=limit, offset=offset)
 
 Get all defects.
 
@@ -297,10 +292,12 @@ This method allows to retrieve all defects stored in selected project.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import defects_api
-from qaseio.model.defect_list_response import DefectListResponse
+from qaseio.models.defect_list_response import DefectListResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -313,7 +310,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -321,39 +318,32 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = defects_api.DefectsApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
-    status = "open" # str |  (optional)
-    limit = 10 # int | A number of entities in result set. (optional) if omitted the server will use the default value of 10
-    offset = 0 # int | How many entities should be skipped. (optional) if omitted the server will use the default value of 0
+    api_instance = qaseio.DefectsApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    status = 'status_example' # str |  (optional)
+    limit = 10 # int | A number of entities in result set. (optional) (default to 10)
+    offset = 0 # int | How many entities should be skipped. (optional) (default to 0)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # Get all defects.
-        api_response = api_instance.get_defects(code)
-        pprint(api_response)
-    except qaseio.ApiException as e:
-        print("Exception when calling DefectsApi->get_defects: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # Get all defects.
         api_response = api_instance.get_defects(code, status=status, limit=limit, offset=offset)
+        print("The response of DefectsApi->get_defects:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling DefectsApi->get_defects: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
- **status** | **str**|  | [optional]
- **limit** | **int**| A number of entities in result set. | [optional] if omitted the server will use the default value of 10
- **offset** | **int**| How many entities should be skipped. | [optional] if omitted the server will use the default value of 0
+ **code** | **str**| Code of project, where to search entities. | 
+ **status** | **str**|  | [optional] 
+ **limit** | **int**| A number of entities in result set. | [optional] [default to 10]
+ **offset** | **int**| How many entities should be skipped. | [optional] [default to 0]
 
 ### Return type
 
@@ -367,7 +357,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -395,10 +384,12 @@ This method allows to resolve a specific defect.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import defects_api
-from qaseio.model.id_response import IdResponse
+from qaseio.models.id_response import IdResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -411,7 +402,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -419,26 +410,28 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = defects_api.DefectsApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
-    id = 1 # int | Identifier.
+    api_instance = qaseio.DefectsApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    id = 56 # int | Identifier.
 
-    # example passing only required values which don't have defaults set
     try:
         # Resolve a specific defect.
         api_response = api_instance.resolve_defect(code, id)
+        print("The response of DefectsApi->resolve_defect:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling DefectsApi->resolve_defect: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
- **id** | **int**| Identifier. |
+ **code** | **str**| Code of project, where to search entities. | 
+ **id** | **int**| Identifier. | 
 
 ### Return type
 
@@ -452,7 +445,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -481,11 +473,13 @@ This method updates a defect.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import defects_api
-from qaseio.model.defect_update import DefectUpdate
-from qaseio.model.id_response import IdResponse
+from qaseio.models.defect_update import DefectUpdate
+from qaseio.models.id_response import IdResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -498,7 +492,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -506,42 +500,30 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = defects_api.DefectsApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
-    id = 1 # int | Identifier.
-    defect_update = DefectUpdate(
-        title="title_example",
-        actual_result="actual_result_example",
-        severity=1,
-        milestone_id=1,
-        attachments=[
-            "attachments_example",
-        ],
-        custom_field={
-            "key": "key_example",
-        },
-        tags=[
-            "tags_example",
-        ],
-    ) # DefectUpdate | 
+    api_instance = qaseio.DefectsApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    id = 56 # int | Identifier.
+    defect_update = qaseio.DefectUpdate() # DefectUpdate | 
 
-    # example passing only required values which don't have defaults set
     try:
         # Update defect.
         api_response = api_instance.update_defect(code, id, defect_update)
+        print("The response of DefectsApi->update_defect:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling DefectsApi->update_defect: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
- **id** | **int**| Identifier. |
- **defect_update** | [**DefectUpdate**](DefectUpdate.md)|  |
+ **code** | **str**| Code of project, where to search entities. | 
+ **id** | **int**| Identifier. | 
+ **defect_update** | [**DefectUpdate**](DefectUpdate.md)|  | 
 
 ### Return type
 
@@ -555,7 +537,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: application/json
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -572,7 +553,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **update_defect_status**
-> Response update_defect_status(code, id, defect_status)
+> BaseResponse update_defect_status(code, id, defect_status)
 
 Update a specific defect status.
 
@@ -584,11 +565,13 @@ This method allows to update a specific defect status.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import defects_api
-from qaseio.model.response import Response
-from qaseio.model.defect_status import DefectStatus
+from qaseio.models.base_response import BaseResponse
+from qaseio.models.defect_status import DefectStatus
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -601,7 +584,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -609,34 +592,34 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = defects_api.DefectsApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
-    id = 1 # int | Identifier.
-    defect_status = DefectStatus(
-        status="in_progress",
-    ) # DefectStatus | 
+    api_instance = qaseio.DefectsApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    id = 56 # int | Identifier.
+    defect_status = qaseio.DefectStatus() # DefectStatus | 
 
-    # example passing only required values which don't have defaults set
     try:
         # Update a specific defect status.
         api_response = api_instance.update_defect_status(code, id, defect_status)
+        print("The response of DefectsApi->update_defect_status:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling DefectsApi->update_defect_status: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
- **id** | **int**| Identifier. |
- **defect_status** | [**DefectStatus**](DefectStatus.md)|  |
+ **code** | **str**| Code of project, where to search entities. | 
+ **id** | **int**| Identifier. | 
+ **defect_status** | [**DefectStatus**](DefectStatus.md)|  | 
 
 ### Return type
 
-[**Response**](Response.md)
+[**BaseResponse**](BaseResponse.md)
 
 ### Authorization
 
@@ -646,7 +629,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: application/json
  - **Accept**: application/json
-
 
 ### HTTP response details
 

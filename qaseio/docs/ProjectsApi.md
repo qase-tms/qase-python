@@ -25,11 +25,13 @@ This method is used to create a new project through API.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import projects_api
-from qaseio.model.project_code_response import ProjectCodeResponse
-from qaseio.model.project_create import ProjectCreate
+from qaseio.models.project_code_response import ProjectCodeResponse
+from qaseio.models.project_create import ProjectCreate
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -42,7 +44,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -50,30 +52,26 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = projects_api.ProjectsApi(api_client)
-    project_create = ProjectCreate(
-        title="title_example",
-        code="EiOTgsw",
-        description="description_example",
-        access="all",
-        group="group_example",
-    ) # ProjectCreate | 
+    api_instance = qaseio.ProjectsApi(api_client)
+    project_create = qaseio.ProjectCreate() # ProjectCreate | 
 
-    # example passing only required values which don't have defaults set
     try:
         # Create new project.
         api_response = api_instance.create_project(project_create)
+        print("The response of ProjectsApi->create_project:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling ProjectsApi->create_project: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **project_create** | [**ProjectCreate**](ProjectCreate.md)|  |
+ **project_create** | [**ProjectCreate**](ProjectCreate.md)|  | 
 
 ### Return type
 
@@ -87,7 +85,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: application/json
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -103,7 +100,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **delete_project**
-> Response delete_project(code)
+> BaseResponse delete_project(code)
 
 Delete Project by code.
 
@@ -115,10 +112,12 @@ This method allows to delete a specific project.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import projects_api
-from qaseio.model.response import Response
+from qaseio.models.base_response import BaseResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -131,7 +130,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -139,28 +138,30 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = projects_api.ProjectsApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
+    api_instance = qaseio.ProjectsApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
 
-    # example passing only required values which don't have defaults set
     try:
         # Delete Project by code.
         api_response = api_instance.delete_project(code)
+        print("The response of ProjectsApi->delete_project:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling ProjectsApi->delete_project: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
+ **code** | **str**| Code of project, where to search entities. | 
 
 ### Return type
 
-[**Response**](Response.md)
+[**BaseResponse**](BaseResponse.md)
 
 ### Authorization
 
@@ -170,7 +171,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -198,10 +198,12 @@ This method allows to retrieve a specific project.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import projects_api
-from qaseio.model.project_response import ProjectResponse
+from qaseio.models.project_response import ProjectResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -214,7 +216,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -222,24 +224,26 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = projects_api.ProjectsApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
+    api_instance = qaseio.ProjectsApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
 
-    # example passing only required values which don't have defaults set
     try:
         # Get Project by code.
         api_response = api_instance.get_project(code)
+        print("The response of ProjectsApi->get_project:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling ProjectsApi->get_project: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
+ **code** | **str**| Code of project, where to search entities. | 
 
 ### Return type
 
@@ -253,7 +257,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -269,7 +272,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_projects**
-> ProjectListResponse get_projects()
+> ProjectListResponse get_projects(limit=limit, offset=offset)
 
 Get All Projects.
 
@@ -281,10 +284,12 @@ This method allows to retrieve all projects available for your account. You can 
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import projects_api
-from qaseio.model.project_list_response import ProjectListResponse
+from qaseio.models.project_list_response import ProjectListResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -297,7 +302,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -305,27 +310,28 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = projects_api.ProjectsApi(api_client)
-    limit = 10 # int | A number of entities in result set. (optional) if omitted the server will use the default value of 10
-    offset = 0 # int | How many entities should be skipped. (optional) if omitted the server will use the default value of 0
+    api_instance = qaseio.ProjectsApi(api_client)
+    limit = 10 # int | A number of entities in result set. (optional) (default to 10)
+    offset = 0 # int | How many entities should be skipped. (optional) (default to 0)
 
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # Get All Projects.
         api_response = api_instance.get_projects(limit=limit, offset=offset)
+        print("The response of ProjectsApi->get_projects:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling ProjectsApi->get_projects: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **limit** | **int**| A number of entities in result set. | [optional] if omitted the server will use the default value of 10
- **offset** | **int**| How many entities should be skipped. | [optional] if omitted the server will use the default value of 0
+ **limit** | **int**| A number of entities in result set. | [optional] [default to 10]
+ **offset** | **int**| How many entities should be skipped. | [optional] [default to 0]
 
 ### Return type
 
@@ -340,7 +346,6 @@ Name | Type | Description  | Notes
  - **Content-Type**: Not defined
  - **Accept**: application/json
 
-
 ### HTTP response details
 
 | Status code | Description | Response headers |
@@ -354,7 +359,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **grant_access_to_project**
-> Response grant_access_to_project(code, project_access)
+> BaseResponse grant_access_to_project(code, project_access)
 
 Grant access to project by code.
 
@@ -366,11 +371,13 @@ This method allows to grant access to a specific project.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import projects_api
-from qaseio.model.response import Response
-from qaseio.model.project_access import ProjectAccess
+from qaseio.models.base_response import BaseResponse
+from qaseio.models.project_access import ProjectAccess
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -383,7 +390,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -391,32 +398,32 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = projects_api.ProjectsApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
-    project_access = ProjectAccess(
-        member_id=1,
-    ) # ProjectAccess | 
+    api_instance = qaseio.ProjectsApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    project_access = qaseio.ProjectAccess() # ProjectAccess | 
 
-    # example passing only required values which don't have defaults set
     try:
         # Grant access to project by code.
         api_response = api_instance.grant_access_to_project(code, project_access)
+        print("The response of ProjectsApi->grant_access_to_project:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling ProjectsApi->grant_access_to_project: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
- **project_access** | [**ProjectAccess**](ProjectAccess.md)|  |
+ **code** | **str**| Code of project, where to search entities. | 
+ **project_access** | [**ProjectAccess**](ProjectAccess.md)|  | 
 
 ### Return type
 
-[**Response**](Response.md)
+[**BaseResponse**](BaseResponse.md)
 
 ### Authorization
 
@@ -426,7 +433,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: application/json
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -443,7 +449,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **revoke_access_to_project**
-> Response revoke_access_to_project(code, project_access)
+> BaseResponse revoke_access_to_project(code, project_access)
 
 Revoke access to project by code.
 
@@ -455,11 +461,13 @@ This method allows to revoke access to a specific project.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import projects_api
-from qaseio.model.response import Response
-from qaseio.model.project_access import ProjectAccess
+from qaseio.models.base_response import BaseResponse
+from qaseio.models.project_access import ProjectAccess
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -472,7 +480,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -480,32 +488,32 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = projects_api.ProjectsApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
-    project_access = ProjectAccess(
-        member_id=1,
-    ) # ProjectAccess | 
+    api_instance = qaseio.ProjectsApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    project_access = qaseio.ProjectAccess() # ProjectAccess | 
 
-    # example passing only required values which don't have defaults set
     try:
         # Revoke access to project by code.
         api_response = api_instance.revoke_access_to_project(code, project_access)
+        print("The response of ProjectsApi->revoke_access_to_project:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling ProjectsApi->revoke_access_to_project: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
- **project_access** | [**ProjectAccess**](ProjectAccess.md)|  |
+ **code** | **str**| Code of project, where to search entities. | 
+ **project_access** | [**ProjectAccess**](ProjectAccess.md)|  | 
 
 ### Return type
 
-[**Response**](Response.md)
+[**BaseResponse**](BaseResponse.md)
 
 ### Authorization
 
@@ -515,7 +523,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: application/json
  - **Accept**: application/json
-
 
 ### HTTP response details
 

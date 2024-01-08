@@ -2,16 +2,33 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**start_time** | **float, none_type** |  | [optional] 
-**end_time** | **float, none_type** |  | [optional] 
-**status** | **str** |  | [optional] 
-**duration** | **int, none_type** |  | [optional] 
+**start_time** | **float** |  | [optional] 
+**end_time** | **float** |  | [optional] 
+**status** | **str** |  | 
+**duration** | **int** |  | [optional] 
 **stacktrace** | **str** |  | [optional] 
 **thread** | **str** |  | [optional] 
-**any string name** | **bool, date, datetime, dict, float, int, list, str, none_type** | any string name can be used but the value must be the correct type | [optional]
 
+## Example
+
+```python
+from qaseio.models.result_execution import ResultExecution
+
+# TODO update the JSON string below
+json = "{}"
+# create an instance of ResultExecution from a JSON string
+result_execution_instance = ResultExecution.from_json(json)
+# print the JSON string representation of the object
+print ResultExecution.to_json()
+
+# convert the object into a dict
+result_execution_dict = result_execution_instance.to_dict()
+# create an instance of ResultExecution from a dict
+result_execution_form_dict = result_execution.from_dict(result_execution_dict)
+```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
 

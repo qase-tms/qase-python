@@ -4,13 +4,15 @@ All URIs are relative to *https://api.qase.io/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**create_results_v2**](ResultApi.md#create_results_v2) | **POST** /{project_code}/run/{run_id}/results | 
+[**create_results_v2**](ResultApi.md#create_results_v2) | **POST** /{project_code}/run/{run_id}/results | (Beta) Bulk create test run result.
 
 
 # **create_results_v2**
 > create_results_v2(project_code, run_id, create_results_request_v2)
 
+(Beta) Bulk create test run result.
 
+This method allows to create a lot of test run result at once.  If there is no free space left in your team account, when attempting to upload an attachment, e.g., through reporters, you will receive an error with code 507 - Insufficient Storage. 
 
 ### Example
 
@@ -18,10 +20,12 @@ Method | HTTP request | Description
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import result_api
-from qaseio.model.create_results_request_v2 import CreateResultsRequestV2
+from qaseio.models.create_results_request_v2 import CreateResultsRequestV2
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -34,7 +38,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -42,26 +46,28 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = result_api.ResultApi(api_client)
-    project_code = "project_code_example" # str | 
-    run_id = 1 # int | 
-    create_results_request_v2 = CreateResultsRequestV2(None) # CreateResultsRequestV2 | 
+    api_instance = qaseio.ResultApi(api_client)
+    project_code = 'project_code_example' # str | 
+    run_id = 56 # int | 
+    create_results_request_v2 = qaseio.CreateResultsRequestV2() # CreateResultsRequestV2 | 
 
-    # example passing only required values which don't have defaults set
     try:
+        # (Beta) Bulk create test run result.
         api_instance.create_results_v2(project_code, run_id, create_results_request_v2)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling ResultApi->create_results_v2: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **project_code** | **str**|  |
- **run_id** | **int**|  |
- **create_results_request_v2** | [**CreateResultsRequestV2**](CreateResultsRequestV2.md)|  |
+ **project_code** | **str**|  | 
+ **run_id** | **int**|  | 
+ **create_results_request_v2** | [**CreateResultsRequestV2**](CreateResultsRequestV2.md)|  | 
 
 ### Return type
 
@@ -74,14 +80,18 @@ void (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: application/json
- - **Accept**: Not defined
-
+ - **Accept**: application/json
 
 ### HTTP response details
 
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**200** | OK |  -  |
+**202** | OK |  -  |
+**400** | Bad Request |  -  |
+**401** | Unauthorized |  -  |
+**403** | Forbidden |  -  |
+**404** | Not Found |  -  |
+**422** | Unprocessable Entity |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

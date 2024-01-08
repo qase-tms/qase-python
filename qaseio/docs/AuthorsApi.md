@@ -21,10 +21,12 @@ This method allows to retrieve a specific author.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import authors_api
-from qaseio.model.author_response import AuthorResponse
+from qaseio.models.author_response import AuthorResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -37,7 +39,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -45,24 +47,26 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authors_api.AuthorsApi(api_client)
-    id = 1 # int | Identifier.
+    api_instance = qaseio.AuthorsApi(api_client)
+    id = 56 # int | Identifier.
 
-    # example passing only required values which don't have defaults set
     try:
         # Get a specific author.
         api_response = api_instance.get_author(id)
+        print("The response of AuthorsApi->get_author:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling AuthorsApi->get_author: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **int**| Identifier. |
+ **id** | **int**| Identifier. | 
 
 ### Return type
 
@@ -76,7 +80,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -92,7 +95,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_authors**
-> AuthorListResponse get_authors()
+> AuthorListResponse get_authors(search=search, type=type, limit=limit, offset=offset)
 
 Get all authors.
 
@@ -104,10 +107,12 @@ This method allows to retrieve all authors in selected project.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import authors_api
-from qaseio.model.author_list_response import AuthorListResponse
+from qaseio.models.author_list_response import AuthorListResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -120,7 +125,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -128,31 +133,32 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authors_api.AuthorsApi(api_client)
-    search = "search_example" # str | Provide a string that will be used to search by name. (optional)
-    type = "app" # str |  (optional)
-    limit = 10 # int | A number of entities in result set. (optional) if omitted the server will use the default value of 10
-    offset = 0 # int | How many entities should be skipped. (optional) if omitted the server will use the default value of 0
+    api_instance = qaseio.AuthorsApi(api_client)
+    search = 'search_example' # str | Provide a string that will be used to search by name. (optional)
+    type = 'type_example' # str |  (optional)
+    limit = 10 # int | A number of entities in result set. (optional) (default to 10)
+    offset = 0 # int | How many entities should be skipped. (optional) (default to 0)
 
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # Get all authors.
         api_response = api_instance.get_authors(search=search, type=type, limit=limit, offset=offset)
+        print("The response of AuthorsApi->get_authors:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling AuthorsApi->get_authors: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **search** | **str**| Provide a string that will be used to search by name. | [optional]
- **type** | **str**|  | [optional]
- **limit** | **int**| A number of entities in result set. | [optional] if omitted the server will use the default value of 10
- **offset** | **int**| How many entities should be skipped. | [optional] if omitted the server will use the default value of 0
+ **search** | **str**| Provide a string that will be used to search by name. | [optional] 
+ **type** | **str**|  | [optional] 
+ **limit** | **int**| A number of entities in result set. | [optional] [default to 10]
+ **offset** | **int**| How many entities should be skipped. | [optional] [default to 0]
 
 ### Return type
 
@@ -166,7 +172,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 

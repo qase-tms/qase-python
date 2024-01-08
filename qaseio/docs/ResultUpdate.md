@@ -2,17 +2,34 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **status** | **str** |  | [optional] 
-**time_ms** | **int, none_type** |  | [optional] 
-**defect** | **bool, none_type** |  | [optional] 
-**attachments** | **[str], none_type** |  | [optional] 
-**stacktrace** | **str, none_type** |  | [optional] 
-**comment** | **str, none_type** |  | [optional] 
-**steps** | [**[TestStepResultCreate], none_type**](TestStepResultCreate.md) |  | [optional] 
-**any string name** | **bool, date, datetime, dict, float, int, list, str, none_type** | any string name can be used but the value must be the correct type | [optional]
+**time_ms** | **int** |  | [optional] 
+**defect** | **bool** |  | [optional] 
+**attachments** | **List[str]** |  | [optional] 
+**stacktrace** | **str** |  | [optional] 
+**comment** | **str** |  | [optional] 
+**steps** | [**List[TestStepResultCreate]**](TestStepResultCreate.md) |  | [optional] 
 
+## Example
+
+```python
+from qaseio.models.result_update import ResultUpdate
+
+# TODO update the JSON string below
+json = "{}"
+# create an instance of ResultUpdate from a JSON string
+result_update_instance = ResultUpdate.from_json(json)
+# print the JSON string representation of the object
+print ResultUpdate.to_json()
+
+# convert the object into a dict
+result_update_dict = result_update_instance.to_dict()
+# create an instance of ResultUpdate from a dict
+result_update_form_dict = result_update.from_dict(result_update_dict)
+```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
 

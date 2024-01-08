@@ -2,15 +2,32 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **int** |  | [optional] 
 **title** | **str** |  | [optional] 
-**description** | **str, none_type** |  | [optional] 
+**description** | **str** |  | [optional] 
 **slug** | **str** |  | [optional] 
-**host** | **str, none_type** |  | [optional] 
-**any string name** | **bool, date, datetime, dict, float, int, list, str, none_type** | any string name can be used but the value must be the correct type | [optional]
+**host** | **str** |  | [optional] 
 
+## Example
+
+```python
+from qaseio.models.environment import Environment
+
+# TODO update the JSON string below
+json = "{}"
+# create an instance of Environment from a JSON string
+environment_instance = Environment.from_json(json)
+# print the JSON string representation of the object
+print Environment.to_json()
+
+# convert the object into a dict
+environment_dict = environment_instance.to_dict()
+# create an instance of Environment from a dict
+environment_form_dict = environment.from_dict(environment_dict)
+```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
 

@@ -24,11 +24,13 @@ This method is used to create a new test suite through API.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import suites_api
-from qaseio.model.suite_create import SuiteCreate
-from qaseio.model.id_response import IdResponse
+from qaseio.models.id_response import IdResponse
+from qaseio.models.suite_create import SuiteCreate
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -41,7 +43,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -49,31 +51,28 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = suites_api.SuitesApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
-    suite_create = SuiteCreate(
-        title="title_example",
-        description="description_example",
-        preconditions="preconditions_example",
-        parent_id=1,
-    ) # SuiteCreate | 
+    api_instance = qaseio.SuitesApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    suite_create = qaseio.SuiteCreate() # SuiteCreate | 
 
-    # example passing only required values which don't have defaults set
     try:
         # Create a new test suite.
         api_response = api_instance.create_suite(code, suite_create)
+        print("The response of SuitesApi->create_suite:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling SuitesApi->create_suite: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
- **suite_create** | [**SuiteCreate**](SuiteCreate.md)|  |
+ **code** | **str**| Code of project, where to search entities. | 
+ **suite_create** | [**SuiteCreate**](SuiteCreate.md)|  | 
 
 ### Return type
 
@@ -87,7 +86,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: application/json
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -104,7 +102,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **delete_suite**
-> IdResponse delete_suite(code, id)
+> IdResponse delete_suite(code, id, suite_delete=suite_delete)
 
 Delete test suite.
 
@@ -116,11 +114,13 @@ This method completely deletes a test suite with test cases from repository.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import suites_api
-from qaseio.model.id_response import IdResponse
-from qaseio.model.suite_delete import SuiteDelete
+from qaseio.models.id_response import IdResponse
+from qaseio.models.suite_delete import SuiteDelete
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -133,7 +133,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -141,39 +141,30 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = suites_api.SuitesApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
-    id = 1 # int | Identifier.
-    suite_delete = SuiteDelete(
-        destination_id=1,
-    ) # SuiteDelete |  (optional)
+    api_instance = qaseio.SuitesApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    id = 56 # int | Identifier.
+    suite_delete = qaseio.SuiteDelete() # SuiteDelete |  (optional)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # Delete test suite.
-        api_response = api_instance.delete_suite(code, id)
-        pprint(api_response)
-    except qaseio.ApiException as e:
-        print("Exception when calling SuitesApi->delete_suite: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # Delete test suite.
         api_response = api_instance.delete_suite(code, id, suite_delete=suite_delete)
+        print("The response of SuitesApi->delete_suite:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling SuitesApi->delete_suite: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
- **id** | **int**| Identifier. |
- **suite_delete** | [**SuiteDelete**](SuiteDelete.md)|  | [optional]
+ **code** | **str**| Code of project, where to search entities. | 
+ **id** | **int**| Identifier. | 
+ **suite_delete** | [**SuiteDelete**](SuiteDelete.md)|  | [optional] 
 
 ### Return type
 
@@ -187,7 +178,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: application/json
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -215,10 +205,12 @@ This method allows to retrieve a specific test suite.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import suites_api
-from qaseio.model.suite_response import SuiteResponse
+from qaseio.models.suite_response import SuiteResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -231,7 +223,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -239,26 +231,28 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = suites_api.SuitesApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
-    id = 1 # int | Identifier.
+    api_instance = qaseio.SuitesApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    id = 56 # int | Identifier.
 
-    # example passing only required values which don't have defaults set
     try:
         # Get a specific test suite.
         api_response = api_instance.get_suite(code, id)
+        print("The response of SuitesApi->get_suite:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling SuitesApi->get_suite: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
- **id** | **int**| Identifier. |
+ **code** | **str**| Code of project, where to search entities. | 
+ **id** | **int**| Identifier. | 
 
 ### Return type
 
@@ -272,7 +266,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -288,7 +281,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_suites**
-> SuiteListResponse get_suites(code)
+> SuiteListResponse get_suites(code, search=search, limit=limit, offset=offset)
 
 Get all test suites.
 
@@ -300,10 +293,12 @@ This method allows to retrieve all test suites stored in selected project.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import suites_api
-from qaseio.model.suite_list_response import SuiteListResponse
+from qaseio.models.suite_list_response import SuiteListResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -316,7 +311,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -324,39 +319,32 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = suites_api.SuitesApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
-    search = "search_example" # str | Provide a string that will be used to search by name. (optional)
-    limit = 10 # int | A number of entities in result set. (optional) if omitted the server will use the default value of 10
-    offset = 0 # int | How many entities should be skipped. (optional) if omitted the server will use the default value of 0
+    api_instance = qaseio.SuitesApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    search = 'search_example' # str | Provide a string that will be used to search by name. (optional)
+    limit = 10 # int | A number of entities in result set. (optional) (default to 10)
+    offset = 0 # int | How many entities should be skipped. (optional) (default to 0)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # Get all test suites.
-        api_response = api_instance.get_suites(code)
-        pprint(api_response)
-    except qaseio.ApiException as e:
-        print("Exception when calling SuitesApi->get_suites: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # Get all test suites.
         api_response = api_instance.get_suites(code, search=search, limit=limit, offset=offset)
+        print("The response of SuitesApi->get_suites:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling SuitesApi->get_suites: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
- **search** | **str**| Provide a string that will be used to search by name. | [optional]
- **limit** | **int**| A number of entities in result set. | [optional] if omitted the server will use the default value of 10
- **offset** | **int**| How many entities should be skipped. | [optional] if omitted the server will use the default value of 0
+ **code** | **str**| Code of project, where to search entities. | 
+ **search** | **str**| Provide a string that will be used to search by name. | [optional] 
+ **limit** | **int**| A number of entities in result set. | [optional] [default to 10]
+ **offset** | **int**| How many entities should be skipped. | [optional] [default to 0]
 
 ### Return type
 
@@ -370,7 +358,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -398,11 +385,13 @@ This method is used to update a test suite through API.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import suites_api
-from qaseio.model.suite_update import SuiteUpdate
-from qaseio.model.id_response import IdResponse
+from qaseio.models.id_response import IdResponse
+from qaseio.models.suite_update import SuiteUpdate
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -415,7 +404,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -423,33 +412,30 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = suites_api.SuitesApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
-    id = 1 # int | Identifier.
-    suite_update = SuiteUpdate(
-        title="title_example",
-        description="description_example",
-        preconditions="preconditions_example",
-        parent_id=1,
-    ) # SuiteUpdate | 
+    api_instance = qaseio.SuitesApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    id = 56 # int | Identifier.
+    suite_update = qaseio.SuiteUpdate() # SuiteUpdate | 
 
-    # example passing only required values which don't have defaults set
     try:
         # Update test suite.
         api_response = api_instance.update_suite(code, id, suite_update)
+        print("The response of SuitesApi->update_suite:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling SuitesApi->update_suite: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
- **id** | **int**| Identifier. |
- **suite_update** | [**SuiteUpdate**](SuiteUpdate.md)|  |
+ **code** | **str**| Code of project, where to search entities. | 
+ **id** | **int**| Identifier. | 
+ **suite_update** | [**SuiteUpdate**](SuiteUpdate.md)|  | 
 
 ### Return type
 
@@ -463,7 +449,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: application/json
  - **Accept**: application/json
-
 
 ### HTTP response details
 

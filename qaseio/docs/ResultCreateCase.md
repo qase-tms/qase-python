@@ -3,17 +3,35 @@
 Could be used instead of `case_id`.
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **title** | **str** |  | [optional] 
-**suite_title** | **str, none_type** | Nested suites should be separated with &#x60;TAB&#x60; symbol. | [optional] 
-**description** | **str, none_type** |  | [optional] 
-**preconditions** | **str, none_type** |  | [optional] 
-**postconditions** | **str, none_type** |  | [optional] 
+**suite_title** | **str** | Nested suites should be separated with &#x60;TAB&#x60; symbol. | [optional] 
+**description** | **str** |  | [optional] 
+**preconditions** | **str** |  | [optional] 
+**postconditions** | **str** |  | [optional] 
 **layer** | **str** |  | [optional] 
 **severity** | **str** |  | [optional] 
-**any string name** | **bool, date, datetime, dict, float, int, list, str, none_type** | any string name can be used but the value must be the correct type | [optional]
+**priority** | **str** |  | [optional] 
 
+## Example
+
+```python
+from qaseio.models.result_create_case import ResultCreateCase
+
+# TODO update the JSON string below
+json = "{}"
+# create an instance of ResultCreateCase from a JSON string
+result_create_case_instance = ResultCreateCase.from_json(json)
+# print the JSON string representation of the object
+print ResultCreateCase.to_json()
+
+# convert the object into a dict
+result_create_case_dict = result_create_case_instance.to_dict()
+# create an instance of ResultCreateCase from a dict
+result_create_case_form_dict = result_create_case.from_dict(result_create_case_dict)
+```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
 

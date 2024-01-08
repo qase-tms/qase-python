@@ -2,23 +2,40 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**status** | **str** |  | 
 **case_id** | **int** |  | [optional] 
 **case** | [**ResultCreateCase**](ResultCreateCase.md) |  | [optional] 
-**start_time** | **int, none_type** |  | [optional] 
-**time** | **int, none_type** |  | [optional] 
-**time_ms** | **int, none_type** |  | [optional] 
-**defect** | **bool, none_type** |  | [optional] 
-**attachments** | **[str], none_type** |  | [optional] 
-**stacktrace** | **str, none_type** |  | [optional] 
-**comment** | **str, none_type** |  | [optional] 
-**param** | **{str: (str,)}, none_type** | A map of parameters (name &#x3D;&gt; value) | [optional] 
-**steps** | [**[TestStepResultCreate], none_type**](TestStepResultCreate.md) |  | [optional] 
-**author_id** | **int, none_type** |  | [optional] 
-**any string name** | **bool, date, datetime, dict, float, int, list, str, none_type** | any string name can be used but the value must be the correct type | [optional]
+**status** | **str** | Can have the following values &#x60;passed&#x60;, &#x60;failed&#x60;, &#x60;blocked&#x60;, &#x60;skipped&#x60;, &#x60;invalid&#x60; + custom statuses | 
+**start_time** | **int** |  | [optional] 
+**time** | **int** |  | [optional] 
+**time_ms** | **int** |  | [optional] 
+**defect** | **bool** |  | [optional] 
+**attachments** | **List[str]** |  | [optional] 
+**stacktrace** | **str** |  | [optional] 
+**comment** | **str** |  | [optional] 
+**param** | **Dict[str, str]** | A map of parameters (name &#x3D;&gt; value) | [optional] 
+**steps** | [**List[TestStepResultCreate]**](TestStepResultCreate.md) |  | [optional] 
+**author_id** | **int** |  | [optional] 
 
+## Example
+
+```python
+from qaseio.models.result_create import ResultCreate
+
+# TODO update the JSON string below
+json = "{}"
+# create an instance of ResultCreate from a JSON string
+result_create_instance = ResultCreate.from_json(json)
+# print the JSON string representation of the object
+print ResultCreate.to_json()
+
+# convert the object into a dict
+result_create_dict = result_create_instance.to_dict()
+# create an instance of ResultCreate from a dict
+result_create_form_dict = result_create.from_dict(result_create_dict)
+```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
 

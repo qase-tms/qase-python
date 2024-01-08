@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 
 # **complete_run**
-> Response complete_run(code, id)
+> BaseResponse complete_run(code, id)
 
 Complete a specific run.
 
@@ -25,10 +25,12 @@ This method allows to complete a specific run.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import runs_api
-from qaseio.model.response import Response
+from qaseio.models.base_response import BaseResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -41,7 +43,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -49,30 +51,32 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = runs_api.RunsApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
-    id = 1 # int | Identifier.
+    api_instance = qaseio.RunsApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    id = 56 # int | Identifier.
 
-    # example passing only required values which don't have defaults set
     try:
         # Complete a specific run.
         api_response = api_instance.complete_run(code, id)
+        print("The response of RunsApi->complete_run:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling RunsApi->complete_run: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
- **id** | **int**| Identifier. |
+ **code** | **str**| Code of project, where to search entities. | 
+ **id** | **int**| Identifier. | 
 
 ### Return type
 
-[**Response**](Response.md)
+[**BaseResponse**](BaseResponse.md)
 
 ### Authorization
 
@@ -82,7 +86,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -111,11 +114,13 @@ This method allows to create a run in selected project.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import runs_api
-from qaseio.model.run_create import RunCreate
-from qaseio.model.id_response import IdResponse
+from qaseio.models.id_response import IdResponse
+from qaseio.models.run_create import RunCreate
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -128,7 +133,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -136,45 +141,28 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = runs_api.RunsApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
-    run_create = RunCreate(
-        title="title_example",
-        description="description_example",
-        include_all_cases=True,
-        cases=[
-            1,
-        ],
-        is_autotest=True,
-        environment_id=1,
-        milestone_id=1,
-        plan_id=1,
-        tags=[
-            "tags_example",
-        ],
-        custom_field={
-            "key": "key_example",
-        },
-        start_time="start_time_example",
-        end_time="end_time_example",
-    ) # RunCreate | 
+    api_instance = qaseio.RunsApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    run_create = qaseio.RunCreate() # RunCreate | 
 
-    # example passing only required values which don't have defaults set
     try:
         # Create a new run.
         api_response = api_instance.create_run(code, run_create)
+        print("The response of RunsApi->create_run:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling RunsApi->create_run: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
- **run_create** | [**RunCreate**](RunCreate.md)|  |
+ **code** | **str**| Code of project, where to search entities. | 
+ **run_create** | [**RunCreate**](RunCreate.md)|  | 
 
 ### Return type
 
@@ -188,7 +176,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: application/json
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -217,10 +204,12 @@ This method completely deletes a run from repository.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import runs_api
-from qaseio.model.id_response import IdResponse
+from qaseio.models.id_response import IdResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -233,7 +222,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -241,26 +230,28 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = runs_api.RunsApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
-    id = 1 # int | Identifier.
+    api_instance = qaseio.RunsApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    id = 56 # int | Identifier.
 
-    # example passing only required values which don't have defaults set
     try:
         # Delete run.
         api_response = api_instance.delete_run(code, id)
+        print("The response of RunsApi->delete_run:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling RunsApi->delete_run: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
- **id** | **int**| Identifier. |
+ **code** | **str**| Code of project, where to search entities. | 
+ **id** | **int**| Identifier. | 
 
 ### Return type
 
@@ -274,7 +265,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -290,7 +280,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_run**
-> RunResponse get_run(code, id)
+> RunResponse get_run(code, id, include=include)
 
 Get a specific run.
 
@@ -302,10 +292,12 @@ This method allows to retrieve a specific run.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import runs_api
-from qaseio.model.run_response import RunResponse
+from qaseio.models.run_response import RunResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -318,7 +310,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -326,37 +318,30 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = runs_api.RunsApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
-    id = 1 # int | Identifier.
-    include = "include_example" # str | Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects  (optional)
+    api_instance = qaseio.RunsApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    id = 56 # int | Identifier.
+    include = 'include_example' # str | Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects  (optional)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # Get a specific run.
-        api_response = api_instance.get_run(code, id)
-        pprint(api_response)
-    except qaseio.ApiException as e:
-        print("Exception when calling RunsApi->get_run: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # Get a specific run.
         api_response = api_instance.get_run(code, id, include=include)
+        print("The response of RunsApi->get_run:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling RunsApi->get_run: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
- **id** | **int**| Identifier. |
- **include** | **str**| Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects  | [optional]
+ **code** | **str**| Code of project, where to search entities. | 
+ **id** | **int**| Identifier. | 
+ **include** | **str**| Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects  | [optional] 
 
 ### Return type
 
@@ -370,7 +355,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -386,7 +370,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_runs**
-> RunListResponse get_runs(code)
+> RunListResponse get_runs(code, search=search, status=status, milestone=milestone, environment=environment, from_start_time=from_start_time, to_start_time=to_start_time, limit=limit, offset=offset, include=include)
 
 Get all runs.
 
@@ -398,10 +382,12 @@ This method allows to retrieve all runs stored in selected project.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import runs_api
-from qaseio.model.run_list_response import RunListResponse
+from qaseio.models.run_list_response import RunListResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -414,7 +400,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -422,51 +408,44 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = runs_api.RunsApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
-    search = "search_example" # str |  (optional)
-    status = "status_example" # str | A list of status values separated by comma. Possible values: active, complete, abort.  (optional)
-    milestone = 1 # int |  (optional)
-    environment = 1 # int |  (optional)
-    from_start_time = 1 # int |  (optional)
-    to_start_time = 1 # int |  (optional)
-    limit = 10 # int | A number of entities in result set. (optional) if omitted the server will use the default value of 10
-    offset = 0 # int | How many entities should be skipped. (optional) if omitted the server will use the default value of 0
-    include = "include_example" # str | Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects  (optional)
+    api_instance = qaseio.RunsApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    search = 'search_example' # str |  (optional)
+    status = 'status_example' # str | A list of status values separated by comma. Possible values: active, complete, abort.  (optional)
+    milestone = 56 # int |  (optional)
+    environment = 56 # int |  (optional)
+    from_start_time = 56 # int |  (optional)
+    to_start_time = 56 # int |  (optional)
+    limit = 10 # int | A number of entities in result set. (optional) (default to 10)
+    offset = 0 # int | How many entities should be skipped. (optional) (default to 0)
+    include = 'include_example' # str | Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects  (optional)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # Get all runs.
-        api_response = api_instance.get_runs(code)
-        pprint(api_response)
-    except qaseio.ApiException as e:
-        print("Exception when calling RunsApi->get_runs: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # Get all runs.
         api_response = api_instance.get_runs(code, search=search, status=status, milestone=milestone, environment=environment, from_start_time=from_start_time, to_start_time=to_start_time, limit=limit, offset=offset, include=include)
+        print("The response of RunsApi->get_runs:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling RunsApi->get_runs: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
- **search** | **str**|  | [optional]
- **status** | **str**| A list of status values separated by comma. Possible values: active, complete, abort.  | [optional]
- **milestone** | **int**|  | [optional]
- **environment** | **int**|  | [optional]
- **from_start_time** | **int**|  | [optional]
- **to_start_time** | **int**|  | [optional]
- **limit** | **int**| A number of entities in result set. | [optional] if omitted the server will use the default value of 10
- **offset** | **int**| How many entities should be skipped. | [optional] if omitted the server will use the default value of 0
- **include** | **str**| Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects  | [optional]
+ **code** | **str**| Code of project, where to search entities. | 
+ **search** | **str**|  | [optional] 
+ **status** | **str**| A list of status values separated by comma. Possible values: active, complete, abort.  | [optional] 
+ **milestone** | **int**|  | [optional] 
+ **environment** | **int**|  | [optional] 
+ **from_start_time** | **int**|  | [optional] 
+ **to_start_time** | **int**|  | [optional] 
+ **limit** | **int**| A number of entities in result set. | [optional] [default to 10]
+ **offset** | **int**| How many entities should be skipped. | [optional] [default to 0]
+ **include** | **str**| Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects  | [optional] 
 
 ### Return type
 
@@ -480,7 +459,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -508,11 +486,13 @@ This method allows to update a publicity of specific run.
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import runs_api
-from qaseio.model.run_public import RunPublic
-from qaseio.model.run_public_response import RunPublicResponse
+from qaseio.models.run_public import RunPublic
+from qaseio.models.run_public_response import RunPublicResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -525,7 +505,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -533,30 +513,30 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = runs_api.RunsApi(api_client)
-    code = "code_example" # str | Code of project, where to search entities.
-    id = 1 # int | Identifier.
-    run_public = RunPublic(
-        status=True,
-    ) # RunPublic | 
+    api_instance = qaseio.RunsApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    id = 56 # int | Identifier.
+    run_public = qaseio.RunPublic() # RunPublic | 
 
-    # example passing only required values which don't have defaults set
     try:
         # Update publicity of a specific run.
         api_response = api_instance.update_run_publicity(code, id, run_public)
+        print("The response of RunsApi->update_run_publicity:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling RunsApi->update_run_publicity: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **code** | **str**| Code of project, where to search entities. |
- **id** | **int**| Identifier. |
- **run_public** | [**RunPublic**](RunPublic.md)|  |
+ **code** | **str**| Code of project, where to search entities. | 
+ **id** | **int**| Identifier. | 
+ **run_public** | [**RunPublic**](RunPublic.md)|  | 
 
 ### Return type
 
@@ -570,7 +550,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: application/json
  - **Accept**: application/json
-
 
 ### HTTP response details
 

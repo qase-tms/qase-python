@@ -2,11 +2,29 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**entities** | **[bool, date, datetime, dict, float, int, list, str, none_type]** |  | [optional] 
-**any string name** | **bool, date, datetime, dict, float, int, list, str, none_type** | any string name can be used but the value must be the correct type | [optional]
+**entities** | [**List[SearchResponseAllOfResultEntities]**](SearchResponseAllOfResultEntities.md) |  | 
+**total** | **int** |  | 
 
+## Example
+
+```python
+from qaseio.models.search_response_all_of_result import SearchResponseAllOfResult
+
+# TODO update the JSON string below
+json = "{}"
+# create an instance of SearchResponseAllOfResult from a JSON string
+search_response_all_of_result_instance = SearchResponseAllOfResult.from_json(json)
+# print the JSON string representation of the object
+print SearchResponseAllOfResult.to_json()
+
+# convert the object into a dict
+search_response_all_of_result_dict = search_response_all_of_result_instance.to_dict()
+# create an instance of SearchResponseAllOfResult from a dict
+search_response_all_of_result_form_dict = search_response_all_of_result.from_dict(search_response_all_of_result_dict)
+```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
 

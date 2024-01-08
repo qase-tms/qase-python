@@ -8,7 +8,7 @@ Method | HTTP request | Description
 
 
 # **search**
-> SearchResponse search(query)
+> SearchResponse search(query, limit=limit, offset=offset)
 
 Search entities by Qase Query Language (QQL).
 
@@ -20,10 +20,12 @@ This method allows to retrieve data sets for various entities using expressions 
 
 ```python
 import time
+import os
 import qaseio
-from qaseio.api import search_api
-from qaseio.model.search_response import SearchResponse
+from qaseio.models.search_response import SearchResponse
+from qaseio.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qaseio.Configuration(
@@ -36,7 +38,7 @@ configuration = qaseio.Configuration(
 # satisfies your auth use case.
 
 # Configure API key authorization: TokenAuth
-configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
@@ -44,37 +46,30 @@ configuration.api_key['TokenAuth'] = 'YOUR_API_KEY'
 # Enter a context with an instance of the API client
 with qaseio.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = search_api.SearchApi(api_client)
-    query = "query_example" # str | Expression in Qase Query Language.
-    limit = 10 # int | A number of entities in result set. (optional) if omitted the server will use the default value of 10
-    offset = 0 # int | How many entities should be skipped. (optional) if omitted the server will use the default value of 0
+    api_instance = qaseio.SearchApi(api_client)
+    query = 'query_example' # str | Expression in Qase Query Language.
+    limit = 10 # int | A number of entities in result set. (optional) (default to 10)
+    offset = 0 # int | How many entities should be skipped. (optional) (default to 0)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # Search entities by Qase Query Language (QQL).
-        api_response = api_instance.search(query)
-        pprint(api_response)
-    except qaseio.ApiException as e:
-        print("Exception when calling SearchApi->search: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # Search entities by Qase Query Language (QQL).
         api_response = api_instance.search(query, limit=limit, offset=offset)
+        print("The response of SearchApi->search:\n")
         pprint(api_response)
-    except qaseio.ApiException as e:
+    except Exception as e:
         print("Exception when calling SearchApi->search: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **query** | **str**| Expression in Qase Query Language. |
- **limit** | **int**| A number of entities in result set. | [optional] if omitted the server will use the default value of 10
- **offset** | **int**| How many entities should be skipped. | [optional] if omitted the server will use the default value of 0
+ **query** | **str**| Expression in Qase Query Language. | 
+ **limit** | **int**| A number of entities in result set. | [optional] [default to 10]
+ **offset** | **int**| How many entities should be skipped. | [optional] [default to 0]
 
 ### Return type
 
@@ -88,7 +83,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 

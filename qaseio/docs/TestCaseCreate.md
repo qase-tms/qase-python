@@ -2,12 +2,13 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**title** | **str** |  | 
 **description** | **str** |  | [optional] 
 **preconditions** | **str** |  | [optional] 
 **postconditions** | **str** |  | [optional] 
+**title** | **str** |  | 
 **severity** | **int** |  | [optional] 
 **priority** | **int** |  | [optional] 
 **behavior** | **int** |  | [optional] 
@@ -18,15 +19,31 @@ Name | Type | Description | Notes
 **milestone_id** | **int** |  | [optional] 
 **automation** | **int** |  | [optional] 
 **status** | **int** |  | [optional] 
-**attachments** | [**AttachmentHashList**](AttachmentHashList.md) |  | [optional] 
-**steps** | [**[TestStepCreate]**](TestStepCreate.md) |  | [optional] 
-**tags** | **[str]** |  | [optional] 
-**params** | **{str: ([str],)}, none_type** |  | [optional] 
-**custom_field** | **{str: (str,)}** | A map of custom fields values (id &#x3D;&gt; value) | [optional] 
+**attachments** | **List[str]** | A list of Attachment hashes. | [optional] 
+**steps** | [**List[TestStepCreate]**](TestStepCreate.md) |  | [optional] 
+**tags** | **List[str]** |  | [optional] 
+**params** | **Dict[str, List[str]]** |  | [optional] 
+**custom_field** | **Dict[str, str]** | A map of custom fields values (id &#x3D;&gt; value) | [optional] 
 **created_at** | **str** |  | [optional] 
 **updated_at** | **str** |  | [optional] 
-**any string name** | **bool, date, datetime, dict, float, int, list, str, none_type** | any string name can be used but the value must be the correct type | [optional]
 
+## Example
+
+```python
+from qaseio.models.test_case_create import TestCaseCreate
+
+# TODO update the JSON string below
+json = "{}"
+# create an instance of TestCaseCreate from a JSON string
+test_case_create_instance = TestCaseCreate.from_json(json)
+# print the JSON string representation of the object
+print TestCaseCreate.to_json()
+
+# convert the object into a dict
+test_case_create_dict = test_case_create_instance.to_dict()
+# create an instance of TestCaseCreate from a dict
+test_case_create_form_dict = test_case_create.from_dict(test_case_create_dict)
+```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
 

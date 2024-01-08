@@ -2,22 +2,40 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **title** | **str** |  | 
 **description** | **str** |  | [optional] 
 **include_all_cases** | **bool** |  | [optional] 
-**cases** | **[int]** |  | [optional] 
+**cases** | **List[int]** |  | [optional] 
 **is_autotest** | **bool** |  | [optional] 
 **environment_id** | **int** |  | [optional] 
 **milestone_id** | **int** |  | [optional] 
 **plan_id** | **int** |  | [optional] 
-**tags** | **[str]** |  | [optional] 
-**custom_field** | **{str: (str,)}** | A map of custom fields values (id &#x3D;&gt; value) | [optional] 
+**author_id** | **int** |  | [optional] 
+**tags** | **List[str]** |  | [optional] 
+**custom_field** | **Dict[str, str]** | A map of custom fields values (id &#x3D;&gt; value) | [optional] 
 **start_time** | **str** |  | [optional] 
 **end_time** | **str** |  | [optional] 
-**any string name** | **bool, date, datetime, dict, float, int, list, str, none_type** | any string name can be used but the value must be the correct type | [optional]
 
+## Example
+
+```python
+from qaseio.models.run_create import RunCreate
+
+# TODO update the JSON string below
+json = "{}"
+# create an instance of RunCreate from a JSON string
+run_create_instance = RunCreate.from_json(json)
+# print the JSON string representation of the object
+print RunCreate.to_json()
+
+# convert the object into a dict
+run_create_dict = run_create_instance.to_dict()
+# create an instance of RunCreate from a dict
+run_create_form_dict = run_create.from_dict(run_create_dict)
+```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
 

@@ -2,6 +2,7 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **description** | **str** |  | [optional] 
@@ -18,13 +19,29 @@ Name | Type | Description | Notes
 **milestone_id** | **int** |  | [optional] 
 **automation** | **int** |  | [optional] 
 **status** | **int** |  | [optional] 
-**attachments** | [**AttachmentHashList**](AttachmentHashList.md) |  | [optional] 
-**steps** | [**[TestStepCreate]**](TestStepCreate.md) |  | [optional] 
-**tags** | **[str]** |  | [optional] 
-**params** | **{str: ([str],)}, none_type** |  | [optional] 
-**custom_field** | **{str: (str,)}** | A map of custom fields values (id &#x3D;&gt; value) | [optional] 
-**any string name** | **bool, date, datetime, dict, float, int, list, str, none_type** | any string name can be used but the value must be the correct type | [optional]
+**attachments** | **List[str]** | A list of Attachment hashes. | [optional] 
+**steps** | [**List[TestStepCreate]**](TestStepCreate.md) |  | [optional] 
+**tags** | **List[str]** |  | [optional] 
+**params** | **Dict[str, List[str]]** |  | [optional] 
+**custom_field** | **Dict[str, str]** | A map of custom fields values (id &#x3D;&gt; value) | [optional] 
 
+## Example
+
+```python
+from qaseio.models.test_case_update import TestCaseUpdate
+
+# TODO update the JSON string below
+json = "{}"
+# create an instance of TestCaseUpdate from a JSON string
+test_case_update_instance = TestCaseUpdate.from_json(json)
+# print the JSON string representation of the object
+print TestCaseUpdate.to_json()
+
+# convert the object into a dict
+test_case_update_dict = test_case_update_instance.to_dict()
+# create an instance of TestCaseUpdate from a dict
+test_case_update_form_dict = test_case_update.from_dict(test_case_update_dict)
+```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
 
