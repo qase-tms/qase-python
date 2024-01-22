@@ -9,39 +9,25 @@ class WebApi:
     Qase api differs from web api and doesn't cover all features that are accessible through web api.
 
     It is required to specify env variables:
-    QASE_WEB_EMAIL and QASE_WEB_PASS
-    or
-    QASE_WEB_SRF_TOKEN, QASE_WEB_HOST_SESSION, QASE_WEB_SESSION_NAME, QASE_WEB_SESSION
+    QASE_WEB_SRF_TOKEN, QASE_WEB_HOST_SESSION, QASE_WEB_SESSION (balancing-cookie)
     """
 
     def __init__(self):
-        if email := os.getenv("QASE_WEB_EMAIL"):
-            password = os.getenv("QASE_WEB_PASS")
-            srf_token, host_session, web_session = self.get_session_data(email, password)
-        else:
-            srf_token = os.getenv("QASE_WEB_SRF_TOKEN")
-            if not srf_token:
-                raise EnvironmentError("Set environment variable QASE_WEB_SRF_TOKEN")
-            host_session = os.getenv("QASE_WEB_HOST_SESSION")
-            if not host_session:
-                raise EnvironmentError("Set environment variable QASE_WEB_HOST_SESSION")
-            web_session_name = os.getenv("QASE_WEB_SESSION_NAME")
-            if not web_session_name:
-                raise EnvironmentError("Set environment variable QASE_WEB_SESSION_NAME")
-            web_session = os.getenv("QASE_WEB_SESSION")
-            if not web_session:
-                raise EnvironmentError("Set environment variable QASE_WEB_SESSION")
-            web_session = {web_session_name: web_session}
+        srf_token = os.getenv("QASE_WEB_SRF_TOKEN")
+        if not srf_token:
+            raise EnvironmentError("Set environment variable QASE_WEB_SRF_TOKEN")
+        host_session = os.getenv("QASE_WEB_HOST_SESSION")
+        if not host_session:
+            raise EnvironmentError("Set environment variable QASE_WEB_HOST_SESSION")
+        balancing_cookie = os.getenv("QASE_WEB_SESSION")
+        if not balancing_cookie:
+            raise EnvironmentError("Set environment variable QASE_WEB_SESSION")
 
-        self.srf_token = srf_token
-        self.host_session = host_session
-        self.web_session = web_session
         self.cookies = {
-            "XSRF-TOXSRF-TOKEN": self.srf_token,
-            "__Host-session": self.host_session,
+            "XSRF-TOKEN": srf_token,
+            "__Host-session": host_session,
+            "balancing-cookie": balancing_cookie
         }
-        self.cookies.update(web_session)
-
         self.api_url = "https://app.qase.io/v1/"
 
     def get_session_data(self, email, password):
@@ -51,7 +37,9 @@ class WebApi:
         url = "https://app.qase.io/v1/auth/login/regular"
         with requests.post(url, headers=headers, data=json.dumps(req_data)) as response:
             cookies = response.cookies.get_dict()
-            web_session_name = next(cookie for cookie, value in cookies.items() if cookie.startswith("remember_web_"))
+            web_session_name = next((cookie for cookie, value in cookies.items() if cookie.startswith("remember_web_")), None)
+            if not web_session_name:
+                web_session_name = "balancing-cookie"
             return (cookies["XSRF-TOKEN"], cookies["__Host-session"], {web_session_name: cookies[web_session_name]})
 
     @staticmethod
