@@ -24,7 +24,7 @@ def pytest_configure(config):
         QasePytestPlugin.drop_run_id()
     config.addinivalue_line("markers", "qase_id: mark test to be associate with Qase TestOp test case")
     config.addinivalue_line("markers", "qase_title: mark test with title")
-    config.addinivalue_line("markers", "qase_ignore: skip test from Qase TestOps \\ Report")
+    config.addinivalue_line("markers", r"qase_ignore: skip test from Qase TestOps \\ Report")
     config.addinivalue_line("markers", "qase_muted: mark test as muted so it will not affect test run status")
     config.addinivalue_line("markers", "qase_author: mark test with author")
     config.addinivalue_line("markers", "qase_fields: mark test with meta data")
