@@ -22,7 +22,7 @@ class Run(QaseClient):
 
     def get_cases(self):
         """Get all cases includes in the selected run"""
-        return self.get(include="cases").cases
+        return [case for case in self.get(include="cases", _check_return_type=False)["cases"] if case]
 
     def get_info(self) -> dict:
         """
