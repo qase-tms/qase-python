@@ -44,6 +44,7 @@ class TestCasebulkCasesInner(BaseModel):
     layer: Optional[StrictInt] = None
     is_flaky: Optional[StrictInt] = None
     suite_id: Optional[StrictInt] = None
+    author_id: Optional[StrictInt] = None
     milestone_id: Optional[StrictInt] = None
     automation: Optional[StrictInt] = None
     status: Optional[StrictInt] = None
@@ -134,6 +135,7 @@ class TestCasebulkCasesInner(BaseModel):
             "layer": obj.get("layer"),
             "is_flaky": obj.get("is_flaky"),
             "suite_id": obj.get("suite_id"),
+            "author_id": obj.get("author_id"),
             "milestone_id": obj.get("milestone_id"),
             "automation": obj.get("automation"),
             "status": obj.get("status"),

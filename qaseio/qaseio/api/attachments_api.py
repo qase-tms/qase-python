@@ -898,7 +898,7 @@ class AttachmentsApi:
     def upload_attachment(
         self,
         code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        file: Optional[List[Union[StrictBytes, StrictStr]]] = None,
+        file: Optional[List] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -975,7 +975,7 @@ class AttachmentsApi:
     def upload_attachment_with_http_info(
         self,
         code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        file: Optional[List[Union[StrictBytes, StrictStr]]] = None,
+        file: Optional[List] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1052,7 +1052,7 @@ class AttachmentsApi:
     def upload_attachment_without_preload_content(
         self,
         code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        file: Optional[List[Union[StrictBytes, StrictStr]]] = None,
+        file: Optional[List] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],

@@ -21,6 +21,7 @@ import mimetypes
 import os
 import re
 import tempfile
+from io import BytesIO
 
 from urllib.parse import quote
 from typing import Tuple, Optional, List
@@ -512,6 +513,11 @@ class ApiClient:
                     continue
                 file_names = v if type(v) is list else [v]
                 for n in file_names:
+                    if isinstance(n, BytesIO):
+                        params.append(
+                            tuple([k, tuple([n.name, n.getvalue(), n.mime])]))
+                        continue
+
                     with open(n, 'rb') as f:
                         filename = os.path.basename(f.name)
                         filedata = f.read()
