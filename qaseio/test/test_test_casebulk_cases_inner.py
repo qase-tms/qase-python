@@ -47,6 +47,7 @@ class TestTestCasebulkCasesInner(unittest.TestCase):
                 type = 56,
                 layer = 56,
                 is_flaky = 56,
+                author_id = 56,
                 suite_id = 56,
                 milestone_id = 56,
                 automation = 56,

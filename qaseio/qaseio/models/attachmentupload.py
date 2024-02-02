@@ -20,20 +20,23 @@ import json
 
 
 from typing import Any, ClassVar, Dict, List, Optional
-from pydantic import BaseModel, StrictBool
-from qaseio.models.attachmentupload import Attachmentupload
+from pydantic import BaseModel, StrictStr
 try:
     from typing import Self
 except ImportError:
     from typing_extensions import Self
 
-class AttachmentUploadsResponse(BaseModel):
+class Attachmentupload(BaseModel):
     """
-    AttachmentUploadsResponse
+    Attachmentupload
     """ # noqa: E501
-    status: Optional[StrictBool] = None
-    result: Optional[List[Attachmentupload]] = None
-    __properties: ClassVar[List[str]] = ["status", "result"]
+    hash: Optional[StrictStr] = None
+    filename: Optional[StrictStr] = None
+    mime: Optional[StrictStr] = None
+    extension: Optional[StrictStr] = None
+    url: Optional[StrictStr] = None
+    team: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["hash", "filename", "mime", "extension", "url", "team"]
 
     model_config = {
         "populate_by_name": True,
@@ -53,7 +56,7 @@ class AttachmentUploadsResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
-        """Create an instance of AttachmentUploadsResponse from a JSON string"""
+        """Create an instance of Attachmentupload from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,18 +75,11 @@ class AttachmentUploadsResponse(BaseModel):
             },
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in result (list)
-        _items = []
-        if self.result:
-            for _item in self.result:
-                if _item:
-                    _items.append(_item.to_dict())
-            _dict['result'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Dict) -> Self:
-        """Create an instance of AttachmentUploadsResponse from a dict"""
+        """Create an instance of Attachmentupload from a dict"""
         if obj is None:
             return None
 
@@ -91,8 +87,12 @@ class AttachmentUploadsResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "status": obj.get("status"),
-            "result": [Attachmentupload.from_dict(_item) for _item in obj.get("result")] if obj.get("result") is not None else None
+            "hash": obj.get("hash"),
+            "filename": obj.get("filename"),
+            "mime": obj.get("mime"),
+            "extension": obj.get("extension"),
+            "url": obj.get("url"),
+            "team": obj.get("team")
         })
         return _obj
 

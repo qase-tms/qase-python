@@ -47,7 +47,8 @@ class TestAttachmentListResponseAllOfResult(unittest.TestCase):
                         mime = '', 
                         size = 56, 
                         extension = '', 
-                        full_path = '', )
+                        full_path = '', 
+                        url = '', )
                     ]
             )
         else:

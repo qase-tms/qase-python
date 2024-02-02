@@ -51,6 +51,9 @@ class TestRunCreate(unittest.TestCase):
                 tags = [
                     ''
                     ],
+                configurations = [
+                    56
+                    ],
                 custom_field = {
                     'key' : ''
                     },

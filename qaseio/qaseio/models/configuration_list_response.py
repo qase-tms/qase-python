@@ -21,18 +21,18 @@ import json
 
 from typing import Any, ClassVar, Dict, List, Optional
 from pydantic import BaseModel, StrictBool
-from qaseio.models.attachmentupload import Attachmentupload
+from qaseio.models.configuration_list_response_all_of_result import ConfigurationListResponseAllOfResult
 try:
     from typing import Self
 except ImportError:
     from typing_extensions import Self
 
-class AttachmentUploadsResponse(BaseModel):
+class ConfigurationListResponse(BaseModel):
     """
-    AttachmentUploadsResponse
+    ConfigurationListResponse
     """ # noqa: E501
     status: Optional[StrictBool] = None
-    result: Optional[List[Attachmentupload]] = None
+    result: Optional[ConfigurationListResponseAllOfResult] = None
     __properties: ClassVar[List[str]] = ["status", "result"]
 
     model_config = {
@@ -53,7 +53,7 @@ class AttachmentUploadsResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
-        """Create an instance of AttachmentUploadsResponse from a JSON string"""
+        """Create an instance of ConfigurationListResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,18 +72,14 @@ class AttachmentUploadsResponse(BaseModel):
             },
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in result (list)
-        _items = []
+        # override the default output from pydantic by calling `to_dict()` of result
         if self.result:
-            for _item in self.result:
-                if _item:
-                    _items.append(_item.to_dict())
-            _dict['result'] = _items
+            _dict['result'] = self.result.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Dict) -> Self:
-        """Create an instance of AttachmentUploadsResponse from a dict"""
+        """Create an instance of ConfigurationListResponse from a dict"""
         if obj is None:
             return None
 
@@ -92,7 +88,7 @@ class AttachmentUploadsResponse(BaseModel):
 
         _obj = cls.model_validate({
             "status": obj.get("status"),
-            "result": [Attachmentupload.from_dict(_item) for _item in obj.get("result")] if obj.get("result") is not None else None
+            "result": ConfigurationListResponseAllOfResult.from_dict(obj.get("result")) if obj.get("result") is not None else None
         })
         return _obj
 

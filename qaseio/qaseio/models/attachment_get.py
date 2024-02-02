@@ -31,13 +31,13 @@ class AttachmentGet(BaseModel):
     AttachmentGet
     """ # noqa: E501
     hash: Optional[StrictStr] = None
-    filename: Optional[StrictStr] = None
+    file: Optional[StrictStr] = None
     mime: Optional[StrictStr] = None
     size: Optional[StrictInt] = None
     extension: Optional[StrictStr] = None
     full_path: Optional[StrictStr] = None
     url: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["hash", "filename", "mime", "size", "extension", "full_path", "url"]
+    __properties: ClassVar[List[str]] = ["hash", "file", "mime", "size", "extension", "full_path", "url"]
 
     model_config = {
         "populate_by_name": True,
@@ -89,7 +89,7 @@ class AttachmentGet(BaseModel):
 
         _obj = cls.model_validate({
             "hash": obj.get("hash"),
-            "filename": obj.get("filename"),
+            "file": obj.get("file"),
             "mime": obj.get("mime"),
             "size": obj.get("size"),
             "extension": obj.get("extension"),

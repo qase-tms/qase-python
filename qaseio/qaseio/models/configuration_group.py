@@ -20,20 +20,21 @@ import json
 
 
 from typing import Any, ClassVar, Dict, List, Optional
-from pydantic import BaseModel, StrictBool
-from qaseio.models.attachmentupload import Attachmentupload
+from pydantic import BaseModel, StrictInt, StrictStr
+from qaseio.models.configuration import Configuration
 try:
     from typing import Self
 except ImportError:
     from typing_extensions import Self
 
-class AttachmentUploadsResponse(BaseModel):
+class ConfigurationGroup(BaseModel):
     """
-    AttachmentUploadsResponse
+    ConfigurationGroup
     """ # noqa: E501
-    status: Optional[StrictBool] = None
-    result: Optional[List[Attachmentupload]] = None
-    __properties: ClassVar[List[str]] = ["status", "result"]
+    id: Optional[StrictInt] = None
+    title: Optional[StrictStr] = None
+    configurations: Optional[List[Configuration]] = None
+    __properties: ClassVar[List[str]] = ["id", "title", "configurations"]
 
     model_config = {
         "populate_by_name": True,
@@ -53,7 +54,7 @@ class AttachmentUploadsResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
-        """Create an instance of AttachmentUploadsResponse from a JSON string"""
+        """Create an instance of ConfigurationGroup from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,18 +73,18 @@ class AttachmentUploadsResponse(BaseModel):
             },
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in result (list)
+        # override the default output from pydantic by calling `to_dict()` of each item in configurations (list)
         _items = []
-        if self.result:
-            for _item in self.result:
+        if self.configurations:
+            for _item in self.configurations:
                 if _item:
                     _items.append(_item.to_dict())
-            _dict['result'] = _items
+            _dict['configurations'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Dict) -> Self:
-        """Create an instance of AttachmentUploadsResponse from a dict"""
+        """Create an instance of ConfigurationGroup from a dict"""
         if obj is None:
             return None
 
@@ -91,8 +92,9 @@ class AttachmentUploadsResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "status": obj.get("status"),
-            "result": [Attachmentupload.from_dict(_item) for _item in obj.get("result")] if obj.get("result") is not None else None
+            "id": obj.get("id"),
+            "title": obj.get("title"),
+            "configurations": [Configuration.from_dict(_item) for _item in obj.get("configurations")] if obj.get("configurations") is not None else None
         })
         return _obj
 
