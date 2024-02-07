@@ -1,4 +1,5 @@
 from typing import Type, Optional, Union, Dict, List
+from pathlib import PosixPath
 import time
 import uuid
 import json
@@ -134,4 +135,4 @@ class Result(object):
         self.run_id = run_id
 
     def to_json(self) -> str:
-        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=False, indent=4)
+        return json.dumps(self, default=lambda o: o.__str__() if isinstance(o, PosixPath) else o.__dict__, sort_keys=False, indent=4)
