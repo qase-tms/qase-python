@@ -1,9 +1,9 @@
 # coding: utf-8
 
 """
-    Qase.io TestOps API
+    Qase.io TestOps API v1
 
-    Qase TestOps API Specification.
+    Qase TestOps API v1 Specification.
 
     The version of the OpenAPI document: 1.0.0
     Contact: support@qase.io
@@ -37,7 +37,8 @@ class ProjectCreate(BaseModel):
     description: Optional[StrictStr] = Field(default=None, description="Project description.")
     access: Optional[StrictStr] = None
     group: Optional[StrictStr] = Field(default=None, description="Team group hash. Required if access param is set to group.")
-    __properties: ClassVar[List[str]] = ["title", "code", "description", "access", "group"]
+    settings: Optional[Dict[str, Any]] = Field(default=None, description="Additional project settings.")
+    __properties: ClassVar[List[str]] = ["title", "code", "description", "access", "group", "settings"]
 
     @field_validator('code')
     def code_validate_regular_expression(cls, value):
@@ -109,7 +110,8 @@ class ProjectCreate(BaseModel):
             "code": obj.get("code"),
             "description": obj.get("description"),
             "access": obj.get("access"),
-            "group": obj.get("group")
+            "group": obj.get("group"),
+            "settings": obj.get("settings")
         })
         return _obj
 
