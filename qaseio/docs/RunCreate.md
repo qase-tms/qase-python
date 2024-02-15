@@ -15,6 +15,7 @@ Name | Type | Description | Notes
 **plan_id** | **int** |  | [optional] 
 **author_id** | **int** |  | [optional] 
 **tags** | **List[str]** |  | [optional] 
+**configurations** | **List[int]** |  | [optional] 
 **custom_field** | **Dict[str, str]** | A map of custom fields values (id &#x3D;&gt; value) | [optional] 
 **start_time** | **str** |  | [optional] 
 **end_time** | **str** |  | [optional] 

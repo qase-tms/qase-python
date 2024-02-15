@@ -1,9 +1,9 @@
 # coding: utf-8
 
 """
-    Qase.io TestOps API v1
+    Qase.io TestOps API
 
-    Qase TestOps API v1 Specification.
+    Qase TestOps API Specification.
 
     The version of the OpenAPI document: 1.0.0
     Contact: support@qase.io
@@ -19,8 +19,8 @@ import re  # noqa: F401
 import json
 
 
-from typing import Any, ClassVar, Dict, List, Optional
-from pydantic import BaseModel, StrictStr, field_validator
+from typing import Any, ClassVar, Dict, List
+from pydantic import BaseModel, StrictInt
 from pydantic import Field
 from typing_extensions import Annotated
 try:
@@ -28,34 +28,13 @@ try:
 except ImportError:
     from typing_extensions import Self
 
-class ProjectCreate(BaseModel):
+class ConfigurationCreate(BaseModel):
     """
-    ProjectCreate
+    ConfigurationCreate
     """ # noqa: E501
-    title: StrictStr = Field(description="Project title.")
-    code: Annotated[str, Field(strict=True)] = Field(description="Project code. Unique for team. Digits and special characters are not allowed.")
-    description: Optional[StrictStr] = Field(default=None, description="Project description.")
-    access: Optional[StrictStr] = None
-    group: Optional[StrictStr] = Field(default=None, description="Team group hash. Required if access param is set to group.")
-    settings: Optional[Dict[str, Any]] = Field(default=None, description="Additional project settings.")
-    __properties: ClassVar[List[str]] = ["title", "code", "description", "access", "group", "settings"]
-
-    @field_validator('code')
-    def code_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not re.match(r"^[a-zA-Z]{2,10}$", value):
-            raise ValueError(r"must validate the regular expression /^[a-zA-Z]{2,10}$/")
-        return value
-
-    @field_validator('access')
-    def access_validate_enum(cls, value):
-        """Validates the enum"""
-        if value is None:
-            return value
-
-        if value not in ('all', 'group', 'none'):
-            raise ValueError("must be one of enum values ('all', 'group', 'none')")
-        return value
+    title: Annotated[str, Field(strict=True, max_length=255)]
+    group_id: StrictInt
+    __properties: ClassVar[List[str]] = ["title", "group_id"]
 
     model_config = {
         "populate_by_name": True,
@@ -75,7 +54,7 @@ class ProjectCreate(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
-        """Create an instance of ProjectCreate from a JSON string"""
+        """Create an instance of ConfigurationCreate from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -98,7 +77,7 @@ class ProjectCreate(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Dict) -> Self:
-        """Create an instance of ProjectCreate from a dict"""
+        """Create an instance of ConfigurationCreate from a dict"""
         if obj is None:
             return None
 
@@ -107,11 +86,7 @@ class ProjectCreate(BaseModel):
 
         _obj = cls.model_validate({
             "title": obj.get("title"),
-            "code": obj.get("code"),
-            "description": obj.get("description"),
-            "access": obj.get("access"),
-            "group": obj.get("group"),
-            "settings": obj.get("settings")
+            "group_id": obj.get("group_id")
         })
         return _obj
 

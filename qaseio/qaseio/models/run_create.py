@@ -42,10 +42,11 @@ class RunCreate(BaseModel):
     plan_id: Optional[Annotated[int, Field(strict=True, ge=1)]] = None
     author_id: Optional[Annotated[int, Field(strict=True, ge=1)]] = None
     tags: Optional[List[StrictStr]] = None
+    configurations: Optional[List[StrictInt]] = None
     custom_field: Optional[Dict[str, StrictStr]] = Field(default=None, description="A map of custom fields values (id => value)")
     start_time: Optional[StrictStr] = None
     end_time: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["title", "description", "include_all_cases", "cases", "is_autotest", "environment_id", "milestone_id", "plan_id", "author_id", "tags", "custom_field", "start_time", "end_time"]
+    __properties: ClassVar[List[str]] = ["title", "description", "include_all_cases", "cases", "is_autotest", "environment_id", "milestone_id", "plan_id", "author_id", "tags", "configurations", "custom_field", "start_time", "end_time"]
 
     model_config = {
         "populate_by_name": True,
@@ -106,6 +107,7 @@ class RunCreate(BaseModel):
             "plan_id": obj.get("plan_id"),
             "author_id": obj.get("author_id"),
             "tags": obj.get("tags"),
+            "configurations": obj.get("configurations"),
             "custom_field": obj.get("custom_field"),
             "start_time": obj.get("start_time"),
             "end_time": obj.get("end_time")

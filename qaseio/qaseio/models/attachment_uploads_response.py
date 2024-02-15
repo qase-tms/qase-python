@@ -21,7 +21,7 @@ import json
 
 from typing import Any, ClassVar, Dict, List, Optional
 from pydantic import BaseModel, StrictBool
-from qaseio.models.attachment_get import AttachmentGet
+from qaseio.models.attachmentupload import Attachmentupload
 try:
     from typing import Self
 except ImportError:
@@ -32,7 +32,7 @@ class AttachmentUploadsResponse(BaseModel):
     AttachmentUploadsResponse
     """ # noqa: E501
     status: Optional[StrictBool] = None
-    result: Optional[List[AttachmentGet]] = None
+    result: Optional[List[Attachmentupload]] = None
     __properties: ClassVar[List[str]] = ["status", "result"]
 
     model_config = {
@@ -92,7 +92,7 @@ class AttachmentUploadsResponse(BaseModel):
 
         _obj = cls.model_validate({
             "status": obj.get("status"),
-            "result": [AttachmentGet.from_dict(_item) for _item in obj.get("result")] if obj.get("result") is not None else None
+            "result": [Attachmentupload.from_dict(_item) for _item in obj.get("result")] if obj.get("result") is not None else None
         })
         return _obj
 

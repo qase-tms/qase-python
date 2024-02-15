@@ -39,13 +39,13 @@ class TestAttachmentUploadsResponse(unittest.TestCase):
             return AttachmentUploadsResponse(
                 status = True,
                 result = [
-                    qaseio.models.attachment_get.AttachmentGet(
+                    qaseio.models.attachmentupload.Attachmentupload(
                         hash = '', 
-                        file = '', 
+                        filename = '', 
                         mime = '', 
-                        size = 56, 
                         extension = '', 
-                        full_path = '', )
+                        url = '', 
+                        team = '', )
                     ]
             )
         else:

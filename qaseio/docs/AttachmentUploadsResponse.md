@@ -6,7 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **status** | **bool** |  | [optional] 
-**result** | [**List[AttachmentGet]**](AttachmentGet.md) |  | [optional] 
+**result** | [**List[Attachmentupload]**](Attachmentupload.md) |  | [optional] 
 
 ## Example
 

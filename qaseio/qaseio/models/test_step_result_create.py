@@ -1,9 +1,9 @@
 # coding: utf-8
 
 """
-    Qase.io TestOps API
+    Qase.io TestOps API v1
 
-    Qase TestOps API Specification.
+    Qase TestOps API v1 Specification.
 
     The version of the OpenAPI document: 1.0.0
     Contact: support@qase.io
@@ -44,8 +44,8 @@ class TestStepResultCreate(BaseModel):
     @field_validator('status')
     def status_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in ('passed', 'failed', 'blocked'):
-            raise ValueError("must be one of enum values ('passed', 'failed', 'blocked')")
+        if value not in ('passed', 'failed', 'blocked', 'skipped'):
+            raise ValueError("must be one of enum values ('passed', 'failed', 'blocked', 'skipped')")
         return value
 
     model_config = {

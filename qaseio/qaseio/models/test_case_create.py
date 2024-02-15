@@ -43,6 +43,7 @@ class TestCaseCreate(BaseModel):
     type: Optional[StrictInt] = None
     layer: Optional[StrictInt] = None
     is_flaky: Optional[StrictInt] = None
+    author_id: Optional[StrictInt] = None
     suite_id: Optional[StrictInt] = None
     milestone_id: Optional[StrictInt] = None
     automation: Optional[StrictInt] = None
@@ -54,7 +55,7 @@ class TestCaseCreate(BaseModel):
     custom_field: Optional[Dict[str, StrictStr]] = Field(default=None, description="A map of custom fields values (id => value)")
     created_at: Optional[StrictStr] = None
     updated_at: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["description", "preconditions", "postconditions", "title", "severity", "priority", "behavior", "type", "layer", "is_flaky", "suite_id", "milestone_id", "automation", "status", "attachments", "steps", "tags", "params", "custom_field", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["description", "preconditions", "postconditions", "title", "severity", "priority", "behavior", "type", "layer", "is_flaky", "author_id", "suite_id", "milestone_id", "automation", "status", "attachments", "steps", "tags", "params", "custom_field", "created_at", "updated_at"]
 
     model_config = {
         "populate_by_name": True,
@@ -127,6 +128,7 @@ class TestCaseCreate(BaseModel):
             "type": obj.get("type"),
             "layer": obj.get("layer"),
             "is_flaky": obj.get("is_flaky"),
+            "author_id": obj.get("author_id"),
             "suite_id": obj.get("suite_id"),
             "milestone_id": obj.get("milestone_id"),
             "automation": obj.get("automation"),

@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "qaseio"
-version = "4.0.0"
+version = "4.0.1"
 description = "Qase TestOps API"
 authors = ["Qase.io <support@qase.io>"]
 license = "Apache 2.0"
 readme = "README.md"
-repository = "https://github.com/GIT_USER_ID/GIT_REPO_ID"
-keywords = ["OpenAPI", "OpenAPI-Generator", "Qase.io TestOps API"]
+repository = "https://github.com/qase-tms/qase-python"
+keywords = ["OpenAPI", "OpenAPI-Generator", "Qase TestOps API"]
 include = ["qaseio/py.typed"]
 
 [tool.poetry.dependencies]
