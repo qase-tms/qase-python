@@ -4,10 +4,7 @@ from qaseio.api.attachments_api import AttachmentsApi
 from qaseio.api.projects_api import ProjectsApi
 from qaseio.api.results_api import ResultsApi
 from qaseio.api.runs_api import RunsApi
-from qaseio.model.run_create import RunCreate
-from qaseio.model.result_create_bulk import ResultCreateBulk
-from qaseio.model.result_create import ResultCreate
-from qaseio.model.result_create_case import ResultCreateCase
+from qaseio.models import RunCreate, ResultcreateBulk, ResultCreate, ResultCreateCase
 from qaseio.rest import ApiException
 from qaseio.commons.models.attachment import Attachment
 from qaseio.commons.models.step import Step
@@ -163,7 +160,7 @@ class QaseTestOps:
                     api_results.create_result_bulk(
                         code=self.project_code,
                         id=self.run_id,
-                        result_create_bulk=ResultCreateBulk(
+                        result_create_bulk=ResultcreateBulk(
                             results=chunk
                         )
                     )
