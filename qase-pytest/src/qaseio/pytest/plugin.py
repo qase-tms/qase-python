@@ -273,7 +273,7 @@ class QasePytestPlugin:
     def _set_suite(self, item) -> None:
         marker = item.get_closest_marker("qase_suite")
         if marker:
-            self.runtime.suite = Suite(marker.kwargs.get("title"), marker.kwargs.get("description"))
+            self.runtime.result.suite = Suite(marker.kwargs.get("title"), marker.kwargs.get("description"))
 
 
 class QasePytestPluginSingleton:
