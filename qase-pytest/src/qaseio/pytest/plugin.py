@@ -37,13 +37,14 @@ class PluginNotInitializedException(Exception):
 class QasePytestPlugin:
     run = None
     meta_run_file = pathlib.Path("src.run")
-
+    capture_logs: "Literal['always', 'failed', 'off']"
+    
     def __init__(
             self,
             reporter,
             fallback,
             xdist_enabled = False,
-            capture_logs = False,
+            capture_logs = "off",
             execution_plan = None,
             intercept_requests = False,
     ):
@@ -124,7 +125,14 @@ class QasePytestPlugin:
             report = (yield).get_result()
             def set_result(res):
                 self.runtime.result.execution.status = res
-
+            def _attach_logs():
+                if report.caplog:
+                    self.add_attachments((report.caplog, "text/plain", "log.txt"))
+                if report.capstdout:
+                    self.add_attachments((report.capstdout, "text/plain", "stdout.txt"))
+                if report.capstderr:
+                    self.add_attachments((report.capstderr, "text/plain", "stderr.txt"))
+                    
             if report.longrepr:
                 self.runtime.result.execution.stacktrace = report.longreprtext
 
@@ -134,6 +142,8 @@ class QasePytestPlugin:
                 else:
                     set_result(PYTEST_TO_QASE_STATUS['FAILED'])
                 self.runtime.result.add_message(call.excinfo.exconly())
+                if self.capture_logs == "failed" and report.when == "call":
+                    _attach_logs()
             elif report.skipped:
                 if self.runtime.result.execution.status in (
                         None,
@@ -144,13 +154,8 @@ class QasePytestPlugin:
                 if self.runtime.result.execution.status is None:
                     set_result(PYTEST_TO_QASE_STATUS['PASSED'])
 
-            if self.capture_logs and report.when == "call":
-                if report.caplog:
-                    self.add_attachments((report.caplog, "text/plain", "log.txt"))
-                if report.capstdout:
-                    self.add_attachments((report.capstdout, "text/plain", "stdout.txt"))
-                if report.capstderr:
-                    self.add_attachments((report.capstderr, "text/plain", "stderr.txt"))
+            if self.capture_logs == "always" and report.when == "call":
+                _attach_logs()
         else:
             yield
 
