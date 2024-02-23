@@ -4,7 +4,8 @@ This is a monorepo for all Python-related projects
 
 ## Projects
 
-- [qaseio](/qaseio) - Python API
-- [qase-pytest](/qase-pytest) - Pytest plugin
-- [qase-robotframework](/qase-robotframework) - Robot Framework listener
-- [qase-xctest](/qase-xctest) - XCTest utils (deprecated)
+- [qaseio](/qaseio) - Qase TestOps API client
+- [qase-pytest](/qase-pytest) - Pytest reporter for Qase Report and Qase TestOps
+- [qase-pytest-bdd](/qase-pytest-bdd/) - Pytest-bdd reporter
+- [qase-robotframework](/qase-robotframework) - Robot Framework reporter
+- [qase-python-commons](/qase-python-commons/) - Library with common components shared across reporters

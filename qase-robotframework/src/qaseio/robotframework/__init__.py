@@ -1,3 +1,3 @@
-from .Listener.qase_listener import QaseListener
+from .listener import Listener
 
-__all__ = ['qase_listener']
+__all__ = ["Listener"]

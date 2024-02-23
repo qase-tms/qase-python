@@ -5,7 +5,6 @@ import re
 import uuid
 import time
 from datetime import datetime
-from pkg_resources import DistributionNotFound, get_distribution
 from typing import List
 
 
@@ -15,18 +14,9 @@ from qaseio.commons import QaseReport
 from .types import Envs, STATUSES
 from .models import * 
 
-try:
-    # Change here if project is renamed and does not equal the package name
-    dist_name = "qase-robotframework"
-    __version__ = get_distribution(dist_name).version
-except DistributionNotFound:
-    __version__ = "unknown"
-finally:
-    del get_distribution, DistributionNotFound
-
 logger = logging.getLogger("qase-robotframework")
 
-class QaseListener:
+class Listener:
     ROBOT_LISTENER_API_VERSION = 2
 
     def __init__(self):

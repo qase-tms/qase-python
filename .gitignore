@@ -13,6 +13,8 @@ __pycache__/*
 .*.swp
 */.ipynb_checkpoints/*
 .DS_Store
+*$py.class
+*.mo
 
 # Project files
 .ropeproject
@@ -27,6 +29,7 @@ tags
 *.eggs/
 .installed.cfg
 *.egg-info
+.Python
 
 # Unittest and coverage
 htmlcov/*
@@ -34,17 +37,26 @@ htmlcov/*
 .tox
 junit.xml
 coverage.xml
+coverage.json
 .pytest_cache/
 
 # Build and docs folder/files
-build/*
-dist/*
-sdist/*
-docs/api/*
-docs/_rst/*
-docs/_build/*
-cover/*
+*/build/*
+*/dist/*
+*/sdist/*
+*/docs/api/*
+*/docs/_rst/*
+*/docs/_build/*
+*/cover/*
 MANIFEST
+
+# PyBuilder
+target/
 
 # Per-project virtualenvs
 .venv*/
+
+qaseio.lock
+
+#Ipython Notebook
+.ipynb_checkpoints

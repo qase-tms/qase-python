@@ -1,20 +1,85 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
 
-[tool.black]
-line-length = 79
-target-version = ['py37']
-include = '\.pyi?$'
-exclude = '''
-(
-  /(
-      \.eggs
-    | \.git
-    | \.tox
-    | \.venv
-    | _build
-    | build
-    | dist
-  )/
-)
-'''
+[project]
+name = "qase-robotframework"
+version = "2.0.0"
+description = "Qase Robot Framework Plugin"
+readme = "README.md"
+authors = [{name = "Qase Team", email = "support@qase.io"}]
+license = {file = "LICENSE"}
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: Robot Framework",
+    "Programming Language :: Python",
+]
+urls = {"Homepage" = "https://github.com/qase-tms/qase-python/tree/master/qase-robotframework"}
+requires-python = ">=3.8"
+dependencies = [
+    "qase-python-commons>=1.0.2,<2.0.0",
+]
+
+[project.optional-dependencies]
+testing = [
+    "pytest",
+    "pytest-cov",
+]
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+minversion = 3.8
+envlist = py{38,39,310,311}
+
+[testenv]
+deps =
+    pytest
+    pytest-cov
+passenv =
+    HOME
+commands =
+    pytest --cov-config=pyproject.toml {posargs}
+extras =
+    all
+    testing 
+"""
+
+[tool.setuptools.packages.find]
+where = ["src"]
+exclude = ["tests"]
+
+[tool.pytest.ini_options]
+addopts = "--cov-report=term-missing --verbose"
+norecursedirs = ["dist", "build", ".tox"]
+testpaths = ["tests"]
+
+[tool.flake8]
+exclude = [".tox", "build", "dist", ".eggs"]
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.paths]
+source = ["src/qaseio/robotframework"]
+
+[tool.coverage.report]
+# Regexes for lines to exclude from consideration
+exclude_also = [
+    # Don't complain about missing debug-only code:
+    "def __repr__",
+    "if self\\.debug",
+
+    # Don't complain if tests don't hit defensive assertion code:
+    "raise AssertionError",
+    "raise NotImplementedError",
+
+    # Don't complain if non-runnable code isn't run:
+    "if 0:",
+    "if __name__ == .__main__.:",
+
+    # Don't complain about abstract methods, they aren't run:
+    "@(abc\\.)?abstractmethod",
+    ]
+
+ignore_errors = false
