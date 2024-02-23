@@ -72,7 +72,7 @@ ENV variables:
 - `QASE_TESTOPS_HOST` - Define a host for Qase TestOps. Default: `qase.io`
 ### Usage:
 ```
-QASE_API_TOKEN=<API TOKEN> QASE_PROJECT=PRJCODE robot --listener qaseio.robotframework.QaseListener keyword_driven.robot data_driven.robot
+QASE_API_TOKEN=<API TOKEN> QASE_PROJECT=PRJCODE robot --listener qaseio.robotframework.Listener keyword_driven.robot data_driven.robot
 ```
 Moving variables to `tox.ini`, example configuration:
 ```ini

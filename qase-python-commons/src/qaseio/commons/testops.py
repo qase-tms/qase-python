@@ -16,16 +16,6 @@ from datetime import datetime
 import more_itertools
 import certifi
 
-from pkg_resources import DistributionNotFound, get_distribution
-
-
-def package_version(name):
-    try:
-        version = get_distribution(name).version
-    except DistributionNotFound:
-        version = "unknown"
-    return version
-
 class TestOpsRunNotFoundException(Exception):
     pass
 
