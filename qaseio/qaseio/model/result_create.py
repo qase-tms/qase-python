@@ -66,6 +66,7 @@ class ResultCreate(ModelNormal):
             'IN_PROGRESS': "in_progress",
             'PASSED': "passed",
             'FAILED': "failed",
+            'RERUN': "rerun",
             'BLOCKED': "blocked",
             'SKIPPED': "skipped",
             'INVALID': "invalid",

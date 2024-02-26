@@ -141,10 +141,20 @@ class QasePytestOptions:
             parser,
             group,
             "--qase-testops-mark-failed-as-invalid",
-            dest="qase_testops_mark_failed_as_invalid",
+            dest="qase_testops_mark_failed_as_rerun",
             type="bool",
-            default=False,
+            default=True,
             help="Set invalid status for failed test cases",
+        )
+        
+        QasePytestOptions.add_option_ini(
+            parser,
+            group,
+            "--qase-testops-mark-failed-as-rerun",
+            dest="qase_testops_mark_failed_as_rerun",
+            type="bool",
+            default=True,
+            help="Set rerun status for failed test cases",
         )
 
         QasePytestOptions.add_option_ini(

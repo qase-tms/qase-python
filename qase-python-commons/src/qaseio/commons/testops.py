@@ -21,7 +21,7 @@ import certifi
 from pkg_resources import DistributionNotFound, get_distribution
 
 
-QASE_STATUS_IDS = {"skipped": 0, "passed": 1, "failed": 2, "blocked": 3, "invalid": 4}
+QASE_STATUS_IDS = {"skipped": 0, "passed": 1, "failed": 2, "rerun": 3, "blocked": 4, "invalid": 5}
 
 
 def package_version(name):

@@ -19,6 +19,7 @@ PYTEST_TO_QASE_STATUS = {
     "SKIPPED": "skipped",
     "BLOCKED": "blocked",
     "BROKEN": "invalid",
+    "RERUN": "rerun",
 }
 
 try:
@@ -49,7 +50,7 @@ class QasePytestPlugin:
         fallback,
         xdist_enabled=False,
         capture_logs=False,
-        mark_invalid=False,
+        mark_rerun=False,
         execution_plan=None,
         intercept_requests=False,
     ):
@@ -59,7 +60,7 @@ class QasePytestPlugin:
         self.xdist_enabled = xdist_enabled
         self.fallback = fallback
         self.capture_logs = capture_logs
-        self.mark_invalid = True if mark_invalid in ["true", "True", "1", 1, True] else False
+        self.mark_rerun = True if mark_rerun in ["true", "True", "1", 1, True] else False
         self.debug = True
         self.execution_plan = execution_plan
         self.intercept_requests = intercept_requests
@@ -70,8 +71,8 @@ class QasePytestPlugin:
 
             InterceptorSingleton.init(runtime=self.runtime)
             self.interceptor = InterceptorSingleton.get_instance()
-        if self.mark_invalid:
-            PYTEST_TO_QASE_STATUS["FAILED"] = "invalid"
+        if self.mark_rerun:
+            PYTEST_TO_QASE_STATUS["FAILED"] = "rerun"
 
     def start_step(self, step):
         self.runtime.add_step(step)
