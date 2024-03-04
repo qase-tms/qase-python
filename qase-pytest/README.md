@@ -9,7 +9,7 @@ pip install qase-pytest
 ```
 
 ## Upgrade from 4.x to 5.x
-A new version of qase-pytest reporter has breaking changes. Follow these [guide](UPGRADE.md) that will help you to migrate to a new version.
+A new version of qase-pytest reporter has breaking changes. Follow these [guide](docs/UPGRADE.md) that will help you to migrate to a new version.
 
 ## Configuration
 
@@ -18,7 +18,7 @@ Qase Pytest Plugin can be configured in multiple ways:
  - using environment variables
  - using CLI options
 
-All configuration options are listed in the following doc: [Configuration](../README.md#configuration).
+All configuration options are listed in the following doc: [Configuration](docs/CONFIGURATION.md).
 
 
 ### Example: qase.config.json
