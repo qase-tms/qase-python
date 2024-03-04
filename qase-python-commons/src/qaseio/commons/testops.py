@@ -158,7 +158,7 @@ class QaseTestOps:
                     api_results.create_result_bulk(
                         code=self.project_code,
                         id=self.run_id,
-                        result_create_bulk=ResultcreateBulk(
+                        resultcreate_bulk=ResultcreateBulk(
                             results=chunk
                         )
                     )
