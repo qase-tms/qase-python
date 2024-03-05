@@ -36,12 +36,13 @@ class Attachment:
     
     def get_for_upload(self) -> BytesIO:
         if self.file_path:
-            content = open(self.file_path, "rb")
+            with open(self.file_path, "rb") as fc:
+                content = BytesIO(fc.read())
         else:
             if isinstance(self.content, str):
                 content = StringIO(self.content)
             elif isinstance(self.content, bytes):
                 content = BytesIO(self.content)
-            content.name = self.file_name
+        content.name = self.file_name
         content.mime = self.mime_type
         return content
