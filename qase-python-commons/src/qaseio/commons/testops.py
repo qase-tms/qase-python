@@ -90,7 +90,7 @@ class QaseTestOps:
             api_instance = EnvironmentsApi(self.client)
             response = api_instance.get_environments(code=project)
             if hasattr(response, 'result'):
-                for env in response["result"]["entities"]:
+                for env in response.result.entities:
                     if env["slug"] == environment:
                         return env["id"]
         return None
