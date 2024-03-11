@@ -80,6 +80,8 @@ class Interceptor:
     def _log_post_response(response, url=None, *args, **kwargs):
         status = response.status if hasattr(response, 'status') else response.status_code
         interceptor = InterceptorSingleton.get_instance()
+        if interceptor.step is None:
+            return
         interceptor.step.data.add_response(
             status_code = status,
             response_body = str(response.data if hasattr(response, 'data') else response.content) if interceptor.track_on_fail and status >= 400 else None,
