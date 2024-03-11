@@ -71,8 +71,8 @@ class Interceptor:
             data = StepRequestData(
                 request_method = request.method,
                 request_url = request.url,
-                request_body = request.body,
-                request_headers = request.headers,
+                request_body = getattr(request, "body", ""),
+                request_headers = getattr(request, "headers", {}),
             ),
         )
 

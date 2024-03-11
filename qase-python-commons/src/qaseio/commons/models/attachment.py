@@ -40,7 +40,7 @@ class Attachment:
                 content = BytesIO(fc.read())
         else:
             if isinstance(self.content, str):
-                content = StringIO(self.content)
+                content = BytesIO(bytes(self.content, 'utf-8'))
             elif isinstance(self.content, bytes):
                 content = BytesIO(self.content)
         content.name = self.file_name
