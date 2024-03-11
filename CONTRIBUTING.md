@@ -16,6 +16,8 @@ To release a new package version:
 3.  After merging to a stable branch, tag the commit with `qase-{packagename}-{version}`, for example:
 
     ```sh
+    git checkout master
+    git pull
     git tag qase-python-commons-2.42.1
-    git push --follow-tags
+    git push origin qase-python-commons-2.42.1
     ```
