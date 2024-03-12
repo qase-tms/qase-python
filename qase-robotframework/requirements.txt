@@ -1,1 +1,1 @@
-qase-python-commons=1.0.2
+qase-python-commons==1.0.4

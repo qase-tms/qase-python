@@ -6,6 +6,7 @@ if sys.version_info >= (3, 8):
 else:
     from typing import Dict as TypedDict
 
+
 class StartSuiteModel(TypedDict):
     id: str
     longname: str
