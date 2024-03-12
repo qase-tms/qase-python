@@ -5,16 +5,15 @@ import re
 import uuid
 import time
 from datetime import datetime
-from typing import List
-
 
 from qaseio.commons import QaseTestOps
 from qaseio.commons import QaseUtils
 from qaseio.commons import QaseReport
 from .types import Envs, STATUSES
-from .models import * 
+from .models import *
 
 logger = logging.getLogger("qase-robotframework")
+
 
 class Listener:
     ROBOT_LISTENER_API_VERSION = 2
@@ -23,23 +22,23 @@ class Listener:
         self.config = configparser.ConfigParser()
         self.config.read("tox.ini")
 
-        if (self._get_param(Envs.MODE) and self._get_param(Envs.MODE).lower() == 'testops'):
+        if self._get_param(Envs.MODE) and self._get_param(Envs.MODE).lower() == 'testops':
             token = self._get_param(Envs.TESTOPS_API_TOKEN)
             project_code = self._get_param(Envs.TESTOPS_PROJECT)
 
             if not token or not project_code:
                 raise ValueError("Token and Project code should be provided")
-            
+
             run_title = "Automated Run {}".format(str(datetime.now()))
-            if (self._get_param(Envs.TESTOPS_RUN_TITLE, None)):
+            if self._get_param(Envs.TESTOPS_RUN_TITLE, None):
                 run_title = self._get_param(Envs.TESTOPS_RUN_TITLE, None)
-            
+
             self.reporter = QaseTestOps(
                 api_token=token,
                 project_code=project_code,
                 run_id=self._get_param(Envs.TESTOPS_RUN_ID, None),
                 plan_id=self._get_param(Envs.TESTOPS_PLAN_ID, None),
-                complete_run=self._get_param(Envs.TESTOPS_COMPLETE_RUN) and self._get_param(Envs.TESTOPS_COMPLETE_RUN).lower() in ['true', '1'],
+                complete_run=self._get_param(Envs.TESTOPS_COMPLETE_RUN).lower() in ['true', '1'],
                 mode=self._get_param(Envs.TESTOPS_MODE, 'async'),
                 run_title=run_title,
                 host=self._get_param(Envs.TESTOPS_HOST, 'qase.io'),
@@ -82,7 +81,7 @@ class Listener:
 
     def start_test(self, name, attributes: StartTestModel):
         logger.debug("Starting test '%s'", name)
-        
+
         self.result = {
             'is_api_result': True,
             'case': {},
@@ -91,9 +90,9 @@ class Listener:
         }
         self.result['uuid'] = str(uuid.uuid4())
         self.result["started_at"] = time.time()
-        
+
         case_id = self._extract_ids(attributes.get("tags"))
-        if (case_id):
+        if case_id:
             self.result["case_id"] = int(case_id)
 
     def end_test(self, name, attributes: EndTestModel):
@@ -107,9 +106,9 @@ class Listener:
         self.result['case'] = {}
         self.result['case']['title'] = name
         self.result['case']['description'] = attributes.get("doc")
-        if (self.suite):
+        if self.suite:
             self.result['case']['suite_title'] = self.suite.get('title', None)
-            #self.result['case']['suite_description'] = self.suite.get('description', None) // Not support in Qase API yet
+            # self.result['case']['suite_description'] = self.suite.get('description', None) // Not support in Qase API yet
 
         self.reporter.add_result(self.result, QaseUtils().build_tree(self.steps))
 
@@ -141,7 +140,7 @@ class Listener:
 
         self.steps[self.step_uuid]['status'] = STATUSES[attributes["status"]]
         self.steps[self.step_uuid]['action'] = attributes["kwname"]
-        self.steps[self.step_uuid]['duration'] = int((now - self.steps[self.step_uuid]['started_at'])*1000)
+        self.steps[self.step_uuid]['duration'] = int((now - self.steps[self.step_uuid]['started_at']) * 1000)
         self.steps[self.step_uuid]['completed_at'] = now
         self.steps[self.step_uuid]['comment'] = f"Step `{name}` with args: {attributes['args']}"
 
