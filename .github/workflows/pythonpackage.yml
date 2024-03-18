@@ -13,8 +13,8 @@ jobs:
         changed-dir: ["qaseio", "qase-pytest", "qase-robotframework", "qase-python-commons"]
     name: Project ${{ matrix.changed-dir }} - Python ${{ matrix.python-version }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: dorny/paths-filter@v2
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
         id: filter
         with:
           list-files: 'shell'
@@ -23,7 +23,7 @@ jobs:
               - '${{ matrix.changed-dir }}/**'
       - name: Set up Python ${{ matrix.python-version }}
         if: steps.filter.outputs.changes == 'true'
-        uses: actions/setup-python@v2 
+        uses: actions/setup-python@v5 
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
@@ -45,10 +45,10 @@ jobs:
         prefix: [ "qaseio", "qase-pytest", "qase-robotframework", "qase-python-commons" ]
     if: startsWith(github.event.ref, 'refs/tags')
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python 3.9
         if: contains(github.event.ref, matrix.prefix)
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: 3.9
       - name: Install build dependencies
