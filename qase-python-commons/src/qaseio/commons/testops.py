@@ -114,7 +114,7 @@ class QaseTestOps:
                 case_data = {
                     "title": result.get_title(),
                     "description": result.get_field('description'),
-                    "precondtions": result.get_field('precondtions'),
+                    "preconditions": result.get_field('preconditions'),
                     "postconditions": result.get_field('postconditions'),
                 }
 
@@ -305,7 +305,7 @@ class QaseTestOps:
             case_data = {
                 "title": result.get_title(),
                 "description": result.get_field('description'),
-                "precondtions": result.get_field('precondtions'),
+                "preconditions": result.get_field('preconditions'),
                 "postconditions": result.get_field('postconditions'),
             }
 
