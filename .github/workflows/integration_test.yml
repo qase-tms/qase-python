@@ -1,0 +1,67 @@
+name: Integration tests
+
+on:
+  # pull_request:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - "qaseio/**"
+  #     - "qase-pytest/**"
+  #     - "qase-robotframework/**"
+  #     - "qase-python-commons/**"
+  #     - "examples/**"
+  workflow_dispatch:
+    inputs:
+      token:
+        description: "Qase API token"
+        required: true
+      project-code:
+        description: "Qase project code"
+        required: true
+      run-id:
+        description: "Qase test run ID"
+        required: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        include:
+          - reporter-name: "qase-pytest"
+            example-path: "pytest"
+            test-run-command: "pytest"
+    name: Integration tests for ${{ matrix.reporter-name }} reporter
+    env:
+      QASE_TESTOPS_API_TOKEN: ${{ secrets.QASE_TESTOPS_API_TOKEN }}
+      QASE_TESTOPS_PROJECT: ${{ secrets.QASE_TESTOPS_PROJECT }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          pi3 install --upgrade pip setuptools wheel build
+      - name: Install test project's dependencies
+        working-directory: ./examples/${{ matrix.example-path }}
+        run: |
+          pip3 install -r requirements.txt
+          pip3 install --force-reinstall ../../qaseio
+          pip3 install --force-reinstall ../../qase-python-commons
+          pip3 install --force-reinstall ../../${{ matrix.reporter-name }}
+      - name: Run tests
+        working-directory: ./examples/${{ matrix.example-path }}
+        run: |
+          ${{ matrix.test-run-command }} -v
+      - name: Validate test results
+        uses: qase-tms/reporters-validator@action
+        if: always()
+        with:
+          token: ${{ inputs.token }}
+          project-code: ${{ inputs.project-code }}
+          run-id: ${{ inputs.run-id }}
+          result-path: ./examples/${{ matrix.example-path }}/results/result.json
