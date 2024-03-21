@@ -1,0 +1,780 @@
+{
+    "1": {
+        "case": {
+            "description": null,
+            "layer": 3,
+            "postconditions": null,
+            "preconditions": null,
+            "priority": 1,
+            "severity": 0,
+            "status": 0,
+            "steps": [
+                {
+                    "action": "First step",
+                    "steps": []
+                },
+                {
+                    "action": "Second step",
+                    "steps": []
+                }
+            ],
+            "tags": [],
+            "title": "test_with_qase_id_success"
+        },
+        "result": {
+            "attachments": [],
+            "case_id": 1,
+            "comment": "",
+            "result_steps": [
+                {
+                    "attachments": [],
+                    "status": 0,
+                    "steps": []
+                },
+                {
+                    "attachments": [],
+                    "status": 0,
+                    "steps": []
+                }
+            ],
+            "stack_trace": null,
+            "status": "Passed"
+        }
+    },
+    "158": {
+        "case": {
+            "description": null,
+            "layer": 0,
+            "postconditions": null,
+            "preconditions": null,
+            "priority": 0,
+            "severity": 0,
+            "status": 0,
+            "steps": [],
+            "tags": [],
+            "title": "Simple test success"
+        },
+        "result": {
+            "attachments": [],
+            "case_id": 158,
+            "comment": "",
+            "result_steps": [],
+            "stack_trace": null,
+            "status": "Passed"
+        }
+    },
+    "159": {
+        "case": {
+            "description": null,
+            "layer": 0,
+            "postconditions": null,
+            "preconditions": null,
+            "priority": 0,
+            "severity": 0,
+            "status": 0,
+            "steps": [],
+            "tags": [],
+            "title": "Simple test failed"
+        },
+        "result": {
+            "attachments": [],
+            "case_id": 159,
+            "comment": "AssertionError: assert 1 == 2",
+            "result_steps": [],
+            "stack_trace": "@qase.title(\"Simple test failed\")\n    def test_with_title_failed():\n>       assert 1 == 2\nE       assert 1 == 2\n\ntests/simple_test.py:21: AssertionError",
+            "status": "Failed"
+        }
+    },
+    "160": {
+        "case": {
+            "description": "Try to login to Qase TestOps using login and password 1",
+            "layer": 0,
+            "postconditions": null,
+            "preconditions": null,
+            "priority": 0,
+            "severity": 0,
+            "status": 0,
+            "steps": [],
+            "tags": [],
+            "title": "test_with_description_success"
+        },
+        "result": {
+            "attachments": [],
+            "case_id": 160,
+            "comment": "",
+            "result_steps": [],
+            "stack_trace": null,
+            "status": "Passed"
+        }
+    },
+    "161": {
+        "case": {
+            "description": "Try to login to Qase TestOps using login and password",
+            "layer": 0,
+            "postconditions": null,
+            "preconditions": null,
+            "priority": 0,
+            "severity": 0,
+            "status": 0,
+            "steps": [],
+            "tags": [],
+            "title": "test_with_description_failed"
+        },
+        "result": {
+            "attachments": [],
+            "case_id": 161,
+            "comment": "AssertionError: assert 1 == 2",
+            "result_steps": [],
+            "stack_trace": "@qase.description(\"Try to login to Qase TestOps using login and password\")\n    def test_with_description_failed():\n>       assert 1 == 2\nE       assert 1 == 2\n\ntests/simple_test.py:31: AssertionError",
+            "status": "Failed"
+        }
+    },
+    "164": {
+        "case": {
+            "description": null,
+            "layer": 0,
+            "postconditions": null,
+            "preconditions": "*Precondition 1*. Markdown is supported.",
+            "priority": 0,
+            "severity": 0,
+            "status": 0,
+            "steps": [],
+            "tags": [],
+            "title": "test_with_preconditions_success"
+        },
+        "result": {
+            "attachments": [],
+            "case_id": 164,
+            "comment": "",
+            "result_steps": [],
+            "stack_trace": null,
+            "status": "Passed"
+        }
+    },
+    "165": {
+        "case": {
+            "description": null,
+            "layer": 0,
+            "postconditions": null,
+            "preconditions": "*Precondition 1*. Markdown is supported.",
+            "priority": 0,
+            "severity": 0,
+            "status": 0,
+            "steps": [],
+            "tags": [],
+            "title": "test_with_preconditions_failed"
+        },
+        "result": {
+            "attachments": [],
+            "case_id": 165,
+            "comment": "AssertionError: assert 1 == 2",
+            "result_steps": [],
+            "stack_trace": "@qase.preconditions(\"*Precondition 1*. Markdown is supported.\")\n    def test_with_preconditions_failed():\n>       assert 1 == 2\nE       assert 1 == 2\n\ntests/simple_test.py:41: AssertionError",
+            "status": "Failed"
+        }
+    },
+    "166": {
+        "case": {
+            "description": null,
+            "layer": 0,
+            "postconditions": "*Postcondition 1*. Markdown is supported.",
+            "preconditions": null,
+            "priority": 0,
+            "severity": 0,
+            "status": 0,
+            "steps": [],
+            "tags": [],
+            "title": "test_with_postconditions_success"
+        },
+        "result": {
+            "attachments": [],
+            "case_id": 166,
+            "comment": "",
+            "result_steps": [],
+            "stack_trace": null,
+            "status": "Passed"
+        }
+    },
+    "167": {
+        "case": {
+            "description": null,
+            "layer": 0,
+            "postconditions": "*Postcondition 1*. Markdown is supported.1",
+            "preconditions": null,
+            "priority": 0,
+            "severity": 0,
+            "status": 0,
+            "steps": [],
+            "tags": [],
+            "title": "test_with_postconditions_failed"
+        },
+        "result": {
+            "attachments": [],
+            "case_id": 167,
+            "comment": "AssertionError: assert 1 == 2",
+            "result_steps": [],
+            "stack_trace": "@qase.postconditions(\"*Postcondition 1*. Markdown is supported.1\")\n    def test_with_postconditions_failed():\n>       assert 1 == 2\nE       assert 1 == 2\n\ntests/simple_test.py:51: AssertionError",
+            "status": "Failed"
+        }
+    },
+    "168": {
+        "case": {
+            "description": null,
+            "layer": 0,
+            "postconditions": null,
+            "preconditions": null,
+            "priority": 1,
+            "severity": 0,
+            "status": 0,
+            "steps": [],
+            "tags": [],
+            "title": "test_with_priority_success"
+        },
+        "result": {
+            "attachments": [],
+            "case_id": 168,
+            "comment": "",
+            "result_steps": [],
+            "stack_trace": null,
+            "status": "Passed"
+        }
+    },
+    "169": {
+        "case": {
+            "description": null,
+            "layer": 0,
+            "postconditions": null,
+            "preconditions": null,
+            "priority": 1,
+            "severity": 0,
+            "status": 0,
+            "steps": [],
+            "tags": [],
+            "title": "test_with_priority_failed"
+        },
+        "result": {
+            "attachments": [],
+            "case_id": 169,
+            "comment": "AssertionError: assert 1 == 2",
+            "result_steps": [],
+            "stack_trace": "@qase.priority(\"high\")\n    def test_with_priority_failed():\n>       assert 1 == 2\nE       assert 1 == 2\n\ntests/simple_test.py:71: AssertionError",
+            "status": "Failed"
+        }
+    },
+    "170": {
+        "case": {
+            "description": null,
+            "layer": 3,
+            "postconditions": null,
+            "preconditions": null,
+            "priority": 0,
+            "severity": 0,
+            "status": 0,
+            "steps": [],
+            "tags": [],
+            "title": "test_with_layer_success"
+        },
+        "result": {
+            "attachments": [],
+            "case_id": 170,
+            "comment": "",
+            "result_steps": [],
+            "stack_trace": null,
+            "status": "Passed"
+        }
+    },
+    "171": {
+        "case": {
+            "description": null,
+            "layer": 3,
+            "postconditions": null,
+            "preconditions": null,
+            "priority": 0,
+            "severity": 0,
+            "status": 0,
+            "steps": [],
+            "tags": [],
+            "title": "test_with_layer_failed"
+        },
+        "result": {
+            "attachments": [],
+            "case_id": 171,
+            "comment": "AssertionError: assert 1 == 2",
+            "result_steps": [],
+            "stack_trace": "@qase.layer(\"unit\")\n    def test_with_layer_failed():\n>       assert 1 == 2\nE       assert 1 == 2\n\ntests/simple_test.py:81: AssertionError",
+            "status": "Failed"
+        }
+    },
+    "174": {
+        "case": {
+            "description": "Try to login to Qase TestOps using login and password",
+            "layer": 3,
+            "postconditions": "*Postcondition 1*. Markdown is supported.",
+            "preconditions": "*Precondition 1*. Markdown is supported.",
+            "priority": 1,
+            "severity": 4,
+            "status": 0,
+            "steps": [],
+            "tags": [],
+            "title": "test_with_fields_success"
+        },
+        "result": {
+            "attachments": [],
+            "case_id": 174,
+            "comment": "",
+            "result_steps": [],
+            "stack_trace": null,
+            "status": "Passed"
+        }
+    },
+    "175": {
+        "case": {
+            "description": "Try to login to Qase TestOps using login and password",
+            "layer": 3,
+            "postconditions": "*Postcondition 1*. Markdown is supported.",
+            "preconditions": "*Precondition 1*. Markdown is supported.",
+            "priority": 1,
+            "severity": 4,
+            "status": 0,
+            "steps": [],
+            "tags": [],
+            "title": "test_with_fields_failed"
+        },
+        "result": {
+            "attachments": [],
+            "case_id": 175,
+            "comment": "AssertionError: assert 1 == 2",
+            "result_steps": [],
+            "stack_trace": "@qase.fields(\n        (\"severity\", \"normal\"),\n        (\"priority\", \"high\"),\n        (\"layer\", \"unit\"),\n        (\"description\", \"Try to login to Qase TestOps using login and password\"),\n        (\"preconditions\", \"*Precondition 1*. Markdown is supported.\"),\n        (\"postconditions\", \"*Postcondition 1*. Markdown is supported.\"),\n    )\n    def test_with_fields_failed():\n>       assert 1 == 2\nE       assert 1 == 2\n\ntests/simple_test.py:106: AssertionError",
+            "status": "Failed"
+        }
+    },
+    "176": {
+        "case": {
+            "description": null,
+            "layer": 0,
+            "postconditions": null,
+            "preconditions": null,
+            "priority": 0,
+            "severity": 0,
+            "status": 0,
+            "steps": [],
+            "tags": [],
+            "title": "test_with_bytes_attachment_success"
+        },
+        "result": {
+            "attachments": [
+                {
+                    "file_name": "simple.txt",
+                    "mime": "text/plain",
+                    "size": 34
+                }
+            ],
+            "case_id": 176,
+            "comment": "",
+            "result_steps": [],
+            "stack_trace": null,
+            "status": "Passed"
+        }
+    },
+    "177": {
+        "case": {
+            "description": null,
+            "layer": 0,
+            "postconditions": null,
+            "preconditions": null,
+            "priority": 0,
+            "severity": 0,
+            "status": 0,
+            "steps": [],
+            "tags": [],
+            "title": "test_with_file_attachment_success"
+        },
+        "result": {
+            "attachments": [
+                {
+                    "file_name": "file.txt",
+                    "mime": "text/plain",
+                    "size": 307
+                },
+                {
+                    "file_name": "image.png",
+                    "mime": "image/png",
+                    "size": 196064
+                }
+            ],
+            "case_id": 177,
+            "comment": "",
+            "result_steps": [],
+            "stack_trace": null,
+            "status": "Passed"
+        }
+    },
+    "178": {
+        "case": {
+            "description": null,
+            "layer": 0,
+            "postconditions": null,
+            "preconditions": null,
+            "priority": 0,
+            "severity": 0,
+            "status": 0,
+            "steps": [],
+            "tags": [],
+            "title": "test_with_file_attachment_and_mime_tipe_success"
+        },
+        "result": {
+            "attachments": [
+                {
+                    "file_name": "file.txt",
+                    "mime": "text/plain",
+                    "size": 307
+                }
+            ],
+            "case_id": 178,
+            "comment": "",
+            "result_steps": [],
+            "stack_trace": null,
+            "status": "Passed"
+        }
+    },
+    "179": {
+        "case": {
+            "description": null,
+            "layer": 0,
+            "postconditions": null,
+            "preconditions": null,
+            "priority": 0,
+            "severity": 0,
+            "status": 0,
+            "steps": [],
+            "tags": [],
+            "title": "test_with_bytes_attachment_failed"
+        },
+        "result": {
+            "attachments": [
+                {
+                    "file_name": "simple.txt",
+                    "mime": "text/plain",
+                    "size": 34
+                }
+            ],
+            "case_id": 179,
+            "comment": "AssertionError: assert 1 == 2",
+            "result_steps": [],
+            "stack_trace": "def test_with_bytes_attachment_failed():\n        qase.attach((str.encode(\"This is a simple string attachment\"), \"text/plain\", \"simple.txt\"))\n>       assert 1 == 2\nE       assert 1 == 2\n\ntests/attachment_test.py:13: AssertionError",
+            "status": "Failed"
+        }
+    },
+    "180": {
+        "case": {
+            "description": null,
+            "layer": 0,
+            "postconditions": null,
+            "preconditions": null,
+            "priority": 0,
+            "severity": 0,
+            "status": 0,
+            "steps": [],
+            "tags": [],
+            "title": "test_with_file_attachment_failed"
+        },
+        "result": {
+            "attachments": [
+                {
+                    "file_name": "file.txt",
+                    "mime": "text/plain",
+                    "size": 307
+                },
+                {
+                    "file_name": "image.png",
+                    "mime": "image/png",
+                    "size": 196064
+                }
+            ],
+            "case_id": 180,
+            "comment": "AssertionError: assert 1 == 2",
+            "result_steps": [],
+            "stack_trace": "def test_with_file_attachment_failed():\n        current_directory = os.getcwd()\n        qase.attach(f\"{current_directory}/attachments/file.txt\",\n                    f\"{current_directory}/attachments/image.png\")\n>       assert 1 == 2\nE       assert 1 == 2\n\ntests/attachment_test.py:27: AssertionError",
+            "status": "Failed"
+        }
+    },
+    "181": {
+        "case": {
+            "description": null,
+            "layer": 0,
+            "postconditions": null,
+            "preconditions": null,
+            "priority": 0,
+            "severity": 0,
+            "status": 0,
+            "steps": [],
+            "tags": [],
+            "title": "test_with_file_attachment_and_mime_tipe_failed"
+        },
+        "result": {
+            "attachments": [
+                {
+                    "file_name": "file.txt",
+                    "mime": "text/plain",
+                    "size": 307
+                }
+            ],
+            "case_id": 181,
+            "comment": "AssertionError: assert 1 == 2",
+            "result_steps": [],
+            "stack_trace": "def test_with_file_attachment_and_mime_tipe_failed():\n        current_directory = os.getcwd()\n        qase.attach(\n            (f\"{current_directory}/attachments/file.txt\", \"text/plain\"))\n>       assert 1 == 2\nE       assert 1 == 2\n\ntests/attachment_test.py:41: AssertionError",
+            "status": "Failed"
+        }
+    },
+    "182": {
+        "case": {
+            "description": null,
+            "layer": 0,
+            "postconditions": null,
+            "preconditions": null,
+            "priority": 0,
+            "severity": 0,
+            "status": 0,
+            "steps": [
+                {
+                    "action": "Step with bytes attachment",
+                    "steps": []
+                }
+            ],
+            "tags": [],
+            "title": "test_with_step_attachment_failed"
+        },
+        "result": {
+            "attachments": [],
+            "case_id": 182,
+            "comment": "AssertionError: assert 1 == 2",
+            "result_steps": [
+                {
+                    "attachments": [
+                        {
+                            "file_name": "simple.txt",
+                            "mime": "text/plain",
+                            "size": 34
+                        }
+                    ],
+                    "status": 1,
+                    "steps": []
+                }
+            ],
+            "stack_trace": "def test_with_step_attachment_failed():\n        step_with_bytes_attachment()\n>       assert 1 == 2\nE       assert 1 == 2\n\ntests/attachment_test.py:57: AssertionError",
+            "status": "Failed"
+        }
+    },
+    "183": {
+        "case": {
+            "description": null,
+            "layer": 0,
+            "postconditions": null,
+            "preconditions": null,
+            "priority": 0,
+            "severity": 0,
+            "status": 0,
+            "steps": [
+                {
+                    "action": "Step 01",
+                    "steps": [
+                        {
+                            "action": "Step 02",
+                            "steps": []
+                        }
+                    ]
+                },
+                {
+                    "action": "Step 03",
+                    "steps": []
+                }
+            ],
+            "tags": [],
+            "title": "test_with_steps_success"
+        },
+        "result": {
+            "attachments": [],
+            "case_id": 183,
+            "comment": "",
+            "result_steps": [
+                {
+                    "attachments": [],
+                    "status": 1,
+                    "steps": [
+                        {
+                            "attachments": [],
+                            "status": 0,
+                            "steps": []
+                        }
+                    ]
+                },
+                {
+                    "attachments": [],
+                    "status": 1,
+                    "steps": []
+                }
+            ],
+            "stack_trace": null,
+            "status": "Passed"
+        }
+    },
+    "184": {
+        "case": {
+            "description": null,
+            "layer": 0,
+            "postconditions": null,
+            "preconditions": null,
+            "priority": 0,
+            "severity": 0,
+            "status": 0,
+            "steps": [
+                {
+                    "action": "Step 01",
+                    "steps": [
+                        {
+                            "action": "Step 02",
+                            "steps": []
+                        }
+                    ]
+                },
+                {
+                    "action": "Step 03",
+                    "steps": []
+                }
+            ],
+            "tags": [],
+            "title": "test_with_steps_failed"
+        },
+        "result": {
+            "attachments": [],
+            "case_id": 184,
+            "comment": "AssertionError: assert 1 == 2",
+            "result_steps": [
+                {
+                    "attachments": [],
+                    "status": 1,
+                    "steps": [
+                        {
+                            "attachments": [],
+                            "status": 0,
+                            "steps": []
+                        }
+                    ]
+                },
+                {
+                    "attachments": [],
+                    "status": 1,
+                    "steps": []
+                }
+            ],
+            "stack_trace": "def test_with_steps_failed():\n        step01()\n        with qase.step(\"Step 03\"):\n            pass\n>       assert 1 == 2\nE       assert 1 == 2\n\ntests/step_test.py:26: AssertionError",
+            "status": "Failed"
+        }
+    },
+    "187": {
+        "case": {
+            "description": null,
+            "layer": 0,
+            "postconditions": null,
+            "preconditions": null,
+            "priority": 0,
+            "severity": 4,
+            "status": 0,
+            "steps": [],
+            "tags": [],
+            "title": "test_with_severity_success"
+        },
+        "result": {
+            "attachments": [],
+            "case_id": 187,
+            "comment": "",
+            "result_steps": [],
+            "stack_trace": null,
+            "status": "Passed"
+        }
+    },
+    "188": {
+        "case": {
+            "description": null,
+            "layer": 0,
+            "postconditions": null,
+            "preconditions": null,
+            "priority": 0,
+            "severity": 4,
+            "status": 0,
+            "steps": [],
+            "tags": [],
+            "title": "test_with_severity_failed"
+        },
+        "result": {
+            "attachments": [],
+            "case_id": 188,
+            "comment": "AssertionError: assert 1 == 2",
+            "result_steps": [],
+            "stack_trace": "@qase.severity(\"normal\")\n    def test_with_severity_failed():\n>       assert 1 == 2\nE       assert 1 == 2\n\ntests/simple_test.py:61: AssertionError",
+            "status": "Failed"
+        }
+    },
+    "190": {
+        "case": {
+            "description": null,
+            "layer": 0,
+            "postconditions": null,
+            "preconditions": null,
+            "priority": 0,
+            "severity": 0,
+            "status": 0,
+            "steps": [
+                {
+                    "action": "Step with bytes attachment",
+                    "steps": []
+                }
+            ],
+            "tags": [],
+            "title": "test_with_step_attachment_success"
+        },
+        "result": {
+            "attachments": [],
+            "case_id": 190,
+            "comment": "",
+            "result_steps": [
+                {
+                    "attachments": [
+                        {
+                            "file_name": "simple.txt",
+                            "mime": "text/plain",
+                            "size": 34
+                        }
+                    ],
+                    "status": 1,
+                    "steps": []
+                }
+            ],
+            "stack_trace": null,
+            "status": "Passed"
+        }
+    },
+    "2": {
+        "case": {
+            "description": null,
+            "layer": 0,
+            "postconditions": null,
+            "preconditions": null,
+            "priority": 3,
+            "severity": 5,
+            "status": 0,
+            "steps": [],
+            "tags": [],
+            "title": "test_with_qase_id_failed"
+        },
+        "result": {
+            "attachments": [],
+            "case_id": 2,
+            "comment": "AssertionError: assert 1 == 2",
+            "result_steps": [],
+            "stack_trace": "@qase.id(2)\n    def test_with_qase_id_failed():\n>       assert 1 == 2\nE       assert 1 == 2\n\ntests/simple_test.py:11: AssertionError",
+            "status": "Failed"
+        }
+    }
+}
