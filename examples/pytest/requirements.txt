@@ -1,0 +1,4 @@
+pytest==8.1.1
+qase-pytest==5.0.5
+qase-python-commons==2.0.10
+qaseio==4.0.1
