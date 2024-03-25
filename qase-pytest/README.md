@@ -37,21 +37,17 @@ All configuration options are listed in the following doc: [Configuration](docs/
 		}
 	},
 	"testops": {
-		"bulk": true,
+		"project": "YOUR_PROJECT_CODE",
 		"api": {
 			"token": "YOUR_API_TOKEN",
 			"host": "qase.io"
 		},
 		"run": {
-            "id": 1,
-			"title": "Test run title",
+			"title": "Automated test run",
 			"complete": true
 		},
-        "plan": {
-            "id": 1
-        },
-		"defect": true,
-		"project": "YOUR_PROJECT_CODE",
+		"defect": false,
+		"bulk": true,
 		"chunk": 200
 	},
 	"framework": {
