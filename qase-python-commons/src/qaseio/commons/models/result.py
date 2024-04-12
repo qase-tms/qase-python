@@ -62,14 +62,14 @@ class Request(object):
         self.response_body = response_body
 
 class Result(object):
-    def __init__(self, title: str, signature: str) -> None:
+    def __init__(self, signature: str) -> None:
         self.id: str = str(uuid.uuid4())
-        self.title: str = title
+        self.title: Optional[str] = None
         self.signature: str = signature
         self.run_id: Optional[str] = None
         self.testops_id: Optional[int] = None
         self.execution: Type[Execution] = Execution()
-        self.fields: Dict[Type[Field]] = {}
+        self.fields: Optional[Dict[Type[Field]]] = None
         self.attachments: List[Attachment] = []
         self.steps: List[Type[Step]] = []
         self.params: Optional[dict] = {}
@@ -109,11 +109,16 @@ class Result(object):
     
     def get_id(self) -> str:
         return self.id
-    
+
+    def add_title(self, title: str) -> None:
+        self.title = title
+
     def get_title(self) -> str:
         return self.title
-    
+
     def get_field(self, name: str) -> Optional[Type[Field]]:
+        if not self.fields:
+            return None
         if name in self.fields:
             return self.fields[name]
         return None
