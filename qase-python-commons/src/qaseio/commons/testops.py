@@ -88,52 +88,27 @@ class QaseTestOps:
                 print(
                     "[Qase] ⚠️  Disabling Qase TestOps reporter. Exception when calling ProjectApi->get_project: %s\n" % e)
 
+    @staticmethod
+    def _get_value(result, test_case, field_name, default=None):
+        if result.get_field(field_name):
+            return result.get_field(field_name)
+        elif test_case:
+            return getattr(test_case, field_name, default)
+        else:
+            return default
+
     def _get_case_info(self, result):
-        """
-        If result info is None, trying to retrieve it from server
-        Returns: test title, description, preconditions, postconditions
-        """
         if result.get_testops_id() != 0:
             api_cases = CasesApi(self.client)
             response = api_cases.get_case(code=self.project_code, id=result.get_testops_id())
-            if hasattr(response, 'result'):
-                test_case = response.result
-            else:
-                test_case = None
+            test_case = getattr(response, 'result', None)
         else:
             test_case = None
 
-        # getting title
-        if result.get_title():
-            title = result.get_title()
-        elif test_case:
-            title = test_case.title
-        else:
-            title = result.signature.split('::')[-1]
-
-        # Getting descriprion
-        if result.get_field('description'):
-            description = result.get_field('description')
-        elif test_case:
-            description = test_case.description
-        else:
-            description = None
-
-        # Getting preconditions
-        if result.get_field('preconditions'):
-            preconditions = result.get_field('preconditions')
-        elif test_case:
-            preconditions = test_case.preconditions
-        else:
-            preconditions = None
-
-        # Getting preconditions
-        if result.get_field('postconditions'):
-            postconditions = result.get_field('postconditions')
-        elif test_case:
-            postconditions = test_case.postconditions
-        else:
-            postconditions = None
+        title = self._get_value(result, test_case, 'title', result.signature.split('::')[-1])
+        description = self._get_value(result, test_case, 'description')
+        preconditions = self._get_value(result, test_case, 'preconditions')
+        postconditions = self._get_value(result, test_case, 'postconditions')
 
         return title, description, preconditions, postconditions
 
