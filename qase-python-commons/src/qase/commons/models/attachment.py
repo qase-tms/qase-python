@@ -5,8 +5,9 @@ from io import BytesIO, StringIO
 import json
 import pathlib
 
+
 class Attachment:
-    def __init__(self, 
+    def __init__(self,
                  file_name: str,
                  mime_type: str,
                  content: Optional[str] = None,
@@ -25,7 +26,7 @@ class Attachment:
 
         self.size = self._get_size(content)
         self.id = str(uuid.uuid4())
-        
+
     def _get_size(self, content):
         if self.file_path:
             return os.path.getsize(self.file_path)
@@ -33,10 +34,10 @@ class Attachment:
             return len(content)
         else:
             return 0
-        
+
     def get_id(self) -> str:
         return self.id
-    
+
     def get_for_upload(self) -> BytesIO:
         if self.file_path:
             return pathlib.Path(os.path.abspath(self.file_path))

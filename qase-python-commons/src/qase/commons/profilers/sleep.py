@@ -6,6 +6,7 @@ from functools import wraps
 from qase.commons.models.runtime import Runtime
 from qase.commons.models.step import Step, StepSleepData
 
+
 class SleepProfiler:
     _original_sleep = None
 
@@ -30,6 +31,7 @@ class SleepProfiler:
             self._log_pre_sleep(duration)
             func(duration, *args, **kwargs)
             self._log_post_sleep(duration)
+
         return wrapper
 
     def _log_pre_sleep(self, duration):

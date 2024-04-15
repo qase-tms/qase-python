@@ -1,5 +1,6 @@
-from qase.commons.models.step import Step, StepTextData 
+from qase.commons.models.step import Step, StepTextData
 from qase.commons.models.attachment import Attachment
+
 
 class Runtime:
     def __init__(self):
@@ -14,9 +15,9 @@ class Runtime:
         self.steps[step.id] = step
         self.step_id = step.id
 
-    def finish_step(self, id:str, status:str, data = None):
+    def finish_step(self, id: str, status: str, data=None):
         self.steps[id].execution.set_status(status)
-        if (data):
+        if data:
             self.steps[id].set_data(data)
 
         self.steps[id].execution.complete()

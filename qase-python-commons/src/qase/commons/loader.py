@@ -5,8 +5,9 @@ from qaseio.rest import ApiException
 
 import certifi
 
+
 class TestOpsPlanLoader:
-    def __init__(self, api_token, host = 'qase.io'):
+    def __init__(self, api_token, host='qase.io'):
         configuration = Configuration()
         configuration.api_key['TokenAuth'] = api_token
         configuration.host = f'https://api.{host}/v1'

@@ -1,6 +1,7 @@
 import json
 from typing import Optional, List
 
+
 class RunExecution(object):
     def __init__(self,
                  start_time: float,
@@ -9,11 +10,12 @@ class RunExecution(object):
                  ) -> None:
         self.start_time = start_time
         self.end_time = end_time
-        self.duration = int((end_time - start_time)*1000)
+        self.duration = int((end_time - start_time) * 1000)
         self.cumulative_duration = cumulative_duration
 
     def track(self, result: dict):
         self.cumulative_duration += result["execution"]["duration"]
+
 
 class RunStats(object):
     def __init__(self) -> None:
@@ -23,7 +25,7 @@ class RunStats(object):
         self.broken = 0
         self.muted = 0
         self.total = 0
-        
+
     def track(self, result: dict):
         status = result["execution"]["status"]
         if status == "passed":
@@ -37,10 +39,10 @@ class RunStats(object):
         self.total += 1
         if result.get('muted', False):
             self.muted += 1
-            
+
 
 class Run(object):
-    def __init__(self, 
+    def __init__(self,
                  title: str,
                  start_time: float,
                  end_time: float,
@@ -49,6 +51,7 @@ class Run(object):
                  suites: List[str] = [],
                  environment: Optional[str] = None
                  ):
+        self.host_data = None
         self.title = title
         self.execution = RunExecution(start_time=start_time, end_time=end_time)
         self.stats = RunStats()
@@ -56,10 +59,10 @@ class Run(object):
         self.threads = threads
         self.suites = suites
         self.environment = environment
-    
+
     def to_json(self) -> str:
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=False, indent=4)
-    
+
     def add_result(self, result: dict):
         compact_result = {
             "id": result["id"],
@@ -71,7 +74,7 @@ class Run(object):
         self.results.append(compact_result)
         self.execution.track(result)
         self.stats.track(result)
-        if (result["execution"]["thread"] not in self.threads):
+        if result["execution"]["thread"] not in self.threads:
             self.threads.append(result["execution"]["thread"])
 
     def add_host_data(self, host_data: dict):

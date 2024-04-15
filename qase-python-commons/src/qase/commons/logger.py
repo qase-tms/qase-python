@@ -2,6 +2,7 @@ import datetime
 
 import os
 
+
 class Logger:
     def __init__(self, debug: bool = False, prefix: str = '', dir: str = './logs') -> None:
         self.debug = debug

@@ -17,6 +17,7 @@ from typing import List, Dict, Union
 
 import more_itertools, certifi
 
+
 class QaseTestOps:
 
     def __init__(self, config: ConfigManager, logger: Logger) -> None:
@@ -34,7 +35,7 @@ class QaseTestOps:
         self.defect = self.config.get('testops_defect', False, bool)
         self.complete_after_run = self.config.get('testops.run.complete', False, bool)
         self.environment = None
-        
+
         self.chunk_size = min(2000, max(10, int(self.config.get('testops.chunk', 200))))
         environment = self.config.get('environment', None)
         if environment:
@@ -82,7 +83,7 @@ class QaseTestOps:
     # Method loads project from Qase TestOps by code and returns project data
     def _get_project(self, code: str) -> Dict:
         try:
-            response = ProjectsApi(self.client).get_project(code = code)
+            response = ProjectsApi(self.client).get_project(code=code)
             if hasattr(response, 'result'):
                 return response.result
             raise ReporterException("Unable to find given project code")
@@ -95,7 +96,7 @@ class QaseTestOps:
     def _get_environment(self, environment: str, code: str) -> Union[str, None]:
         try:
             api_instance = EnvironmentsApi(self.client)
-            response = api_instance.get_environments(code = code)
+            response = api_instance.get_environments(code=code)
             if hasattr(response, 'result') and hasattr(response.result, 'entities'):
                 for env in response.result.entities:
                     if env.slug == environment:
@@ -127,18 +128,18 @@ class QaseTestOps:
                         )
                     )
                     self.logger.log(f"Chunk #{i} was sent successfully.", "info")
-                    i = i+1
+                    i = i + 1
                 except Exception as e:
                     self.logger.log(f"Error at sending results for run {self.run_id} (Chunk #{i}): {e}", "error")
                     raise ReporterException(e)
-                
+
             # Moving processed results to another list, so we can use them later for fallback.
             self.processed += self.results
             self.results = []
         else:
             self.logger.log("No results to send", "info")
 
-    def _prepare_result(self, result: Dict) -> Dict:
+    def _prepare_result(self, result: Result) -> Dict:
         attached = []
         if result.attachments:
             for attachment in result.attachments:
@@ -148,11 +149,11 @@ class QaseTestOps:
         for step in result.steps:
             prepared = self._prepare_step(step)
             steps.append(prepared)
-            
+
         case_data = {
             "title": result.get_title(),
             "description": result.get_field('description'),
-            "precondtions": result.get_field('precondtions'),
+            "preconditions": result.get_field('preconditions'),
             "postconditions": result.get_field('postconditions'),
         }
 
@@ -160,30 +161,39 @@ class QaseTestOps:
             # Hack to match old TestOps API
             if param == "": result.params[key] = "empty"
 
-        if (result.get_field('severity')):
+        if result.get_field('severity'):
             case_data["severity"] = result.get_field('severity')
 
-        if (result.get_field('priority')):
+        if result.get_field('priority'):
             case_data["priority"] = result.get_field('priority')
 
-        if (result.get_field('layer')):
+        if result.get_field('layer'):
             case_data["layer"] = result.get_field('layer')
 
         if result.get_suite_title():
             case_data["suite_title"] = "\t".join(result.get_suite_title().split("."))
 
-        return {
-            "case_id": result.get_testops_id(),
+        result_model = {
             "status": result.execution.status,
             "stacktrace": result.execution.stacktrace,
             "time_ms": result.execution.duration,
             "comment": result.message,
             "attachments": [attach.hash for attach in attached],
-            "case": case_data,
             "steps": steps,
             "param": result.params,
             "defect": self.defect
         }
+
+        test_ops_id = result.get_testops_id()
+
+        if test_ops_id:
+            result_model["case_id"] = test_ops_id
+            result_model["case"] = None
+            return result_model
+
+        result_model["case_id"] = None
+        result_model["case"] = case_data
+        return result_model
 
     def _complete_run(self) -> None:
         api_runs = RunsApi(self.client)
@@ -213,13 +223,13 @@ class QaseTestOps:
                 return True
         return False
 
-    def _create_run(self, plan_id = None, environment_id = None, cases: List = []) -> None:
+    def _create_run(self, plan_id=None, environment_id=None, cases: List = []) -> None:
         kwargs = dict(
-                title=self.run_title,
-                cases=cases,
-                environment_id=(int(environment_id) if environment_id else None),
-                plan_id=(int(plan_id) if plan_id else plan_id),
-                is_autotest=True
+            title=self.run_title,
+            cases=cases,
+            environment_id=(int(environment_id) if environment_id else None),
+            plan_id=(int(plan_id) if plan_id else plan_id),
+            is_autotest=True
         )
         try:
             result = RunsApi(self.client).create_run(
@@ -238,40 +248,44 @@ class QaseTestOps:
     def _upload(self, attachment: Attachment) -> Dict:
         try:
             return AttachmentsApi(self.client).upload_attachment(
-                    self.project_code, file=[attachment.get_for_upload()],
-                ).result
+                self.project_code, file=[attachment.get_for_upload()],
+            ).result
         except Exception as e:
             self.logger.log(f"Error at uploading attachment: {e}", "error")
             raise ReporterException(e)
-    
+
     # This method contains a lot of hacks to match old TestOps API.
     def _prepare_step(self, step: Step) -> Dict:
         prepared_children = []
 
-        try: 
-            prepared_step = {
-                "time": step.execution.duration,
-            }
-            
-            prepared_step["status"] = step.execution.status
+        try:
+            prepared_step = {"time": step.execution.duration, "status": step.execution.status}
+
             if step.execution.status == 'untested':
                 prepared_step["status"] = 'passed'
-            
+
             if step.step_type == "text":
                 prepared_step['action'] = step.data.action
                 if step.data.expected_result:
                     prepared_step['expected_result'] = step.data.expected_result
-            
+
             if step.step_type == "request":
                 prepared_step['action'] = step.data.request_method + " " + step.data.request_url
-                if (step.data.request_body):
-                    step.attachments.append(Attachment(file_name='request_body.txt', content=step.data.request_body, mime_type='text/plain', temporary=True))
-                if (step.data.request_headers):
-                    step.attachments.append(Attachment(file_name='request_headers.txt', content=step.data.request_headers, mime_type='text/plain', temporary=True))
-                if (step.data.response_body):
-                    step.attachments.append(Attachment(file_name='response_body.txt', content=step.data.response_body, mime_type='text/plain', temporary=True))
-                if (step.data.response_headers):
-                    step.attachments.append(Attachment(file_name='response_headers.txt', content=step.data.response_headers, mime_type='text/plain', temporary=True))
+                if step.data.request_body:
+                    step.attachments.append(
+                        Attachment(file_name='request_body.txt', content=step.data.request_body, mime_type='text/plain',
+                                   temporary=True))
+                if step.data.request_headers:
+                    step.attachments.append(
+                        Attachment(file_name='request_headers.txt', content=step.data.request_headers,
+                                   mime_type='text/plain', temporary=True))
+                if step.data.response_body:
+                    step.attachments.append(Attachment(file_name='response_body.txt', content=step.data.response_body,
+                                                       mime_type='text/plain', temporary=True))
+                if step.data.response_headers:
+                    step.attachments.append(
+                        Attachment(file_name='response_headers.txt', content=step.data.response_headers,
+                                   mime_type='text/plain', temporary=True))
 
             if step.attachments:
                 uploaded_attachments = []
@@ -291,9 +305,9 @@ class QaseTestOps:
     # Lifecycle methods
     def start_run(self) -> str:
         if self.plan_id and not self.run_id:
-            self._create_run(plan_id = self.plan_id, environment_id = self.environment)
+            self._create_run(plan_id=self.plan_id, environment_id=self.environment)
         if not self.run_id and not self.plan_id:
-            self._create_run(environment_id = self.environment)
+            self._create_run(environment_id=self.environment)
         if not self.run and not self._load_run:
             raise ReporterException("Unable to find given test run.")
         return self.run_id
@@ -315,6 +329,6 @@ class QaseTestOps:
 
     def get_results(self) -> List:
         return self.results + self.processed
-    
+
     def set_results(self, results) -> None:
         self.results = results

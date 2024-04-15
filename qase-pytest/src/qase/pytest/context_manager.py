@@ -3,6 +3,7 @@ import functools
 from contextlib import ContextDecorator as PyContextDecorator
 from contextlib import _GeneratorContextManager as GeneratorContextManager
 
+
 class ContextManager(GeneratorContextManager, PyContextDecorator):
     """Pass in a generator to the initializer and the resultant object
     is both a decorator closure and context manager

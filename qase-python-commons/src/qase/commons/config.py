@@ -2,12 +2,13 @@ import os
 import json
 from qase.commons.logger import Logger
 
+
 class ConfigManager:
 
     def __init__(self, config_file='./qase.config.json', env_vars_prefix='QASE_'):
         self.logger = Logger()
         self.config = {}
-        self.parseBool = lambda d : d in ("y", "yes", "true", "1", 1, True)
+        self.parseBool = lambda d: d in ("y", "yes", "true", "1", 1, True)
 
         try:
             if os.path.exists(config_file):
@@ -24,7 +25,7 @@ class ConfigManager:
         except Exception as e:
             self.logger.log("Failed to load config from env vars {e}", "error")
 
-    def get(self, key, default = None, value_type = None):
+    def get(self, key, default=None, value_type=None):
         # Use _get_config method to get the value. If None, return default.
         value = self._get_config(key)
         if value_type and value_type == bool:

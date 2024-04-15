@@ -1,5 +1,6 @@
 from qase.commons.models.runtime import Runtime
 
+
 class DbProfiler:
     _instance = None
 
@@ -10,9 +11,9 @@ class DbProfiler:
         self.step = None
 
     def enable(self):
-        #TBD
+        # TBD
         return
 
     def disable(self):
-        #TBD
+        # TBD
         return

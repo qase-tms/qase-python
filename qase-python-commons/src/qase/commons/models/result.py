@@ -10,21 +10,23 @@ from qase.commons.models.relation import Relation
 
 from qase.commons import QaseUtils
 
+
 class Field:
-    def __init__(self, 
+    def __init__(self,
                  name: str,
                  value: Union[str, list]):
         self.name = name
         self.value = value
 
+
 class Execution(object):
-    def __init__(self, 
-                    status: Optional[str] = None,
-                    end_time: int = 0, 
-                    duration: int = 0, 
-                    stacktrace: Optional[str] = None, 
-                    thread: Optional[str] = QaseUtils.get_thread_name()
-                    ):
+    def __init__(self,
+                 status: Optional[str] = None,
+                 end_time: int = 0,
+                 duration: int = 0,
+                 stacktrace: Optional[str] = None,
+                 thread: Optional[str] = QaseUtils.get_thread_name()
+                 ):
         self.start_time = time.time()
         self.status = status
         self.end_time = end_time
@@ -33,11 +35,11 @@ class Execution(object):
         self.thread = thread
 
     def set_status(self, status: Optional[str]):
-        if (status in ['passed', 'failed', 'skipped', 'untested']):
+        if status in ['passed', 'failed', 'skipped', 'untested']:
             self.status = status
         else:
             raise ValueError('Step status must be one of: passed, failed, skipped, untested')
-        
+
     def get_status(self):
         return self.status
 
@@ -45,15 +47,16 @@ class Execution(object):
         self.end_time = time.time()
         self.duration = (int)((self.end_time - self.start_time) * 1000)
 
+
 class Request(object):
     def __init__(self,
-            method: str,
-            url: str,
-            status: int,
-            request_headers: Dict[str, str],
-            request_body: str,
-            response_headers: Dict[str, str],
-            response_body: str):
+                 method: str,
+                 url: str,
+                 status: int,
+                 request_headers: Dict[str, str],
+                 request_body: str,
+                 response_headers: Dict[str, str],
+                 response_body: str):
         self.method = method
         self.url = url
         self.status = status
@@ -61,6 +64,7 @@ class Request(object):
         self.request_body = request_body
         self.response_headers = response_headers
         self.response_body = response_body
+
 
 class Result(object):
     def __init__(self, title: str, signature: str) -> None:
@@ -83,7 +87,7 @@ class Result(object):
 
     def add_message(self, message: str) -> None:
         self.message = message
-    
+
     def add_field(self, field: Type[Field]) -> None:
         self.fields[field.name] = field.value
 
@@ -107,24 +111,24 @@ class Result(object):
 
     def get_status(self) -> Optional[str]:
         return self.execution.status
-    
+
     def get_id(self) -> str:
         return self.id
-    
+
     def get_title(self) -> str:
         return self.title
-    
+
     def get_field(self, name: str) -> Optional[Type[Field]]:
         if name in self.fields:
             return self.fields[name]
         return None
-    
+
     def get_testops_id(self) -> Optional[int]:
         if self.testops_id is None:
             # Hack for old API
             return 0
         return self.testops_id
-    
+
     def get_duration(self) -> int:
         return self.execution.duration
 
@@ -136,4 +140,5 @@ class Result(object):
         self.run_id = run_id
 
     def to_json(self) -> str:
-        return json.dumps(self, default=lambda o: o.__str__() if isinstance(o, PosixPath) else o.__dict__, sort_keys=False, indent=4)
+        return json.dumps(self, default=lambda o: o.__str__() if isinstance(o, PosixPath) else o.__dict__,
+                          sort_keys=False, indent=4)

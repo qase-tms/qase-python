@@ -4,6 +4,7 @@ from functools import wraps
 from qase.commons.models.runtime import Runtime
 from qase.commons.models.step import Step, StepRequestData
 
+
 class NetworkProfiler:
     _instance = None
 
@@ -40,6 +41,7 @@ class NetworkProfiler:
             response = func(self, request, *args, **kwargs)
             NetworkProfilerSingleton.get_instance()._log_post_response(response)
             return response
+
         return wrapper
 
     def _urllib3_request_wrapper(self, func):
@@ -55,18 +57,19 @@ class NetworkProfiler:
             if response is not None and interceptor.track_on_fail and response.status >= 400:
                 interceptor._log_post_response(response, url=url)
             return response
+
         return wrapper
 
     @staticmethod
     def _log_pre_request(request):
         NetworkProfilerSingleton.get_instance().step = Step(
-            id = str(uuid.uuid4()),
-            step_type = 'request',
-            data = StepRequestData(
-                request_method = request.method,
-                request_url = request.url,
-                request_body = request.body,
-                request_headers = request.headers,
+            id=str(uuid.uuid4()),
+            step_type='request',
+            data=StepRequestData(
+                request_method=request.method,
+                request_url=request.url,
+                request_body=request.body,
+                request_headers=request.headers,
             ),
         )
 
@@ -75,17 +78,19 @@ class NetworkProfiler:
         status = response.status if hasattr(response, 'status') else response.status_code
         profiler = NetworkProfilerSingleton.get_instance()
         profiler.step.data.add_response(
-            status_code = status,
-            response_body = str(response.data if hasattr(response, 'data') else response.content) if profiler.track_on_fail and status >= 400 else None,
-            response_headers = response.headers if profiler.track_on_fail and status >= 400 else None,
+            status_code=status,
+            response_body=str(response.data if hasattr(response,
+                                                       'data') else response.content) if profiler.track_on_fail and status >= 400 else None,
+            response_headers=response.headers if profiler.track_on_fail and status >= 400 else None,
         )
         profiler.runtime.add_step(profiler.step)
         profiler.runtime.finish_step(
-            id = profiler.step.id,
-            status = 'passed' if status < 400 else 'failed',
+            id=profiler.step.id,
+            status='passed' if status < 400 else 'failed',
         )
         profiler.step = None
-    
+
+
 class NetworkProfilerSingleton:
     _instance = None
 

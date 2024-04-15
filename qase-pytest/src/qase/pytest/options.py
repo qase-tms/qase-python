@@ -1,5 +1,5 @@
 class QasePytestOptions:
-    
+
     @staticmethod
     def addoptions(parser, group):
         QasePytestOptions.add_option(
@@ -148,7 +148,7 @@ class QasePytestOptions:
             dest="qase_profilers",
             help="Profilers to use for tests. Available: `network`, `db`, `sleep`"
         )
-    
+
     @staticmethod
     def add_option(parser, group, option, dest, default=None, type=None, **kwargs):
         # We are going to add options that were not added before through the manager

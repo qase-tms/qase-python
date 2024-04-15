@@ -27,19 +27,21 @@ try:
 except ImportError:
     def is_xdist_controller(*args, **kwargs):
         return True
-    
+
 try:
     import pytest
 except ImportError:
     raise ImportError("pytest is not installed")
 
+
 class PluginNotInitializedException(Exception):
     pass
+
 
 class QasePytestPlugin:
     run = None
     meta_run_file = pathlib.Path("src.run")
-    
+
     def __init__(
             self,
             reporter
@@ -49,7 +51,7 @@ class QasePytestPlugin:
         self.run_id = None
         self.execution_plan = None
 
-        self.reporter.setup_profilers(runtime = self.runtime)
+        self.reporter.setup_profilers(runtime=self.runtime)
 
     def start_step(self, step):
         self.runtime.add_step(step)
@@ -68,8 +70,10 @@ class QasePytestPlugin:
 
     def pytest_collection_modifyitems(self, session, config, items):
         # Filter test cases based on ids
-        if (self.execution_plan):
-            items[:] = [item for item in items if item.get_closest_marker('qase_id') and item.get_closest_marker('qase_id').kwargs.get("id") in self.execution_plan]
+        if self.execution_plan:
+            items[:] = [item for item in items if
+                        item.get_closest_marker('qase_id') and item.get_closest_marker('qase_id').kwargs.get(
+                            "id") in self.execution_plan]
 
     def pytest_sessionstart(self, session):
         if is_xdist_controller(session):
@@ -105,8 +109,10 @@ class QasePytestPlugin:
     def pytest_runtest_makereport(self, item, call):
         if not self.ignore:
             report = (yield).get_result()
+
             def set_result(res):
                 self.runtime.result.execution.status = res
+
             def _attach_logs():
                 # TODO: can be attached twice
                 if report.caplog:
@@ -115,7 +121,7 @@ class QasePytestPlugin:
                     self.add_attachments((report.capstdout, "text/plain", "stdout.txt"))
                 if report.capstderr:
                     self.add_attachments((report.capstderr, "text/plain", "stderr.txt"))
-                    
+
             if report.longrepr:
                 self.runtime.result.execution.stacktrace = report.longreprtext
 
@@ -144,9 +150,9 @@ class QasePytestPlugin:
 
     def start_pytest_item(self, item):
         self.runtime.result = Result(
-            title = self._get_title(item), 
-            signature = self._get_signature(item),
-            )
+            title=self._get_title(item),
+            signature=self._get_signature(item),
+        )
         self._set_fields(item)
         self._set_tags(item)
         self._set_author(item)
@@ -193,7 +199,7 @@ class QasePytestPlugin:
                     self.reporter.set_run_id(self.run_id)
                 except ValueError:
                     pass
-    
+
     def _get_title(self, item):
         title = None
         try:
@@ -205,14 +211,14 @@ class QasePytestPlugin:
             title = item.originalname
 
         return str(title)
-    
+
     def _get_signature(self, item) -> str:
         return re.sub(r'\[.*?\]', '', item.nodeid)
-    
+
     def _set_relations(self, item) -> None:
         # TODO: Add support for relations
         pass
-    
+
     def _set_fields(self, item) -> None:
         # Legacy fields support
         for name in ["description", "preconditions", "postconditions", "layer", "severity", "priority"]:
@@ -267,10 +273,10 @@ class QasePytestPlugin:
 
     def _get_suite(self, item):
         path, class_name, tail = islice(chain(item.nodeid.split('::'), [None], [None]), 3)
-        
+
         class_name = class_name if tail else None
         file_name, file_path = islice(chain(reversed(path.rsplit('/', 1)), [None]), 2)
-        
+
         module = file_name.split('.')[0]
         package = path.replace('/', '.') if path else None
         return

@@ -8,6 +8,7 @@ import uuid
 
 from pkg_resources import DistributionNotFound, get_distribution
 
+
 class QaseUtils:
 
     @staticmethod
@@ -31,20 +32,20 @@ class QaseUtils:
                     parent.steps.append(item)
                 except Exception as e:
                     print(f'Failed to append child to parent: {e}')
-        
+
         return roots
-    
+
     @staticmethod
     def get_thread_name() -> str:
         return f"{os.getpid()}-{threading.current_thread().name}"
-    
+
     @staticmethod
     def uuid() -> str:
         return str(uuid.uuid4())
-    
+
     @staticmethod
     def get_host_data() -> dict:
-        try: 
+        try:
             return {
                 "system": platform.uname().system,
                 "node": platform.uname().node,
@@ -56,11 +57,11 @@ class QaseUtils:
             }
         except Exception as e:
             return {}
-    
+
     @staticmethod
     def get_filename(path) -> str:
         return os.path.basename(path)
-    
+
     @staticmethod
     def package_version(name):
         try:
@@ -68,6 +69,7 @@ class QaseUtils:
         except DistributionNotFound:
             version = "unknown"
         return version
+
 
 class StringFormatter(string.Formatter):
     """
@@ -77,6 +79,7 @@ class StringFormatter(string.Formatter):
         or provided ahead of time, enhancing robustness and reducing the need for extensive error handling in code 
         that generates dynamic text output.
     """
+
     class SafeError(Exception):
         pass
 

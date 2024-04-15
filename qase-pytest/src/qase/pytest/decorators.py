@@ -8,6 +8,7 @@ from qase.commons.models.step import Step, StepTextData
 
 from .context_manager import contextdecorator
 
+
 class qase:
     """Class with decorators for pytest"""
 
@@ -36,7 +37,7 @@ class qase:
         :return: pytest.mark instance
         """
         return pytest.mark.qase_title(title=title)
-    
+
     @staticmethod
     def fields(*fields: Tuple[str, str]):
         """
@@ -53,7 +54,7 @@ class qase:
         :return: pytest.mark instance
         """
         return pytest.mark.qase_fields(fields=fields)
-    
+
     @staticmethod
     def suite(title: str, description: str = None):
         """
@@ -66,7 +67,7 @@ class qase:
         :return: pytest.mark instance
         """
         return pytest.mark.qase_suite(title=title, description=description)
-    
+
     @staticmethod
     def author(author):
         """
@@ -102,7 +103,7 @@ class qase:
         :return: pytest.mark instance
         """
         return pytest.mark.qase_preconditions(preconditions=preconditions)
-    
+
     @staticmethod
     def postconditions(postconditions):
         """
@@ -150,7 +151,7 @@ class qase:
         :return: pytest.mark instance
         """
         return pytest.mark.qase_layer(layer=layer)
-    
+
     @staticmethod
     def tags(*tags):
         """
@@ -162,7 +163,7 @@ class qase:
         :return: pytest.mark instance
         """
         return pytest.mark.qase_tags(tags=tags)
-    
+
     @staticmethod
     def ignore():
         """
@@ -173,7 +174,7 @@ class qase:
         :return: pytest.mark instance
         """
         return pytest.mark.qase_ignore()
-    
+
     @staticmethod
     def muted():
         """
@@ -184,7 +185,7 @@ class qase:
         :return: pytest.mark instance
         """
         return pytest.mark.qase_muted()
-    
+
     @staticmethod
     def attach(*files: Union[str, Tuple[str, str], Tuple[bytes, str, str]]):
         """
@@ -227,11 +228,11 @@ class qase:
         try:
             plugin = QasePytestPluginSingleton.get_instance()
             step = Step(
-                step_type = 'text', 
-                id = id,
-                data = StepTextData(
-                    action = title,
-                    expected_result = expected if (expected) else None,
+                step_type='text',
+                id=id,
+                data=StepTextData(
+                    action=title,
+                    expected_result=expected if expected else None,
                 )
             )
             plugin.start_step(step)

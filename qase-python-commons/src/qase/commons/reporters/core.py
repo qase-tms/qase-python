@@ -11,9 +11,11 @@ import os
 import json
 
 """
-    CoreReporer is a facade for all reporters and it is used to initialize and manage them.
+    CoreReporter is a facade for all reporters and it is used to initialize and manage them.
     It is also used to pass configuration and logger to reporters, handle fallback logic and error handling.
 """
+
+
 class QaseCoreReporter:
     def __init__(self, config: Config):
         self.config = config
@@ -30,13 +32,13 @@ class QaseCoreReporter:
         if mode == 'testops':
             self._load_testops_plan()
             try:
-                self.reporter = QaseTestOps(config = config, logger = self.logger)
+                self.reporter = QaseTestOps(config=config, logger=self.logger)
             except Exception as e:
                 self.logger.log('Failed to initialize TestOps reporter. Using fallback.', 'info')
                 self.logger.log(e, 'error')
                 self.reporter = self.fallback
         elif mode == 'report':
-            self.reporter = QaseReport(config = config, logger = self.logger)
+            self.reporter = QaseReport(config=config, logger=self.logger)
         else:
             self.reporter = None
 
@@ -49,7 +51,7 @@ class QaseCoreReporter:
                 self.logger.log(e, 'error')
                 self.reporter = None
 
-    def complete_run(self, exit_code = None) -> None:
+    def complete_run(self, exit_code=None) -> None:
         if self.reporter:
             try:
                 self.reporter.complete_run(exit_code)
@@ -141,7 +143,7 @@ class QaseCoreReporter:
 
     def _load_testops_plan(self) -> None:
         try:
-            if (self.config.get("testops.plan.id", None) is not None):
+            if self.config.get("testops.plan.id", None) is not None:
                 from qase.commons import TestOpsPlanLoader
 
                 # Load test plan data from Qase TestOps
@@ -149,11 +151,12 @@ class QaseCoreReporter:
                     api_token=self.config.get("testops.api.token"),
                     host=self.config.get("testops.api.host", "qase.io"),
                 )
-                self.execution_plan = loader.load(self.config.get("testops.project"), int(self.config.get("testops.plan.id")))
+                self.execution_plan = loader.load(self.config.get("testops.project"),
+                                                  int(self.config.get("testops.plan.id")))
         except Exception as e:
             self.logger.log('Failed to load test plan from Qase TestOps', 'info')
 
-    #TODO: won't work, need to fix
+    # TODO: won't work, need to fix
     def _selective_execution_setup(self) -> list:
         # Load execution plan from file
         path = self.config.get("execution_plan.path", "qase_execution_plan.json")
@@ -167,5 +170,5 @@ class QaseCoreReporter:
 
     def _fallback_setup(self) -> Union[QaseReport, None]:
         if self.config.get("fallback", 'report'):
-            return QaseReport(config = self.config, logger = self.logger)
+            return QaseReport(config=self.config, logger=self.logger)
         return None
