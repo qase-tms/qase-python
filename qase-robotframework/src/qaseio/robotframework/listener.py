@@ -8,9 +8,7 @@ from datetime import datetime
 from typing import List
 
 
-from qaseio.commons import QaseTestOps
-from qaseio.commons import QaseUtils
-from qaseio.commons import QaseReport
+from qase.commons import QaseTestOps, QaseUtils, QaseReport
 from .types import Envs, STATUSES
 from .models import * 
 

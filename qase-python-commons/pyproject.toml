@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qase-python-commons"
-version = "2.0.4"
+version = "3.0.0"
 description = "A library for Qase TestOps and Qase Report"
 readme = "README.md"
 authors = [{name = "Qase Team", email = "support@qase.io"}]
@@ -12,12 +12,23 @@ license = {file = "LICENSE"}
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Programming Language :: Python",
+    'Intended Audience :: Developers',
+    'License :: OSI Approved :: Apache Software License',
+    'Topic :: Software Development :: Quality Assurance',
+    'Topic :: Software Development :: Testing',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3 :: Only',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
 ]
 urls = {"Homepage" = "https://github.com/qase-tms/qase-python/tree/master/qase-python-commons"}
-requires-python = ">=3.8"
+requires-python = ">=7"
 dependencies = [
     "certifi>=2024.2.2",
-    "qaseio>=4.0.0,<5.0.0",
     "attrs>=23.2.0",
     "more_itertools"
 ]
@@ -35,8 +46,8 @@ testing = [
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-minversion = 3.8
-envlist = py{38,39,310,311}
+minversion = 3.7
+envlist = py{37,38,39,310,311}
 
 [testenv]
 deps =
@@ -66,7 +77,7 @@ exclude = [".tox", "build", "dist", ".eggs", "docs/conf.py"]
 branch = true
 
 [tool.coverage.paths]
-source = ["src/qaseio/commons"]
+source = ["src/qase/commons"]
 
 [tool.coverage.report]
 # Regexes for lines to exclude from consideration

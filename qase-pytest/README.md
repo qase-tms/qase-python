@@ -7,8 +7,7 @@
 ```
 pip install qase-pytest
 ```
-
-## Upgrade from 4.x to 5.x
+## Upgrade from 4.x to 5.x and to 6.x
 A new version of qase-pytest reporter has breaking changes. Follow these [guide](UPGRADE.md) that will help you to migrate to a new version.
 
 ## Configuration
@@ -73,7 +72,7 @@ All configuration options are listed in the following doc: [Configuration](../RE
 To link tests in code with tests in Qase TestOps you can use predefined decorators:
 
 ```python
-from qaseio.pytest import qase
+from qase.pytest import qase
 
 @qase.id(13)
 @qase.title("My first test")
@@ -82,7 +81,7 @@ from qaseio.pytest import qase
     ("priority", "high"),
     ("layer", "unit"),
     ("description", "Try to login to Qase TestOps using login and password"),
-    ("description", "*Precondition 1*. Markdown is supported."),
+    ("preconditions", "*Precondition 1*. Markdown is supported."),
 )
 def test_example_1():
     pass
@@ -94,7 +93,7 @@ Each unique number can only be assigned once to the class or function being used
 If you want to exclude a particular test from the report, you can use the `@qase.ignore` decorator:
 
 ```python
-from qaseio.pytest import qase
+from qase.pytest import qase
 
 @qase.ignore
 def test_example_1():
@@ -120,7 +119,7 @@ attachments:
 
 ```python
 import pytest
-from qaseio.pytest import qase
+from qase.pytest import qase
 
 @pytest.fixture(scope="session")
 def driver():
@@ -150,7 +149,7 @@ the attachment will not be uploaded:
 
 ```python
 import pytest
-from qaseio.pytest import qase
+from qase.pytest import qase
 
 @pytest.fixture(scope="session")
 def driver():
@@ -171,7 +170,7 @@ def test_example_2(driver):
 It is possible to link the test step using a function, or using context.
 
 ```python
-from qaseio.pytest import qase
+from qase.pytest import qase
 
 @qase.step("First step") # test step name
 def some_step():

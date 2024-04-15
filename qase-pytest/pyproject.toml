@@ -4,24 +4,44 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qase-pytest"
-version = "5.0.2"
+version = "6.0.0"
 description = "Qase Pytest Plugin for Qase TestOps and Qase Report"
 readme = "README.md"
+keywords = ["qase", "pytest", "plugin", "testops", "report", "qase reporting", "test observability"]
 authors = [{name = "Qase Team", email = "support@qase.io"}]
 license = {file = "LICENSE"}
 classifiers = [
     "Development Status :: 5 - Production/Stable",
-    "Framework :: Pytest",
     "Programming Language :: Python",
+    "Framework :: Pytest",
+    'Intended Audience :: Developers',
+    'License :: OSI Approved :: Apache Software License',
+    'Topic :: Software Development :: Quality Assurance',
+    'Topic :: Software Development :: Testing',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3 :: Only',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
 ]
-urls = {"Homepage" = "https://github.com/qase-tms/qase-python/tree/master/qase-pytest"}
-requires-python = ">=3.8"
+requires-python = ">=3.7"
 dependencies = [
-    "qase-python-commons>=2.0.0,<2.1.0",
+    "qase-python-commons",
     "pytest>=8.0.0",
     "filelock~=3.13.1",
     "more_itertools",
 ]
+
+[project.urls]
+Homepage = "https://qase.io"
+Repository = "https://github.com/qase-tms/qase-python/tree/master/qase-pytest"
+Documentation = "https://developers.qase.io"
+
+[project.entry-points.pytest11]
+qase_pytest = "qase.pytest.conftest"
 
 [project.optional-dependencies]
 testing = [
@@ -32,8 +52,8 @@ testing = [
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-minversion = 3.8
-envlist = py{38,39,310,311}
+minversion = 3.7
+envlist = py{37,38,39,310,311}
 
 [testenv]
 deps =
@@ -47,6 +67,7 @@ extras =
     all
     testing 
 """
+
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -63,7 +84,7 @@ exclude = [".tox", "build", "dist", ".eggs"]
 branch = true
 
 [tool.coverage.paths]
-source = ["src/qaseio/pytest"]
+source = ["src/qase/pytest"]
 
 [tool.coverage.report]
 # Regexes for lines to exclude from consideration
