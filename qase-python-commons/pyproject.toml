@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=69", "wheel"]
+requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -26,10 +26,11 @@ classifiers = [
     'Programming Language :: Python :: 3.12',
 ]
 urls = {"Homepage" = "https://github.com/qase-tms/qase-python/tree/master/qase-python-commons"}
-requires-python = ">=7"
+requires-python = ">=3.7"
 dependencies = [
     "certifi>=2024.2.2",
     "attrs>=23.2.0",
+    "qaseio",
     "more_itertools"
 ]
 

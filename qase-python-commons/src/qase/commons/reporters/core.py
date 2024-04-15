@@ -5,6 +5,7 @@ from .report import QaseReport
 from .testops import QaseTestOps
 
 from qase.commons.models import Result, Attachment, Runtime
+from typing import Union
 
 import os
 import json
@@ -26,21 +27,20 @@ class QaseCoreReporter:
         # Reading reporter mode from config file
         mode = config.get("mode", "off")
 
-        match mode:
-            case 'testops':
-                self._load_testops_plan()
-                try:
-                    self.reporter = QaseTestOps(config = config, logger = self.logger)
-                except Exception as e:
-                    self.logger.log('Failed to initialize TestOps reporter. Using fallback.', 'info')
-                    self.logger.log(e, 'error')
-                    self.reporter = self.fallback
-            case 'report':
-                self.reporter = QaseReport(config = config, logger = self.logger)
-            case _:
-                self.reporter = None
+        if mode == 'testops':
+            self._load_testops_plan()
+            try:
+                self.reporter = QaseTestOps(config = config, logger = self.logger)
+            except Exception as e:
+                self.logger.log('Failed to initialize TestOps reporter. Using fallback.', 'info')
+                self.logger.log(e, 'error')
+                self.reporter = self.fallback
+        elif mode == 'report':
+            self.reporter = QaseReport(config = config, logger = self.logger)
+        else:
+            self.reporter = None
 
-    def start_run(self) -> str|None:
+    def start_run(self) -> Union[str, None]:
         if self.reporter:
             try:
                 return self.reporter.start_run()
@@ -131,7 +131,7 @@ class QaseCoreReporter:
 
                 self.fallback.start_run()
                 self.reporter = self.fallback
-                self.fallback.set_results(results)
+                self.reporter.set_results(results)
                 self.fallback = None
             except Exception as e:
                 # Log error, disable reporting and continue
@@ -165,7 +165,7 @@ class QaseCoreReporter:
         if self.config.get("execution_plan", None):
             return [int(n) for n in str(self.config.get("execution_plan").split(","))]
 
-    def _fallback_setup(self):
+    def _fallback_setup(self) -> Union[QaseReport, None]:
         if self.config.get("fallback", 'report'):
             return QaseReport(config = self.config, logger = self.logger)
         return None

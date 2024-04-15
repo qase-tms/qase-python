@@ -4,7 +4,7 @@ import threading
 import sys
 import pip
 
-from qaseio.commons import QaseUtils
+from qase.commons.utils import QaseUtils
 
 def test_build_tree():
     # Mocking item objects

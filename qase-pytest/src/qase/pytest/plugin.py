@@ -74,7 +74,7 @@ class QasePytestPlugin:
     def pytest_sessionstart(self, session):
         if is_xdist_controller(session):
             self.run_id = self.reporter.start_run()
-            with FileLock("qaseio.lock"):
+            with FileLock("qase.lock"):
                 if self.run_id:
                     with open(self.meta_run_file, "w") as lock_file:
                         lock_file.write(str(self.run_id))

@@ -1,8 +1,15 @@
 from unittest.mock import MagicMock, patch
-from qase.commons.report import QaseReport
+from qase.commons.reporters import QaseReport
+from qase.commons.config import ConfigManager
 
 def test_QaseReport_init():
-    report = QaseReport(report_path="custom_path", format="json", environment="env1")
+    config = ConfigManager()
+    config.set("report_path", "custom_path")
+    config.set("report_format", "json")
+    config.set("environment", "env1")
+    config.set("mode", "report")
+
+    report = QaseReport(config)
     assert report.report_path == "custom_path"
     assert report.format == "json"
     assert report.environment == "env1"
