@@ -132,6 +132,7 @@ class QaseCoreReporter:
                 self.fallback.start_run()
                 self.reporter = self.fallback
                 self.fallback.set_results(results)
+                self.fallback = None
             except Exception as e:
                 # Log error, disable reporting and continue
                 self.logger.log('Failed to run fallback', 'info')

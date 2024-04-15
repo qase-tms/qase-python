@@ -133,7 +133,7 @@ class QaseTestOps:
                     raise ReporterException(e)
                 
             # Moving processed results to another list, so we can use them later for fallback.
-            self.processed = self.results
+            self.processed += self.results
             self.results = []
         else:
             self.logger.log("No results to send", "info")
