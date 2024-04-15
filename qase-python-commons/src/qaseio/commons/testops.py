@@ -138,7 +138,7 @@ class QaseTestOps:
                 if result.get_suite_title():
                     case_data["suite_title"] = "\t".join(result.get_suite_title().split("."))
 
-                results.append({
+                result_model = {
                     "case_id": result.get_testops_id(),
                     "status": result.execution.status,
                     "stacktrace": result.execution.stacktrace,
@@ -149,7 +149,17 @@ class QaseTestOps:
                     "steps": steps,
                     "param": result.params,
                     "defect": self.defect
-                })
+                }
+
+                testops_id = result.get_testops_id()
+                if testops_id is None:
+                    result_model["case"] = case_data
+                    result_model["case_id"] = None
+                else:
+                    result_model["case"] = None
+                    result_model["case_id"] = testops_id
+
+                results.append(result_model)
 
             api_results = ResultsApi(self.client)
             print(
@@ -335,24 +345,32 @@ class QaseTestOps:
             if result.get_suite_title():
                 case_data["suite_title"] = "\t".join(result.get_suite_title().split("."))
 
+            result_model = ResultCreate(
+                status=result.execution.status,
+                stacktrace=result.execution.stacktrace,
+                time_ms=result.execution.duration,
+                comment=result.message,
+                attachments=[attach.hash for attach in attached],
+                defect=self.defect,
+                steps=steps,
+                param=result.params
+            )
+
+            testops_id = result.get_testops_id()
+            if testops_id is None:
+                result_model.case = ResultCreateCase(
+                    **{k: v for k, v in case_data.items() if v is not None}
+                )
+                result_model.case_id = None
+            else:
+                result_model.case = None
+                result_model.case_id = testops_id
+
             try:
                 api_results.create_result(
                     code=self.project_code,
                     id=self.run_id,
-                    result_create=ResultCreate(
-                        case_id=result.get_testops_id(),
-                        status=result.execution.status,
-                        stacktrace=result.execution.stacktrace,
-                        time_ms=result.execution.duration,
-                        comment=result.message,
-                        attachments=[attach.hash for attach in attached],
-                        defect=self.defect,
-                        case=ResultCreateCase(
-                            **{k: v for k, v in case_data.items() if v is not None}
-                        ),
-                        steps=steps,
-                        param=result.params
-                    )
+                    result_create=result_model
                 )
                 print(f"[Qase] Results of run {self.run_id} was sent")
             except Exception as e:
