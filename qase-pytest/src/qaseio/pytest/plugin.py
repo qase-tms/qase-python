@@ -161,14 +161,15 @@ class QasePytestPlugin:
 
     def start_pytest_item(self, item):
         self.runtime.result = Result(
-            title = self._get_title(item), 
-            signature = self._get_signature(item),
+            signature=self._get_signature(item),
             )
+        self._set_testops_id(item)
+        self._set_title(item)
+        self._set_fields(item)
         self._set_fields(item)
         self._set_tags(item)
         self._set_author(item)
         self._set_muted(item)
-        self._set_testops_id(item)
         self._set_params(item)
         self._set_suite(item)
 
@@ -209,20 +210,15 @@ class QasePytestPlugin:
                     self.reporter.set_run_id(self.run_id)
                 except ValueError:
                     pass
-    
-    def _get_title(self, item):
-        title = None
+
+    def _set_title(self, item):
         try:
-            title = item.get_closest_marker("qase_title").kwargs.get("title")
+            self.runtime.result.add_title(item.get_closest_marker("qase_title").kwargs.get("title"))
         except:
             pass
 
-        if not title:
-            title = item.originalname
-
-        return str(title)
-    
-    def _get_signature(self, item) -> str:
+    @staticmethod
+    def _get_signature(item) -> str:
         return re.sub(r'\[.*?\]', '', item.nodeid)
     
     def _set_relations(self, item) -> None:

@@ -1,6 +1,7 @@
 from qaseio.api_client import ApiClient
 from qaseio.configuration import Configuration
 from qaseio.api.attachments_api import AttachmentsApi
+from qaseio.api.cases_api import CasesApi
 from qaseio.api.environments_api import EnvironmentsApi
 from qaseio.api.projects_api import ProjectsApi
 from qaseio.api.results_api import ResultsApi
@@ -87,6 +88,52 @@ class QaseTestOps:
                 print(
                     "[Qase] ⚠️  Disabling Qase TestOps reporter. Exception when calling ProjectApi->get_project: %s\n" % e)
 
+    @staticmethod
+    def _get_value(result, test_case, field_name, default=None):
+        if result.get_field(field_name):
+            return result.get_field(field_name)
+        elif test_case:
+            return getattr(test_case, field_name, default)
+        else:
+            return default
+
+    def _get_case_info(self, result):
+        if result.get_testops_id() != 0:
+            api_cases = CasesApi(self.client)
+            response = api_cases.get_case(code=self.project_code, id=result.get_testops_id())
+            test_case = getattr(response, 'result', None)
+        else:
+            test_case = None
+
+        title = self._get_value(result, test_case, 'title', result.signature.split('::')[-1])
+        description = self._get_value(result, test_case, 'description')
+        preconditions = self._get_value(result, test_case, 'preconditions')
+        postconditions = self._get_value(result, test_case, 'postconditions')
+
+        return title, description, preconditions, postconditions
+
+    def _populate_case_data(self, result):
+        title, description, preconditions, postconditions = self._get_case_info(result)
+        case_data = {
+            "title": title,
+            "description": description,
+            "preconditions": preconditions,
+            "postconditions": postconditions,
+        }
+        for key, param in result.params.items():
+            # Hack to match old TestOps API
+            if param == "":
+                result.params[key] = "empty"
+        if result.get_field('severity'):
+            case_data["severity"] = result.get_field('severity')
+        if result.get_field('priority'):
+            case_data["priority"] = result.get_field('priority')
+        if result.get_field('layer'):
+            case_data["layer"] = result.get_field('layer')
+        if result.get_suite_title():
+            case_data["suite_title"] = "\t".join(result.get_suite_title().split("."))
+        return case_data
+
     # Method loads environment by name and returns environment id
     def _get_environment(self, environment: str, project: str):
         if self.enabled:
@@ -114,29 +161,7 @@ class QaseTestOps:
                     prepared = self._prepare_step(step)
                     steps.append(prepared)
 
-                case_data = {
-                    "title": result.get_title(),
-                    "description": result.get_field('description'),
-                    "preconditions": result.get_field('preconditions'),
-                    "postconditions": result.get_field('postconditions'),
-                }
-
-                for key, param in result.params.items():
-                    # Hack to match old TestOps API
-                    if param == "":
-                        result.params[key] = "empty"
-
-                if result.get_field('severity'):
-                    case_data["severity"] = result.get_field('severity')
-
-                if result.get_field('priority'):
-                    case_data["priority"] = result.get_field('priority')
-
-                if result.get_field('layer'):
-                    case_data["layer"] = result.get_field('layer')
-
-                if result.get_suite_title():
-                    case_data["suite_title"] = "\t".join(result.get_suite_title().split("."))
+                case_data = self._populate_case_data(result)
 
                 result_model = {
                     "case_id": result.get_testops_id(),
@@ -321,29 +346,7 @@ class QaseTestOps:
                 prepared = self._prepare_step(step)
                 steps.append(prepared)
 
-            case_data = {
-                "title": result.get_title(),
-                "description": result.get_field('description'),
-                "preconditions": result.get_field('preconditions'),
-                "postconditions": result.get_field('postconditions'),
-            }
-
-            for key, param in result.params.items():
-                # Hack to match old TestOps API
-                if param == "":
-                    result.params[key] = "empty"
-
-            if result.get_field('severity'):
-                case_data["severity"] = result.get_field('severity')
-
-            if result.get_field('priority'):
-                case_data["priority"] = result.get_field('priority')
-
-            if result.get_field('layer'):
-                case_data["layer"] = result.get_field('layer')
-
-            if result.get_suite_title():
-                case_data["suite_title"] = "\t".join(result.get_suite_title().split("."))
+            case_data = self._populate_case_data(result)
 
             result_model = ResultCreate(
                 status=result.execution.status,
