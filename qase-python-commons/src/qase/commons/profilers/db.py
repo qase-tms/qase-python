@@ -1,4 +1,4 @@
-from qase.commons.models.runtime import Runtime
+from ..models.runtime import Runtime
 
 
 class DbProfiler:

@@ -1,8 +1,8 @@
-from qase.commons.utils import QaseUtils, StringFormatter
-from qase.commons.config import ConfigManager
-from qase.commons.loader import TestOpsPlanLoader
-from qase.commons.logger import Logger
-from qase.commons.exceptions.reporter import ReporterException
+from .utils import QaseUtils, StringFormatter
+from .config import ConfigManager
+from .loader import TestOpsPlanLoader
+from .logger import Logger
+from .exceptions.reporter import ReporterException
 
 __all__ = [
     QaseUtils,

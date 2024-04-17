@@ -1,6 +1,6 @@
 import os
 import json
-from qase.commons.logger import Logger
+from .logger import Logger
 
 
 class ConfigManager:

@@ -1,10 +1,10 @@
-from qase.commons.config import ConfigManager as Config
-from qase.commons.logger import Logger
+from ..config import ConfigManager as Config
+from ..logger import Logger
 
 from .report import QaseReport
 from .testops import QaseTestOps
 
-from qase.commons.models import Result, Attachment, Runtime
+from ..models import Result, Attachment, Runtime
 from typing import Union
 
 import os
@@ -86,14 +86,14 @@ class QaseCoreReporter:
         for profiler in profilers:
             if profiler == "network":
                 # Lazy import
-                from qase.commons import NetworkProfilerSingleton
+                from ..profilers import NetworkProfilerSingleton
                 NetworkProfilerSingleton.init(runtime=runtime)
                 self.profilers.append(NetworkProfilerSingleton.get_instance())
             if profiler == "sleep":
-                from qase.commons import SleepProfiler
+                from ..profilers import SleepProfiler
                 self.profilers.append(SleepProfiler(runtime=runtime))
             if profiler == "db":
-                from qase.commons import DbProfiler
+                from ..profilers import DbProfiler
                 self.profilers.append(DbProfiler(runtime=runtime))
 
     def enable_profilers(self) -> None:
@@ -144,7 +144,7 @@ class QaseCoreReporter:
     def _load_testops_plan(self) -> None:
         try:
             if self.config.get("testops.plan.id", None) is not None:
-                from qase.commons import TestOpsPlanLoader
+                from .. import TestOpsPlanLoader
 
                 # Load test plan data from Qase TestOps
                 loader = TestOpsPlanLoader(

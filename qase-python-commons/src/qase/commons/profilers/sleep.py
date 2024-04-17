@@ -3,8 +3,8 @@ import uuid
 
 from functools import wraps
 
-from qase.commons.models.runtime import Runtime
-from qase.commons.models.step import Step, StepSleepData
+from ..models.runtime import Runtime
+from ..models.step import Step, StepSleepData
 
 
 class SleepProfiler:

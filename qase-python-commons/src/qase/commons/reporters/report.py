@@ -3,11 +3,8 @@ import os
 import shutil
 import json
 import re
-from qase.commons.models import Result, Run, Attachment
-from qase.commons import QaseUtils
-
-from qase.commons.config import ConfigManager
-from qase.commons.logger import Logger
+from ..models import Result, Run, Attachment
+from .. import QaseUtils, ConfigManager, Logger
 
 
 class QaseReport:

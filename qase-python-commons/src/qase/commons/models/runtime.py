@@ -1,5 +1,5 @@
-from qase.commons.models.step import Step, StepTextData
-from qase.commons.models.attachment import Attachment
+from .step import Step, StepTextData
+from .attachment import Attachment
 
 
 class Runtime:

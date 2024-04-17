@@ -3,12 +3,11 @@ from pathlib import PosixPath
 import time
 import uuid
 import json
-from qase.commons.models.step import Step
-from qase.commons.models.suite import Suite
-from qase.commons.models.attachment import Attachment
-from qase.commons.models.relation import Relation
-
-from qase.commons import QaseUtils
+from .step import Step
+from .suite import Suite
+from .attachment import Attachment
+from .relation import Relation
+from .. import QaseUtils
 
 
 class Field:

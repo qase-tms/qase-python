@@ -1,3 +1,5 @@
 attrs==23.2.0
 certifi>=2024.2.2
 more-itertools==9.1.0
+pip~=24.0
+qaseio~=4.0.2

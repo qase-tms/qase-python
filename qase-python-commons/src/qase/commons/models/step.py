@@ -1,7 +1,7 @@
 from typing import Optional, Union, Dict, List, Type
 import time
 import uuid
-from qase.commons.models.attachment import Attachment
+from .attachment import Attachment
 
 
 class StepTextData(object):

@@ -1,8 +1,8 @@
 import sys
 import uuid
 from functools import wraps
-from qase.commons.models.runtime import Runtime
-from qase.commons.models.step import Step, StepRequestData
+from ..models.runtime import Runtime
+from ..models.step import Step, StepRequestData
 
 
 class NetworkProfiler:
