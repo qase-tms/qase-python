@@ -9,6 +9,7 @@ from typing import Union
 
 import os
 import json
+import time
 
 """
     CoreReporter is a facade for all reporters and it is used to initialize and manage them.
@@ -22,6 +23,7 @@ class QaseCoreReporter:
         self.logger = Logger(self.config.get('debug', False, bool))
         self.execution_plan = None
         self.profilers = []
+        self.overhead = 0
 
         self._selective_execution_setup()
         self.fallback = self._fallback_setup()
@@ -30,8 +32,8 @@ class QaseCoreReporter:
         mode = config.get("mode", "off")
 
         if mode == 'testops':
-            self._load_testops_plan()
             try:
+                self._load_testops_plan()
                 self.reporter = QaseTestOps(config=config, logger=self.logger)
             except Exception as e:
                 self.logger.log('Failed to initialize TestOps reporter. Using fallback.', 'info')
@@ -45,7 +47,10 @@ class QaseCoreReporter:
     def start_run(self) -> Union[str, None]:
         if self.reporter:
             try:
-                return self.reporter.start_run()
+                ts = time.time()
+                run_id = self.reporter.start_run()
+                self.overhead += time.time() - ts
+                return run_id
             except Exception as e:
                 self.logger.log('Failed to start run, disabling reporting', 'info')
                 self.logger.log(e, 'error')
@@ -54,7 +59,10 @@ class QaseCoreReporter:
     def complete_run(self, exit_code=None) -> None:
         if self.reporter:
             try:
+                ts = time.time()
                 self.reporter.complete_run(exit_code)
+                self.overhead += time.time() - ts
+                self.logger.log(f"Overhead for Qase Report: {round(self.overhead * 1000)}ms", 'info')
             except Exception as e:
                 # We don't want to disable reporting here
                 self.logger.log('Failed to complete run', 'info')
@@ -63,7 +71,9 @@ class QaseCoreReporter:
     def add_result(self, result: Result) -> None:
         if self.reporter:
             try:
+                ts = time.time()
                 self.reporter.add_result(result)
+                self.overhead += time.time() - ts
             except Exception as e:
                 # Log error, disable reporting and continue
                 self.logger.log(f'Failed to add result {result.get_title()}', 'info')
@@ -73,7 +83,9 @@ class QaseCoreReporter:
     def add_attachment(self, attachment: Attachment) -> None:
         if self.reporter:
             try:
+                ts = time.time()
                 self.reporter.add_attachment(attachment)
+                self.overhead += time.time() - ts
             except Exception as e:
                 # Log error and run fallback
                 self.logger.log('Failed to add attachment', 'info')
@@ -155,6 +167,7 @@ class QaseCoreReporter:
                                                   int(self.config.get("testops.plan.id")))
         except Exception as e:
             self.logger.log('Failed to load test plan from Qase TestOps', 'info')
+            self.logger.log(e, 'error')
 
     # TODO: won't work, need to fix
     def _selective_execution_setup(self) -> list:

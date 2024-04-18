@@ -12,6 +12,14 @@ from qaseio.api_client import ApiClient
 from qaseio.configuration import Configuration
 from qaseio.models import RunCreate, ResultcreateBulk
 
+from qase.commons import ConfigManager, Logger, ReporterException
+from datetime import datetime
+
+from typing import List, Dict, Union
+
+import certifi
+
+import threading
 from .. import ConfigManager, Logger, ReporterException
 from ..models import Attachment, Step, Result
 
@@ -34,7 +42,10 @@ class QaseTestOps:
         self.complete_after_run = self.config.get('testops.run.complete', False, bool)
         self.environment = None
 
-        self.chunk_size = min(2000, max(10, int(self.config.get('testops.chunk', 200))))
+        self.batch_size = min(2000, max(1, int(self.config.get('testops.batch.size', 200))))
+        self.send_semaphore = threading.Semaphore(self.config.get('testops.batch.threads', 4))  # Semaphore to limit concurrent sends
+        self.lock = threading.Lock()
+
         environment = self.config.get('environment', None)
         if environment:
             if isinstance(environment, int) or (isinstance(environment, str) and environment.isnumeric()):
@@ -104,32 +115,57 @@ class QaseTestOps:
             self.logger.log("Exception when calling EnvironmentsApi->get_environments: %s\n" % e, "error")
             raise ReporterException(e)
 
+    def _send_results_threaded(self, results):
+        try:
+            api_results = ResultsApi(self.client)
+            results_to_send = [self._prepare_result(result) for result in results]
+            api_results.create_result_bulk(
+                code=self.project_code,
+                id=self.run_id,
+                resultcreate_bulk=ResultcreateBulk(
+                    results=results_to_send
+                )
+            )
+            with self.lock:
+                self.processed.extend(results)
+        except Exception as e:
+            with self.lock:
+                self.logger.log(f"Error at sending results for run {self.run_id}: {e}", "error")
+            raise  # Re-raise the exception to be caught by the thread handler
+        finally:
+            self.send_semaphore.release()  # Release semaphore whether success or exception
+
     def _send_results(self) -> None:
+        if self.results:
+            # Acquire semaphore before starting the send operation
+            self.send_semaphore.acquire()
+            results_to_send = self.results.copy()
+            self.results = []
+
+            # Start a new thread for sending results
+            send_thread = threading.Thread(target=self._send_results_threaded, args=(results_to_send,))
+            send_thread.start()
+        else:
+            self.logger.log("No results to send", "info")
+
+    def _old_send_results(self) -> None:
         if self.results and len(self.results) > 0:
             results = []
             for result in self.results:
                 results.append(self._prepare_result(result))
 
             api_results = ResultsApi(self.client)
-            self.logger.log(f"Sending results to test run {self.run_id}. Total: {len(results)}.", "info")
-
-            i = 1
-
-            for chunk in more_itertools.chunked(results, self.chunk_size):
-                try:
-                    self.logger.log(f"Sending chunk #{i}. Chunk size: {len(chunk)}...", "info")
-                    api_results.create_result_bulk(
-                        code=self.project_code,
-                        id=self.run_id,
-                        resultcreate_bulk=ResultcreateBulk(
-                            results=chunk
-                        )
+            try:
+                api_results.create_result_bulk(
+                    code=self.project_code,
+                    id=self.run_id,
+                    resultcreate_bulk=ResultcreateBulk(
+                        results=results
                     )
-                    self.logger.log(f"Chunk #{i} was sent successfully.", "info")
-                    i = i + 1
-                except Exception as e:
-                    self.logger.log(f"Error at sending results for run {self.run_id} (Chunk #{i}): {e}", "error")
-                    raise ReporterException(e)
+                )
+            except Exception as e:
+                self.logger.log(f"Error at sending results for run {self.run_id}: {e}", "error")
+                raise ReporterException(e)
 
             # Moving processed results to another list, so we can use them later for fallback.
             self.processed += self.results
@@ -322,7 +358,7 @@ class QaseTestOps:
 
     def add_result(self, result: Result) -> None:
         self.results.append(result)
-        if len(self.results) >= self.chunk_size:
+        if len(self.results) >= self.batch_size:
             self._send_results()
 
     def get_results(self) -> List:
