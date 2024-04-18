@@ -19,8 +19,8 @@ class QaseReport:
         self.config = config
         self.logger = logger
 
-        self.report_path = self.config.get("report_path", "./build/qase-report")
-        self.format = self.config.get("report_format", "json")
+        self.report_path = self.config.get("report.path", "./build/qase-report")
+        self.format = self.config.get("report.format", "json")
 
         self.start_time = None
         self.end_time = None

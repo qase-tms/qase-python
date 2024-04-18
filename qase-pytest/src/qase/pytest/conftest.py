@@ -1,8 +1,8 @@
-from qase.pytest.plugin import QasePytestPlugin, QasePytestPluginSingleton
+from .plugin import QasePytestPlugin, QasePytestPluginSingleton
 
 from qase.commons.reporters import QaseCoreReporter
 
-from qase.pytest.options import QasePytestOptions
+from .options import QasePytestOptions
 from qase.commons.config import ConfigManager
 
 

@@ -1,8 +1,6 @@
-from datetime import datetime
-from typing import List, Dict, Union
-
+import threading
 import certifi
-import more_itertools
+
 from qaseio.api.attachments_api import AttachmentsApi
 from qaseio.api.environments_api import EnvironmentsApi
 from qaseio.api.projects_api import ProjectsApi
@@ -11,17 +9,12 @@ from qaseio.api.runs_api import RunsApi
 from qaseio.api_client import ApiClient
 from qaseio.configuration import Configuration
 from qaseio.models import RunCreate, ResultcreateBulk
-
-from qase.commons import ConfigManager, Logger, ReporterException
 from datetime import datetime
-
 from typing import List, Dict, Union
-
-import certifi
-
-import threading
 from .. import ConfigManager, Logger, ReporterException
 from ..models import Attachment, Step, Result
+
+DEFAULT_BATCH_SIZE = 200
 
 
 class QaseTestOps:
@@ -42,8 +35,9 @@ class QaseTestOps:
         self.complete_after_run = self.config.get('testops.run.complete', False, bool)
         self.environment = None
 
-        self.batch_size = min(2000, max(1, int(self.config.get('testops.batch.size', 200))))
-        self.send_semaphore = threading.Semaphore(self.config.get('testops.batch.threads', 4))  # Semaphore to limit concurrent sends
+        self.batch_size = min(2000, max(1, int(self.config.get('testops.batch.size', DEFAULT_BATCH_SIZE))))
+        self.send_semaphore = threading.Semaphore(
+            self.config.get('testops.batch.threads', 4))  # Semaphore to limit concurrent sends
         self.lock = threading.Lock()
 
         environment = self.config.get('environment', None)

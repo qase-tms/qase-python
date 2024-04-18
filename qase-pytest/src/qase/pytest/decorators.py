@@ -3,7 +3,7 @@ from typing import Tuple, Union
 
 import pytest
 
-from qase.pytest.plugin import PluginNotInitializedException, QasePytestPluginSingleton
+from .plugin import PluginNotInitializedException, QasePytestPluginSingleton
 from qase.commons.models.step import Step, StepTextData
 
 from .context_manager import contextdecorator

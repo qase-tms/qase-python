@@ -21,7 +21,7 @@ class ConfigManager:
         try:
             for key, value in os.environ.items():
                 if key.startswith(env_vars_prefix):
-                    self._set_config(key[len(env_vars_prefix):].lower(), value)
+                    self._set_config(key[len(env_vars_prefix):].lower().replace('_', '.'), value)
         except Exception as e:
             self.logger.log("Failed to load config from env vars {e}", "error")
 
