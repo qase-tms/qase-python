@@ -4,7 +4,7 @@ import uuid
 
 from qase.commons import ConfigManager
 from qase.commons.models import Result, Suite, Step
-from qase.commons.models.step import StepTextData
+from qase.commons.models.step import StepType, StepGherkinData
 from qase.commons.reporters import QaseCoreReporter
 from qase.commons.models.runtime import Runtime
 
@@ -79,10 +79,11 @@ class Listener:
         )
 
     def start_keyword(self, name, attributes):
+        id = str(uuid.uuid4())
         step = Step(
-            step_type="text",
-            id=str(uuid.uuid4()),
-            data=StepTextData(action=attributes["kwname"], expected_result=None),
+            step_type=StepType.GHERKIN,
+            id=id,
+            data=StepGherkinData(keyword=attributes["kwname"], name=name, line=attributes["lineno"])
         )
 
         self.runtime.add_step(step)
