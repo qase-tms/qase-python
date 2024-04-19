@@ -1,6 +1,5 @@
 import pathlib
 from typing import Tuple, Union
-import pytest
 import mimetypes
 import re
 
@@ -199,6 +198,8 @@ class QasePytestPlugin:
                     self.reporter.set_run_id(self.run_id)
                 except ValueError:
                     pass
+        else:
+            self.run_id = self.reporter.start_run()
 
     def _get_title(self, item):
         title = None
