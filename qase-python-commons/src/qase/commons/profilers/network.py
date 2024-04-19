@@ -2,7 +2,7 @@ import sys
 import uuid
 from functools import wraps
 from ..models.runtime import Runtime
-from ..models.step import Step, StepRequestData
+from ..models.step import Step, StepRequestData, StepType
 
 
 class NetworkProfiler:
@@ -64,7 +64,7 @@ class NetworkProfiler:
     def _log_pre_request(request):
         NetworkProfilerSingleton.get_instance().step = Step(
             id=str(uuid.uuid4()),
-            step_type='request',
+            step_type=StepType.REQUEST,
             data=StepRequestData(
                 request_method=request.method,
                 request_url=request.url,

@@ -1,8 +1,10 @@
 from .step import Step, StepTextData
 from .attachment import Attachment
 
+
 class QaseRuntimeException(Exception):
     pass
+
 
 class Runtime:
     def __init__(self):

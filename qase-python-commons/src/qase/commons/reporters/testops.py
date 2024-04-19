@@ -13,6 +13,7 @@ from datetime import datetime
 from typing import List, Dict, Union
 from .. import ConfigManager, Logger, ReporterException
 from ..models import Attachment, Step, Result
+from ..models.step import StepType
 
 DEFAULT_BATCH_SIZE = 200
 
@@ -292,12 +293,12 @@ class QaseTestOps:
             if step.execution.status == 'untested':
                 prepared_step["status"] = 'passed'
 
-            if step.step_type == "text":
+            if step.step_type == StepType.TEXT:
                 prepared_step['action'] = step.data.action
                 if step.data.expected_result:
                     prepared_step['expected_result'] = step.data.expected_result
 
-            if step.step_type == "request":
+            if step.step_type == StepType.REQUEST:
                 prepared_step['action'] = step.data.request_method + " " + step.data.request_url
                 if step.data.request_body:
                     step.attachments.append(
@@ -314,6 +315,12 @@ class QaseTestOps:
                     step.attachments.append(
                         Attachment(file_name='response_headers.txt', content=step.data.response_headers,
                                    mime_type='text/plain', temporary=True))
+
+            if step.step_type == StepType.GHERKIN:
+                prepared_step['action'] = step.data.keyword
+
+            if step.step_type == StepType.SLEEP:
+                prepared_step['action'] = f"Sleep for {step.data.duration} seconds"
 
             if step.attachments:
                 uploaded_attachments = []

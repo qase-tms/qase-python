@@ -4,7 +4,7 @@ import uuid
 from functools import wraps
 
 from ..models.runtime import Runtime
-from ..models.step import Step, StepSleepData
+from ..models.step import Step, StepSleepData, StepType
 
 
 class SleepProfiler:
@@ -38,7 +38,7 @@ class SleepProfiler:
         # Log or track the pre-sleep call
         self.step = Step(
             id=str(uuid.uuid4()),
-            step_type='sleep',
+            step_type=StepType.SLEEP,
             data=StepSleepData(duration=duration)
         )
         # Assuming runtime can start a step without a request/response

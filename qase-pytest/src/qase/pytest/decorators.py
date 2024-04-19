@@ -4,7 +4,7 @@ from typing import Tuple, Union
 import pytest
 
 from .plugin import PluginNotInitializedException, QasePytestPluginSingleton
-from qase.commons.models.step import Step, StepTextData
+from qase.commons.models.step import Step, StepTextData, StepType
 
 from .context_manager import contextdecorator
 
@@ -228,7 +228,7 @@ class qase:
         try:
             plugin = QasePytestPluginSingleton.get_instance()
             step = Step(
-                step_type='text',
+                step_type=StepType.TEXT,
                 id=id,
                 data=StepTextData(
                     action=title,

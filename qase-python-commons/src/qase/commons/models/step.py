@@ -1,7 +1,17 @@
+from enum import Enum
 from typing import Optional, Union, Dict, List, Type
 import time
 import uuid
 from .attachment import Attachment
+
+
+class StepType(Enum):
+    TEXT = 'text'
+    ASSERT = 'assert'
+    GHERKIN = 'gherkin'
+    REQUEST = 'request'
+    DB_QUERY = 'db_query'
+    SLEEP = 'sleep'
 
 
 class StepTextData(object):
@@ -80,9 +90,10 @@ class StepExecution(object):
 
 class Step(object):
     def __init__(self,
-                 step_type: str,
+                 step_type: StepType,
                  id: Optional[str],
-                 data: Optional[Union[StepTextData, StepAssertData, StepGherkinData, StepRequestData]] = None,
+                 data: Optional[
+                     Union[StepTextData, StepAssertData, StepGherkinData, StepRequestData, StepSleepData]] = None,
                  parent_id: Optional[str] = None
                  ):
         if id:
@@ -90,11 +101,7 @@ class Step(object):
         else:
             self.id = str(uuid.uuid4())
 
-        if step_type in ['text', 'assert', 'gherkin', 'request']:
-            self.step_type = step_type
-        else:
-            raise ValueError('Step type must be one of: text, assert, gherkin, request')
-
+        self.step_type = step_type
         self.data = data
         self.parent_id = parent_id
         self.execution = StepExecution()
@@ -113,7 +120,7 @@ class Step(object):
         else:
             return self.steps
 
-    def set_data(self, data: Union[StepTextData, StepAssertData, StepGherkinData, StepRequestData]):
+    def set_data(self, data: Union[StepTextData, StepAssertData, StepGherkinData, StepRequestData, StepSleepData]):
         self.data = data
 
     def add_step(self, step: Type['Step']):
