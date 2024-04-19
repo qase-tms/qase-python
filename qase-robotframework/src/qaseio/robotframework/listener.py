@@ -1,59 +1,30 @@
-import configparser
 import logging
-import os
 import re
 import uuid
-import time
-from datetime import datetime
-from typing import List
 
+from qase.commons import ConfigManager
+from qase.commons.models import Result, Suite, Step
+from qase.commons.models.step import StepTextData
+from qase.commons.reporters import QaseCoreReporter
+from qase.commons.models.runtime import Runtime
 
-from qase.commons import QaseTestOps, QaseUtils, QaseReport
-from .types import Envs, STATUSES
-from .models import * 
+from .types import STATUSES
+from .models import *
 
 logger = logging.getLogger("qase-robotframework")
+
 
 class Listener:
     ROBOT_LISTENER_API_VERSION = 2
 
     def __init__(self):
-        self.config = configparser.ConfigParser()
-        self.config.read("tox.ini")
-
-        if (self._get_param(Envs.MODE) and self._get_param(Envs.MODE).lower() == 'testops'):
-            token = self._get_param(Envs.TESTOPS_API_TOKEN)
-            project_code = self._get_param(Envs.TESTOPS_PROJECT)
-
-            if not token or not project_code:
-                raise ValueError("Token and Project code should be provided")
-            
-            run_title = "Automated Run {}".format(str(datetime.now()))
-            if (self._get_param(Envs.TESTOPS_RUN_TITLE, None)):
-                run_title = self._get_param(Envs.TESTOPS_RUN_TITLE, None)
-            
-            self.reporter = QaseTestOps(
-                api_token=token,
-                project_code=project_code,
-                run_id=self._get_param(Envs.TESTOPS_RUN_ID, None),
-                plan_id=self._get_param(Envs.TESTOPS_PLAN_ID, None),
-                complete_run=self._get_param(Envs.TESTOPS_COMPLETE_RUN) and self._get_param(Envs.TESTOPS_COMPLETE_RUN).lower() in ['true', '1'],
-                mode=self._get_param(Envs.TESTOPS_MODE, 'async'),
-                run_title=run_title,
-                host=self._get_param(Envs.TESTOPS_HOST, 'qase.io'),
-                environment=self._get_param(Envs.ENVIRONMENT, None)
-            )
-        else:
-            self.reporter = QaseReport(
-                report_path=self._get_param(Envs.REPORT_PATH, 'build/qase-report'),
-            )
-
-        self.result = {}
-        self.steps = {}
+        self.config = ConfigManager()
+        self.reporter = QaseCoreReporter(self.config)
+        self.runtime = Runtime()
         self.step_uuid = None
         self.suite = {}
 
-        self.debug = self._get_param(Envs.DEBUG) and self._get_param(Envs.DEBUG).lower() in ['true', '1']
+        self.debug = self.config.get("debug", False, bool)
         if self.debug:
             logger.setLevel(logging.DEBUG)
             ch = logging.StreamHandler()
@@ -65,12 +36,6 @@ class Listener:
 
         self.reporter.start_run()
 
-    def _get_param(self, param: Envs, default=None):
-        param: str = param.value
-        return os.environ.get(
-            param, self.config.get("qase", param.lower(), fallback=default)
-        )
-
     def start_suite(self, name, attributes):
         self.suite = {
             "title": name,
@@ -80,39 +45,31 @@ class Listener:
 
     def start_test(self, name, attributes: StartTestModel):
         logger.debug("Starting test '%s'", name)
-        
-        self.result = {
-            'is_api_result': True,
-            'case': {},
-            'steps': {},
-            'param': {},
-        }
-        self.result['uuid'] = str(uuid.uuid4())
-        self.result["started_at"] = time.time()
-        
+
+        self.runtime.result = Result(title=name, signature=name)
+
         case_id = self._extract_ids(attributes.get("tags"))
-        if (case_id):
-            self.result["case_id"] = int(case_id)
+
+        if case_id:
+            self.runtime.result.testops_id = int(case_id)
 
     def end_test(self, name, attributes: EndTestModel):
         logger.debug("Finishing test '%s'", name)
 
-        completed_at = time.time()
-        self.result['time_ms'] = int((completed_at - self.result.get("started_at")) * 1000)
-        self.result['completed_at'] = completed_at
-        self.result['status'] = STATUSES[attributes.get("status")]
-        self.result['stacktrace'] = attributes.get("message")
-        self.result['case'] = {}
-        self.result['case']['title'] = name
-        self.result['case']['description'] = attributes.get("doc")
-        if (self.suite):
-            self.result['case']['suite_title'] = self.suite.get('title', None)
-            #self.result['case']['suite_description'] = self.suite.get('description', None) // Not support in Qase API yet
+        self.runtime.result.execution.complete()
+        self.runtime.result.execution.set_status(STATUSES[attributes.get("status")])
+        self.runtime.result.execution.stacktrace = attributes.get("message")
+        self.runtime.result.add_steps([step for key, step in self.runtime.steps.items()])
 
-        self.reporter.add_result(self.result, QaseUtils().build_tree(self.steps))
+        if self.runtime.result.testops_id is None:
+            self.runtime.result.case.title = name
+            self.runtime.result.case.description = attributes.get("doc")
 
-        self.result = {}
-        self.steps = {}
+            if self.suite:
+                self.runtime.result.suite = Suite(self.suite.get("title"), self.suite.get("description"))
+
+        self.reporter.add_result(self.runtime.result)
+
         self.step_uuid = None
 
         logger.info(
@@ -122,28 +79,18 @@ class Listener:
         )
 
     def start_keyword(self, name, attributes):
-        id = str(uuid.uuid4())
+        step = Step(
+            step_type="text",
+            id=str(uuid.uuid4()),
+            data=StepTextData(action=attributes["kwname"], expected_result=None),
+        )
 
-        self.steps[id] = {
-            "uuid": id,
-            "started_at": time.time(),
-            "attachments": [],
-            "steps": {},
-            "parent_id": self.step_uuid
-        }
-
+        self.runtime.add_step(step)
         self.step_uuid = id
 
     def end_keyword(self, name, attributes):
-        now = time.time()
-
-        self.steps[self.step_uuid]['status'] = STATUSES[attributes["status"]]
-        self.steps[self.step_uuid]['action'] = attributes["kwname"]
-        self.steps[self.step_uuid]['duration'] = int((now - self.steps[self.step_uuid]['started_at'])*1000)
-        self.steps[self.step_uuid]['completed_at'] = now
-        self.steps[self.step_uuid]['comment'] = f"Step `{name}` with args: {attributes['args']}"
-
-        self.step_uuid = self.steps[self.step_uuid]['parent_id']
+        self.runtime.finish_step(self.step_uuid, STATUSES[attributes["status"]])
+        self.step_uuid = self.runtime.steps[self.step_uuid].parent_id
 
     def end_suite(self, name, attributes: EndSuiteModel):
         self.suite = {}
