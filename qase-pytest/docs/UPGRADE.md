@@ -1,5 +1,28 @@
 # Upgrade guides
 
+## From 5.x to 6.x
+
+### Bulk uploading results has changed
+
+In v5, two configuration options defined how the reporter was uploading results to Qase:
+`testops.bulk` and `testops.chunk`.
+
+In v6, reporter always sends results in portions, called batches.
+Default batch size is 200, and can be set to anything from 1 to 2000.
+Update the config in the following way:
+
+```diff
+{
+  "testops": {
+-   "bulk": true, 
+-   "chunk": 100
++   "batch": {
++     "size": 100
++   }
+  }
+}
+```
+
 ## From 4.x to 5.x
 
 ### Configuration
