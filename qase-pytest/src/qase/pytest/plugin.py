@@ -280,7 +280,12 @@ class QasePytestPlugin:
 
         module = file_name.split('.')[0]
         package = path.replace('/', '.') if path else None
-        return
+
+        title = file_path + '.' + module
+        if class_name:
+            title += '.' + class_name
+
+        self.runtime.result.suite = Suite(title, package)
 
 
 class QasePytestPluginSingleton:
