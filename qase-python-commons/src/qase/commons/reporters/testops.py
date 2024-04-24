@@ -33,7 +33,7 @@ class QaseTestOps:
         self.run_id = int(run_id) if run_id else run_id
         self.plan_id = int(plan_id) if plan_id else plan_id
         self.defect = self.config.get('testops_defect', False, bool)
-        self.complete_after_run = self.config.get('testops.run.complete', False, bool)
+        self.complete_after_run = self.config.get('testops.run.complete', True, bool)
         self.environment = None
 
         self.batch_size = min(2000, max(1, int(self.config.get('testops.batch.size', DEFAULT_BATCH_SIZE))))
@@ -253,6 +253,7 @@ class QaseTestOps:
         return False
 
     def _create_run(self, plan_id=None, environment_id=None, cases: List = []) -> None:
+        # TODO: read description from configs
         kwargs = dict(
             title=self.run_title,
             cases=cases,
