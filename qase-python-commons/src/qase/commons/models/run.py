@@ -1,8 +1,11 @@
 import json
+
 from typing import Optional, List
 
+from .basemodel import BaseModel
 
-class RunExecution(object):
+
+class RunExecution(BaseModel):
     def __init__(self,
                  start_time: float,
                  end_time: float,
@@ -17,7 +20,7 @@ class RunExecution(object):
         self.cumulative_duration += result["execution"]["duration"]
 
 
-class RunStats(object):
+class RunStats(BaseModel):
     def __init__(self) -> None:
         self.passed = 0
         self.failed = 0
@@ -41,7 +44,7 @@ class RunStats(object):
             self.muted += 1
 
 
-class Run(object):
+class Run(BaseModel):
     def __init__(self,
                  title: str,
                  start_time: float,
@@ -59,9 +62,6 @@ class Run(object):
         self.threads = threads
         self.suites = suites
         self.environment = environment
-
-    def to_json(self) -> str:
-        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=False, indent=4)
 
     def add_result(self, result: dict):
         compact_result = {

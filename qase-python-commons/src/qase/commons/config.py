@@ -59,3 +59,6 @@ class ConfigManager:
         for key in keys[:-1]:
             config = config.get(key, {})
         return config.get(keys[-1], None)
+
+    def __str__(self):
+        return json.dumps(self.config, indent=4, sort_keys=True)
