@@ -1,3 +1,7 @@
+import os
+import json
+import time
+
 from ..config import ConfigManager as Config
 from ..logger import Logger
 
@@ -6,10 +10,6 @@ from .testops import QaseTestOps
 
 from ..models import Result, Attachment, Runtime
 from typing import Union
-
-import os
-import json
-import time
 
 """
     CoreReporter is a facade for all reporters and it is used to initialize and manage them.
@@ -27,6 +27,8 @@ class QaseCoreReporter:
 
         self._selective_execution_setup()
         self.fallback = self._fallback_setup()
+
+        self.logger.log_debug(f"Config: {self.config}")
 
         # Reading reporter mode from config file
         mode = config.get("mode", "off")
@@ -48,7 +50,9 @@ class QaseCoreReporter:
         if self.reporter:
             try:
                 ts = time.time()
+                self.logger.log_debug("Starting run")
                 run_id = self.reporter.start_run()
+                self.logger.log_debug(f"Run ID: {run_id}")
                 self.overhead += time.time() - ts
                 return run_id
             except Exception as e:
@@ -60,7 +64,9 @@ class QaseCoreReporter:
         if self.reporter:
             try:
                 ts = time.time()
+                self.logger.log_debug("Completing run")
                 self.reporter.complete_run(exit_code)
+                self.logger.log_debug("Run completed")
                 self.overhead += time.time() - ts
                 self.logger.log(f"Overhead for Qase Report: {round(self.overhead * 1000)}ms", 'info')
             except Exception as e:
@@ -72,7 +78,9 @@ class QaseCoreReporter:
         if self.reporter:
             try:
                 ts = time.time()
+                self.logger.log_debug(f"Adding result {result}")
                 self.reporter.add_result(result)
+                self.logger.log_debug(f"Result {result.get_title()} added")
                 self.overhead += time.time() - ts
             except Exception as e:
                 # Log error, disable reporting and continue
@@ -84,7 +92,9 @@ class QaseCoreReporter:
         if self.reporter:
             try:
                 ts = time.time()
+                self.logger.log_debug(f"Adding attachment {attachment}")
                 self.reporter.add_attachment(attachment)
+                self.logger.log_debug(f"Attachment {attachment.id} added")
                 self.overhead += time.time() - ts
             except Exception as e:
                 # Log error and run fallback

@@ -1,8 +1,10 @@
-from enum import Enum
-from typing import Optional, Union, Dict, List, Type
 import time
 import uuid
+
+from enum import Enum
+from typing import Optional, Union, Dict, List, Type
 from .attachment import Attachment
+from .basemodel import BaseModel
 
 
 class StepType(Enum):
@@ -14,27 +16,27 @@ class StepType(Enum):
     SLEEP = 'sleep'
 
 
-class StepTextData(object):
+class StepTextData(BaseModel):
     def __init__(self, action: str, expected_result: Optional[str] = None):
         self.action = action
         self.expected_result = expected_result
 
 
-class StepAssertData(object):
+class StepAssertData(BaseModel):
     def __init__(self, expected: str, actual: str, message: str):
         self.expected = expected
         self.actual = actual
         self.message = message
 
 
-class StepGherkinData(object):
+class StepGherkinData(BaseModel):
     def __init__(self, keyword: str, name: str, line: int):
         self.keyword = keyword
         self.name = name
         self.line = line
 
 
-class StepRequestData(object):
+class StepRequestData(BaseModel):
     def __init__(self, request_body: str, request_headers: Dict[str, str], request_method: str, request_url: str):
         self.response_headers = None
         self.response_body = None
@@ -60,17 +62,17 @@ class StepRequestData(object):
         self.response_headers = response_headers
 
 
-class StepDbQueryData(object):
+class StepDbQueryData(BaseModel):
     def __init__(self, query: str, expected_result: str):
         self.query = query
 
 
-class StepSleepData(object):
+class StepSleepData(BaseModel):
     def __init__(self, duration: int):
         self.duration = duration
 
 
-class StepExecution(object):
+class StepExecution(BaseModel):
     def __init__(self, status: Optional[str] = 'untested', end_time: int = 0, duration: int = 0):
         self.start_time = time.time()
         self.status = status
@@ -88,7 +90,7 @@ class StepExecution(object):
         self.duration = int((self.end_time - self.start_time) * 1000)
 
 
-class Step(object):
+class Step(BaseModel):
     def __init__(self,
                  step_type: StepType,
                  id: Optional[str],

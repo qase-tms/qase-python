@@ -1,8 +1,10 @@
-from typing import Type, Optional, Union, Dict, List
-from pathlib import PosixPath
 import time
 import uuid
 import json
+
+from typing import Type, Optional, Union, Dict, List
+from pathlib import PosixPath
+from .basemodel import BaseModel
 from .step import Step
 from .suite import Suite
 from .attachment import Attachment
@@ -10,7 +12,7 @@ from .relation import Relation
 from .. import QaseUtils
 
 
-class Field:
+class Field(BaseModel):
     def __init__(self,
                  name: str,
                  value: Union[str, list]):
@@ -18,7 +20,7 @@ class Field:
         self.value = value
 
 
-class Execution(object):
+class Execution(BaseModel):
     def __init__(self,
                  status: Optional[str] = None,
                  end_time: int = 0,
@@ -47,7 +49,7 @@ class Execution(object):
         self.duration = (int)((self.end_time - self.start_time) * 1000)
 
 
-class Request(object):
+class Request(BaseModel):
     def __init__(self,
                  method: str,
                  url: str,
@@ -65,7 +67,7 @@ class Request(object):
         self.response_body = response_body
 
 
-class Result(object):
+class Result(BaseModel):
     def __init__(self, title: str, signature: str) -> None:
         self.id: str = str(uuid.uuid4())
         self.title: str = title
@@ -137,7 +139,3 @@ class Result(object):
 
     def set_run_id(self, run_id: str) -> None:
         self.run_id = run_id
-
-    def to_json(self) -> str:
-        return json.dumps(self, default=lambda o: o.__str__() if isinstance(o, PosixPath) else o.__dict__,
-                          sort_keys=False, indent=4)

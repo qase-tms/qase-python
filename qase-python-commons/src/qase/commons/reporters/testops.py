@@ -68,6 +68,7 @@ class QaseTestOps:
 
     def _prepare_client(self) -> None:
         try:
+            self.logger.log_debug("Preparing API client")
             configuration = Configuration()
             configuration.api_key['TokenAuth'] = self.config.get('testops.api.token')
             configuration.ssl_ca_cert = certifi.where()
@@ -80,6 +81,7 @@ class QaseTestOps:
                 self.web = f'https://app.{host}'
 
             self.client = ApiClient(configuration)
+            self.logger.log_debug("API client prepared")
         except Exception as e:
             self.logger.log(f"Error at preparing API client: {e}", "error")
             raise ReporterException(e)
@@ -87,8 +89,10 @@ class QaseTestOps:
     # Method loads project from Qase TestOps by code and returns project data
     def _get_project(self, code: str) -> Dict:
         try:
+            self.logger.log_debug(f"Getting project {code}")
             response = ProjectsApi(self.client).get_project(code=code)
             if hasattr(response, 'result'):
+                self.logger.log_debug(f"Project {code} found: {response.result.to_json()}")
                 return response.result
             raise ReporterException("Unable to find given project code")
         except Exception as e:
@@ -99,12 +103,15 @@ class QaseTestOps:
     # If environment not found or exception raised, returns None
     def _get_environment(self, environment: str, code: str) -> Union[str, None]:
         try:
+            self.logger.log_debug(f"Getting environment {environment}")
             api_instance = EnvironmentsApi(self.client)
             response = api_instance.get_environments(code=code)
             if hasattr(response, 'result') and hasattr(response.result, 'entities'):
                 for env in response.result.entities:
                     if env.slug == environment:
+                        self.logger.log_debug(f"Environment {environment} found: {env.to_json()}")
                         return env.id
+            self.logger.log_debug(f"Environment {environment} not found")
             return None
         except Exception as e:
             self.logger.log("Exception when calling EnvironmentsApi->get_environments: %s\n" % e, "error")
@@ -114,6 +121,7 @@ class QaseTestOps:
         try:
             api_results = ResultsApi(self.client)
             results_to_send = [self._prepare_result(result) for result in results]
+            self.logger.log_debug(f"Sending results for run {self.run_id}: {results_to_send}")
             api_results.create_result_bulk(
                 code=self.project_code,
                 id=self.run_id,
@@ -121,6 +129,7 @@ class QaseTestOps:
                     results=results_to_send
                 )
             )
+            self.logger.log_debug(f"Results for run {self.run_id} sent successfully")
             with self.lock:
                 self.processed.extend(results)
         except Exception as e:
@@ -222,6 +231,9 @@ class QaseTestOps:
 
         result_model["case_id"] = None
         result_model["case"] = case_data
+
+        self.logger.log_debug(f"Prepared result: {result_model}")
+
         return result_model
 
     def _complete_run(self) -> None:
@@ -261,6 +273,7 @@ class QaseTestOps:
             plan_id=(int(plan_id) if plan_id else plan_id),
             is_autotest=True
         )
+        self.logger.log_debug(f"Creating test run with parameters: {kwargs}")
         try:
             result = RunsApi(self.client).create_run(
                 code=self.project_code,

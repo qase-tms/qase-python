@@ -59,5 +59,4 @@ def test_run():
     run.add_host_data(host_data)
     assert run.host_data == host_data
 
-    json_str = run.to_json()
-    assert isinstance(json.loads(json_str), dict)  # Ensure it's valid JSON and can be parsed
+    assert isinstance(json.loads(str(run)), dict)  # Ensure it's valid JSON and can be parsed

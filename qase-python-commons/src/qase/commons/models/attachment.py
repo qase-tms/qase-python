@@ -1,12 +1,14 @@
 import os
 import uuid
-from typing import Optional, Union
-from io import BytesIO, StringIO
 import json
 import pathlib
 
+from typing import Optional, Union
+from io import BytesIO, StringIO
+from .basemodel import BaseModel
 
-class Attachment:
+
+class Attachment(BaseModel):
     def __init__(self,
                  file_name: str,
                  mime_type: str,

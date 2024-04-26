@@ -22,6 +22,10 @@ class Logger:
             with open(self.log_file, 'a') as f:
                 f.write(log)
 
+    def log_debug(self, message: str):
+        if self.debug:
+            self.log(message, 'debug')
+
     @staticmethod
     def _get_timestamp(format: str = "%Y%m%d_%H:%M:%S"):
         now = datetime.datetime.now()
