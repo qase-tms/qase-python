@@ -29,7 +29,7 @@ class ConfigManager:
         # Use _get_config method to get the value. If None, return default.
         value = self._get_config(key)
         if value_type and value_type == bool:
-            return self.parseBool(value or default)
+            return self.parseBool(value)
         return value or default
 
     def validate_config(self):

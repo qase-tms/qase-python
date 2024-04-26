@@ -86,10 +86,11 @@ class QasePytestPlugin:
 
     def pytest_sessionfinish(self, session, exitstatus):
         if is_xdist_controller(session):
-            self.reporter.complete_run(exitstatus)
             QasePytestPlugin.drop_run_id()
         else:
             self.reporter.complete_worker()
+
+        self.reporter.complete_run(exitstatus)
 
     @pytest.hookimpl(hookwrapper=True)
     def pytest_runtest_protocol(self, item):
