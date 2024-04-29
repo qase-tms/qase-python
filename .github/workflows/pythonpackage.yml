@@ -10,13 +10,14 @@ jobs:
       max-parallel: 5
       matrix:
         python-version:
-          - '3.11'
-          - '3.10'
-          - '3.9'
-          - '3.8'
-          - '3.7'
+          - "3.11"
+          - "3.10"
+          - "3.9"
+          - "3.8"
+          - "3.7"
         changed-dir:
           - "qaseio"
+          - "qase-api-v2-client"
           - "qase-pytest"
           - "qase-robotframework"
           - "qase-python-commons"
@@ -26,13 +27,13 @@ jobs:
       - uses: dorny/paths-filter@v2
         id: filter
         with:
-          list-files: 'shell'
+          list-files: "shell"
           filters: |
             changes:
               - '${{ matrix.changed-dir }}/**'
       - name: Set up Python ${{ matrix.python-version }}
         if: steps.filter.outputs.changes == 'true'
-        uses: actions/setup-python@v2 
+        uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
@@ -51,7 +52,14 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        prefix: [ "qaseio", "qase-pytest", "qase-robotframework", "qase-python-commons" ]
+        prefix:
+          [
+            "qaseio",
+            "qase-api-v2-client",
+            "qase-pytest",
+            "qase-robotframework",
+            "qase-python-commons",
+          ]
     if: startsWith(github.event.ref, 'refs/tags')
     steps:
       - uses: actions/checkout@v3
