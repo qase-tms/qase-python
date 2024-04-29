@@ -1,0 +1,89 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qase-api-v2-client"
+version = "1.0.0b1"
+description = "Qase TestOps API V2 client for Python"
+readme = "README.md"
+authors = [{name = "Qase Team", email = "support@qase.io"}]
+license = {file = "LICENSE"}
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Typing :: Typed",
+]
+urls = {"Homepage" = "https://github.com/qase-tms/qase-python"}
+keywords = ["OpenAPI", "OpenAPI-Generator", "Qase.io TestOps API"]
+requires-python = ">=3.7"
+dependencies = [
+    "urllib3 >= 1.25.3, < 2.1.0",
+    "python-dateutil",
+    "pydantic >= 2",
+    "typing-extensions >= 4.7.1",
+]
+
+[project.optional-dependencies]
+# Define any optional dependencies here if necessary
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+minversion = 3.7
+envlist = py{37,38,39,310,311}
+
+[testenv]
+deps =
+    pytest
+    pytest-cov
+passenv =
+    HOME
+commands =
+    pytest --cov-config=pyproject.toml {posargs}
+extras =
+    all
+    testing
+"""
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = "--cov-report=term-missing --verbose"
+norecursedirs = ["dist", "build", ".tox"]
+testpaths = ["test"]
+
+[tool.flake8]
+exclude = [".tox", "build", "dist", ".eggs"]
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.paths]
+source = ["src/qase/api_client_v2"]
+
+[tool.coverage.report]
+# Regexes for lines to exclude from consideration
+exclude_also = [
+    # Don't complain about missing debug-only code:
+    "def __repr__",
+    "if self\\.debug",
+
+    # Don't complain if tests don't hit defensive assertion code:
+    "raise AssertionError",
+    "raise NotImplementedError",
+
+    # Don't complain if non-runnable code isn't run:
+    "if 0:",
+    "if __name__ == .__main__.:",
+
+    # Don't complain about abstract methods, they aren't run:
+    "@(abc\\.)?abstractmethod",
+    ]
+
+ignore_errors = false
