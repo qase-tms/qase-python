@@ -1,6 +1,6 @@
 name: Python package
 
-on: [push]
+on: [ push ]
 
 jobs:
   test:
@@ -16,7 +16,7 @@ jobs:
           - "3.8"
           - "3.7"
         changed-dir:
-          - "qaseio"
+          - "qase-api-client"
           - "qase-api-v2-client"
           - "qase-pytest"
           - "qase-robotframework"
@@ -54,7 +54,7 @@ jobs:
       matrix:
         prefix:
           [
-            "qaseio",
+            "qase-api-client",
             "qase-api-v2-client",
             "qase-pytest",
             "qase-robotframework",
