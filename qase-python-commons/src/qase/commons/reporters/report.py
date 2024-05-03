@@ -31,7 +31,7 @@ class QaseReport:
         self._check_report_path()
         self.start_time = str(time.time())
 
-    def complete_run(self, exit_code=None):
+    def complete_run(self):
         self.end_time = str(time.time())
         self._compile_report()
 

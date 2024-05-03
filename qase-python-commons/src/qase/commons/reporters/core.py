@@ -60,12 +60,12 @@ class QaseCoreReporter:
                 self.logger.log(e, 'error')
                 self.reporter = None
 
-    def complete_run(self, exit_code=None) -> None:
+    def complete_run(self) -> None:
         if self.reporter:
             try:
                 ts = time.time()
                 self.logger.log_debug("Completing run")
-                self.reporter.complete_run(exit_code)
+                self.reporter.complete_run()
                 self.logger.log_debug("Run completed")
                 self.overhead += time.time() - ts
                 self.logger.log(f"Overhead for Qase Report: {round(self.overhead * 1000)}ms", 'info')

@@ -99,7 +99,7 @@ class Listener:
 
     def close(self):
         logger.info("complete run executing")
-        self.reporter.complete_run(True)
+        self.reporter.complete_run()
 
     def log_message(self, message):
         logger.debug("Log:", message)
