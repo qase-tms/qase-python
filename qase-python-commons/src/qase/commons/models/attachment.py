@@ -42,10 +42,11 @@ class Attachment(BaseModel):
 
     def get_for_upload(self) -> BytesIO:
         if self.file_path:
-            return pathlib.Path(os.path.abspath(self.file_path))
+            with open(self.file_path, "rb") as fc:
+                content = BytesIO(fc.read())
         else:
             if isinstance(self.content, str):
-                content = BytesIO(self.content.encode('utf-8'))
+                content = BytesIO(bytes(self.content, 'utf-8'))
             elif isinstance(self.content, bytes):
                 content = BytesIO(self.content)
         content.name = self.file_name

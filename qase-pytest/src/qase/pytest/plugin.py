@@ -90,7 +90,7 @@ class QasePytestPlugin:
         else:
             self.reporter.complete_worker()
 
-        self.reporter.complete_run(exitstatus)
+        self.reporter.complete_run()
 
     @pytest.hookimpl(hookwrapper=True)
     def pytest_runtest_protocol(self, item):
