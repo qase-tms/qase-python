@@ -30,7 +30,7 @@ requires-python = ">=3.7"
 dependencies = [
     "certifi>=2024.2.2",
     "attrs>=23.2.0",
-    "qaseio==4.0.2",
+    "qase-api-client~=1.0.0b2",
     "more_itertools"
 ]
 

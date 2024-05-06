@@ -1,7 +1,7 @@
 import abc
-from typing import Dict, Union
+from typing import Union
 
-from qaseio import Project, AttachmentGet
+from qase.api_client_v1 import Project, AttachmentGet
 
 from ..models import Attachment
 
