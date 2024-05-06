@@ -14,6 +14,8 @@
 
 
 import datetime
+from io import BytesIO
+
 from dateutil.parser import parse
 from enum import Enum
 import json
@@ -25,11 +27,11 @@ import tempfile
 from urllib.parse import quote
 from typing import Tuple, Optional, List, Dict
 
-from src.qase.api_client_v1.configuration import Configuration
-from src.qase.api_client_v1.api_response import ApiResponse, T as ApiResponseT
-import src.qase.api_client_v1.models
-from src.qase.api_client_v1 import rest
-from src.qase.api_client_v1.exceptions import (
+from qase.api_client_v1.configuration import Configuration
+from qase.api_client_v1.api_response import ApiResponse, T as ApiResponseT
+import qase.api_client_v1.models
+from qase.api_client_v1 import rest
+from qase.api_client_v1.exceptions import (
     ApiValueError,
     ApiException,
     BadRequestException,
@@ -421,7 +423,7 @@ class ApiClient:
             if klass in self.NATIVE_TYPES_MAPPING:
                 klass = self.NATIVE_TYPES_MAPPING[klass]
             else:
-                klass = getattr(src.qase.apiv1.models, klass)
+                klass = getattr(qase.api_client_v1.models, klass)
 
         if klass in self.PRIMITIVE_TYPES:
             return self.__deserialize_primitive(data, klass)
@@ -519,6 +521,11 @@ class ApiClient:
                     continue
                 file_names = v if type(v) is list else [v]
                 for n in file_names:
+                    if isinstance(n, BytesIO):
+                        params.append(
+                            tuple([k, tuple([n.name, n.getvalue(), n.mime])]))
+                        continue
+
                     with open(n, 'rb') as f:
                         filename = os.path.basename(f.name)
                         filedata = f.read()
