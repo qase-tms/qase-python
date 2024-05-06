@@ -1,17 +1,70 @@
-> # Qase Robot Framework Listener
->
-> Publish results simple and easy.
+# [Qase TestOps](https://qase.io) Robot Framework Reporter
 
-## How to integrate
+[![License](https://lxgaming.github.io/badges/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
+## Installation
+
+```sh
+pip install qase-robotframework==3.0.0b1
 ```
-pip install qase-robotframework
+
+## Upgrade from 2.x to 3.x
+
+The new version 3.x of the Robot Framework reporter has breaking changes.
+To migrate from versions 2.x, follow the [upgrade guide](docs/UPGRADE.md).
+
+## Configuration
+
+Qase Robot Framework Reporter is configured in multiple ways:
+
+- using a config file `qase.config.json`
+- using environment variables
+
+Environment variables override the values given in the config file.
+
+Configuration options are described in the
+[configuration reference](docs/CONFIGURATION.md).
+
+### Example: qase.config.json
+
+```json
+{
+  "mode": "testops", 
+  "fallback": "report",
+  "debug": true,
+  "testops": {
+    "project": "YOUR_PROJECT_CODE",
+    "api": {
+      "token": "YOUR_API_TOKEN",
+      "host": "qase.io"
+    },
+    "run": {
+      "title": "Test run title"
+    },
+    "batch": {
+      "size": 100
+    }
+  },
+    "report": {
+    "driver": "local",
+    "connection": {
+      "local": {
+        "path": "./build/qase-report",
+        "format": "json" 
+      }
+    }
+  },
+  "environment": "local"
+}
 ```
+
 
 ## Usage
 
-If you want to create a persistent link to Test Cases in Qase, you should add Qase test case IDs to robot framework tests.
-They should be added as a tags in form like `Q-<case id without project code>`. You can use upper and lower case to indicate the test case IDs. Example:
+### Link tests with test cases in Qase TestOps
+
+To link the automated tests with the test cases in Qase TestOps, use the tags in form like `Q-<case id without project code>`.
+Example:
 
 ```robotframework
 *** Test Cases ***
@@ -54,59 +107,7 @@ Initializing the test case                                                  ## T
     Set To Dictionary    ${info}   field1=A sample string                   ## 1-st step - "Set To Dictionary"
 ```
 
-## Configuration
-
-Listener supports loading configuration both from environment variables and from `tox.ini` file.
-
-ENV variables:
-- `QASE_MODE` - Define mode: `testops` to enable report
-- `QASE_ENVIRONMENT` - Environment ID for the run
-- `QASE_DEBUG` - If passed something - will enable debug logging for listener. Default: `False`
-- `QASE_TESTOPS_MODE` - You can switch between `sync` and `async` modes. Default is `async`
-- `QASE_TESTOPS_API_TOKEN` - API token to access Qase TestOps
-- `QASE_TESTOPS_PROJECT` - Project code from Qase TestOps
-- `QASE_TESTOPS_PLAN_ID` - Plan ID if you want to add results to existing run from Test Plan
-- `QASE_TESTOPS_RUN_ID` - Run ID if you want to add results to existing run
-- `QASE_TESTOPS_RUN_TITLE` - Set custom run name when no run ID is provided
-- `QASE_TESTOPS_COMPLETE_RUN` - Will complete run after all tests are finished. Default: `False`
-- `QASE_TESTOPS_HOST` - Define a host for Qase TestOps. Default: `qase.io`
-### Usage:
+### Execution:
 ```
-QASE_API_TOKEN=<API TOKEN> QASE_PROJECT=PRJCODE robot --listener qaseio.robotframework.Listener keyword_driven.robot data_driven.robot
-```
-Moving variables to `tox.ini`, example configuration:
-```ini
-[qase]
-qase_testops_api_token=api_key
-qase_testops_project=project_code
-qase_testops_run_id=run_id
-qase_testops_run_title=New Robot Framework Run
-qase_debug=True
-qase_testops_complete_run=True
-```
-Execution:
-```
-robot --listener qaseio.robotframework.Listener someTest.robot
-```
-## Contribution
-
-Install project locally:
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -e .[testing]
-```
-
-Install dev requirements:
-
-```bash
-pip install pre-commit
-pre-commit install
-```
-
-Test project:
-
-```bash
-tox
+robot --listener qase.robotframework.Listener someTest.robot
 ```
