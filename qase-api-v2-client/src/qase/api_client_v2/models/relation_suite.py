@@ -20,7 +20,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict
 from typing import Any, ClassVar, Dict, List
-from .relation_suite_item import RelationSuiteItem
+from qase.api_client_v2.models.relation_suite_item import RelationSuiteItem
 from typing import Optional, Set
 from typing_extensions import Self
 

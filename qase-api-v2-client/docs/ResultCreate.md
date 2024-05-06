@@ -24,7 +24,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src.qase.models import ResultCreate
+from src import ResultCreate
 
 # TODO update the JSON string below
 json = "{}"

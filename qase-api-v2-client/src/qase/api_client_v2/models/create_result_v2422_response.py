@@ -20,7 +20,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List
-from .base_error_field_response_error_fields_inner import BaseErrorFieldResponseErrorFieldsInner
+from qase.api_client_v2.models.base_error_field_response_error_fields_inner import BaseErrorFieldResponseErrorFieldsInner
 from typing import Optional, Set
 from typing_extensions import Self
 

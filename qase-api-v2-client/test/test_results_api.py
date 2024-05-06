@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v2.api import ResultsApi
+from qase.api_client_v2.api import ResultsApi
 
 
 class TestResultsApi(unittest.TestCase):

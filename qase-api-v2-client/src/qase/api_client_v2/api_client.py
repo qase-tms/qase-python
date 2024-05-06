@@ -25,10 +25,10 @@ import tempfile
 from urllib.parse import quote
 from typing import Tuple, Optional, List, Dict
 
-from .configuration import Configuration
-from .api_response import ApiResponse, T as ApiResponseT
-from . import rest
-from .exceptions import (
+from qase.api_client_v2.configuration import Configuration
+from qase.api_client_v2.api_response import ApiResponse, T as ApiResponseT
+from qase.api_client_v2 import rest
+from qase.api_client_v2.exceptions import (
     ApiValueError,
     ApiException
 )

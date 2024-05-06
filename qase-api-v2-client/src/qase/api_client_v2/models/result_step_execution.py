@@ -20,7 +20,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Union
-from .result_step_status import ResultStepStatus
+from qase.api_client_v2.models.result_step_status import ResultStepStatus
 from typing import Optional, Set
 from typing_extensions import Self
 

@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v2.models.base_error_response import BaseErrorResponse
+from qase.api_client_v2.models.base_error_response import BaseErrorResponse
 
 class TestBaseErrorResponse(unittest.TestCase):
     """BaseErrorResponse unit test stubs"""

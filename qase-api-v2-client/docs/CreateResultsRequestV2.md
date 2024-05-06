@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src.qase.models import CreateResultsRequestV2
+from src import CreateResultsRequestV2
 
 # TODO update the JSON string below
 json = "{}"

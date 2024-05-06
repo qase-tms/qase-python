@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v2.models.result_relations import ResultRelations
+from qase.api_client_v2.models.result_relations import ResultRelations
 
 class TestResultRelations(unittest.TestCase):
     """ResultRelations unit test stubs"""

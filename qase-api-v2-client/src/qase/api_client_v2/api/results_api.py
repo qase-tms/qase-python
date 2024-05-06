@@ -17,12 +17,12 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
 from pydantic import StrictInt, StrictStr
-from src.qase.api_client_v2.models.create_results_request_v2 import CreateResultsRequestV2
-from src.qase.api_client_v2.models.result_create import ResultCreate
+from qase.api_client_v2.models.create_results_request_v2 import CreateResultsRequestV2
+from qase.api_client_v2.models.result_create import ResultCreate
 
-from src.qase.api_client_v2.api_client import ApiClient, RequestSerialized
-from src.qase.api_client_v2.api_response import ApiResponse
-from src.qase.api_client_v2.rest import RESTResponseType
+from qase.api_client_v2.api_client import ApiClient, RequestSerialized
+from qase.api_client_v2.api_response import ApiResponse
+from qase.api_client_v2.rest import RESTResponseType
 
 
 class ResultsApi:
