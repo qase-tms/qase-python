@@ -21,7 +21,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src.qase.api_client_v1.models.shared_step import SharedStep
+from qase.api_client_v1.models.shared_step import SharedStep
 
 # TODO update the JSON string below
 json = "{}"

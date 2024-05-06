@@ -20,7 +20,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src.qase.api_client_v1.models.custom_field_create import CustomFieldCreate
+from qase.api_client_v1.models.custom_field_create import CustomFieldCreate
 
 # TODO update the JSON string below
 json = "{}"

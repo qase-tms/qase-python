@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.api.authors_api import AuthorsApi
+from qase.api_client_v1.api.authors_api import AuthorsApi
 
 
 class TestAuthorsApi(unittest.TestCase):

@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.milestone_create import MilestoneCreate
+from qase.api_client_v1.models.milestone_create import MilestoneCreate
 
 class TestMilestoneCreate(unittest.TestCase):
     """MilestoneCreate unit test stubs"""

@@ -20,7 +20,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from src.qase.api_client_v1.models.system_field_option import SystemFieldOption
+from qase.api_client_v1.models.system_field_option import SystemFieldOption
 from typing import Optional, Set
 from typing_extensions import Self
 

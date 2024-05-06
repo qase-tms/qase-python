@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.project_counts_runs import ProjectCountsRuns
+from qase.api_client_v1.models.project_counts_runs import ProjectCountsRuns
 
 class TestProjectCountsRuns(unittest.TestCase):
     """ProjectCountsRuns unit test stubs"""

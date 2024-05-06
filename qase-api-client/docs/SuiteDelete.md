@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src.qase.api_client_v1.models.suite_delete import SuiteDelete
+from qase.api_client_v1.models.suite_delete import SuiteDelete
 
 # TODO update the JSON string below
 json = "{}"

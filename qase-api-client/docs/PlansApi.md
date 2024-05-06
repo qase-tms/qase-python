@@ -1,4 +1,4 @@
-# src.qase.apiv1.PlansApi
+# qase.api_client_v1.PlansApi
 
 All URIs are relative to *https://api.qase.io/v1*
 
@@ -23,15 +23,15 @@ This method allows to create a plan in selected project.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.id_response import IdResponse
-from src.qase.api_client_v1.models.plan_create import PlanCreate
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.id_response import IdResponse
+from qase.api_client_v1.models.plan_create import PlanCreate
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -47,11 +47,11 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.PlansApi(api_client)
+    api_instance = qase.api_client_v1.PlansApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
-    plan_create = src.qase.apiv1.PlanCreate()  # PlanCreate | 
+    plan_create = qase.api_client_v1.PlanCreate()  # PlanCreate | 
 
     try:
         # Create a new plan
@@ -111,14 +111,14 @@ This method completely deletes a plan from repository.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.id_response import IdResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.id_response import IdResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -134,9 +134,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.PlansApi(api_client)
+    api_instance = qase.api_client_v1.PlansApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
     id = 56  # int | Identifier.
 
@@ -197,14 +197,14 @@ This method allows to retrieve a specific plan.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.plan_response import PlanResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.plan_response import PlanResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -220,9 +220,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.PlansApi(api_client)
+    api_instance = qase.api_client_v1.PlansApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
     id = 56  # int | Identifier.
 
@@ -283,14 +283,14 @@ This method allows to retrieve all plans stored in selected project.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.plan_list_response import PlanListResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.plan_list_response import PlanListResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -306,9 +306,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.PlansApi(api_client)
+    api_instance = qase.api_client_v1.PlansApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
     limit = 10  # int | A number of entities in result set. (optional) (default to 10)
     offset = 0  # int | How many entities should be skipped. (optional) (default to 0)
@@ -371,15 +371,15 @@ This method updates a plan.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.id_response import IdResponse
-from src.qase.api_client_v1.models.plan_update import PlanUpdate
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.id_response import IdResponse
+from qase.api_client_v1.models.plan_update import PlanUpdate
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -395,12 +395,12 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.PlansApi(api_client)
+    api_instance = qase.api_client_v1.PlansApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
     id = 56  # int | Identifier.
-    plan_update = src.qase.apiv1.PlanUpdate()  # PlanUpdate | 
+    plan_update = qase.api_client_v1.PlanUpdate()  # PlanUpdate | 
 
     try:
         # Update plan

@@ -1,4 +1,4 @@
-# src.qase.apiv1.AuthorsApi
+# qase.api_client_v1.AuthorsApi
 
 All URIs are relative to *https://api.qase.io/v1*
 
@@ -20,14 +20,14 @@ This method allows to retrieve a specific author.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.author_response import AuthorResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.author_response import AuthorResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -43,9 +43,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.AuthorsApi(api_client)
+    api_instance = qase.api_client_v1.AuthorsApi(api_client)
     id = 56  # int | Identifier.
 
     try:
@@ -104,14 +104,14 @@ This method allows to retrieve all authors in selected project.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.author_list_response import AuthorListResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.author_list_response import AuthorListResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -127,9 +127,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.AuthorsApi(api_client)
+    api_instance = qase.api_client_v1.AuthorsApi(api_client)
     search = 'search_example'  # str | Provide a string that will be used to search by name. (optional)
     type = 'type_example'  # str |  (optional)
     limit = 10  # int | A number of entities in result set. (optional) (default to 10)

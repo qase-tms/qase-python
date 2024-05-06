@@ -21,12 +21,12 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from src.qase.api_client_v1.models.attachment import Attachment
-from src.qase.api_client_v1.models.custom_field_value import CustomFieldValue
-from src.qase.api_client_v1.models.external_issue import ExternalIssue
-from src.qase.api_client_v1.models.tag_value import TagValue
-from src.qase.api_client_v1.models.test_case_params import TestCaseParams
-from src.qase.api_client_v1.models.test_step import TestStep
+from qase.api_client_v1.models.attachment import Attachment
+from qase.api_client_v1.models.custom_field_value import CustomFieldValue
+from qase.api_client_v1.models.external_issue import ExternalIssue
+from qase.api_client_v1.models.tag_value import TagValue
+from qase.api_client_v1.models.test_case_params import TestCaseParams
+from qase.api_client_v1.models.test_step import TestStep
 from typing import Optional, Set
 from typing_extensions import Self
 

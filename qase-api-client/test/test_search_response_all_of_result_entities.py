@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.search_response_all_of_result_entities import SearchResponseAllOfResultEntities
+from qase.api_client_v1.models.search_response_all_of_result_entities import SearchResponseAllOfResultEntities
 
 class TestSearchResponseAllOfResultEntities(unittest.TestCase):
     """SearchResponseAllOfResultEntities unit test stubs"""
@@ -44,7 +44,7 @@ class TestSearchResponseAllOfResultEntities(unittest.TestCase):
                 start_time = '2021-12-30T19:23:59Z',
                 end_time = '2021-12-30T19:23:59Z',
                 public = True,
-                stats = src.qase.api_client_v1.models.run_stats.Run_stats(
+                stats = qase.api_client_v1.models.run_stats.Run_stats(
                     total = 56, 
                     statuses = {
                         'key' : 56
@@ -58,21 +58,21 @@ class TestSearchResponseAllOfResultEntities(unittest.TestCase):
                     in_progress = 56, 
                     invalid = 56, ),
                 time_spent = 56,
-                environment = src.qase.api_client_v1.models.run_environment.Run_environment(
+                environment = qase.api_client_v1.models.run_environment.Run_environment(
                     title = '', 
                     description = '', 
                     slug = '', 
                     host = '', ),
-                milestone = src.qase.api_client_v1.models.run_milestone.Run_milestone(
+                milestone = qase.api_client_v1.models.run_milestone.Run_milestone(
                     title = '', 
                     description = '', ),
                 custom_fields = [
-                    src.qase.api_client_v1.models.custom_field_value.CustomFieldValue(
+                    qase.api_client_v1.models.custom_field_value.CustomFieldValue(
                         id = 56, 
                         value = '', )
                     ],
                 tags = [
-                    src.qase.api_client_v1.models.tag_value.TagValue(
+                    qase.api_client_v1.models.tag_value.TagValue(
                         title = '', 
                         internal_id = 56, )
                     ],
@@ -85,7 +85,7 @@ class TestSearchResponseAllOfResultEntities(unittest.TestCase):
                 run_id = 56,
                 case_id = 56,
                 steps = [
-                    src.qase.api_client_v1.models.test_step.TestStep(
+                    qase.api_client_v1.models.test_step.TestStep(
                         hash = '', 
                         shared_step_hash = '', 
                         shared_step_nested_hash = '', 
@@ -94,7 +94,7 @@ class TestSearchResponseAllOfResultEntities(unittest.TestCase):
                         expected_result = '', 
                         data = '', 
                         attachments = [
-                            src.qase.api_client_v1.models.attachment.Attachment(
+                            qase.api_client_v1.models.attachment.Attachment(
                                 size = 56, 
                                 mime = '', 
                                 filename = '', 
@@ -104,7 +104,7 @@ class TestSearchResponseAllOfResultEntities(unittest.TestCase):
                 is_api_result = True,
                 time_spent_ms = 56,
                 attachments = [
-                    src.qase.api_client_v1.models.attachment.Attachment(
+                    qase.api_client_v1.models.attachment.Attachment(
                         size = 56, 
                         mime = '', 
                         filename = '', 

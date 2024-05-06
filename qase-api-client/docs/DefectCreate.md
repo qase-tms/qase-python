@@ -16,7 +16,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src.qase.api_client_v1.models.defect_create import DefectCreate
+from qase.api_client_v1.models.defect_create import DefectCreate
 
 # TODO update the JSON string below
 json = "{}"

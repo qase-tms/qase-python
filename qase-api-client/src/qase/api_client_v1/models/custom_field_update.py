@@ -21,7 +21,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
-from src.qase.api_client_v1.models.custom_field_create_value_inner import CustomFieldCreateValueInner
+from qase.api_client_v1.models.custom_field_create_value_inner import CustomFieldCreateValueInner
 from typing import Optional, Set
 from typing_extensions import Self
 

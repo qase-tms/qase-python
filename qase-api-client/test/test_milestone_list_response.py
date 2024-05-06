@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.milestone_list_response import MilestoneListResponse
+from qase.api_client_v1.models.milestone_list_response import MilestoneListResponse
 
 class TestMilestoneListResponse(unittest.TestCase):
     """MilestoneListResponse unit test stubs"""
@@ -37,12 +37,12 @@ class TestMilestoneListResponse(unittest.TestCase):
         if include_optional:
             return MilestoneListResponse(
                 status = True,
-                result = src.qase.api_client_v1.models.milestone_list_response_all_of_result.MilestoneListResponse_allOf_result(
+                result = qase.api_client_v1.models.milestone_list_response_all_of_result.MilestoneListResponse_allOf_result(
                     total = 56, 
                     filtered = 56, 
                     count = 56, 
                     entities = [
-                        src.qase.api_client_v1.models.milestone.Milestone(
+                        qase.api_client_v1.models.milestone.Milestone(
                             id = 56, 
                             title = '', 
                             description = '', 

@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src.qase.api_client_v1.models.run_environment import RunEnvironment
+from qase.api_client_v1.models.run_environment import RunEnvironment
 
 # TODO update the JSON string below
 json = "{}"

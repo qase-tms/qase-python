@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.system_field_option import SystemFieldOption
+from qase.api_client_v1.models.system_field_option import SystemFieldOption
 
 class TestSystemFieldOption(unittest.TestCase):
     """SystemFieldOption unit test stubs"""

@@ -15,7 +15,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src.qase.api_client_v1.models.qql_plan import QqlPlan
+from qase.api_client_v1.models.qql_plan import QqlPlan
 
 # TODO update the JSON string below
 json = "{}"

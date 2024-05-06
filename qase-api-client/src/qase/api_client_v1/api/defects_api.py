@@ -20,17 +20,17 @@ from typing_extensions import Annotated
 from pydantic import Field, StrictInt, StrictStr, field_validator
 from typing import Optional
 from typing_extensions import Annotated
-from src.qase.api_client_v1.models.base_response import BaseResponse
-from src.qase.api_client_v1.models.defect_create import DefectCreate
-from src.qase.api_client_v1.models.defect_list_response import DefectListResponse
-from src.qase.api_client_v1.models.defect_response import DefectResponse
-from src.qase.api_client_v1.models.defect_status import DefectStatus
-from src.qase.api_client_v1.models.defect_update import DefectUpdate
-from src.qase.api_client_v1.models.id_response import IdResponse
+from qase.api_client_v1.models.base_response import BaseResponse
+from qase.api_client_v1.models.defect_create import DefectCreate
+from qase.api_client_v1.models.defect_list_response import DefectListResponse
+from qase.api_client_v1.models.defect_response import DefectResponse
+from qase.api_client_v1.models.defect_status import DefectStatus
+from qase.api_client_v1.models.defect_update import DefectUpdate
+from qase.api_client_v1.models.id_response import IdResponse
 
-from src.qase.api_client_v1.api_client import ApiClient, RequestSerialized
-from src.qase.api_client_v1.api_response import ApiResponse
-from src.qase.api_client_v1.rest import RESTResponseType
+from qase.api_client_v1.api_client import ApiClient, RequestSerialized
+from qase.api_client_v1.api_response import ApiResponse
+from qase.api_client_v1.rest import RESTResponseType
 
 
 class DefectsApi:

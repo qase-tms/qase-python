@@ -20,19 +20,19 @@ from typing_extensions import Annotated
 from pydantic import Field, StrictInt, StrictStr, field_validator
 from typing import List, Optional
 from typing_extensions import Annotated
-from src.qase.api_client_v1.models.base_response import BaseResponse
-from src.qase.api_client_v1.models.bulk200_response import Bulk200Response
-from src.qase.api_client_v1.models.id_response import IdResponse
-from src.qase.api_client_v1.models.test_case_create import TestCaseCreate
-from src.qase.api_client_v1.models.test_case_list_response import TestCaseListResponse
-from src.qase.api_client_v1.models.test_case_response import TestCaseResponse
-from src.qase.api_client_v1.models.test_case_update import TestCaseUpdate
-from src.qase.api_client_v1.models.test_casebulk import TestCasebulk
-from src.qase.api_client_v1.models.test_caseexternal_issues import TestCaseexternalIssues
+from qase.api_client_v1.models.base_response import BaseResponse
+from qase.api_client_v1.models.bulk200_response import Bulk200Response
+from qase.api_client_v1.models.id_response import IdResponse
+from qase.api_client_v1.models.test_case_create import TestCaseCreate
+from qase.api_client_v1.models.test_case_list_response import TestCaseListResponse
+from qase.api_client_v1.models.test_case_response import TestCaseResponse
+from qase.api_client_v1.models.test_case_update import TestCaseUpdate
+from qase.api_client_v1.models.test_casebulk import TestCasebulk
+from qase.api_client_v1.models.test_caseexternal_issues import TestCaseexternalIssues
 
-from src.qase.api_client_v1.api_client import ApiClient, RequestSerialized
-from src.qase.api_client_v1.api_response import ApiResponse
-from src.qase.api_client_v1.rest import RESTResponseType
+from qase.api_client_v1.api_client import ApiClient, RequestSerialized
+from qase.api_client_v1.api_response import ApiResponse
+from qase.api_client_v1.rest import RESTResponseType
 
 
 class CasesApi:

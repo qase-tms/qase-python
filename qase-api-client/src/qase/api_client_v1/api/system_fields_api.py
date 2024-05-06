@@ -17,11 +17,11 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from src.qase.api_client_v1.models.system_field_list_response import SystemFieldListResponse
+from qase.api_client_v1.models.system_field_list_response import SystemFieldListResponse
 
-from src.qase.api_client_v1.api_client import ApiClient, RequestSerialized
-from src.qase.api_client_v1.api_response import ApiResponse
-from src.qase.api_client_v1.rest import RESTResponseType
+from qase.api_client_v1.api_client import ApiClient, RequestSerialized
+from qase.api_client_v1.api_response import ApiResponse
+from qase.api_client_v1.rest import RESTResponseType
 
 
 class SystemFieldsApi:

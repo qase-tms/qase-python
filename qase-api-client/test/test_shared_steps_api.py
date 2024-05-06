@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.api.shared_steps_api import SharedStepsApi
+from qase.api_client_v1.api.shared_steps_api import SharedStepsApi
 
 
 class TestSharedStepsApi(unittest.TestCase):

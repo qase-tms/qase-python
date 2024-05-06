@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.test_step_create import TestStepCreate
+from qase.api_client_v1.models.test_step_create import TestStepCreate
 
 class TestTestStepCreate(unittest.TestCase):
     """TestStepCreate unit test stubs"""

@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src.qase.api_client_v1.models.hash_response import HashResponse
+from qase.api_client_v1.models.hash_response import HashResponse
 
 # TODO update the JSON string below
 json = "{}"

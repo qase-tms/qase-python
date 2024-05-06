@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.milestone_response import MilestoneResponse
+from qase.api_client_v1.models.milestone_response import MilestoneResponse
 
 class TestMilestoneResponse(unittest.TestCase):
     """MilestoneResponse unit test stubs"""
@@ -37,7 +37,7 @@ class TestMilestoneResponse(unittest.TestCase):
         if include_optional:
             return MilestoneResponse(
                 status = True,
-                result = src.qase.api_client_v1.models.milestone.Milestone(
+                result = qase.api_client_v1.models.milestone.Milestone(
                     id = 56, 
                     title = '', 
                     description = '', 

@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.project_counts_defects import ProjectCountsDefects
+from qase.api_client_v1.models.project_counts_defects import ProjectCountsDefects
 
 class TestProjectCountsDefects(unittest.TestCase):
     """ProjectCountsDefects unit test stubs"""

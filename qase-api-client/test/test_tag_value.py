@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.tag_value import TagValue
+from qase.api_client_v1.models.tag_value import TagValue
 
 class TestTagValue(unittest.TestCase):
     """TagValue unit test stubs"""

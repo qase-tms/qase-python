@@ -20,15 +20,15 @@ from typing_extensions import Annotated
 from pydantic import Field, StrictInt, StrictStr
 from typing import Optional
 from typing_extensions import Annotated
-from src.qase.api_client_v1.models.id_response import IdResponse
-from src.qase.api_client_v1.models.milestone_create import MilestoneCreate
-from src.qase.api_client_v1.models.milestone_list_response import MilestoneListResponse
-from src.qase.api_client_v1.models.milestone_response import MilestoneResponse
-from src.qase.api_client_v1.models.milestone_update import MilestoneUpdate
+from qase.api_client_v1.models.id_response import IdResponse
+from qase.api_client_v1.models.milestone_create import MilestoneCreate
+from qase.api_client_v1.models.milestone_list_response import MilestoneListResponse
+from qase.api_client_v1.models.milestone_response import MilestoneResponse
+from qase.api_client_v1.models.milestone_update import MilestoneUpdate
 
-from src.qase.api_client_v1.api_client import ApiClient, RequestSerialized
-from src.qase.api_client_v1.api_response import ApiResponse
-from src.qase.api_client_v1.rest import RESTResponseType
+from qase.api_client_v1.api_client import ApiClient, RequestSerialized
+from qase.api_client_v1.api_response import ApiResponse
+from qase.api_client_v1.rest import RESTResponseType
 
 
 class MilestonesApi:

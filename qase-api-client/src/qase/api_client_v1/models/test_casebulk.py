@@ -20,7 +20,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict
 from typing import Any, ClassVar, Dict, List
-from src.qase.api_client_v1.models.test_casebulk_cases_inner import TestCasebulkCasesInner
+from qase.api_client_v1.models.test_casebulk_cases_inner import TestCasebulkCasesInner
 from typing import Optional, Set
 from typing_extensions import Self
 

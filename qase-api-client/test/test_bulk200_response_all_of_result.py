@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.bulk200_response_all_of_result import Bulk200ResponseAllOfResult
+from qase.api_client_v1.models.bulk200_response_all_of_result import Bulk200ResponseAllOfResult
 
 class TestBulk200ResponseAllOfResult(unittest.TestCase):
     """Bulk200ResponseAllOfResult unit test stubs"""

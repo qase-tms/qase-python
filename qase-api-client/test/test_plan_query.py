@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.plan_query import PlanQuery
+from qase.api_client_v1.models.plan_query import PlanQuery
 
 class TestPlanQuery(unittest.TestCase):
     """PlanQuery unit test stubs"""

@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.result import Result
+from qase.api_client_v1.models.result import Result
 
 class TestResult(unittest.TestCase):
     """Result unit test stubs"""
@@ -42,11 +42,11 @@ class TestResult(unittest.TestCase):
                 run_id = 56,
                 case_id = 56,
                 steps = [
-                    src.qase.api_client_v1.models.test_step_result.TestStepResult(
+                    qase.api_client_v1.models.test_step_result.TestStepResult(
                         status = 56, 
                         position = 56, 
                         attachments = [
-                            src.qase.api_client_v1.models.attachment.Attachment(
+                            qase.api_client_v1.models.attachment.Attachment(
                                 size = 56, 
                                 mime = '', 
                                 filename = '', 
@@ -61,7 +61,7 @@ class TestResult(unittest.TestCase):
                 time_spent_ms = 56,
                 end_time = '2021-12-30T19:23:59Z',
                 attachments = [
-                    src.qase.api_client_v1.models.attachment.Attachment(
+                    qase.api_client_v1.models.attachment.Attachment(
                         size = 56, 
                         mime = '', 
                         filename = '', 

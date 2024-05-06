@@ -20,16 +20,16 @@ from typing_extensions import Annotated
 from pydantic import Field, StrictInt, StrictStr
 from typing import Optional
 from typing_extensions import Annotated
-from src.qase.api_client_v1.models.id_response import IdResponse
-from src.qase.api_client_v1.models.suite_create import SuiteCreate
-from src.qase.api_client_v1.models.suite_delete import SuiteDelete
-from src.qase.api_client_v1.models.suite_list_response import SuiteListResponse
-from src.qase.api_client_v1.models.suite_response import SuiteResponse
-from src.qase.api_client_v1.models.suite_update import SuiteUpdate
+from qase.api_client_v1.models.id_response import IdResponse
+from qase.api_client_v1.models.suite_create import SuiteCreate
+from qase.api_client_v1.models.suite_delete import SuiteDelete
+from qase.api_client_v1.models.suite_list_response import SuiteListResponse
+from qase.api_client_v1.models.suite_response import SuiteResponse
+from qase.api_client_v1.models.suite_update import SuiteUpdate
 
-from src.qase.api_client_v1.api_client import ApiClient, RequestSerialized
-from src.qase.api_client_v1.api_response import ApiResponse
-from src.qase.api_client_v1.rest import RESTResponseType
+from qase.api_client_v1.api_client import ApiClient, RequestSerialized
+from qase.api_client_v1.api_response import ApiResponse
+from qase.api_client_v1.rest import RESTResponseType
 
 
 class SuitesApi:

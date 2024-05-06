@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.configuration import Configuration
+from qase.api_client_v1.models.configuration import Configuration
 
 class TestConfiguration(unittest.TestCase):
     """Configuration unit test stubs"""

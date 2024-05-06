@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.api.configurations_api import ConfigurationsApi
+from qase.api_client_v1.api.configurations_api import ConfigurationsApi
 
 
 class TestConfigurationsApi(unittest.TestCase):

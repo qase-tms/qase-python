@@ -20,7 +20,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List
-from src.qase.api_client_v1.models.test_case_external_issues_links_inner import TestCaseExternalIssuesLinksInner
+from qase.api_client_v1.models.test_case_external_issues_links_inner import TestCaseExternalIssuesLinksInner
 from typing import Optional, Set
 from typing_extensions import Self
 

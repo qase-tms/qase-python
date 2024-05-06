@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.api.attachments_api import AttachmentsApi
+from qase.api_client_v1.api.attachments_api import AttachmentsApi
 
 
 class TestAttachmentsApi(unittest.TestCase):

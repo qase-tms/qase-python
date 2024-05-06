@@ -20,7 +20,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictBool
 from typing import Any, ClassVar, Dict, List, Optional
-from src.qase.api_client_v1.models.run import Run
+from qase.api_client_v1.models.run import Run
 from typing import Optional, Set
 from typing_extensions import Self
 

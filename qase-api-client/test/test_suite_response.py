@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.suite_response import SuiteResponse
+from qase.api_client_v1.models.suite_response import SuiteResponse
 
 class TestSuiteResponse(unittest.TestCase):
     """SuiteResponse unit test stubs"""
@@ -37,7 +37,7 @@ class TestSuiteResponse(unittest.TestCase):
         if include_optional:
             return SuiteResponse(
                 status = True,
-                result = src.qase.api_client_v1.models.suite.Suite(
+                result = qase.api_client_v1.models.suite.Suite(
                     id = 56, 
                     title = '', 
                     description = '', 

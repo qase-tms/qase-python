@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.hash_response import HashResponse
+from qase.api_client_v1.models.hash_response import HashResponse
 
 class TestHashResponse(unittest.TestCase):
     """HashResponse unit test stubs"""
@@ -37,7 +37,7 @@ class TestHashResponse(unittest.TestCase):
         if include_optional:
             return HashResponse(
                 status = True,
-                result = src.qase.api_client_v1.models.hash_response_all_of_result.HashResponse_allOf_result(
+                result = qase.api_client_v1.models.hash_response_all_of_result.HashResponse_allOf_result(
                     hash = '', )
             )
         else:

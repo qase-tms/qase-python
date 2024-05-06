@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.attachment_uploads_response import AttachmentUploadsResponse
+from qase.api_client_v1.models.attachment_uploads_response import AttachmentUploadsResponse
 
 class TestAttachmentUploadsResponse(unittest.TestCase):
     """AttachmentUploadsResponse unit test stubs"""
@@ -38,7 +38,7 @@ class TestAttachmentUploadsResponse(unittest.TestCase):
             return AttachmentUploadsResponse(
                 status = True,
                 result = [
-                    src.qase.api_client_v1.models.attachmentupload.Attachmentupload(
+                    qase.api_client_v1.models.attachmentupload.Attachmentupload(
                         hash = '', 
                         filename = '', 
                         mime = '', 

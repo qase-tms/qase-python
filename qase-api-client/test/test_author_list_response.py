@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.author_list_response import AuthorListResponse
+from qase.api_client_v1.models.author_list_response import AuthorListResponse
 
 class TestAuthorListResponse(unittest.TestCase):
     """AuthorListResponse unit test stubs"""
@@ -37,12 +37,12 @@ class TestAuthorListResponse(unittest.TestCase):
         if include_optional:
             return AuthorListResponse(
                 status = True,
-                result = src.qase.api_client_v1.models.author_list_response_all_of_result.AuthorListResponse_allOf_result(
+                result = qase.api_client_v1.models.author_list_response_all_of_result.AuthorListResponse_allOf_result(
                     total = 56, 
                     filtered = 56, 
                     count = 56, 
                     entities = [
-                        src.qase.api_client_v1.models.author.Author(
+                        qase.api_client_v1.models.author.Author(
                             id = 56, 
                             entity_type = '', 
                             email = '', 

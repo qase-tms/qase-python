@@ -20,7 +20,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictInt
 from typing import Any, ClassVar, Dict, List
-from src.qase.api_client_v1.models.search_response_all_of_result_entities import SearchResponseAllOfResultEntities
+from qase.api_client_v1.models.search_response_all_of_result_entities import SearchResponseAllOfResultEntities
 from typing import Optional, Set
 from typing_extensions import Self
 

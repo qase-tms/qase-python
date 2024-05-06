@@ -20,15 +20,15 @@ from typing_extensions import Annotated
 from pydantic import Field, StrictInt
 from typing import Optional
 from typing_extensions import Annotated
-from src.qase.api_client_v1.models.environment_create import EnvironmentCreate
-from src.qase.api_client_v1.models.environment_list_response import EnvironmentListResponse
-from src.qase.api_client_v1.models.environment_response import EnvironmentResponse
-from src.qase.api_client_v1.models.environment_update import EnvironmentUpdate
-from src.qase.api_client_v1.models.id_response import IdResponse
+from qase.api_client_v1.models.environment_create import EnvironmentCreate
+from qase.api_client_v1.models.environment_list_response import EnvironmentListResponse
+from qase.api_client_v1.models.environment_response import EnvironmentResponse
+from qase.api_client_v1.models.environment_update import EnvironmentUpdate
+from qase.api_client_v1.models.id_response import IdResponse
 
-from src.qase.api_client_v1.api_client import ApiClient, RequestSerialized
-from src.qase.api_client_v1.api_response import ApiResponse
-from src.qase.api_client_v1.rest import RESTResponseType
+from qase.api_client_v1.api_client import ApiClient, RequestSerialized
+from qase.api_client_v1.api_response import ApiResponse
+from qase.api_client_v1.rest import RESTResponseType
 
 
 class EnvironmentsApi:

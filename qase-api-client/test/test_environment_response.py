@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.environment_response import EnvironmentResponse
+from qase.api_client_v1.models.environment_response import EnvironmentResponse
 
 class TestEnvironmentResponse(unittest.TestCase):
     """EnvironmentResponse unit test stubs"""
@@ -37,7 +37,7 @@ class TestEnvironmentResponse(unittest.TestCase):
         if include_optional:
             return EnvironmentResponse(
                 status = True,
-                result = src.qase.api_client_v1.models.environment.Environment(
+                result = qase.api_client_v1.models.environment.Environment(
                     id = 56, 
                     title = '', 
                     description = '', 

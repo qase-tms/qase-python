@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.project_list_response import ProjectListResponse
+from qase.api_client_v1.models.project_list_response import ProjectListResponse
 
 class TestProjectListResponse(unittest.TestCase):
     """ProjectListResponse unit test stubs"""
@@ -37,22 +37,22 @@ class TestProjectListResponse(unittest.TestCase):
         if include_optional:
             return ProjectListResponse(
                 status = True,
-                result = src.qase.api_client_v1.models.project_list_response_all_of_result.ProjectListResponse_allOf_result(
+                result = qase.api_client_v1.models.project_list_response_all_of_result.ProjectListResponse_allOf_result(
                     total = 56, 
                     filtered = 56, 
                     count = 56, 
                     entities = [
-                        src.qase.api_client_v1.models.project.Project(
+                        qase.api_client_v1.models.project.Project(
                             title = '', 
                             code = '', 
-                            counts = src.qase.api_client_v1.models.project_counts.Project_counts(
+                            counts = qase.api_client_v1.models.project_counts.Project_counts(
                                 cases = 56, 
                                 suites = 56, 
                                 milestones = 56, 
-                                runs = src.qase.api_client_v1.models.project_counts_runs.Project_counts_runs(
+                                runs = qase.api_client_v1.models.project_counts_runs.Project_counts_runs(
                                     total = 56, 
                                     active = 56, ), 
-                                defects = src.qase.api_client_v1.models.project_counts_defects.Project_counts_defects(
+                                defects = qase.api_client_v1.models.project_counts_defects.Project_counts_defects(
                                     total = 56, 
                                     open = 56, ), ), )
                         ], )

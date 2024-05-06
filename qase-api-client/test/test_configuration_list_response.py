@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.configuration_list_response import ConfigurationListResponse
+from qase.api_client_v1.models.configuration_list_response import ConfigurationListResponse
 
 class TestConfigurationListResponse(unittest.TestCase):
     """ConfigurationListResponse unit test stubs"""
@@ -37,16 +37,16 @@ class TestConfigurationListResponse(unittest.TestCase):
         if include_optional:
             return ConfigurationListResponse(
                 status = True,
-                result = src.qase.api_client_v1.models.configuration_list_response_all_of_result.ConfigurationListResponse_allOf_result(
+                result = qase.api_client_v1.models.configuration_list_response_all_of_result.ConfigurationListResponse_allOf_result(
                     total = 56, 
                     filtered = 56, 
                     count = 56, 
                     entities = [
-                        src.qase.api_client_v1.models.configuration_group.ConfigurationGroup(
+                        qase.api_client_v1.models.configuration_group.ConfigurationGroup(
                             id = 56, 
                             title = '', 
                             configurations = [
-                                src.qase.api_client_v1.models.configuration.Configuration(
+                                qase.api_client_v1.models.configuration.Configuration(
                                     id = 56, 
                                     title = '', )
                                 ], )

@@ -1,4 +1,4 @@
-# src.qase.apiv1.SearchApi
+# qase.api_client_v1.SearchApi
 
 All URIs are relative to *https://api.qase.io/v1*
 
@@ -19,14 +19,14 @@ This method allows to retrieve data sets for various entities using expressions 
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.search_response import SearchResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.search_response import SearchResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -42,9 +42,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.SearchApi(api_client)
+    api_instance = qase.api_client_v1.SearchApi(api_client)
     query = 'query_example'  # str | Expression in Qase Query Language.
     limit = 10  # int | A number of entities in result set. (optional) (default to 10)
     offset = 0  # int | How many entities should be skipped. (optional) (default to 0)

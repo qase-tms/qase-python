@@ -21,7 +21,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List
 from typing_extensions import Annotated
-from src.qase.api_client_v1.models.result_create import ResultCreate
+from qase.api_client_v1.models.result_create import ResultCreate
 from typing import Optional, Set
 from typing_extensions import Self
 

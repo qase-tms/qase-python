@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.project_code_response_all_of_result import ProjectCodeResponseAllOfResult
+from qase.api_client_v1.models.project_code_response_all_of_result import ProjectCodeResponseAllOfResult
 
 class TestProjectCodeResponseAllOfResult(unittest.TestCase):
     """ProjectCodeResponseAllOfResult unit test stubs"""

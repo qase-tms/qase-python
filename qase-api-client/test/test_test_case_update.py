@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.test_case_update import TestCaseUpdate
+from qase.api_client_v1.models.test_case_update import TestCaseUpdate
 
 class TestTestCaseUpdate(unittest.TestCase):
     """TestCaseUpdate unit test stubs"""
@@ -54,7 +54,7 @@ class TestTestCaseUpdate(unittest.TestCase):
                     ''
                     ],
                 steps = [
-                    src.qase.api_client_v1.models.test_step_create.TestStepCreate(
+                    qase.api_client_v1.models.test_step_create.TestStepCreate(
                         action = '', 
                         expected_result = '', 
                         data = '', 

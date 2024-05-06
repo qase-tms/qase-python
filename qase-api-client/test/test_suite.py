@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.suite import Suite
+from qase.api_client_v1.models.suite import Suite
 
 class TestSuite(unittest.TestCase):
     """Suite unit test stubs"""

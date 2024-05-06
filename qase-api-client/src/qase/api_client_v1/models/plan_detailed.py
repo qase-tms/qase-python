@@ -21,7 +21,7 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
-from src.qase.api_client_v1.models.plan_detailed_all_of_cases import PlanDetailedAllOfCases
+from qase.api_client_v1.models.plan_detailed_all_of_cases import PlanDetailedAllOfCases
 from typing import Optional, Set
 from typing_extensions import Self
 

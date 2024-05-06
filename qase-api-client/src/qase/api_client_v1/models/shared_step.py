@@ -21,7 +21,7 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from src.qase.api_client_v1.models.shared_step_content import SharedStepContent
+from qase.api_client_v1.models.shared_step_content import SharedStepContent
 from typing import Optional, Set
 from typing_extensions import Self
 

@@ -25,7 +25,7 @@ pip install git+https://github.com/GIT_USER_ID/GIT_REPO_ID.git
 
 Then import the package:
 ```python
-import qase.apiv1
+import qase.api_client_v1
 ```
 
 ### Setuptools
@@ -39,7 +39,7 @@ python setup.py install --user
 
 Then import the package:
 ```python
-import qase.apiv1
+import qase.api_client_v1
 ```
 
 ### Tests
@@ -52,13 +52,13 @@ Please follow the [installation procedure](#installation--usage) and then run th
 
 ```python
 
-import qase.apiv1
-from qase.apiv1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host = "https://api.qase.io/v1"
 )
 
@@ -75,9 +75,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 
 # Enter a context with an instance of the API client
-with qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = qase.apiv1.AttachmentsApi(api_client)
+    api_instance = qase.api_client_v1.AttachmentsApi(api_client)
     hash = 'hash_example' # str | Hash.
 
     try:

@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src.qase.api_client_v1.models.configuration_create import ConfigurationCreate
+from qase.api_client_v1.models.configuration_create import ConfigurationCreate
 
 # TODO update the JSON string below
 json = "{}"

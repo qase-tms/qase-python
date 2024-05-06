@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.milestone_list_response_all_of_result import MilestoneListResponseAllOfResult
+from qase.api_client_v1.models.milestone_list_response_all_of_result import MilestoneListResponseAllOfResult
 
 class TestMilestoneListResponseAllOfResult(unittest.TestCase):
     """MilestoneListResponseAllOfResult unit test stubs"""
@@ -40,7 +40,7 @@ class TestMilestoneListResponseAllOfResult(unittest.TestCase):
                 filtered = 56,
                 count = 56,
                 entities = [
-                    src.qase.api_client_v1.models.milestone.Milestone(
+                    qase.api_client_v1.models.milestone.Milestone(
                         id = 56, 
                         title = '', 
                         description = '', 

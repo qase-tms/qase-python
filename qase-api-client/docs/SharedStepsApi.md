@@ -1,4 +1,4 @@
-# src.qase.apiv1.SharedStepsApi
+# qase.api_client_v1.SharedStepsApi
 
 All URIs are relative to *https://api.qase.io/v1*
 
@@ -23,15 +23,15 @@ This method allows to create a shared step in selected project.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.hash_response import HashResponse
-from src.qase.api_client_v1.models.shared_step_create import SharedStepCreate
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.hash_response import HashResponse
+from qase.api_client_v1.models.shared_step_create import SharedStepCreate
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -47,11 +47,11 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.SharedStepsApi(api_client)
+    api_instance = qase.api_client_v1.SharedStepsApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
-    shared_step_create = src.qase.apiv1.SharedStepCreate()  # SharedStepCreate | 
+    shared_step_create = qase.api_client_v1.SharedStepCreate()  # SharedStepCreate | 
 
     try:
         # Create a new shared step
@@ -111,14 +111,14 @@ This method completely deletes a shared step from repository.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.hash_response import HashResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.hash_response import HashResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -134,9 +134,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.SharedStepsApi(api_client)
+    api_instance = qase.api_client_v1.SharedStepsApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
     hash = 'hash_example'  # str | Hash.
 
@@ -197,14 +197,14 @@ This method allows to retrieve a specific shared step.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.shared_step_response import SharedStepResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.shared_step_response import SharedStepResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -220,9 +220,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.SharedStepsApi(api_client)
+    api_instance = qase.api_client_v1.SharedStepsApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
     hash = 'hash_example'  # str | Hash.
 
@@ -283,14 +283,14 @@ This method allows to retrieve all shared steps stored in selected project.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.shared_step_list_response import SharedStepListResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.shared_step_list_response import SharedStepListResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -306,9 +306,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.SharedStepsApi(api_client)
+    api_instance = qase.api_client_v1.SharedStepsApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
     search = 'search_example'  # str | Provide a string that will be used to search by name. (optional)
     limit = 10  # int | A number of entities in result set. (optional) (default to 10)
@@ -373,15 +373,15 @@ This method updates a shared step.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.hash_response import HashResponse
-from src.qase.api_client_v1.models.shared_step_update import SharedStepUpdate
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.hash_response import HashResponse
+from qase.api_client_v1.models.shared_step_update import SharedStepUpdate
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -397,12 +397,12 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.SharedStepsApi(api_client)
+    api_instance = qase.api_client_v1.SharedStepsApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
     hash = 'hash_example'  # str | Hash.
-    shared_step_update = src.qase.apiv1.SharedStepUpdate()  # SharedStepUpdate | 
+    shared_step_update = qase.api_client_v1.SharedStepUpdate()  # SharedStepUpdate | 
 
     try:
         # Update shared step

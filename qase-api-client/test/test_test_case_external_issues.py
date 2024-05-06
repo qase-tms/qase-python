@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.test_case_external_issues import TestCaseExternalIssues
+from qase.api_client_v1.models.test_case_external_issues import TestCaseExternalIssues
 
 class TestTestCaseExternalIssues(unittest.TestCase):
     """TestCaseExternalIssues unit test stubs"""
@@ -38,7 +38,7 @@ class TestTestCaseExternalIssues(unittest.TestCase):
             return TestCaseExternalIssues(
                 type = 'jira-cloud',
                 links = [
-                    src.qase.api_client_v1.models.test_case_external_issues_links_inner.TestCaseExternalIssues_links_inner(
+                    qase.api_client_v1.models.test_case_external_issues_links_inner.TestCaseExternalIssues_links_inner(
                         case_id = 56, 
                         external_issues = [
                             ''
@@ -49,7 +49,7 @@ class TestTestCaseExternalIssues(unittest.TestCase):
             return TestCaseExternalIssues(
                 type = 'jira-cloud',
                 links = [
-                    src.qase.api_client_v1.models.test_case_external_issues_links_inner.TestCaseExternalIssues_links_inner(
+                    qase.api_client_v1.models.test_case_external_issues_links_inner.TestCaseExternalIssues_links_inner(
                         case_id = 56, 
                         external_issues = [
                             ''

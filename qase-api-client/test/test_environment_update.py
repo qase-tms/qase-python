@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.environment_update import EnvironmentUpdate
+from qase.api_client_v1.models.environment_update import EnvironmentUpdate
 
 class TestEnvironmentUpdate(unittest.TestCase):
     """EnvironmentUpdate unit test stubs"""

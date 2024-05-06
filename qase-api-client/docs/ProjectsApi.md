@@ -1,4 +1,4 @@
-# src.qase.apiv1.ProjectsApi
+# qase.api_client_v1.ProjectsApi
 
 All URIs are relative to *https://api.qase.io/v1*
 
@@ -24,15 +24,15 @@ This method is used to create a new project through API.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.project_code_response import ProjectCodeResponse
-from src.qase.api_client_v1.models.project_create import ProjectCreate
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.project_code_response import ProjectCodeResponse
+from qase.api_client_v1.models.project_create import ProjectCreate
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -48,10 +48,10 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.ProjectsApi(api_client)
-    project_create = src.qase.apiv1.ProjectCreate()  # ProjectCreate | 
+    api_instance = qase.api_client_v1.ProjectsApi(api_client)
+    project_create = qase.api_client_v1.ProjectCreate()  # ProjectCreate | 
 
     try:
         # Create new project
@@ -109,14 +109,14 @@ This method allows to delete a specific project.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.base_response import BaseResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.base_response import BaseResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -132,9 +132,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.ProjectsApi(api_client)
+    api_instance = qase.api_client_v1.ProjectsApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
 
     try:
@@ -193,14 +193,14 @@ This method allows to retrieve a specific project.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.project_response import ProjectResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.project_response import ProjectResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -216,9 +216,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.ProjectsApi(api_client)
+    api_instance = qase.api_client_v1.ProjectsApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
 
     try:
@@ -277,14 +277,14 @@ This method allows to retrieve all projects available for your account. You can 
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.project_list_response import ProjectListResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.project_list_response import ProjectListResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -300,9 +300,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.ProjectsApi(api_client)
+    api_instance = qase.api_client_v1.ProjectsApi(api_client)
     limit = 10  # int | A number of entities in result set. (optional) (default to 10)
     offset = 0  # int | How many entities should be skipped. (optional) (default to 0)
 
@@ -362,15 +362,15 @@ This method allows to grant access to a specific project.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.base_response import BaseResponse
-from src.qase.api_client_v1.models.project_access import ProjectAccess
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.base_response import BaseResponse
+from qase.api_client_v1.models.project_access import ProjectAccess
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -386,11 +386,11 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.ProjectsApi(api_client)
+    api_instance = qase.api_client_v1.ProjectsApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
-    project_access = src.qase.apiv1.ProjectAccess()  # ProjectAccess | 
+    project_access = qase.api_client_v1.ProjectAccess()  # ProjectAccess | 
 
     try:
         # Grant access to project by code
@@ -450,15 +450,15 @@ This method allows to revoke access to a specific project.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.base_response import BaseResponse
-from src.qase.api_client_v1.models.project_access import ProjectAccess
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.base_response import BaseResponse
+from qase.api_client_v1.models.project_access import ProjectAccess
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -474,11 +474,11 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.ProjectsApi(api_client)
+    api_instance = qase.api_client_v1.ProjectsApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
-    project_access = src.qase.apiv1.ProjectAccess()  # ProjectAccess | 
+    project_access = qase.api_client_v1.ProjectAccess()  # ProjectAccess | 
 
     try:
         # Revoke access to project by code

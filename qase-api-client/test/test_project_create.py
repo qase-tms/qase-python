@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.project_create import ProjectCreate
+from qase.api_client_v1.models.project_create import ProjectCreate
 
 class TestProjectCreate(unittest.TestCase):
     """ProjectCreate unit test stubs"""

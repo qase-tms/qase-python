@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.result_create import ResultCreate
+from qase.api_client_v1.models.result_create import ResultCreate
 
 class TestResultCreate(unittest.TestCase):
     """ResultCreate unit test stubs"""
@@ -37,7 +37,7 @@ class TestResultCreate(unittest.TestCase):
         if include_optional:
             return ResultCreate(
                 case_id = 56,
-                case = src.qase.api_client_v1.models.result_create_case.ResultCreate_case(
+                case = qase.api_client_v1.models.result_create_case.ResultCreate_case(
                     title = '', 
                     suite_title = '', 
                     description = '', 
@@ -60,7 +60,7 @@ class TestResultCreate(unittest.TestCase):
                     'key' : ''
                     },
                 steps = [
-                    src.qase.api_client_v1.models.test_step_result_create.TestStepResultCreate(
+                    qase.api_client_v1.models.test_step_result_create.TestStepResultCreate(
                         position = 56, 
                         status = 'passed', 
                         comment = '', 

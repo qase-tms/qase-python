@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.plan_list_response_all_of_result import PlanListResponseAllOfResult
+from qase.api_client_v1.models.plan_list_response_all_of_result import PlanListResponseAllOfResult
 
 class TestPlanListResponseAllOfResult(unittest.TestCase):
     """PlanListResponseAllOfResult unit test stubs"""
@@ -40,7 +40,7 @@ class TestPlanListResponseAllOfResult(unittest.TestCase):
                 filtered = 56,
                 count = 56,
                 entities = [
-                    src.qase.api_client_v1.models.plan.Plan(
+                    qase.api_client_v1.models.plan.Plan(
                         id = 56, 
                         title = '', 
                         description = '', 

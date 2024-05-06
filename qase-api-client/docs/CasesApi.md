@@ -1,4 +1,4 @@
-# src.qase.apiv1.CasesApi
+# qase.api_client_v1.CasesApi
 
 All URIs are relative to *https://api.qase.io/v1*
 
@@ -26,15 +26,15 @@ This method allows to bulk create new test cases in a project.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.bulk200_response import Bulk200Response
-from src.qase.api_client_v1.models.test_casebulk import TestCasebulk
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.bulk200_response import Bulk200Response
+from qase.api_client_v1.models.test_casebulk import TestCasebulk
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -50,11 +50,11 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.CasesApi(api_client)
+    api_instance = qase.api_client_v1.CasesApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
-    test_casebulk = src.qase.apiv1.TestCasebulk()  # TestCasebulk | 
+    test_casebulk = qase.api_client_v1.TestCasebulk()  # TestCasebulk | 
 
     try:
         # Create test cases in bulk
@@ -112,15 +112,15 @@ Attach the external issues to the test cases
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.base_response import BaseResponse
-from src.qase.api_client_v1.models.test_caseexternal_issues import TestCaseexternalIssues
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.base_response import BaseResponse
+from qase.api_client_v1.models.test_caseexternal_issues import TestCaseexternalIssues
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -136,11 +136,11 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.CasesApi(api_client)
+    api_instance = qase.api_client_v1.CasesApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
-    test_caseexternal_issues = src.qase.apiv1.TestCaseexternalIssues()  # TestCaseexternalIssues | 
+    test_caseexternal_issues = qase.api_client_v1.TestCaseexternalIssues()  # TestCaseexternalIssues | 
 
     try:
         # Attach the external issues to the test cases
@@ -198,15 +198,15 @@ Detach the external issues from the test cases
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.base_response import BaseResponse
-from src.qase.api_client_v1.models.test_caseexternal_issues import TestCaseexternalIssues
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.base_response import BaseResponse
+from qase.api_client_v1.models.test_caseexternal_issues import TestCaseexternalIssues
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -222,11 +222,11 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.CasesApi(api_client)
+    api_instance = qase.api_client_v1.CasesApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
-    test_caseexternal_issues = src.qase.apiv1.TestCaseexternalIssues()  # TestCaseexternalIssues | 
+    test_caseexternal_issues = qase.api_client_v1.TestCaseexternalIssues()  # TestCaseexternalIssues | 
 
     try:
         # Detach the external issues from the test cases
@@ -286,15 +286,15 @@ This method allows to create a new test case in selected project.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.id_response import IdResponse
-from src.qase.api_client_v1.models.test_case_create import TestCaseCreate
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.id_response import IdResponse
+from qase.api_client_v1.models.test_case_create import TestCaseCreate
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -310,11 +310,11 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.CasesApi(api_client)
+    api_instance = qase.api_client_v1.CasesApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
-    test_case_create = src.qase.apiv1.TestCaseCreate()  # TestCaseCreate | 
+    test_case_create = qase.api_client_v1.TestCaseCreate()  # TestCaseCreate | 
 
     try:
         # Create a new test case
@@ -374,14 +374,14 @@ This method completely deletes a test case from repository.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.id_response import IdResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.id_response import IdResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -397,9 +397,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.CasesApi(api_client)
+    api_instance = qase.api_client_v1.CasesApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
     id = 56  # int | Identifier.
 
@@ -461,14 +461,14 @@ This method allows to retrieve a specific test case.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.test_case_response import TestCaseResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.test_case_response import TestCaseResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -484,9 +484,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.CasesApi(api_client)
+    api_instance = qase.api_client_v1.CasesApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
     id = 56  # int | Identifier.
 
@@ -548,14 +548,14 @@ This method allows to retrieve all test cases stored in selected project.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.test_case_list_response import TestCaseListResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.test_case_list_response import TestCaseListResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -571,9 +571,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.CasesApi(api_client)
+    api_instance = qase.api_client_v1.CasesApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
     search = 'search_example'  # str | Provide a string that will be used to search by name. (optional)
     milestone_id = 56  # int | ID of milestone. (optional)
@@ -665,15 +665,15 @@ This method updates a test case.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.id_response import IdResponse
-from src.qase.api_client_v1.models.test_case_update import TestCaseUpdate
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.id_response import IdResponse
+from qase.api_client_v1.models.test_case_update import TestCaseUpdate
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -689,12 +689,12 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.CasesApi(api_client)
+    api_instance = qase.api_client_v1.CasesApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
     id = 56  # int | Identifier.
-    test_case_update = src.qase.apiv1.TestCaseUpdate()  # TestCaseUpdate | 
+    test_case_update = qase.api_client_v1.TestCaseUpdate()  # TestCaseUpdate | 
 
     try:
         # Update test case

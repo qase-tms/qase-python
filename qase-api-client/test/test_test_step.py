@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.test_step import TestStep
+from qase.api_client_v1.models.test_step import TestStep
 
 class TestTestStep(unittest.TestCase):
     """TestStep unit test stubs"""
@@ -44,7 +44,7 @@ class TestTestStep(unittest.TestCase):
                 expected_result = '',
                 data = '',
                 attachments = [
-                    src.qase.api_client_v1.models.attachment.Attachment(
+                    qase.api_client_v1.models.attachment.Attachment(
                         size = 56, 
                         mime = '', 
                         filename = '', 

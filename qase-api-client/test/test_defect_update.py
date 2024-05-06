@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.defect_update import DefectUpdate
+from qase.api_client_v1.models.defect_update import DefectUpdate
 
 class TestDefectUpdate(unittest.TestCase):
     """DefectUpdate unit test stubs"""

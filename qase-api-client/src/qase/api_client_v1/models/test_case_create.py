@@ -21,7 +21,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
-from src.qase.api_client_v1.models.test_step_create import TestStepCreate
+from qase.api_client_v1.models.test_step_create import TestStepCreate
 from typing import Optional, Set
 from typing_extensions import Self
 

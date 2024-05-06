@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.custom_fields_response_all_of_result import CustomFieldsResponseAllOfResult
+from qase.api_client_v1.models.custom_fields_response_all_of_result import CustomFieldsResponseAllOfResult
 
 class TestCustomFieldsResponseAllOfResult(unittest.TestCase):
     """CustomFieldsResponseAllOfResult unit test stubs"""
@@ -40,7 +40,7 @@ class TestCustomFieldsResponseAllOfResult(unittest.TestCase):
                 filtered = 56,
                 count = 56,
                 entities = [
-                    src.qase.api_client_v1.models.custom_field.CustomField(
+                    qase.api_client_v1.models.custom_field.CustomField(
                         id = 56, 
                         title = '', 
                         entity = '', 

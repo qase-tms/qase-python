@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.run_public_response import RunPublicResponse
+from qase.api_client_v1.models.run_public_response import RunPublicResponse
 
 class TestRunPublicResponse(unittest.TestCase):
     """RunPublicResponse unit test stubs"""
@@ -37,7 +37,7 @@ class TestRunPublicResponse(unittest.TestCase):
         if include_optional:
             return RunPublicResponse(
                 status = True,
-                result = src.qase.api_client_v1.models.run_public_response_all_of_result.RunPublicResponse_allOf_result(
+                result = qase.api_client_v1.models.run_public_response_all_of_result.RunPublicResponse_allOf_result(
                     url = '', )
             )
         else:

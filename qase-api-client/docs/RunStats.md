@@ -19,7 +19,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src.qase.api_client_v1.models.run_stats import RunStats
+from qase.api_client_v1.models.run_stats import RunStats
 
 # TODO update the JSON string below
 json = "{}"

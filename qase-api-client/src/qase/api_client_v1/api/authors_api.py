@@ -20,12 +20,12 @@ from typing_extensions import Annotated
 from pydantic import Field, StrictInt, StrictStr, field_validator
 from typing import Optional
 from typing_extensions import Annotated
-from src.qase.api_client_v1.models.author_list_response import AuthorListResponse
-from src.qase.api_client_v1.models.author_response import AuthorResponse
+from qase.api_client_v1.models.author_list_response import AuthorListResponse
+from qase.api_client_v1.models.author_response import AuthorResponse
 
-from src.qase.api_client_v1.api_client import ApiClient, RequestSerialized
-from src.qase.api_client_v1.api_response import ApiResponse
-from src.qase.api_client_v1.rest import RESTResponseType
+from qase.api_client_v1.api_client import ApiClient, RequestSerialized
+from qase.api_client_v1.api_response import ApiResponse
+from qase.api_client_v1.rest import RESTResponseType
 
 
 class AuthorsApi:

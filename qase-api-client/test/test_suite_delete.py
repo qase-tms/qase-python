@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.suite_delete import SuiteDelete
+from qase.api_client_v1.models.suite_delete import SuiteDelete
 
 class TestSuiteDelete(unittest.TestCase):
     """SuiteDelete unit test stubs"""

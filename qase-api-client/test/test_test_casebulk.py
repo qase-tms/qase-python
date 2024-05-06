@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.test_casebulk import TestCasebulk
+from qase.api_client_v1.models.test_casebulk import TestCasebulk
 
 class TestTestCasebulk(unittest.TestCase):
     """TestCasebulk unit test stubs"""

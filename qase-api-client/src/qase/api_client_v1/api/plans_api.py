@@ -20,15 +20,15 @@ from typing_extensions import Annotated
 from pydantic import Field, StrictInt
 from typing import Optional
 from typing_extensions import Annotated
-from src.qase.api_client_v1.models.id_response import IdResponse
-from src.qase.api_client_v1.models.plan_create import PlanCreate
-from src.qase.api_client_v1.models.plan_list_response import PlanListResponse
-from src.qase.api_client_v1.models.plan_response import PlanResponse
-from src.qase.api_client_v1.models.plan_update import PlanUpdate
+from qase.api_client_v1.models.id_response import IdResponse
+from qase.api_client_v1.models.plan_create import PlanCreate
+from qase.api_client_v1.models.plan_list_response import PlanListResponse
+from qase.api_client_v1.models.plan_response import PlanResponse
+from qase.api_client_v1.models.plan_update import PlanUpdate
 
-from src.qase.api_client_v1.api_client import ApiClient, RequestSerialized
-from src.qase.api_client_v1.api_response import ApiResponse
-from src.qase.api_client_v1.rest import RESTResponseType
+from qase.api_client_v1.api_client import ApiClient, RequestSerialized
+from qase.api_client_v1.api_response import ApiResponse
+from qase.api_client_v1.rest import RESTResponseType
 
 
 class PlansApi:

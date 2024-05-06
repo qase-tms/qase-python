@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.api.defects_api import DefectsApi
+from qase.api_client_v1.api.defects_api import DefectsApi
 
 
 class TestDefectsApi(unittest.TestCase):

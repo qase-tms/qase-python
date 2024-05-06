@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.suite_list_response_all_of_result import SuiteListResponseAllOfResult
+from qase.api_client_v1.models.suite_list_response_all_of_result import SuiteListResponseAllOfResult
 
 class TestSuiteListResponseAllOfResult(unittest.TestCase):
     """SuiteListResponseAllOfResult unit test stubs"""
@@ -40,7 +40,7 @@ class TestSuiteListResponseAllOfResult(unittest.TestCase):
                 filtered = 56,
                 count = 56,
                 entities = [
-                    src.qase.api_client_v1.models.suite.Suite(
+                    qase.api_client_v1.models.suite.Suite(
                         id = 56, 
                         title = '', 
                         description = '', 

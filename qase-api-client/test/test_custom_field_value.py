@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.custom_field_value import CustomFieldValue
+from qase.api_client_v1.models.custom_field_value import CustomFieldValue
 
 class TestCustomFieldValue(unittest.TestCase):
     """CustomFieldValue unit test stubs"""

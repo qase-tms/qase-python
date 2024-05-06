@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.result_create_response import ResultCreateResponse
+from qase.api_client_v1.models.result_create_response import ResultCreateResponse
 
 class TestResultCreateResponse(unittest.TestCase):
     """ResultCreateResponse unit test stubs"""
@@ -37,7 +37,7 @@ class TestResultCreateResponse(unittest.TestCase):
         if include_optional:
             return ResultCreateResponse(
                 status = True,
-                result = src.qase.api_client_v1.models.result_create_response_all_of_result.ResultCreateResponse_allOf_result(
+                result = qase.api_client_v1.models.result_create_response_all_of_result.ResultCreateResponse_allOf_result(
                     case_id = 56, 
                     hash = '', )
             )

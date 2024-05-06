@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.api.custom_fields_api import CustomFieldsApi
+from qase.api_client_v1.api.custom_fields_api import CustomFieldsApi
 
 
 class TestCustomFieldsApi(unittest.TestCase):

@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.custom_field_create_value_inner import CustomFieldCreateValueInner
+from qase.api_client_v1.models.custom_field_create_value_inner import CustomFieldCreateValueInner
 
 class TestCustomFieldCreateValueInner(unittest.TestCase):
     """CustomFieldCreateValueInner unit test stubs"""
