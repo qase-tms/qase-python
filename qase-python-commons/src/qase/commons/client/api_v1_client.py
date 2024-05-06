@@ -1,9 +1,9 @@
 from typing import Dict, Union
 
 import certifi
-from qaseio import ApiClient, ProjectsApi, Project, EnvironmentsApi, RunsApi, AttachmentsApi, \
+from qase.api_client_v1 import ApiClient, ProjectsApi, Project, EnvironmentsApi, RunsApi, AttachmentsApi, \
     AttachmentGet, RunCreate, ResultsApi, ResultcreateBulk
-from qaseio.configuration import Configuration
+from qase.api_client_v1.configuration import Configuration
 from .. import ConfigManager, Logger
 from .base_api_client import BaseApiClient
 from ..exceptions.reporter import ReporterException

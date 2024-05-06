@@ -1,7 +1,7 @@
-from qaseio.api_client import ApiClient
-from qaseio.configuration import Configuration
-from qaseio.api.plans_api import PlansApi
-from qaseio.rest import ApiException
+from qase.api_client_v1.api_client import ApiClient
+from qase.api_client_v1.configuration import Configuration
+from qase.api_client_v1.api.plans_api import PlansApi
+from qase.api_client_v1.exceptions import ApiException
 
 import certifi
 
