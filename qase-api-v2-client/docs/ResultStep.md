@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src.qase.models import ResultStep
+from src import ResultStep
 
 # TODO update the JSON string below
 json = "{}"

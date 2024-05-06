@@ -21,14 +21,14 @@ This method allows to create single test run result.  If there is no free space 
 
 ```python
 import qase
-from src.qase.models import ResultCreate
-from src.qase.rest import ApiException
+from src import ResultCreate
+from src import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v2
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.Configuration(
-    host = "https://api.qase.io/v2"
+    host="https://api.qase.io/v2"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -46,9 +46,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.ResultsApi(api_client)
-    project_code = 'project_code_example' # str | 
-    run_id = 56 # int | 
-    result_create = qase.ResultCreate() # ResultCreate | 
+    project_code = 'project_code_example'  # str | 
+    run_id = 56  # int | 
+    result_create = qase.ResultCreate()  # ResultCreate | 
 
     try:
         # (Beta) Create test run result
@@ -107,14 +107,14 @@ This method allows to create several test run results at once.  If there is no f
 
 ```python
 import qase
-from src.qase.models import CreateResultsRequestV2
-from src.qase.rest import ApiException
+from src import CreateResultsRequestV2
+from src import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v2
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.Configuration(
-    host = "https://api.qase.io/v2"
+    host="https://api.qase.io/v2"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -132,9 +132,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.ResultsApi(api_client)
-    project_code = 'project_code_example' # str | 
-    run_id = 56 # int | 
-    create_results_request_v2 = qase.CreateResultsRequestV2() # CreateResultsRequestV2 | 
+    project_code = 'project_code_example'  # str | 
+    run_id = 56  # int | 
+    create_results_request_v2 = qase.CreateResultsRequestV2()  # CreateResultsRequestV2 | 
 
     try:
         # (Beta) Bulk create test run result

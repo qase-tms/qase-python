@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v2.models.base_error_field_response import BaseErrorFieldResponse
+from qase.api_client_v2.models.base_error_field_response import BaseErrorFieldResponse
 
 class TestBaseErrorFieldResponse(unittest.TestCase):
     """BaseErrorFieldResponse unit test stubs"""

@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src.qase.models import BaseErrorFieldResponse
+from qase.api_clinet_v2.models import BaseErrorFieldResponse
 
 # TODO update the JSON string below
 json = "{}"

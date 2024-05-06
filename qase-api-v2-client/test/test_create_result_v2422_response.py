@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v2.models.create_result_v2422_response import CreateResultV2422Response
+from qase.api_client_v2.models.create_result_v2422_response import CreateResultV2422Response
 
 class TestCreateResultV2422Response(unittest.TestCase):
     """CreateResultV2422Response unit test stubs"""

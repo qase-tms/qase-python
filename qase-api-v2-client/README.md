@@ -30,7 +30,7 @@ Then import the package:
 
 ```python
 
-import qase
+import qase.api_client_v2
 ```
 
 ### Setuptools
@@ -47,7 +47,7 @@ Then import the package:
 
 ```python
 
-import qase
+import qase.api_client_v2
 ```
 
 ### Tests
@@ -59,12 +59,12 @@ Execute `pytest` to run the tests.
 Please follow the [installation procedure](#installation--usage) and then run the following:
 
 ```python
-from qase.rest import ApiException
+from qase.api_client_v2.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v2
 # See configuration.py for a list of all supported configuration parameters.
-configuration = qase.Configuration(
+configuration = qase.api_client_v2.Configuration(
     host="https://api.qase.io/v2"
 )
 
@@ -81,12 +81,12 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 
 
 # Enter a context with an instance of the API client
-with qase.ApiClient(configuration) as api_client:
+with qase.api_client_v2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = qase.ResultsApi(api_client)
+    api_instance = qase.api_client_v2.ResultsApi(api_client)
     project_code = 'project_code_example'  # str | 
     run_id = 56  # int | 
-    result_create = qase.ResultCreate()  # ResultCreate | 
+    result_create = qase.api_client_v2.ResultCreate()  # ResultCreate | 
 
     try:
         # (Beta) Create test run result

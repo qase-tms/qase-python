@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v2.models.result_step import ResultStep
+from qase.api_client_v2.models.result_step import ResultStep
 
 class TestResultStep(unittest.TestCase):
     """ResultStep unit test stubs"""

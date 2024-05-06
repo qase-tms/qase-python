@@ -20,10 +20,10 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Union
-from .result_execution import ResultExecution
-from .result_relations import ResultRelations
-from .result_step import ResultStep
-from .result_steps_type import ResultStepsType
+from qase.api_client_v2.models.result_execution import ResultExecution
+from qase.api_client_v2.models.result_relations import ResultRelations
+from qase.api_client_v2.models.result_step import ResultStep
+from qase.api_client_v2.models.result_steps_type import ResultStepsType
 from typing import Optional, Set
 from typing_extensions import Self
 

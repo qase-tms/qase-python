@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v2.models.base_error_field_response_error_fields_inner import BaseErrorFieldResponseErrorFieldsInner
+from qase.api_client_v2.models.base_error_field_response_error_fields_inner import BaseErrorFieldResponseErrorFieldsInner
 
 class TestBaseErrorFieldResponseErrorFieldsInner(unittest.TestCase):
     """BaseErrorFieldResponseErrorFieldsInner unit test stubs"""

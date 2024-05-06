@@ -18,7 +18,7 @@
 __version__ = "1.0.0"
 
 # import apis into sdk package
-from .api.results_api import ResultsApi
+from qase.api_client_v2.api.results_api import ResultsApi
 
 # import ApiClient
 

@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v2.models.relation_suite import RelationSuite
+from qase.api_client_v2.models.relation_suite import RelationSuite
 
 class TestRelationSuite(unittest.TestCase):
     """RelationSuite unit test stubs"""

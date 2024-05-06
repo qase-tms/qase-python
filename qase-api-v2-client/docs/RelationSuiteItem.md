@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src.qase.models import RelationSuiteItem
+from src import RelationSuiteItem
 
 # TODO update the JSON string below
 json = "{}"
