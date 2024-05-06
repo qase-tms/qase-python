@@ -11,7 +11,7 @@ pip install qase-pytest
 ## Upgrade from 4.x to 5.x and to 6.x
 
 The new version 6.x of the Pytest reporter has breaking changes.
-To migrate from versions 4.x or 5.x, follow the [upgrade guide](UPGRADE.md).
+To migrate from versions 4.x or 5.x, follow the [upgrade guide](docs/UPGRADE.md).
 
 ## Configuration
 
