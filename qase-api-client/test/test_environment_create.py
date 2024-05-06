@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.environment_create import EnvironmentCreate
+from qase.api_client_v1.models.environment_create import EnvironmentCreate
 
 class TestEnvironmentCreate(unittest.TestCase):
     """EnvironmentCreate unit test stubs"""

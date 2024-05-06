@@ -20,7 +20,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictBool
 from typing import Any, ClassVar, Dict, List, Optional
-from src.qase.api_client_v1.models.shared_step_list_response_all_of_result import SharedStepListResponseAllOfResult
+from qase.api_client_v1.models.shared_step_list_response_all_of_result import SharedStepListResponseAllOfResult
 from typing import Optional, Set
 from typing_extensions import Self
 

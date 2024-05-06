@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.plan_update import PlanUpdate
+from qase.api_client_v1.models.plan_update import PlanUpdate
 
 class TestPlanUpdate(unittest.TestCase):
     """PlanUpdate unit test stubs"""

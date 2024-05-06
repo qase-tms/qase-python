@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.plan_detailed import PlanDetailed
+from qase.api_client_v1.models.plan_detailed import PlanDetailed
 
 class TestPlanDetailed(unittest.TestCase):
     """PlanDetailed unit test stubs"""
@@ -46,7 +46,7 @@ class TestPlanDetailed(unittest.TestCase):
                 updated = '2021-12-30 19:23:59',
                 average_time = 1.337,
                 cases = [
-                    src.qase.api_client_v1.models.plan_detailed_all_of_cases.PlanDetailed_allOf_cases(
+                    qase.api_client_v1.models.plan_detailed_all_of_cases.PlanDetailed_allOf_cases(
                         case_id = 56, 
                         assignee_id = 56, )
                     ]

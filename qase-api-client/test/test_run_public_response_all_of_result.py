@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.run_public_response_all_of_result import RunPublicResponseAllOfResult
+from qase.api_client_v1.models.run_public_response_all_of_result import RunPublicResponseAllOfResult
 
 class TestRunPublicResponseAllOfResult(unittest.TestCase):
     """RunPublicResponseAllOfResult unit test stubs"""

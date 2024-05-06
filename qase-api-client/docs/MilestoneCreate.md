@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src.qase.api_client_v1.models.milestone_create import MilestoneCreate
+from qase.api_client_v1.models.milestone_create import MilestoneCreate
 
 # TODO update the JSON string below
 json = "{}"

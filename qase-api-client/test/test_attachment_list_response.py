@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.attachment_list_response import AttachmentListResponse
+from qase.api_client_v1.models.attachment_list_response import AttachmentListResponse
 
 class TestAttachmentListResponse(unittest.TestCase):
     """AttachmentListResponse unit test stubs"""
@@ -37,12 +37,12 @@ class TestAttachmentListResponse(unittest.TestCase):
         if include_optional:
             return AttachmentListResponse(
                 status = True,
-                result = src.qase.api_client_v1.models.attachment_list_response_all_of_result.AttachmentListResponse_allOf_result(
+                result = qase.api_client_v1.models.attachment_list_response_all_of_result.AttachmentListResponse_allOf_result(
                     total = 56, 
                     filtered = 56, 
                     count = 56, 
                     entities = [
-                        src.qase.api_client_v1.models.attachment_get.AttachmentGet(
+                        qase.api_client_v1.models.attachment_get.AttachmentGet(
                             hash = '', 
                             file = '', 
                             mime = '', 

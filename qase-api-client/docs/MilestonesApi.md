@@ -1,4 +1,4 @@
-# src.qase.apiv1.MilestonesApi
+# qase.api_client_v1.MilestonesApi
 
 All URIs are relative to *https://api.qase.io/v1*
 
@@ -23,15 +23,15 @@ This method allows to create a milestone in selected project.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.id_response import IdResponse
-from src.qase.api_client_v1.models.milestone_create import MilestoneCreate
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.id_response import IdResponse
+from qase.api_client_v1.models.milestone_create import MilestoneCreate
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -47,11 +47,11 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.MilestonesApi(api_client)
+    api_instance = qase.api_client_v1.MilestonesApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
-    milestone_create = src.qase.apiv1.MilestoneCreate()  # MilestoneCreate | 
+    milestone_create = qase.api_client_v1.MilestoneCreate()  # MilestoneCreate | 
 
     try:
         # Create a new milestone
@@ -111,14 +111,14 @@ This method completely deletes a milestone from repository.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.id_response import IdResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.id_response import IdResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -134,9 +134,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.MilestonesApi(api_client)
+    api_instance = qase.api_client_v1.MilestonesApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
     id = 56  # int | Identifier.
 
@@ -197,14 +197,14 @@ This method allows to retrieve a specific milestone.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.milestone_response import MilestoneResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.milestone_response import MilestoneResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -220,9 +220,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.MilestonesApi(api_client)
+    api_instance = qase.api_client_v1.MilestonesApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
     id = 56  # int | Identifier.
 
@@ -283,14 +283,14 @@ This method allows to retrieve all milestones stored in selected project.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.milestone_list_response import MilestoneListResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.milestone_list_response import MilestoneListResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -306,9 +306,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.MilestonesApi(api_client)
+    api_instance = qase.api_client_v1.MilestonesApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
     search = 'search_example'  # str | Provide a string that will be used to search by name. (optional)
     limit = 10  # int | A number of entities in result set. (optional) (default to 10)
@@ -373,15 +373,15 @@ This method updates a milestone.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.id_response import IdResponse
-from src.qase.api_client_v1.models.milestone_update import MilestoneUpdate
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.id_response import IdResponse
+from qase.api_client_v1.models.milestone_update import MilestoneUpdate
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -397,12 +397,12 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.MilestonesApi(api_client)
+    api_instance = qase.api_client_v1.MilestonesApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
     id = 56  # int | Identifier.
-    milestone_update = src.qase.apiv1.MilestoneUpdate()  # MilestoneUpdate | 
+    milestone_update = qase.api_client_v1.MilestoneUpdate()  # MilestoneUpdate | 
 
     try:
         # Update milestone

@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.shared_step_content import SharedStepContent
+from qase.api_client_v1.models.shared_step_content import SharedStepContent
 
 class TestSharedStepContent(unittest.TestCase):
     """SharedStepContent unit test stubs"""
@@ -41,7 +41,7 @@ class TestSharedStepContent(unittest.TestCase):
                 action = '',
                 expected_result = '',
                 attachments = [
-                    src.qase.api_client_v1.models.attachment_hash.AttachmentHash(
+                    qase.api_client_v1.models.attachment_hash.AttachmentHash(
                         size = 56, 
                         mime = '', 
                         filename = '', 

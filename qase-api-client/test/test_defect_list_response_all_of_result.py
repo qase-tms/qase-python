@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.defect_list_response_all_of_result import DefectListResponseAllOfResult
+from qase.api_client_v1.models.defect_list_response_all_of_result import DefectListResponseAllOfResult
 
 class TestDefectListResponseAllOfResult(unittest.TestCase):
     """DefectListResponseAllOfResult unit test stubs"""
@@ -40,7 +40,7 @@ class TestDefectListResponseAllOfResult(unittest.TestCase):
                 filtered = 56,
                 count = 56,
                 entities = [
-                    src.qase.api_client_v1.models.defect.Defect(
+                    qase.api_client_v1.models.defect.Defect(
                         id = 56, 
                         title = '', 
                         actual_result = '', 
@@ -48,12 +48,12 @@ class TestDefectListResponseAllOfResult(unittest.TestCase):
                         status = '', 
                         milestone_id = 56, 
                         custom_fields = [
-                            src.qase.api_client_v1.models.custom_field_value.CustomFieldValue(
+                            qase.api_client_v1.models.custom_field_value.CustomFieldValue(
                                 id = 56, 
                                 value = '', )
                             ], 
                         attachments = [
-                            src.qase.api_client_v1.models.attachment.Attachment(
+                            qase.api_client_v1.models.attachment.Attachment(
                                 size = 56, 
                                 mime = '', 
                                 filename = '', 
@@ -64,7 +64,7 @@ class TestDefectListResponseAllOfResult(unittest.TestCase):
                         author_id = 56, 
                         external_data = '', 
                         tags = [
-                            src.qase.api_client_v1.models.tag_value.TagValue(
+                            qase.api_client_v1.models.tag_value.TagValue(
                                 title = '', 
                                 internal_id = 56, )
                             ], 

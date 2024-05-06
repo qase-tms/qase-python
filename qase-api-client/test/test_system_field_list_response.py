@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.system_field_list_response import SystemFieldListResponse
+from qase.api_client_v1.models.system_field_list_response import SystemFieldListResponse
 
 class TestSystemFieldListResponse(unittest.TestCase):
     """SystemFieldListResponse unit test stubs"""
@@ -38,7 +38,7 @@ class TestSystemFieldListResponse(unittest.TestCase):
             return SystemFieldListResponse(
                 status = True,
                 result = [
-                    src.qase.api_client_v1.models.system_field.SystemField(
+                    qase.api_client_v1.models.system_field.SystemField(
                         title = '', 
                         slug = '', 
                         default_value = '', 
@@ -46,7 +46,7 @@ class TestSystemFieldListResponse(unittest.TestCase):
                         entity = 56, 
                         type = 56, 
                         options = [
-                            src.qase.api_client_v1.models.system_field_option.SystemFieldOption(
+                            qase.api_client_v1.models.system_field_option.SystemFieldOption(
                                 id = 56, 
                                 title = '', 
                                 slug = '', 

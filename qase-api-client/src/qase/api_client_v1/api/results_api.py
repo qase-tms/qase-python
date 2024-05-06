@@ -20,18 +20,18 @@ from typing_extensions import Annotated
 from pydantic import Field, StrictBool, StrictInt, StrictStr
 from typing import Optional
 from typing_extensions import Annotated
-from src.qase.api_client_v1.models.base_response import BaseResponse
-from src.qase.api_client_v1.models.hash_response import HashResponse
-from src.qase.api_client_v1.models.result_create import ResultCreate
-from src.qase.api_client_v1.models.result_create_response import ResultCreateResponse
-from src.qase.api_client_v1.models.result_list_response import ResultListResponse
-from src.qase.api_client_v1.models.result_response import ResultResponse
-from src.qase.api_client_v1.models.result_update import ResultUpdate
-from src.qase.api_client_v1.models.resultcreate_bulk import ResultcreateBulk
+from qase.api_client_v1.models.base_response import BaseResponse
+from qase.api_client_v1.models.hash_response import HashResponse
+from qase.api_client_v1.models.result_create import ResultCreate
+from qase.api_client_v1.models.result_create_response import ResultCreateResponse
+from qase.api_client_v1.models.result_list_response import ResultListResponse
+from qase.api_client_v1.models.result_response import ResultResponse
+from qase.api_client_v1.models.result_update import ResultUpdate
+from qase.api_client_v1.models.resultcreate_bulk import ResultcreateBulk
 
-from src.qase.api_client_v1.api_client import ApiClient, RequestSerialized
-from src.qase.api_client_v1.api_response import ApiResponse
-from src.qase.api_client_v1.rest import RESTResponseType
+from qase.api_client_v1.api_client import ApiClient, RequestSerialized
+from qase.api_client_v1.api_response import ApiResponse
+from qase.api_client_v1.rest import RESTResponseType
 
 
 class ResultsApi:

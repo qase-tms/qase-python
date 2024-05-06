@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.system_field import SystemField
+from qase.api_client_v1.models.system_field import SystemField
 
 class TestSystemField(unittest.TestCase):
     """SystemField unit test stubs"""
@@ -43,7 +43,7 @@ class TestSystemField(unittest.TestCase):
                 entity = 56,
                 type = 56,
                 options = [
-                    src.qase.api_client_v1.models.system_field_option.SystemFieldOption(
+                    qase.api_client_v1.models.system_field_option.SystemFieldOption(
                         id = 56, 
                         title = '', 
                         slug = '', 

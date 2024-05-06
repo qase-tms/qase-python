@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.plan_detailed_all_of_cases import PlanDetailedAllOfCases
+from qase.api_client_v1.models.plan_detailed_all_of_cases import PlanDetailedAllOfCases
 
 class TestPlanDetailedAllOfCases(unittest.TestCase):
     """PlanDetailedAllOfCases unit test stubs"""

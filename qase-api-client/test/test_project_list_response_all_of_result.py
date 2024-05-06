@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.project_list_response_all_of_result import ProjectListResponseAllOfResult
+from qase.api_client_v1.models.project_list_response_all_of_result import ProjectListResponseAllOfResult
 
 class TestProjectListResponseAllOfResult(unittest.TestCase):
     """ProjectListResponseAllOfResult unit test stubs"""
@@ -40,17 +40,17 @@ class TestProjectListResponseAllOfResult(unittest.TestCase):
                 filtered = 56,
                 count = 56,
                 entities = [
-                    src.qase.api_client_v1.models.project.Project(
+                    qase.api_client_v1.models.project.Project(
                         title = '', 
                         code = '', 
-                        counts = src.qase.api_client_v1.models.project_counts.Project_counts(
+                        counts = qase.api_client_v1.models.project_counts.Project_counts(
                             cases = 56, 
                             suites = 56, 
                             milestones = 56, 
-                            runs = src.qase.api_client_v1.models.project_counts_runs.Project_counts_runs(
+                            runs = qase.api_client_v1.models.project_counts_runs.Project_counts_runs(
                                 total = 56, 
                                 active = 56, ), 
-                            defects = src.qase.api_client_v1.models.project_counts_defects.Project_counts_defects(
+                            defects = qase.api_client_v1.models.project_counts_defects.Project_counts_defects(
                                 total = 56, 
                                 open = 56, ), ), )
                     ]

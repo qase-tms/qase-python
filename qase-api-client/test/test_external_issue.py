@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.external_issue import ExternalIssue
+from qase.api_client_v1.models.external_issue import ExternalIssue
 
 class TestExternalIssue(unittest.TestCase):
     """ExternalIssue unit test stubs"""
@@ -38,7 +38,7 @@ class TestExternalIssue(unittest.TestCase):
             return ExternalIssue(
                 type = '',
                 issues = [
-                    src.qase.api_client_v1.models.external_issue_issues_inner.ExternalIssue_issues_inner(
+                    qase.api_client_v1.models.external_issue_issues_inner.ExternalIssue_issues_inner(
                         id = '', 
                         link = '', )
                     ]

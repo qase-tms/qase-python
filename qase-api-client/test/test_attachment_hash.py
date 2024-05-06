@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.attachment_hash import AttachmentHash
+from qase.api_client_v1.models.attachment_hash import AttachmentHash
 
 class TestAttachmentHash(unittest.TestCase):
     """AttachmentHash unit test stubs"""

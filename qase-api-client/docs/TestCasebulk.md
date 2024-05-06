@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src.qase.api_client_v1.models.test_casebulk import TestCasebulk
+from qase.api_client_v1.models.test_casebulk import TestCasebulk
 
 # TODO update the JSON string below
 json = "{}"

@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.author import Author
+from qase.api_client_v1.models.author import Author
 
 class TestAuthor(unittest.TestCase):
     """Author unit test stubs"""

@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src.qase.api_client_v1.models.result_create_response_all_of_result import ResultCreateResponseAllOfResult
+from qase.api_client_v1.models.result_create_response_all_of_result import ResultCreateResponseAllOfResult
 
 # TODO update the JSON string below
 json = "{}"

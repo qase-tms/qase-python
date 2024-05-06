@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.custom_field_create import CustomFieldCreate
+from qase.api_client_v1.models.custom_field_create import CustomFieldCreate
 
 class TestCustomFieldCreate(unittest.TestCase):
     """CustomFieldCreate unit test stubs"""
@@ -38,7 +38,7 @@ class TestCustomFieldCreate(unittest.TestCase):
             return CustomFieldCreate(
                 title = '',
                 value = [
-                    src.qase.api_client_v1.models.custom_field_create_value_inner.CustomFieldCreate_value_inner(
+                    qase.api_client_v1.models.custom_field_create_value_inner.CustomFieldCreate_value_inner(
                         id = 56, 
                         title = '', )
                     ],

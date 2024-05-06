@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.shared_step_list_response import SharedStepListResponse
+from qase.api_client_v1.models.shared_step_list_response import SharedStepListResponse
 
 class TestSharedStepListResponse(unittest.TestCase):
     """SharedStepListResponse unit test stubs"""
@@ -37,24 +37,24 @@ class TestSharedStepListResponse(unittest.TestCase):
         if include_optional:
             return SharedStepListResponse(
                 status = True,
-                result = src.qase.api_client_v1.models.shared_step_list_response_all_of_result.SharedStepListResponse_allOf_result(
+                result = qase.api_client_v1.models.shared_step_list_response_all_of_result.SharedStepListResponse_allOf_result(
                     total = 56, 
                     filtered = 56, 
                     count = 56, 
                     entities = [
-                        src.qase.api_client_v1.models.shared_step.SharedStep(
+                        qase.api_client_v1.models.shared_step.SharedStep(
                             hash = '', 
                             title = '', 
                             action = '', 
                             expected_result = '', 
                             steps = [
-                                src.qase.api_client_v1.models.shared_step_content.SharedStepContent(
+                                qase.api_client_v1.models.shared_step_content.SharedStepContent(
                                     data = '', 
                                     hash = '', 
                                     action = '', 
                                     expected_result = '', 
                                     attachments = [
-                                        src.qase.api_client_v1.models.attachment_hash.AttachmentHash(
+                                        qase.api_client_v1.models.attachment_hash.AttachmentHash(
                                             size = 56, 
                                             mime = '', 
                                             filename = '', 

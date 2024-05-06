@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.run_create import RunCreate
+from qase.api_client_v1.models.run_create import RunCreate
 
 class TestRunCreate(unittest.TestCase):
     """RunCreate unit test stubs"""

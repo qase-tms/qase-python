@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.api.system_fields_api import SystemFieldsApi
+from qase.api_client_v1.api.system_fields_api import SystemFieldsApi
 
 
 class TestSystemFieldsApi(unittest.TestCase):

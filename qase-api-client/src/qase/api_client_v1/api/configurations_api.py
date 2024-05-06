@@ -19,14 +19,14 @@ from typing_extensions import Annotated
 
 from pydantic import Field
 from typing_extensions import Annotated
-from src.qase.api_client_v1.models.configuration_create import ConfigurationCreate
-from src.qase.api_client_v1.models.configuration_group_create import ConfigurationGroupCreate
-from src.qase.api_client_v1.models.configuration_list_response import ConfigurationListResponse
-from src.qase.api_client_v1.models.id_response import IdResponse
+from qase.api_client_v1.models.configuration_create import ConfigurationCreate
+from qase.api_client_v1.models.configuration_group_create import ConfigurationGroupCreate
+from qase.api_client_v1.models.configuration_list_response import ConfigurationListResponse
+from qase.api_client_v1.models.id_response import IdResponse
 
-from src.qase.api_client_v1.api_client import ApiClient, RequestSerialized
-from src.qase.api_client_v1.api_response import ApiResponse
-from src.qase.api_client_v1.rest import RESTResponseType
+from qase.api_client_v1.api_client import ApiClient, RequestSerialized
+from qase.api_client_v1.api_response import ApiResponse
+from qase.api_client_v1.rest import RESTResponseType
 
 
 class ConfigurationsApi:

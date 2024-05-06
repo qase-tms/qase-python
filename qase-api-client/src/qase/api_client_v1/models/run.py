@@ -21,11 +21,11 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from src.qase.api_client_v1.models.custom_field_value import CustomFieldValue
-from src.qase.api_client_v1.models.run_environment import RunEnvironment
-from src.qase.api_client_v1.models.run_milestone import RunMilestone
-from src.qase.api_client_v1.models.run_stats import RunStats
-from src.qase.api_client_v1.models.tag_value import TagValue
+from qase.api_client_v1.models.custom_field_value import CustomFieldValue
+from qase.api_client_v1.models.run_environment import RunEnvironment
+from qase.api_client_v1.models.run_milestone import RunMilestone
+from qase.api_client_v1.models.run_stats import RunStats
+from qase.api_client_v1.models.tag_value import TagValue
 from typing import Optional, Set
 from typing_extensions import Self
 

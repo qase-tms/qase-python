@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.defect_create import DefectCreate
+from qase.api_client_v1.models.defect_create import DefectCreate
 
 class TestDefectCreate(unittest.TestCase):
     """DefectCreate unit test stubs"""

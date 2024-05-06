@@ -1,4 +1,4 @@
-# src.qase.apiv1.DefectsApi
+# qase.api_client_v1.DefectsApi
 
 All URIs are relative to *https://api.qase.io/v1*
 
@@ -25,15 +25,15 @@ This method allows to create a defect in selected project.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.defect_create import DefectCreate
-from src.qase.api_client_v1.models.id_response import IdResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.defect_create import DefectCreate
+from qase.api_client_v1.models.id_response import IdResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -49,11 +49,11 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.DefectsApi(api_client)
+    api_instance = qase.api_client_v1.DefectsApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
-    defect_create = src.qase.apiv1.DefectCreate()  # DefectCreate | 
+    defect_create = qase.api_client_v1.DefectCreate()  # DefectCreate | 
 
     try:
         # Create a new defect
@@ -113,14 +113,14 @@ This method completely deletes a defect from repository.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.id_response import IdResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.id_response import IdResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -136,9 +136,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.DefectsApi(api_client)
+    api_instance = qase.api_client_v1.DefectsApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
     id = 56  # int | Identifier.
 
@@ -199,14 +199,14 @@ This method allows to retrieve a specific defect.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.defect_response import DefectResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.defect_response import DefectResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -222,9 +222,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.DefectsApi(api_client)
+    api_instance = qase.api_client_v1.DefectsApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
     id = 56  # int | Identifier.
 
@@ -285,14 +285,14 @@ This method allows to retrieve all defects stored in selected project.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.defect_list_response import DefectListResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.defect_list_response import DefectListResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -308,9 +308,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.DefectsApi(api_client)
+    api_instance = qase.api_client_v1.DefectsApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
     status = 'status_example'  # str |  (optional)
     limit = 10  # int | A number of entities in result set. (optional) (default to 10)
@@ -375,14 +375,14 @@ This method allows to resolve a specific defect.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.id_response import IdResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.id_response import IdResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -398,9 +398,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.DefectsApi(api_client)
+    api_instance = qase.api_client_v1.DefectsApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
     id = 56  # int | Identifier.
 
@@ -462,15 +462,15 @@ This method updates a defect.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.defect_update import DefectUpdate
-from src.qase.api_client_v1.models.id_response import IdResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.defect_update import DefectUpdate
+from qase.api_client_v1.models.id_response import IdResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -486,12 +486,12 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.DefectsApi(api_client)
+    api_instance = qase.api_client_v1.DefectsApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
     id = 56  # int | Identifier.
-    defect_update = src.qase.apiv1.DefectUpdate()  # DefectUpdate | 
+    defect_update = qase.api_client_v1.DefectUpdate()  # DefectUpdate | 
 
     try:
         # Update defect
@@ -552,15 +552,15 @@ This method allows to update a specific defect status.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.base_response import BaseResponse
-from src.qase.api_client_v1.models.defect_status import DefectStatus
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.base_response import BaseResponse
+from qase.api_client_v1.models.defect_status import DefectStatus
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -576,12 +576,12 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.DefectsApi(api_client)
+    api_instance = qase.api_client_v1.DefectsApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
     id = 56  # int | Identifier.
-    defect_status = src.qase.apiv1.DefectStatus()  # DefectStatus | 
+    defect_status = qase.api_client_v1.DefectStatus()  # DefectStatus | 
 
     try:
         # Update a specific defect status

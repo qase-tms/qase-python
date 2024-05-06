@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.api.search_api import SearchApi
+from qase.api_client_v1.api.search_api import SearchApi
 
 
 class TestSearchApi(unittest.TestCase):

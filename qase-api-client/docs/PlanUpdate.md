@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src.qase.api_client_v1.models.plan_update import PlanUpdate
+from qase.api_client_v1.models.plan_update import PlanUpdate
 
 # TODO update the JSON string below
 json = "{}"

@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.api.plans_api import PlansApi
+from qase.api_client_v1.api.plans_api import PlansApi
 
 
 class TestPlansApi(unittest.TestCase):

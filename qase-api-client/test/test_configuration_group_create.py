@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.configuration_group_create import ConfigurationGroupCreate
+from qase.api_client_v1.models.configuration_group_create import ConfigurationGroupCreate
 
 class TestConfigurationGroupCreate(unittest.TestCase):
     """ConfigurationGroupCreate unit test stubs"""

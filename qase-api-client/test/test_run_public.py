@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.run_public import RunPublic
+from qase.api_client_v1.models.run_public import RunPublic
 
 class TestRunPublic(unittest.TestCase):
     """RunPublic unit test stubs"""

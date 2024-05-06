@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.bulk200_response import Bulk200Response
+from qase.api_client_v1.models.bulk200_response import Bulk200Response
 
 class TestBulk200Response(unittest.TestCase):
     """Bulk200Response unit test stubs"""
@@ -37,7 +37,7 @@ class TestBulk200Response(unittest.TestCase):
         if include_optional:
             return Bulk200Response(
                 status = True,
-                result = src.qase.api_client_v1.models.bulk_200_response_all_of_result.bulk_200_response_allOf_result(
+                result = qase.api_client_v1.models.bulk_200_response_all_of_result.bulk_200_response_allOf_result(
                     ids = [
                         56
                         ], )

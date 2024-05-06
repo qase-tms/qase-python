@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.search_response import SearchResponse
+from qase.api_client_v1.models.search_response import SearchResponse
 
 class TestSearchResponse(unittest.TestCase):
     """SearchResponse unit test stubs"""
@@ -37,7 +37,7 @@ class TestSearchResponse(unittest.TestCase):
         if include_optional:
             return SearchResponse(
                 status = True,
-                result = src.qase.api_client_v1.models.search_response_all_of_result.SearchResponse_allOf_result(
+                result = qase.api_client_v1.models.search_response_all_of_result.SearchResponse_allOf_result(
                     entities = [
                         null
                         ], 

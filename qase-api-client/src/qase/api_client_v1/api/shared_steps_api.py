@@ -20,15 +20,15 @@ from typing_extensions import Annotated
 from pydantic import Field, StrictStr
 from typing import Optional
 from typing_extensions import Annotated
-from src.qase.api_client_v1.models.hash_response import HashResponse
-from src.qase.api_client_v1.models.shared_step_create import SharedStepCreate
-from src.qase.api_client_v1.models.shared_step_list_response import SharedStepListResponse
-from src.qase.api_client_v1.models.shared_step_response import SharedStepResponse
-from src.qase.api_client_v1.models.shared_step_update import SharedStepUpdate
+from qase.api_client_v1.models.hash_response import HashResponse
+from qase.api_client_v1.models.shared_step_create import SharedStepCreate
+from qase.api_client_v1.models.shared_step_list_response import SharedStepListResponse
+from qase.api_client_v1.models.shared_step_response import SharedStepResponse
+from qase.api_client_v1.models.shared_step_update import SharedStepUpdate
 
-from src.qase.api_client_v1.api_client import ApiClient, RequestSerialized
-from src.qase.api_client_v1.api_response import ApiResponse
-from src.qase.api_client_v1.rest import RESTResponseType
+from qase.api_client_v1.api_client import ApiClient, RequestSerialized
+from qase.api_client_v1.api_response import ApiResponse
+from qase.api_client_v1.rest import RESTResponseType
 
 
 class SharedStepsApi:

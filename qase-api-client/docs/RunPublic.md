@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src.qase.api_client_v1.models.run_public import RunPublic
+from qase.api_client_v1.models.run_public import RunPublic
 
 # TODO update the JSON string below
 json = "{}"

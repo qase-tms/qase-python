@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.run_environment import RunEnvironment
+from qase.api_client_v1.models.run_environment import RunEnvironment
 
 class TestRunEnvironment(unittest.TestCase):
     """RunEnvironment unit test stubs"""

@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src.qase.api_client_v1.models.hash_response_all_of_result import HashResponseAllOfResult
+from qase.api_client_v1.models.hash_response_all_of_result import HashResponseAllOfResult
 
 # TODO update the JSON string below
 json = "{}"

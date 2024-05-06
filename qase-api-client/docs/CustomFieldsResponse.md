@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src.qase.api_client_v1.models.custom_fields_response import CustomFieldsResponse
+from qase.api_client_v1.models.custom_fields_response import CustomFieldsResponse
 
 # TODO update the JSON string below
 json = "{}"

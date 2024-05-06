@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.result_create_bulk import ResultCreateBulk
+from qase.api_client_v1.models.result_create_bulk import ResultCreateBulk
 
 class TestResultCreateBulk(unittest.TestCase):
     """ResultCreateBulk unit test stubs"""
@@ -37,9 +37,9 @@ class TestResultCreateBulk(unittest.TestCase):
         if include_optional:
             return ResultCreateBulk(
                 results = [
-                    src.qase.api_client_v1.models.result_create.ResultCreate(
+                    qase.api_client_v1.models.result_create.ResultCreate(
                         case_id = 56, 
-                        case = src.qase.api_client_v1.models.result_create_case.ResultCreate_case(
+                        case = qase.api_client_v1.models.result_create_case.ResultCreate_case(
                             title = '', 
                             suite_title = '', 
                             description = '', 
@@ -62,7 +62,7 @@ class TestResultCreateBulk(unittest.TestCase):
                             'key' : ''
                             }, 
                         steps = [
-                            src.qase.api_client_v1.models.test_step_result_create.TestStepResultCreate(
+                            qase.api_client_v1.models.test_step_result_create.TestStepResultCreate(
                                 position = 56, 
                                 status = 'passed', 
                                 comment = '', 
@@ -76,9 +76,9 @@ class TestResultCreateBulk(unittest.TestCase):
         else:
             return ResultCreateBulk(
                 results = [
-                    src.qase.api_client_v1.models.result_create.ResultCreate(
+                    qase.api_client_v1.models.result_create.ResultCreate(
                         case_id = 56, 
-                        case = src.qase.api_client_v1.models.result_create_case.ResultCreate_case(
+                        case = qase.api_client_v1.models.result_create_case.ResultCreate_case(
                             title = '', 
                             suite_title = '', 
                             description = '', 
@@ -101,7 +101,7 @@ class TestResultCreateBulk(unittest.TestCase):
                             'key' : ''
                             }, 
                         steps = [
-                            src.qase.api_client_v1.models.test_step_result_create.TestStepResultCreate(
+                            qase.api_client_v1.models.test_step_result_create.TestStepResultCreate(
                                 position = 56, 
                                 status = 'passed', 
                                 comment = '', 

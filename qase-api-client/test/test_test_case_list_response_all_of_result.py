@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.test_case_list_response_all_of_result import TestCaseListResponseAllOfResult
+from qase.api_client_v1.models.test_case_list_response_all_of_result import TestCaseListResponseAllOfResult
 
 class TestTestCaseListResponseAllOfResult(unittest.TestCase):
     """TestCaseListResponseAllOfResult unit test stubs"""
@@ -40,7 +40,7 @@ class TestTestCaseListResponseAllOfResult(unittest.TestCase):
                 filtered = 56,
                 count = 56,
                 entities = [
-                    src.qase.api_client_v1.models.test_case.TestCase(
+                    qase.api_client_v1.models.test_case.TestCase(
                         id = 56, 
                         position = 56, 
                         title = '', 
@@ -58,12 +58,12 @@ class TestTestCaseListResponseAllOfResult(unittest.TestCase):
                         milestone_id = 56, 
                         suite_id = 56, 
                         custom_fields = [
-                            src.qase.api_client_v1.models.custom_field_value.CustomFieldValue(
+                            qase.api_client_v1.models.custom_field_value.CustomFieldValue(
                                 id = 56, 
                                 value = '', )
                             ], 
                         attachments = [
-                            src.qase.api_client_v1.models.attachment.Attachment(
+                            qase.api_client_v1.models.attachment.Attachment(
                                 size = 56, 
                                 mime = '', 
                                 filename = '', 
@@ -71,7 +71,7 @@ class TestTestCaseListResponseAllOfResult(unittest.TestCase):
                             ], 
                         steps_type = '', 
                         steps = [
-                            src.qase.api_client_v1.models.test_step.TestStep(
+                            qase.api_client_v1.models.test_step.TestStep(
                                 hash = '', 
                                 shared_step_hash = '', 
                                 shared_step_nested_hash = '', 
@@ -82,7 +82,7 @@ class TestTestCaseListResponseAllOfResult(unittest.TestCase):
                             ], 
                         params = null, 
                         tags = [
-                            src.qase.api_client_v1.models.tag_value.TagValue(
+                            qase.api_client_v1.models.tag_value.TagValue(
                                 title = '', 
                                 internal_id = 56, )
                             ], 
@@ -94,10 +94,10 @@ class TestTestCaseListResponseAllOfResult(unittest.TestCase):
                         created = '2021-12-30T19:23:59.000000Z', 
                         updated = '2021-12-30T19:23:59.000000Z', 
                         external_issues = [
-                            src.qase.api_client_v1.models.external_issue.ExternalIssue(
+                            qase.api_client_v1.models.external_issue.ExternalIssue(
                                 type = '', 
                                 issues = [
-                                    src.qase.api_client_v1.models.external_issue_issues_inner.ExternalIssue_issues_inner(
+                                    qase.api_client_v1.models.external_issue_issues_inner.ExternalIssue_issues_inner(
                                         id = '', 
                                         link = '', )
                                     ], )

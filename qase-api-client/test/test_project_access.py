@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.project_access import ProjectAccess
+from qase.api_client_v1.models.project_access import ProjectAccess
 
 class TestProjectAccess(unittest.TestCase):
     """ProjectAccess unit test stubs"""

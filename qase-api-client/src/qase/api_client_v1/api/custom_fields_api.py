@@ -20,16 +20,16 @@ from typing_extensions import Annotated
 from pydantic import Field, StrictInt, StrictStr, field_validator
 from typing import Optional
 from typing_extensions import Annotated
-from src.qase.api_client_v1.models.base_response import BaseResponse
-from src.qase.api_client_v1.models.custom_field_create import CustomFieldCreate
-from src.qase.api_client_v1.models.custom_field_list_response import CustomFieldListResponse
-from src.qase.api_client_v1.models.custom_field_response import CustomFieldResponse
-from src.qase.api_client_v1.models.custom_field_update import CustomFieldUpdate
-from src.qase.api_client_v1.models.id_response import IdResponse
+from qase.api_client_v1.models.base_response import BaseResponse
+from qase.api_client_v1.models.custom_field_create import CustomFieldCreate
+from qase.api_client_v1.models.custom_field_list_response import CustomFieldListResponse
+from qase.api_client_v1.models.custom_field_response import CustomFieldResponse
+from qase.api_client_v1.models.custom_field_update import CustomFieldUpdate
+from qase.api_client_v1.models.id_response import IdResponse
 
-from src.qase.api_client_v1.api_client import ApiClient, RequestSerialized
-from src.qase.api_client_v1.api_response import ApiResponse
-from src.qase.api_client_v1.rest import RESTResponseType
+from qase.api_client_v1.api_client import ApiClient, RequestSerialized
+from qase.api_client_v1.api_response import ApiResponse
+from qase.api_client_v1.rest import RESTResponseType
 
 
 class CustomFieldsApi:

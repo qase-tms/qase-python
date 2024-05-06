@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.requirement import Requirement
+from qase.api_client_v1.models.requirement import Requirement
 
 class TestRequirement(unittest.TestCase):
     """Requirement unit test stubs"""

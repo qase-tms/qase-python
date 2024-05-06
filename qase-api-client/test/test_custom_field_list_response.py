@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.custom_field_list_response import CustomFieldListResponse
+from qase.api_client_v1.models.custom_field_list_response import CustomFieldListResponse
 
 class TestCustomFieldListResponse(unittest.TestCase):
     """CustomFieldListResponse unit test stubs"""
@@ -37,12 +37,12 @@ class TestCustomFieldListResponse(unittest.TestCase):
         if include_optional:
             return CustomFieldListResponse(
                 status = True,
-                result = src.qase.api_client_v1.models.custom_fields_response_all_of_result.CustomFieldsResponse_allOf_result(
+                result = qase.api_client_v1.models.custom_fields_response_all_of_result.CustomFieldsResponse_allOf_result(
                     total = 56, 
                     filtered = 56, 
                     count = 56, 
                     entities = [
-                        src.qase.api_client_v1.models.custom_field.CustomField(
+                        qase.api_client_v1.models.custom_field.CustomField(
                             id = 56, 
                             title = '', 
                             entity = '', 

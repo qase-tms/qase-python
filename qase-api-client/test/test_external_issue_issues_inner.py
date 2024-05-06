@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.external_issue_issues_inner import ExternalIssueIssuesInner
+from qase.api_client_v1.models.external_issue_issues_inner import ExternalIssueIssuesInner
 
 class TestExternalIssueIssuesInner(unittest.TestCase):
     """ExternalIssueIssuesInner unit test stubs"""

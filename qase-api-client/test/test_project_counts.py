@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.project_counts import ProjectCounts
+from qase.api_client_v1.models.project_counts import ProjectCounts
 
 class TestProjectCounts(unittest.TestCase):
     """ProjectCounts unit test stubs"""
@@ -39,10 +39,10 @@ class TestProjectCounts(unittest.TestCase):
                 cases = 56,
                 suites = 56,
                 milestones = 56,
-                runs = src.qase.api_client_v1.models.project_counts_runs.Project_counts_runs(
+                runs = qase.api_client_v1.models.project_counts_runs.Project_counts_runs(
                     total = 56, 
                     active = 56, ),
-                defects = src.qase.api_client_v1.models.project_counts_defects.Project_counts_defects(
+                defects = qase.api_client_v1.models.project_counts_defects.Project_counts_defects(
                     total = 56, 
                     open = 56, )
             )

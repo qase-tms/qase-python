@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.result_list_response import ResultListResponse
+from qase.api_client_v1.models.result_list_response import ResultListResponse
 
 class TestResultListResponse(unittest.TestCase):
     """ResultListResponse unit test stubs"""
@@ -37,23 +37,23 @@ class TestResultListResponse(unittest.TestCase):
         if include_optional:
             return ResultListResponse(
                 status = True,
-                result = src.qase.api_client_v1.models.result_list_response_all_of_result.ResultListResponse_allOf_result(
+                result = qase.api_client_v1.models.result_list_response_all_of_result.ResultListResponse_allOf_result(
                     total = 56, 
                     filtered = 56, 
                     count = 56, 
                     entities = [
-                        src.qase.api_client_v1.models.result.Result(
+                        qase.api_client_v1.models.result.Result(
                             hash = '', 
                             comment = '', 
                             stacktrace = '', 
                             run_id = 56, 
                             case_id = 56, 
                             steps = [
-                                src.qase.api_client_v1.models.test_step_result.TestStepResult(
+                                qase.api_client_v1.models.test_step_result.TestStepResult(
                                     status = 56, 
                                     position = 56, 
                                     attachments = [
-                                        src.qase.api_client_v1.models.attachment.Attachment(
+                                        qase.api_client_v1.models.attachment.Attachment(
                                             size = 56, 
                                             mime = '', 
                                             filename = '', 
@@ -65,7 +65,7 @@ class TestResultListResponse(unittest.TestCase):
                             time_spent_ms = 56, 
                             end_time = '2021-12-30T19:23:59Z', 
                             attachments = [
-                                src.qase.api_client_v1.models.attachment.Attachment(
+                                qase.api_client_v1.models.attachment.Attachment(
                                     size = 56, 
                                     mime = '', 
                                     filename = '', 

@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.run_stats import RunStats
+from qase.api_client_v1.models.run_stats import RunStats
 
 class TestRunStats(unittest.TestCase):
     """RunStats unit test stubs"""

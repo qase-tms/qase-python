@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.environment_list_response_all_of_result import EnvironmentListResponseAllOfResult
+from qase.api_client_v1.models.environment_list_response_all_of_result import EnvironmentListResponseAllOfResult
 
 class TestEnvironmentListResponseAllOfResult(unittest.TestCase):
     """EnvironmentListResponseAllOfResult unit test stubs"""
@@ -40,7 +40,7 @@ class TestEnvironmentListResponseAllOfResult(unittest.TestCase):
                 filtered = 56,
                 count = 56,
                 entities = [
-                    src.qase.api_client_v1.models.environment.Environment(
+                    qase.api_client_v1.models.environment.Environment(
                         id = 56, 
                         title = '', 
                         description = '', 

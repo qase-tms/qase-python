@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.api.suites_api import SuitesApi
+from qase.api_client_v1.api.suites_api import SuitesApi
 
 
 class TestSuitesApi(unittest.TestCase):

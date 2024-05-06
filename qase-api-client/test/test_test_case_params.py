@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.test_case_params import TestCaseParams
+from qase.api_client_v1.models.test_case_params import TestCaseParams
 
 class TestTestCaseParams(unittest.TestCase):
     """TestCaseParams unit test stubs"""

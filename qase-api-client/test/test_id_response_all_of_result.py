@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.id_response_all_of_result import IdResponseAllOfResult
+from qase.api_client_v1.models.id_response_all_of_result import IdResponseAllOfResult
 
 class TestIdResponseAllOfResult(unittest.TestCase):
     """IdResponseAllOfResult unit test stubs"""

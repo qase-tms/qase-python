@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.run_response import RunResponse
+from qase.api_client_v1.models.run_response import RunResponse
 
 class TestRunResponse(unittest.TestCase):
     """RunResponse unit test stubs"""
@@ -37,7 +37,7 @@ class TestRunResponse(unittest.TestCase):
         if include_optional:
             return RunResponse(
                 status = True,
-                result = src.qase.api_client_v1.models.run.Run(
+                result = qase.api_client_v1.models.run.Run(
                     id = 56, 
                     title = '', 
                     description = '', 
@@ -46,7 +46,7 @@ class TestRunResponse(unittest.TestCase):
                     start_time = '2021-12-30T19:23:59Z', 
                     end_time = '2021-12-30T19:23:59Z', 
                     public = True, 
-                    stats = src.qase.api_client_v1.models.run_stats.Run_stats(
+                    stats = qase.api_client_v1.models.run_stats.Run_stats(
                         total = 56, 
                         statuses = {
                             'key' : 56
@@ -60,21 +60,21 @@ class TestRunResponse(unittest.TestCase):
                         in_progress = 56, 
                         invalid = 56, ), 
                     time_spent = 56, 
-                    environment = src.qase.api_client_v1.models.run_environment.Run_environment(
+                    environment = qase.api_client_v1.models.run_environment.Run_environment(
                         title = '', 
                         description = '', 
                         slug = '', 
                         host = '', ), 
-                    milestone = src.qase.api_client_v1.models.run_milestone.Run_milestone(
+                    milestone = qase.api_client_v1.models.run_milestone.Run_milestone(
                         title = '', 
                         description = '', ), 
                     custom_fields = [
-                        src.qase.api_client_v1.models.custom_field_value.CustomFieldValue(
+                        qase.api_client_v1.models.custom_field_value.CustomFieldValue(
                             id = 56, 
                             value = '', )
                         ], 
                     tags = [
-                        src.qase.api_client_v1.models.tag_value.TagValue(
+                        qase.api_client_v1.models.tag_value.TagValue(
                             title = '', 
                             internal_id = 56, )
                         ], 

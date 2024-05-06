@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.attachment_list_response_all_of_result import AttachmentListResponseAllOfResult
+from qase.api_client_v1.models.attachment_list_response_all_of_result import AttachmentListResponseAllOfResult
 
 class TestAttachmentListResponseAllOfResult(unittest.TestCase):
     """AttachmentListResponseAllOfResult unit test stubs"""
@@ -40,7 +40,7 @@ class TestAttachmentListResponseAllOfResult(unittest.TestCase):
                 filtered = 56,
                 count = 56,
                 entities = [
-                    src.qase.api_client_v1.models.attachment_get.AttachmentGet(
+                    qase.api_client_v1.models.attachment_get.AttachmentGet(
                         hash = '', 
                         file = '', 
                         mime = '', 

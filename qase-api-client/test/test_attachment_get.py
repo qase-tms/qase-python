@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.attachment_get import AttachmentGet
+from qase.api_client_v1.models.attachment_get import AttachmentGet
 
 class TestAttachmentGet(unittest.TestCase):
     """AttachmentGet unit test stubs"""

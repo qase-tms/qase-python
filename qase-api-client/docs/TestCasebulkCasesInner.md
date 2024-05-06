@@ -32,7 +32,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src.qase.api_client_v1.models.test_casebulk_cases_inner import TestCasebulkCasesInner
+from qase.api_client_v1.models.test_casebulk_cases_inner import TestCasebulkCasesInner
 
 # TODO update the JSON string below
 json = "{}"

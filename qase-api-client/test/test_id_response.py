@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.id_response import IdResponse
+from qase.api_client_v1.models.id_response import IdResponse
 
 class TestIdResponse(unittest.TestCase):
     """IdResponse unit test stubs"""
@@ -37,7 +37,7 @@ class TestIdResponse(unittest.TestCase):
         if include_optional:
             return IdResponse(
                 status = True,
-                result = src.qase.api_client_v1.models.id_response_all_of_result.IdResponse_allOf_result(
+                result = qase.api_client_v1.models.id_response_all_of_result.IdResponse_allOf_result(
                     id = 56, )
             )
         else:

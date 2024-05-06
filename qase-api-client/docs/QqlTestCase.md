@@ -35,7 +35,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src.qase.api_client_v1.models.qql_test_case import QqlTestCase
+from qase.api_client_v1.models.qql_test_case import QqlTestCase
 
 # TODO update the JSON string below
 json = "{}"

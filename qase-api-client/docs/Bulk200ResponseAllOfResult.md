@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src.qase.api_client_v1.models.bulk200_response_all_of_result import Bulk200ResponseAllOfResult
+from qase.api_client_v1.models.bulk200_response_all_of_result import Bulk200ResponseAllOfResult
 
 # TODO update the JSON string below
 json = "{}"

@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.configuration_group import ConfigurationGroup
+from qase.api_client_v1.models.configuration_group import ConfigurationGroup
 
 class TestConfigurationGroup(unittest.TestCase):
     """ConfigurationGroup unit test stubs"""
@@ -39,7 +39,7 @@ class TestConfigurationGroup(unittest.TestCase):
                 id = 56,
                 title = '',
                 configurations = [
-                    src.qase.api_client_v1.models.configuration.Configuration(
+                    qase.api_client_v1.models.configuration.Configuration(
                         id = 56, 
                         title = '', )
                     ]

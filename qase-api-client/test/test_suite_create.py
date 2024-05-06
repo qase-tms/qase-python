@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.suite_create import SuiteCreate
+from qase.api_client_v1.models.suite_create import SuiteCreate
 
 class TestSuiteCreate(unittest.TestCase):
     """SuiteCreate unit test stubs"""

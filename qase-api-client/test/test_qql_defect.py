@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.qql_defect import QqlDefect
+from qase.api_client_v1.models.qql_defect import QqlDefect
 
 class TestQqlDefect(unittest.TestCase):
     """QqlDefect unit test stubs"""
@@ -43,12 +43,12 @@ class TestQqlDefect(unittest.TestCase):
                 status = '',
                 milestone_id = 56,
                 custom_fields = [
-                    src.qase.api_client_v1.models.custom_field_value.CustomFieldValue(
+                    qase.api_client_v1.models.custom_field_value.CustomFieldValue(
                         id = 56, 
                         value = '', )
                     ],
                 attachments = [
-                    src.qase.api_client_v1.models.attachment.Attachment(
+                    qase.api_client_v1.models.attachment.Attachment(
                         size = 56, 
                         mime = '', 
                         filename = '', 
@@ -59,7 +59,7 @@ class TestQqlDefect(unittest.TestCase):
                 author_id = 56,
                 external_data = '',
                 tags = [
-                    src.qase.api_client_v1.models.tag_value.TagValue(
+                    qase.api_client_v1.models.tag_value.TagValue(
                         title = '', 
                         internal_id = 56, )
                     ],

@@ -18,7 +18,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src.qase.api_client_v1.models.result_create_case import ResultCreateCase
+from qase.api_client_v1.models.result_create_case import ResultCreateCase
 
 # TODO update the JSON string below
 json = "{}"

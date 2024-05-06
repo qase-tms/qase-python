@@ -20,11 +20,11 @@ from typing_extensions import Annotated
 from pydantic import Field
 from typing import Optional
 from typing_extensions import Annotated
-from src.qase.api_client_v1.models.search_response import SearchResponse
+from qase.api_client_v1.models.search_response import SearchResponse
 
-from src.qase.api_client_v1.api_client import ApiClient, RequestSerialized
-from src.qase.api_client_v1.api_response import ApiResponse
-from src.qase.api_client_v1.rest import RESTResponseType
+from qase.api_client_v1.api_client import ApiClient, RequestSerialized
+from qase.api_client_v1.api_response import ApiResponse
+from qase.api_client_v1.rest import RESTResponseType
 
 
 class SearchApi:

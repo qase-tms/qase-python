@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.api.milestones_api import MilestonesApi
+from qase.api_client_v1.api.milestones_api import MilestonesApi
 
 
 class TestMilestonesApi(unittest.TestCase):

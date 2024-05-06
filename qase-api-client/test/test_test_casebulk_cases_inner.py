@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.test_casebulk_cases_inner import TestCasebulkCasesInner
+from qase.api_client_v1.models.test_casebulk_cases_inner import TestCasebulkCasesInner
 
 class TestTestCasebulkCasesInner(unittest.TestCase):
     """TestCasebulkCasesInner unit test stubs"""
@@ -55,7 +55,7 @@ class TestTestCasebulkCasesInner(unittest.TestCase):
                     ''
                     ],
                 steps = [
-                    src.qase.api_client_v1.models.test_step_create.TestStepCreate(
+                    qase.api_client_v1.models.test_step_create.TestStepCreate(
                         action = '', 
                         expected_result = '', 
                         data = '', 

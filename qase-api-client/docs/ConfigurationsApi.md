@@ -1,4 +1,4 @@
-# src.qase.apiv1.ConfigurationsApi
+# qase.api_client_v1.ConfigurationsApi
 
 All URIs are relative to *https://api.qase.io/v1*
 
@@ -21,15 +21,15 @@ This method allows to create a configuration in selected project.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.configuration_create import ConfigurationCreate
-from src.qase.api_client_v1.models.id_response import IdResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.configuration_create import ConfigurationCreate
+from qase.api_client_v1.models.id_response import IdResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -45,11 +45,11 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.ConfigurationsApi(api_client)
+    api_instance = qase.api_client_v1.ConfigurationsApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
-    configuration_create = src.qase.apiv1.ConfigurationCreate()  # ConfigurationCreate | 
+    configuration_create = qase.api_client_v1.ConfigurationCreate()  # ConfigurationCreate | 
 
     try:
         # Create a new configuration in a particular group.
@@ -109,15 +109,15 @@ This method allows to create a configuration group in selected project.
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.configuration_group_create import ConfigurationGroupCreate
-from src.qase.api_client_v1.models.id_response import IdResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.configuration_group_create import ConfigurationGroupCreate
+from qase.api_client_v1.models.id_response import IdResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -133,11 +133,11 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.ConfigurationsApi(api_client)
+    api_instance = qase.api_client_v1.ConfigurationsApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
-    configuration_group_create = src.qase.apiv1.ConfigurationGroupCreate()  # ConfigurationGroupCreate | 
+    configuration_group_create = qase.api_client_v1.ConfigurationGroupCreate()  # ConfigurationGroupCreate | 
 
     try:
         # Create a new configuration group.
@@ -197,14 +197,14 @@ This method allows to retrieve all configurations groups with configurations
 * Api Key Authentication (TokenAuth):
 
 ```python
-import src.qase.api_client_v1
-from src.qase.api_client_v1.models.configuration_list_response import ConfigurationListResponse
-from src.qase.api_client_v1.rest import ApiException
+import qase.api_client_v1
+from qase.api_client_v1.models.configuration_list_response import ConfigurationListResponse
+from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = src.qase.apiv1.Configuration(
+configuration = qase.api_client_v1.Configuration(
     host="https://api.qase.io/v1"
 )
 
@@ -220,9 +220,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with src.qase.apiv1.ApiClient(configuration) as api_client:
+with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = src.qase.apiv1.ConfigurationsApi(api_client)
+    api_instance = qase.api_client_v1.ConfigurationsApi(api_client)
     code = 'code_example'  # str | Code of project, where to search entities.
 
     try:

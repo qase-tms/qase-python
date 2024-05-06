@@ -20,8 +20,8 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictInt
 from typing import Any, ClassVar, Dict, List, Optional
-from src.qase.api_client_v1.models.project_counts_defects import ProjectCountsDefects
-from src.qase.api_client_v1.models.project_counts_runs import ProjectCountsRuns
+from qase.api_client_v1.models.project_counts_defects import ProjectCountsDefects
+from qase.api_client_v1.models.project_counts_runs import ProjectCountsRuns
 from typing import Optional, Set
 from typing_extensions import Self
 

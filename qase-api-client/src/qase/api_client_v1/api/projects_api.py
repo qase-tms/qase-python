@@ -20,16 +20,16 @@ from typing_extensions import Annotated
 from pydantic import Field
 from typing import Optional
 from typing_extensions import Annotated
-from src.qase.api_client_v1.models.base_response import BaseResponse
-from src.qase.api_client_v1.models.project_access import ProjectAccess
-from src.qase.api_client_v1.models.project_code_response import ProjectCodeResponse
-from src.qase.api_client_v1.models.project_create import ProjectCreate
-from src.qase.api_client_v1.models.project_list_response import ProjectListResponse
-from src.qase.api_client_v1.models.project_response import ProjectResponse
+from qase.api_client_v1.models.base_response import BaseResponse
+from qase.api_client_v1.models.project_access import ProjectAccess
+from qase.api_client_v1.models.project_code_response import ProjectCodeResponse
+from qase.api_client_v1.models.project_create import ProjectCreate
+from qase.api_client_v1.models.project_list_response import ProjectListResponse
+from qase.api_client_v1.models.project_response import ProjectResponse
 
-from src.qase.api_client_v1.api_client import ApiClient, RequestSerialized
-from src.qase.api_client_v1.api_response import ApiResponse
-from src.qase.api_client_v1.rest import RESTResponseType
+from qase.api_client_v1.api_client import ApiClient, RequestSerialized
+from qase.api_client_v1.api_response import ApiResponse
+from qase.api_client_v1.rest import RESTResponseType
 
 
 class ProjectsApi:

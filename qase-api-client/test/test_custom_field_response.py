@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.custom_field_response import CustomFieldResponse
+from qase.api_client_v1.models.custom_field_response import CustomFieldResponse
 
 class TestCustomFieldResponse(unittest.TestCase):
     """CustomFieldResponse unit test stubs"""
@@ -37,7 +37,7 @@ class TestCustomFieldResponse(unittest.TestCase):
         if include_optional:
             return CustomFieldResponse(
                 status = True,
-                result = src.qase.api_client_v1.models.custom_field.CustomField(
+                result = qase.api_client_v1.models.custom_field.CustomField(
                     id = 56, 
                     title = '', 
                     entity = '', 

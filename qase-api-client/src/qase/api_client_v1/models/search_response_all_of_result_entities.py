@@ -18,12 +18,12 @@ import json
 import pprint
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Any, List, Optional
-from src.qase.api_client_v1.models.defect_query import DefectQuery
-from src.qase.api_client_v1.models.plan_query import PlanQuery
-from src.qase.api_client_v1.models.requirement import Requirement
-from src.qase.api_client_v1.models.result import Result
-from src.qase.api_client_v1.models.run import Run
-from src.qase.api_client_v1.models.test_case_query import TestCaseQuery
+from qase.api_client_v1.models.defect_query import DefectQuery
+from qase.api_client_v1.models.plan_query import PlanQuery
+from qase.api_client_v1.models.requirement import Requirement
+from qase.api_client_v1.models.result import Result
+from qase.api_client_v1.models.run import Run
+from qase.api_client_v1.models.test_case_query import TestCaseQuery
 from pydantic import StrictStr, Field
 from typing import Union, List, Optional, Dict
 from typing_extensions import Literal, Self

@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.result_update import ResultUpdate
+from qase.api_client_v1.models.result_update import ResultUpdate
 
 class TestResultUpdate(unittest.TestCase):
     """ResultUpdate unit test stubs"""
@@ -45,7 +45,7 @@ class TestResultUpdate(unittest.TestCase):
                 stacktrace = '',
                 comment = '',
                 steps = [
-                    src.qase.api_client_v1.models.test_step_result_create.TestStepResultCreate(
+                    qase.api_client_v1.models.test_step_result_create.TestStepResultCreate(
                         position = 56, 
                         status = 'passed', 
                         comment = '', 

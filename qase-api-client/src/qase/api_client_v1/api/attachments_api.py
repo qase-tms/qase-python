@@ -20,14 +20,14 @@ from typing_extensions import Annotated
 from pydantic import Field, StrictBytes, StrictStr
 from typing import List, Optional, Union
 from typing_extensions import Annotated
-from src.qase.api_client_v1.models.attachment_list_response import AttachmentListResponse
-from src.qase.api_client_v1.models.attachment_response import AttachmentResponse
-from src.qase.api_client_v1.models.attachment_uploads_response import AttachmentUploadsResponse
-from src.qase.api_client_v1.models.hash_response import HashResponse
+from qase.api_client_v1.models.attachment_list_response import AttachmentListResponse
+from qase.api_client_v1.models.attachment_response import AttachmentResponse
+from qase.api_client_v1.models.attachment_uploads_response import AttachmentUploadsResponse
+from qase.api_client_v1.models.hash_response import HashResponse
 
-from src.qase.api_client_v1.api_client import ApiClient, RequestSerialized
-from src.qase.api_client_v1.api_response import ApiResponse
-from src.qase.api_client_v1.rest import RESTResponseType
+from qase.api_client_v1.api_client import ApiClient, RequestSerialized
+from qase.api_client_v1.api_response import ApiResponse
+from qase.api_client_v1.rest import RESTResponseType
 
 
 class AttachmentsApi:
@@ -888,7 +888,7 @@ class AttachmentsApi:
     def upload_attachment(
         self,
         code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        file: Optional[List[Union[StrictBytes, StrictStr]]] = None,
+        file: Optional[List] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -965,7 +965,7 @@ class AttachmentsApi:
     def upload_attachment_with_http_info(
         self,
         code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        file: Optional[List[Union[StrictBytes, StrictStr]]] = None,
+        file: Optional[List] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1042,7 +1042,7 @@ class AttachmentsApi:
     def upload_attachment_without_preload_content(
         self,
         code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        file: Optional[List[Union[StrictBytes, StrictStr]]] = None,
+        file: Optional[List] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],

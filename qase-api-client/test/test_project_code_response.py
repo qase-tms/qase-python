@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.project_code_response import ProjectCodeResponse
+from qase.api_client_v1.models.project_code_response import ProjectCodeResponse
 
 class TestProjectCodeResponse(unittest.TestCase):
     """ProjectCodeResponse unit test stubs"""
@@ -37,7 +37,7 @@ class TestProjectCodeResponse(unittest.TestCase):
         if include_optional:
             return ProjectCodeResponse(
                 status = True,
-                result = src.qase.api_client_v1.models.project_code_response_all_of_result.ProjectCodeResponse_allOf_result(
+                result = qase.api_client_v1.models.project_code_response_all_of_result.ProjectCodeResponse_allOf_result(
                     code = '', )
             )
         else:

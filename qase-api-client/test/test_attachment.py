@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.attachment import Attachment
+from qase.api_client_v1.models.attachment import Attachment
 
 class TestAttachment(unittest.TestCase):
     """Attachment unit test stubs"""

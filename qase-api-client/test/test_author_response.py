@@ -15,7 +15,7 @@
 
 import unittest
 
-from src.qase.api_client_v1.models.author_response import AuthorResponse
+from qase.api_client_v1.models.author_response import AuthorResponse
 
 class TestAuthorResponse(unittest.TestCase):
     """AuthorResponse unit test stubs"""
@@ -37,7 +37,7 @@ class TestAuthorResponse(unittest.TestCase):
         if include_optional:
             return AuthorResponse(
                 status = True,
-                result = src.qase.api_client_v1.models.author.Author(
+                result = qase.api_client_v1.models.author.Author(
                     id = 56, 
                     entity_type = '', 
                     email = '', 
