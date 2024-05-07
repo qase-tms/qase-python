@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qase-python-commons"
-version = "3.0.2b2"
+version = "3.0.2b3"
 description = "A library for Qase TestOps and Qase Report"
 readme = "README.md"
 authors = [{name = "Qase Team", email = "support@qase.io"}]
@@ -31,6 +31,7 @@ dependencies = [
     "certifi>=2024.2.2",
     "attrs>=23.2.0",
     "qase-api-client~=1.0.0b2",
+    "qase-api-v2-client~=1.0.0b2",
     "more_itertools"
 ]
 

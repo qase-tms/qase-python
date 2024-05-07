@@ -13,7 +13,9 @@ class ConfigManager:
         try:
             if os.path.exists(config_file):
                 with open(config_file, "r") as file:
-                    self.config = json.load(file)
+                    def transform_keys(obj):
+                        return {k.lower(): v for k, v in obj.items()}
+                    self.config = json.load(file, object_hook=transform_keys)
         except Exception as e:
             self.logger.log("Failed to load config from file", "error")
 
