@@ -8,9 +8,10 @@ from ..models.step import Step, StepRequestData, StepType
 class NetworkProfiler:
     _instance = None
 
-    def __init__(self, runtime: Runtime, track_on_fail: bool = True):
+    def __init__(self, runtime: Runtime, skip_domain: str, track_on_fail: bool = True):
         self._original_functions = {}
         self.runtime = runtime
+        self.skip_domain = skip_domain
         self.track_on_fail = track_on_fail
         self.step = None
 
@@ -37,46 +38,60 @@ class NetworkProfiler:
     def _requests_send_wrapper(self, func):
         @wraps(func)
         def wrapper(self, request, *args, **kwargs):
-            NetworkProfilerSingleton.get_instance()._log_pre_request(request)
+            NetworkProfilerSingleton.get_instance()._log_request(request)
             response = func(self, request, *args, **kwargs)
-            NetworkProfilerSingleton.get_instance()._log_post_response(response)
+            NetworkProfilerSingleton.get_instance()._log_response(response)
             return response
 
         return wrapper
 
     def _urllib3_request_wrapper(self, func):
+        skip_domain = self.skip_domain
+
         @wraps(func)
         def wrapper(self, method, url, *args, **kwargs):
+            if skip_domain in url:
+                return func(self, method, url, *args, **kwargs)
+
             interceptor = NetworkProfilerSingleton.get_instance()
             request = lambda: None
             request.method = method
             request.url = url
 
-            interceptor._log_pre_request(request)
+            interceptor._log_request(request)
             response = func(self, method, url, *args, **kwargs)
-            if response is not None and interceptor.track_on_fail and response.status >= 400:
-                interceptor._log_post_response(response, url=url)
+            interceptor._log_response(response, url=url)
             return response
 
         return wrapper
 
     @staticmethod
-    def _log_pre_request(request):
+    def _log_request(request):
         NetworkProfilerSingleton.get_instance().step = Step(
             id=str(uuid.uuid4()),
             step_type=StepType.REQUEST,
             data=StepRequestData(
                 request_method=request.method,
                 request_url=request.url,
-                request_body=request.body,
-                request_headers=request.headers,
+                request_body=request.body if hasattr(request, 'body') else None,
+                request_headers=request.headers if hasattr(request, 'headers') else None
             ),
         )
 
     @staticmethod
-    def _log_post_response(response, url=None, *args, **kwargs):
+    def _log_response(response, url=None, *args, **kwargs):
         status = response.status if hasattr(response, 'status') else response.status_code
         profiler = NetworkProfilerSingleton.get_instance()
+        if profiler.step is None:
+            profiler.step = Step(
+                id=str(uuid.uuid4()),
+                step_type=StepType.REQUEST,
+                data=StepRequestData(
+                    request_method=response.request.method,
+                    request_url=response.request.url,
+                    request_body=response.request.body if hasattr(response.request, 'body') else None,
+                    request_headers=response.request.headers if hasattr(response.request, 'headers') else None
+                ))
         profiler.step.data.add_response(
             status_code=status,
             response_body=str(response.data if hasattr(response,
