@@ -30,7 +30,7 @@ class SleepProfiler:
         def wrapper(duration, *args, **kwargs):
             self._log_pre_sleep(duration)
             func(duration, *args, **kwargs)
-            self._log_post_sleep(duration)
+            self._log_post_sleep()
 
         return wrapper
 
@@ -44,7 +44,7 @@ class SleepProfiler:
         # Assuming runtime can start a step without a request/response
         self.runtime.add_step(self.step)
 
-    def _log_post_sleep(self, duration):
+    def _log_post_sleep(self):
         # Log or track the post-sleep call
         # Update the step status to passed as sleep doesn't fail like network calls
         self.runtime.finish_step(

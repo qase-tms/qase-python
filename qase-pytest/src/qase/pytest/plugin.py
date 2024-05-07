@@ -100,8 +100,8 @@ class QasePytestPlugin:
             self.reporter.enable_profilers()
             self.start_pytest_item(item)
             yield
-            self.reporter.disable_profilers()
             self.finish_pytest_item(item)
+            self.reporter.disable_profilers()
         else:
             yield
 
