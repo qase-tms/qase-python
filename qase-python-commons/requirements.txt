@@ -3,3 +3,4 @@ certifi>=2024.2.2
 more-itertools==9.1.0
 pip~=24.0
 qase-api-client~=1.0.0b2
+qase-api-v2-client~=1.0.0b2

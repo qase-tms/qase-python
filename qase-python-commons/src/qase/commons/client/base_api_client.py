@@ -53,7 +53,7 @@ class BaseApiClient(abc.ABC):
 
     @abc.abstractmethod
     def create_test_run(self, project_code: str, title: str, description: str, plan_id=None,
-                        environment_id=None) -> int:
+                        environment_id=None) -> str:
         """
         Create a test run in Qase TestOps
 
@@ -67,7 +67,7 @@ class BaseApiClient(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def check_test_run(self, project_code: str, run_id: int) -> bool:
+    def check_test_run(self, project_code: str, run_id: str) -> bool:
         """
         Check if test run exists in Qase TestOps
         :param project_code: project code
@@ -77,7 +77,7 @@ class BaseApiClient(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def send_results(self, project_code: str, run_id: int, results: []) -> None:
+    def send_results(self, project_code: str, run_id: str, results: []) -> None:
         """
         Send test results to Qase TestOps
         :param project_code: project code

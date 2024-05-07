@@ -120,7 +120,7 @@ class ApiV1Client(BaseApiClient):
             return True
         return False
 
-    def send_results(self, project_code: str, run_id: int, results: []) -> None:
+    def send_results(self, project_code: str, run_id: str, results: []) -> None:
         api_results = ResultsApi(self.client)
         results_to_send = [self._prepare_result(project_code, result) for result in results]
         self.logger.log_debug(f"Sending results for run {run_id}: {results_to_send}")

@@ -65,6 +65,9 @@ class QaseTestOps:
         self.client.get_project(self.project_code)
 
     def _prepare_client(self) -> BaseApiClient:
+        if self.config.get('testops.usev2', False, bool):
+            from ..client.api_v2_client import ApiV2Client
+            return ApiV2Client(self.config, self.logger)
         return ApiV1Client(self.config, self.logger)
 
     def _send_results_threaded(self, results):
