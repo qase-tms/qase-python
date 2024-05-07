@@ -109,7 +109,8 @@ class QaseCoreReporter:
             if profiler == "network":
                 # Lazy import
                 from ..profilers import NetworkProfilerSingleton
-                NetworkProfilerSingleton.init(runtime=runtime)
+                NetworkProfilerSingleton.init(runtime=runtime,
+                                              skip_domain=self.config.get("testops.api.host", "qase.io"))
                 self.profilers.append(NetworkProfilerSingleton.get_instance())
             if profiler == "sleep":
                 from ..profilers import SleepProfiler
