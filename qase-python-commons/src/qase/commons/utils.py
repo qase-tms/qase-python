@@ -6,8 +6,6 @@ import pip
 import string
 import uuid
 
-from pkg_resources import DistributionNotFound, get_distribution
-
 
 class QaseUtils:
 
@@ -61,14 +59,6 @@ class QaseUtils:
     @staticmethod
     def get_filename(path) -> str:
         return os.path.basename(path)
-
-    @staticmethod
-    def package_version(name):
-        try:
-            version = get_distribution(name).version
-        except DistributionNotFound:
-            version = "unknown"
-        return version
 
 
 class StringFormatter(string.Formatter):
