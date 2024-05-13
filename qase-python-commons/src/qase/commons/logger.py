@@ -4,7 +4,7 @@ import os
 
 
 class Logger:
-    def __init__(self, debug: bool = False, prefix: str = '', dir: str = './logs') -> None:
+    def __init__(self, debug: bool = False, prefix: str = '', dir: str = os.path.join('.', 'logs')) -> None:
         self.debug = debug
         if self.debug:
             filename = f'{prefix}_{self._get_timestamp()}.log'

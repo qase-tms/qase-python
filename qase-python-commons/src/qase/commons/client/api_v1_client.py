@@ -202,6 +202,9 @@ class ApiV1Client(BaseApiClient):
             if step.execution.status == 'untested':
                 prepared_step["status"] = 'passed'
 
+            if step.execution.status == 'skipped':
+                prepared_step["status"] = 'blocked'
+
             if step.step_type == StepType.TEXT:
                 prepared_step['action'] = step.data.action
                 if step.data.expected_result:
