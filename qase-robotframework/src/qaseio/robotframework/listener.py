@@ -90,7 +90,8 @@ class Listener:
         self.step_uuid = id
 
     def end_keyword(self, name, attributes):
-        self.runtime.finish_step(self.step_uuid, STATUSES[attributes["status"]])
+        status = attributes["status"] if attributes["status"] != 'skipped' else 'blocked'
+        self.runtime.finish_step(self.step_uuid, STATUSES[status])
         self.step_uuid = self.runtime.steps[self.step_uuid].parent_id
 
     def end_suite(self, name, attributes: EndSuiteModel):
