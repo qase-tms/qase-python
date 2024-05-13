@@ -80,10 +80,10 @@ class StepExecution(BaseModel):
         self.duration = duration
 
     def set_status(self, status: Optional[str]):
-        if status in ['passed', 'failed', 'skipped', 'untested']:
+        if status in ['passed', 'failed', 'skipped', 'blocked', 'untested']:
             self.status = status
         else:
-            raise ValueError('Step status must be one of: passed, failed, skipped, untested')
+            raise ValueError('Step status must be one of: passed, failed, skipped, blocked, untested')
 
     def complete(self):
         self.end_time = time.time()
