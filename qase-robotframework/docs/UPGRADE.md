@@ -2,6 +2,20 @@
 
 ## From 2.x to 3.x
 
+### Execution
+
+In v3, we have renamed the internal package name.
+To run the reporter, you need to add the listener to the command line:
+
+```diff
+- robot --listener qaseio.robotframework.qase_listener someTest.robot
++ robot --listener qase.robotframework.Listener someTest.robot
+```
+
+```sh
+robot --listener qaseio.robotframework.qase_listener someTest.robot
+```
+
 ### Bulk uploading results has changed
 
 In v3, two configuration options defined how the reporter was uploading results to Qase:
