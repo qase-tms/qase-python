@@ -3,7 +3,7 @@ import re
 import uuid
 
 from qase.commons import ConfigManager
-from qase.commons.models import Result, Suite, Step
+from qase.commons.models import Result, Suite, Step, Field
 from qase.commons.models.step import StepType, StepGherkinData
 from qase.commons.reporters import QaseCoreReporter
 from qase.commons.models.runtime import Runtime
@@ -47,7 +47,7 @@ class Listener:
         logger.debug("Starting test '%s'", name)
 
         self.runtime.result = Result(title=name, signature=name)
-
+        self.runtime.steps = {}
         case_id = self._extract_ids(attributes.get("tags"))
 
         if case_id:
@@ -61,12 +61,10 @@ class Listener:
         self.runtime.result.execution.stacktrace = attributes.get("message")
         self.runtime.result.add_steps([step for key, step in self.runtime.steps.items()])
 
-        if self.runtime.result.testops_id is None:
-            self.runtime.result.case.title = name
-            self.runtime.result.case.description = attributes.get("doc")
+        self.runtime.result.add_field(Field("description", attributes.get("doc")))
 
-            if self.suite:
-                self.runtime.result.suite = Suite(self.suite.get("title"), self.suite.get("description"))
+        if self.suite:
+            self.runtime.result.suite = Suite(self.suite.get("title"), self.suite.get("description"))
 
         self.reporter.add_result(self.runtime.result)
 
