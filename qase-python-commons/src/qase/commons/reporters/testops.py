@@ -32,6 +32,7 @@ class QaseTestOps:
         self.send_semaphore = threading.Semaphore(
             self.config.get('testops.batch.threads', 4))  # Semaphore to limit concurrent sends
         self.lock = threading.Lock()
+        self.count_running_threads = 0
 
         environment = self.config.get('environment', None)
         if environment:
@@ -80,12 +81,14 @@ class QaseTestOps:
                 self.logger.log(f"Error at sending results for run {self.run_id}: {e}", "error")
             raise  # Re-raise the exception to be caught by the thread handler
         finally:
+            self.count_running_threads -= 1
             self.send_semaphore.release()  # Release semaphore whether success or exception
 
     def _send_results(self) -> None:
         if self.results:
             # Acquire semaphore before starting the send operation
             self.send_semaphore.acquire()
+            self.count_running_threads += 1
             results_to_send = self.results.copy()
             self.results = []
 
@@ -115,6 +118,8 @@ class QaseTestOps:
         if len(self.results) > 0:
             self._send_results()
         if self.complete_after_run:
+            while self.count_running_threads > 0:
+                pass
             self.client.complete_run(self.project_code, self.run_id)
 
     def complete_worker(self) -> None:
