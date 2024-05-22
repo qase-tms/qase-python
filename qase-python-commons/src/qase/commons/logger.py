@@ -27,6 +27,6 @@ class Logger:
             self.log(message, 'debug')
 
     @staticmethod
-    def _get_timestamp(format: str = "%Y%m%d_%H:%M:%S"):
+    def _get_timestamp(format: str = "%Y%m%d_%H_%M_%S"):
         now = datetime.datetime.now()
         return now.strftime(format)
