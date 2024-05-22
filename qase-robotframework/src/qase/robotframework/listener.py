@@ -48,13 +48,13 @@ class Listener:
 
         self.runtime.result = Result(title=name, signature=name)
         self.runtime.steps = {}
-        case_id = self._extract_ids(attributes.get("tags"))
-
-        if case_id:
-            self.runtime.result.testops_id = int(case_id)
 
     def end_test(self, name, attributes: EndTestModel):
         logger.debug("Finishing test '%s'", name)
+
+        case_id = self._extract_ids(attributes.get("tags"))
+        if case_id:
+            self.runtime.result.testops_id = int(case_id)
 
         self.runtime.result.execution.complete()
         self.runtime.result.execution.set_status(STATUSES[attributes.get("status")])
