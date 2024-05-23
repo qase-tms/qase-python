@@ -2,6 +2,15 @@
 
 ## From 5.x to 6.x
 
+### Import from `qase`
+
+Import paths have slightly changed:
+
+```diff
+- from qaseio.pytest import qase
++ from qase.pytest import qase
+```
+
 ### Bulk uploading results has changed
 
 In v5, two configuration options defined how the reporter was uploading results to Qase:
