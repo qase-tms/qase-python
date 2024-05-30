@@ -5,7 +5,7 @@
 ## Installation
 
 ```sh
-pip install qase-robotframework==3.0.0b1
+pip install qase-robotframework
 ```
 
 ## Upgrade from 2.x to 3.x
