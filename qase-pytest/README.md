@@ -4,11 +4,10 @@
 
 ## Installation
 
-The qase-pytest v6 is currently in the beta stage.
-To install the latest beta version, run:
+To install the latest version, run:
 
 ```sh
-pip install --pre qase-pytest>6.0.0b1 
+pip install pre qase-pytest
 ```
 
 ## Upgrade from 4.x to 5.x and to 6.x
