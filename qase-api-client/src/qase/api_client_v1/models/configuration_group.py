@@ -20,7 +20,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from qase.api_client_v1.models.configuration import Configuration
+from qase.api_client_v1.models.configuration import ConfigurationModel
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -30,7 +30,7 @@ class ConfigurationGroup(BaseModel):
     """ # noqa: E501
     id: Optional[StrictInt] = None
     title: Optional[StrictStr] = None
-    configurations: Optional[List[Configuration]] = None
+    configurations: Optional[List[ConfigurationModel]] = None
     __properties: ClassVar[List[str]] = ["id", "title", "configurations"]
 
     model_config = ConfigDict(
@@ -93,7 +93,7 @@ class ConfigurationGroup(BaseModel):
         _obj = cls.model_validate({
             "id": obj.get("id"),
             "title": obj.get("title"),
-            "configurations": [Configuration.from_dict(_item) for _item in obj["configurations"]] if obj.get("configurations") is not None else None
+            "configurations": [ConfigurationModel.from_dict(_item) for _item in obj["configurations"]] if obj.get("configurations") is not None else None
         })
         return _obj
 

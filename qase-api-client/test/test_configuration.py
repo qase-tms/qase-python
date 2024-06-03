@@ -15,7 +15,7 @@
 
 import unittest
 
-from qase.api_client_v1.models.configuration import Configuration
+from qase.api_client_v1.models.configuration import ConfigurationModel
 
 class TestConfiguration(unittest.TestCase):
     """Configuration unit test stubs"""
@@ -26,7 +26,7 @@ class TestConfiguration(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> Configuration:
+    def make_instance(self, include_optional) -> ConfigurationModel:
         """Test Configuration
             include_option is a boolean, when False only required
             params are included, when True both required and
