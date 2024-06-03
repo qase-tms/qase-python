@@ -1,0 +1,36 @@
+{
+	"mode": "testops",
+	"fallback": "report",
+	"report": {
+		"driver": "local",
+		"connection": {
+			"local": {
+				"path": "./build/qase-report",
+				"format": "json"
+			}
+		}
+	},
+	"testops": {
+		"bulk": true,
+		"api": {
+			"token": "<token>",
+			"host": "qase.io"
+		},
+		"run": {
+			"title": "Pytest run",
+			"description": "Pytest examples",
+			"complete": true
+		},
+		"defect": true,
+		"project": "<project_code>",
+		"chunk": 200
+	},
+	"framework": {
+		"pytest": {
+			"capture": {
+				"logs": true,
+				"http": true
+			}
+		}
+	}
+}
