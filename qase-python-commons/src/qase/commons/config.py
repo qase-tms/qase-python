@@ -30,7 +30,7 @@ class ConfigManager:
     def get(self, key, default=None, value_type=None):
         # Use _get_config method to get the value. If None, return default.
         value = self._get_config(key)
-        if value and value_type and value_type == bool:
+        if value is not None and value_type is not None and value_type == bool:
             return self.parseBool(value)
         return value or default
 
