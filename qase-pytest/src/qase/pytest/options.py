@@ -95,7 +95,7 @@ class QasePytestOptions:
             parser,
             group,
             "--qase-testops-run-complete",
-            dest="qase_testops_run_description",
+            dest="qase_testops_run_complete",
             type="bool",
             help="Complete run after tests execution"
         )
