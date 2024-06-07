@@ -35,7 +35,7 @@ Update the config in the following way:
 ## From 4.x to 5.x
 
 ### Configuration
-In the latest version of `qase-pytest` reporter, we have changed the way of configuration. The primary source of truth from now is a config file `qase.config.json` that should be located in the same directory from where you run tests. This change will allow us to add more configuration options in the future and make the configuration process more flexible. This config structure will be used for all other reporters.
+In the latest version of the `qase-pytest` reporter, we have updated the way configuration is handled. The primary source of truth is now a configuration file named `qase.config.json`. This file must be located at the root of the directory from which you run your tests. This change not only makes the configuration process more flexible but also allows us to introduce more configuration options in the future. This new config structure will be applicable to all other reporters as well.
 
 Also, we have changed the names of ENV variables and CLI options. You can find the list of all available options in the [configuration](../README.md#configuration) section.
 
