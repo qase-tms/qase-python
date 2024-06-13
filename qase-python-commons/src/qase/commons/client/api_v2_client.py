@@ -86,6 +86,9 @@ class ApiV2Client(ApiV1Client):
 
         if result.get_suite_title():
             data = []
+            root_suite = self.config.root_suite
+            if root_suite:
+                data.append(RelationSuiteItem(title=root_suite))
 
             for suite in result.get_suite_title().split("."):
                 data.append(RelationSuiteItem(title=suite))
