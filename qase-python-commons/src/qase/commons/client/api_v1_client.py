@@ -166,8 +166,16 @@ class ApiV1Client(BaseApiClient):
         if result.get_field('layer'):
             case_data["layer"] = result.get_field('layer')
 
+        suite = None
         if result.get_suite_title():
-            case_data["suite_title"] = "\t".join(result.get_suite_title().split("."))
+            suite = "\t".join(result.get_suite_title().split("."))
+
+        root_suite = self.config.root_suite
+        if root_suite:
+            suite = f"{root_suite}\t{suite}"
+
+        if suite:
+            case_data["suite"] = suite
 
         result_model = {
             "status": result.execution.status,
