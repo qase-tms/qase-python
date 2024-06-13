@@ -47,8 +47,67 @@ def _add_markers(config):
 def setup_config_manager(config):
     config_manager = ConfigManager()
     for option in config.option.__dict__:
-        if option.startswith("qase_") and option and config.option.__dict__[option] is not None:
-            config_manager.set(option.replace("qase_", "").replace("_", "."), config.option.__dict__[option])
+        if option.startswith("qase_"):
+            if option == "qase_mode" and config.option.__dict__[option] is not None:
+                config_manager.config.set_mode(config.option.__dict__[option])
+
+            if option == "qase_fallback" and config.option.__dict__[option] is not None:
+                config_manager.config.set_fallback(config.option.__dict__[option])
+
+            if option == "qase_environment" and config.option.__dict__[option] is not None:
+                config_manager.config.set_environment(config.option.__dict__[option])
+
+            if option == "qase_profilers" and config.option.__dict__[option] is not None:
+                config_manager.config.set_profilers(config.option.__dict__[option].split(","))
+
+            if option == "qase_root_suite" and config.option.__dict__[option] is not None:
+                config_manager.config.set_root_suite(config.option.__dict__[option])
+
+            if option == "qase_debug" and config.option.__dict__[option] is not None:
+                config_manager.config.set_debug(config.option.__dict__[option])
+
+            if option == "qase_execution_plan_path" and config.option.__dict__[option] is not None:
+                config_manager.config.execution_plan.set_path(config.option.__dict__[option])
+
+            if option == "qase_testops_project" and config.option.__dict__[option] is not None:
+                config_manager.config.testops.set_project(config.option.__dict__[option])
+
+            if option == "qase_testops_api_token" and config.option.__dict__[option] is not None:
+                config_manager.config.testops.api.set_token(config.option.__dict__[option])
+
+            if option == "qase_testops_api_host" and config.option.__dict__[option] is not None:
+                config_manager.config.testops.api.set_host(config.option.__dict__[option])
+
+            if option == "qase_testops_plan_id" and config.option.__dict__[option] is not None:
+                config_manager.config.testops.plan.set_id(config.option.__dict__[option])
+
+            if option == "qase_testops_run_id" and config.option.__dict__[option] is not None:
+                config_manager.config.testops.run.set_id(config.option.__dict__[option])
+
+            if option == "qase_testops_run_title" and config.option.__dict__[option] is not None:
+                config_manager.config.testops.run.set_title(config.option.__dict__[option])
+
+            if option == "qase_testops_run_description" and config.option.__dict__[option] is not None:
+                config_manager.config.testops.run.set_description(config.option.__dict__[option])
+
+            if option == "qase_testops_run_complete" and config.option.__dict__[option] is not None:
+                config_manager.config.testops.run.set_complete(config.option.__dict__[option])
+
+            if option == "qase_testops_defect" and config.option.__dict__[option] is not None:
+                config_manager.config.testops.set_defect(config.option.__dict__[option])
+
+            if option == "qase_report_driver" and config.option.__dict__[option] is not None:
+                config_manager.config.report.set_driver(config.option.__dict__[option])
+
+            if option == "qase_report_connection_local_path" and config.option.__dict__[option] is not None:
+                config_manager.config.report.connection.set_path(config.option.__dict__[option])
+
+            if option == "qase_report_connection_local_format" and config.option.__dict__[option] is not None:
+                config_manager.config.report.connection.set_format(config.option.__dict__[option])
+
+            if option == "qase_testops_batch_size" and config.option.__dict__[option] is not None:
+                config_manager.config.testops.batch.set_size(config.option.__dict__[option])
+
     return config_manager
 
 
