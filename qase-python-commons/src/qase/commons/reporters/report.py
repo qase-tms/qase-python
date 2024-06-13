@@ -5,6 +5,7 @@ import json
 import re
 from ..models import Result, Run, Attachment
 from .. import QaseUtils, ConfigManager, Logger
+from ..models.config.connection import Format
 
 
 class QaseReport:
@@ -16,16 +17,16 @@ class QaseReport:
         self.duration = 0
         self.results = []
         self.attachments = []
-        self.config = config
+        self.config = config.config
         self.logger = logger
 
-        self.report_path = self.config.get("report.path", "./build/qase-report")
-        self.format = self.config.get("report.format", "json")
+        self.report_path = self.config.report.connection.path
+        self.format = self.config.report.connection.format
 
         self.start_time = None
         self.end_time = None
         self.run_id = None
-        self.environment = self.config.get("environment", None)
+        self.environment = self.config.environment
 
     def start_run(self):
         self._check_report_path()
@@ -119,16 +120,16 @@ class QaseReport:
     # Saves a model to a file
     def _store_object(self, object, path, filename):
         data = object.to_json()
-        if self.format == 'jsonp':
+        if self.format == Format.jsonp:
             data = f"qaseJsonp({data});"
-        with open(f"{path}/{filename}.{self.format}", 'w', encoding='utf-8') as f:
+        with open(f"{path}/{filename}.{self.format.value}", 'w', encoding='utf-8') as f:
             f.write(data)
 
     def _read_object(self, source):
         data = source.read()
-        if self.format == 'json':
+        if self.format == Format.json:
             return json.loads(data)
-        elif self.format == 'jsonp':
+        elif self.format == Format.jsonp:
             jsonp_pattern = r'\w+\(\s*({[\s\S]*})\s*\);'
             match = re.search(jsonp_pattern, data)
             if match:
