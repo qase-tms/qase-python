@@ -6,7 +6,7 @@ Qase Pytest Reporter is configured in multiple ways:
 - using environment variables
 - using command line options
 
-Environment variables override the values given in the config file, 
+Environment variables override the values given in the config file,
 and command line options override both other values.
 
 ## Configuration options
@@ -17,6 +17,8 @@ and command line options override both other values.
 | Main reporting mode                            | `mode`                     | `QASE_MODE`                     | `--qase-mode`                     | `testops`                               | No       | `testops`, `report`, `off` |
 | Fallback reporting mode                        | `fallback`                 | `QASE_FALLBACK`                 | `--qase-fallback`                 | `report`                                | No       | `testops`, `report`, `off` |
 | Execution plan path                            | `execution_plan_path`      | `QASE_EXECUTION_PLAN_PATH`      | `--qase-execution-plan-path`      | `./build/qase-execution-plan.json`      | No       | Any string                 |
+| Qase environment                               | `environment`              | `QASE_ENVIRONMENT`              | `--qase-environment`              | `local`                                 | No       | Any string                 |
+| Root suite                                     | `rootSuite`                | `QASE_ROOT_SUITE`               | `--qase-root-suite`               |                                         | No       | Any string                 |
 | **Qase TestOps mode configuration**            |
 | Qase project code                              | `testops.project`          | `QASE_TESTOPS_PROJECT`          | `--qase-testops-project`          |                                         | Yes      | Any string                 |
 | Qase API token                                 | `testops.api.token`        | `QASE_TESTOPS_API_TOKEN`        | `--qase-testops-api-token`        |                                         | Yes      | Any string                 |
@@ -28,7 +30,6 @@ and command line options override both other values.
 | ID of the Qase test run to report results      | `testops.run.id`           | `QASE_TESTOPS_RUN_ID`           | `--qase-testops-run-id`           | None, create a new test run             | No       | Any integer                |
 | Batch size for uploading test results          | `testops.batch.size`       | `QASE_TESTOPS_BATCH_SIZE`       | `--qase-testops-batch-size`       | 200                                     | No       | 1 to 2000                  |
 | Create defects in Qase                         | `testops.defect`           | `QASE_TESTOPS_DEFECT`           | `--qase-testops-defect`           | `False`, don't create defects           | No       | `True`, `False`            |
-| Qase environment                               | `environment`              | `QASE_ENVIRONMENT`              | `--qase-environment`              | `local`                                 | No       | Any string                 |
 | **Qase Report mode configuration**             |
 | Local path to store report                     | `report.connection.path`   | `QASE_REPORT_CONNECTION_PATH`   | `--qase-report-connection-path`   | `./build/qase-report`                   | No       | Any string                 |
 | Report format                                  | `report.connection.format` | `QASE_REPORT_CONNECTION_FORMAT` | `--qase-report-connection-format` | `json`                                  | No       | `json`, `jsonp`            |
@@ -36,7 +37,6 @@ and command line options override both other values.
 | **Framework specific options**                 |
 | **Pytest**                                     |
 | Capture logs                                   | `pytest.capture_logs`      | `QASE_PYTEST_CAPTURE_LOGS`      | `--qase-pytest-capture-logs`      | `False`                                 | No       | `true`, `false`            |
-| Capture HTTP traffic                           | `pytest.capture_http`      | `QASE_PYTEST_CAPTURE_HTTP`      | `--qase-pytest-capture-http`      | `False`                                 | No       | `true`, `false`            |
 | **Earlier versions**                           |
 | **qase-pytest v5.x**                           |
 | TestOps bulk (always on since v6)              | `testops.bulk`             | `QASE_TESTOPS_BULK`             | `--qase-testops-bulk`             | `True`                                  | No       | `true`, `false`            |

@@ -13,9 +13,17 @@ class QasePytestOptions:
         QasePytestOptions.add_option(
             parser,
             group,
+            "--qase-fallback",
+            dest="qase_fallback",
+            help="Define Qase reporter fallback mode: `off`, `report` or `testops`"
+        )
+
+        QasePytestOptions.add_option(
+            parser,
+            group,
             "--qase-environment",
             dest="qase_environment",
-            help="Define environment slug or ID from TestOps"
+            help="Define environment slug from TestOps"
         )
 
         QasePytestOptions.add_option(
@@ -103,9 +111,9 @@ class QasePytestOptions:
         QasePytestOptions.add_option(
             parser,
             group,
-            "--qase-testops-chunk",
-            dest="qase_testops_chunk",
-            help="Define batch size of results chunk. Default: 200."
+            "--qase-testops-batch-size",
+            dest="qase_testops_batch_size",
+            help="Define batch size of results. Default: 200."
         )
 
         QasePytestOptions.add_option(
@@ -123,6 +131,14 @@ class QasePytestOptions:
             "--qase-report-driver",
             dest="qase_report_driver",
             help="Define report driver: `local`. More options coming soon."
+        )
+
+        QasePytestOptions.add_option(
+            parser,
+            group,
+            "--qase-root-suite",
+            dest="qase_root_suite",
+            help="Define root suite for tests"
         )
 
         QasePytestOptions.add_option(
