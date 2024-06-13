@@ -8,46 +8,46 @@ from ..client.base_api_client import BaseApiClient
 from ..models import Result
 
 DEFAULT_BATCH_SIZE = 200
+DEFAULT_THREAD_COUNT = 4
 
 
 class QaseTestOps:
 
     def __init__(self, config: ConfigManager, logger: Logger) -> None:
-        self.config = config
+        self.config = config.config
         self.logger = logger
 
         self.client = self._prepare_client()
 
-        run_id = self.config.get('testops.run.id')
-        plan_id = self.config.get('testops.plan.id')
+        run_id = self.config.testops.run.id
+        plan_id = self.config.testops.plan.id
 
-        self.project_code = self.config.get('testops.project')
+        self.project_code = self.config.testops.project
         self.run_id = int(run_id) if run_id else run_id
         self.plan_id = int(plan_id) if plan_id else plan_id
-        self.defect = self.config.get('testops.defect', False, bool)
-        self.complete_after_run = self.config.get('testops.run.complete', True, bool)
+        self.defect = self.config.testops.defect
+        self.complete_after_run = self.config.testops.run.complete
         self.environment = None
 
-        self.batch_size = min(2000, max(1, int(self.config.get('testops.batch.size', DEFAULT_BATCH_SIZE))))
-        self.send_semaphore = threading.Semaphore(
-            self.config.get('testops.batch.threads', 4))  # Semaphore to limit concurrent sends
+        self.batch_size = min(2000, max(1, int(self.config.testops.batch.size or DEFAULT_BATCH_SIZE)))
+        self.send_semaphore = threading.Semaphore(DEFAULT_THREAD_COUNT)  # Semaphore to limit concurrent sends
         self.lock = threading.Lock()
         self.count_running_threads = 0
 
-        environment = self.config.get('environment', None)
+        environment = self.config.environment
         if environment:
             if isinstance(environment, int) or (isinstance(environment, str) and environment.isnumeric()):
                 self.environment = environment
             elif isinstance(environment, str):
                 self.environment = self.client.get_environment(environment, self.project_code)
 
-        run_title = self.config.get('testops.run.title', None)
+        run_title = self.config.testops.run.title
         if run_title and run_title != '':
             self.run_title = run_title
         else:
             self.run_title = "Automated Run {}".format(str(datetime.now()))
 
-        run_description = self.config.get('testops.run.description', None)
+        run_description = self.config.testops.run.description
         if run_description and run_description != '':
             self.run_description = run_description
         else:
@@ -66,7 +66,7 @@ class QaseTestOps:
         self.client.get_project(self.project_code)
 
     def _prepare_client(self) -> BaseApiClient:
-        if self.config.get('testops.usev2', False, bool):
+        if self.config.testops.use_v2:
             from ..client.api_v2_client import ApiV2Client
             return ApiV2Client(self.config, self.logger)
         return ApiV1Client(self.config, self.logger)

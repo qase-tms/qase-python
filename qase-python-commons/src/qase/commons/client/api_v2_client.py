@@ -14,26 +14,29 @@ from qase.api_client_v2.models.result_step_status import ResultStepStatus
 from qase.api_client_v2.models.result_steps_type import ResultStepsType
 
 from .api_v1_client import ApiV1Client
-from .. import ConfigManager, Logger
+from .. import Logger
 from ..exceptions.reporter import ReporterException
 from ..models import Attachment, Result
+from ..models.config.qaseconfig import QaseConfig
 from ..models.step import StepType, Step
 
 
 class ApiV2Client(ApiV1Client):
-    def __init__(self, config: ConfigManager, logger: Logger):
+    def __init__(self, config: QaseConfig, logger: Logger):
         ApiV1Client.__init__(self, config, logger)
 
         try:
             self.logger.log_debug("Preparing API V2 client")
             configuration = Configuration()
-            configuration.api_key['TokenAuth'] = self.config.get('testops.api.token')
+            configuration.api_key['TokenAuth'] = self.config.testops.api.token
             configuration.ssl_ca_cert = certifi.where()
-            host = self.config.get('testops.api.host', 'qase.io')
-            if self.config.get('testops.api.enterprise', False, bool):
-                configuration.host = f'https://api-{host}/v2'
-            else:
+            host = self.config.testops.api.host
+            if host == 'qase.io':
                 configuration.host = f'https://api.{host}/v2'
+                self.web = f'https://app.{host}'
+            else:
+                configuration.host = f'https://api-{host}/v2'
+                self.web = f'https://{host}'
 
             self.client_v2 = ApiClient(configuration)
             self.logger.log_debug("API V2 client prepared")

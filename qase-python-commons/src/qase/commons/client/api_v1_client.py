@@ -4,30 +4,31 @@ import certifi
 from qase.api_client_v1 import ApiClient, ProjectsApi, Project, EnvironmentsApi, RunsApi, AttachmentsApi, \
     AttachmentGet, RunCreate, ResultsApi, ResultcreateBulk
 from qase.api_client_v1.configuration import Configuration
-from .. import ConfigManager, Logger
+from .. import Logger
 from .base_api_client import BaseApiClient
 from ..exceptions.reporter import ReporterException
 from ..models import Attachment, Result, Step
+from ..models.config.qaseconfig import QaseConfig
 from ..models.step import StepType
 
 
 class ApiV1Client(BaseApiClient):
-    def __init__(self, config: ConfigManager, logger: Logger):
+    def __init__(self, config: QaseConfig, logger: Logger):
         self.logger = logger
         self.config = config
 
         try:
             self.logger.log_debug("Preparing API client")
             configuration = Configuration()
-            configuration.api_key['TokenAuth'] = self.config.get('testops.api.token')
+            configuration.api_key['TokenAuth'] = self.config.testops.api.token
             configuration.ssl_ca_cert = certifi.where()
-            host = self.config.get('testops.api.host', 'qase.io')
-            if self.config.get('testops.api.enterprise', False, bool):
-                configuration.host = f'https://api-{host}/v1'
-                self.web = f'https://{host}'
-            else:
+            host = self.config.testops.api.host
+            if host == 'qase.io':
                 configuration.host = f'https://api.{host}/v1'
                 self.web = f'https://app.{host}'
+            else:
+                configuration.host = f'https://api-{host}/v1'
+                self.web = f'https://{host}'
 
             self.client = ApiClient(configuration)
             self.logger.log_debug("API client prepared")
@@ -176,7 +177,7 @@ class ApiV1Client(BaseApiClient):
             "attachments": [attach.hash for attach in attached],
             "steps": steps,
             "param": result.params,
-            "defect": self.config.get('testops.defect', False, bool),
+            "defect": self.config.testops.defect,
         }
 
         test_ops_id = result.get_testops_id()

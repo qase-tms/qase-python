@@ -2,13 +2,14 @@ import os
 import json
 import time
 
-from ..config import ConfigManager as Config
+from ..config import ConfigManager
 from ..logger import Logger
 
 from .report import QaseReport
 from .testops import QaseTestOps
 
 from ..models import Result, Attachment, Runtime
+from ..models.config.qaseconfig import Mode
 from typing import Union
 
 """
@@ -18,22 +19,23 @@ from typing import Union
 
 
 class QaseCoreReporter:
-    def __init__(self, config: Config):
-        self.config = config
-        self.logger = Logger(self.config.get('debug', False, bool))
+    def __init__(self, config: ConfigManager):
+        config.validate_config()
+        self.config = config.config
+        self.logger = Logger(self.config.debug)
         self.execution_plan = None
         self.profilers = []
         self.overhead = 0
 
-        self._selective_execution_setup()
+        # self._selective_execution_setup()
         self.fallback = self._fallback_setup()
 
         self.logger.log_debug(f"Config: {self.config}")
 
         # Reading reporter mode from config file
-        mode = config.get("mode", "off")
+        mode = self.config.mode
 
-        if mode == 'testops':
+        if mode == Mode.testops:
             try:
                 self._load_testops_plan()
                 self.reporter = QaseTestOps(config=config, logger=self.logger)
@@ -41,7 +43,7 @@ class QaseCoreReporter:
                 self.logger.log('Failed to initialize TestOps reporter. Using fallback.', 'info')
                 self.logger.log(e, 'error')
                 self.reporter = self.fallback
-        elif mode == 'report':
+        elif mode == Mode.report:
             self.reporter = QaseReport(config=config, logger=self.logger)
         else:
             self.reporter = None
@@ -103,14 +105,14 @@ class QaseCoreReporter:
                 self._run_fallback()
 
     def setup_profilers(self, runtime: Runtime) -> None:
-        profilers = self.config.get("profilers", [])
+        profilers = self.config.profilers
 
         for profiler in profilers:
             if profiler == "network":
                 # Lazy import
                 from ..profilers import NetworkProfilerSingleton
                 NetworkProfilerSingleton.init(runtime=runtime,
-                                              skip_domain=self.config.get("testops.api.host", "qase.io"))
+                                              skip_domain=self.config.testops.api.host)
                 self.profilers.append(NetworkProfilerSingleton.get_instance())
             if profiler == "sleep":
                 from ..profilers import SleepProfiler
@@ -166,33 +168,33 @@ class QaseCoreReporter:
 
     def _load_testops_plan(self) -> None:
         try:
-            if self.config.get("testops.plan.id", None) is not None:
+            if self.config.testops.plan.id is not None:
                 from .. import TestOpsPlanLoader
 
                 # Load test plan data from Qase TestOps
                 loader = TestOpsPlanLoader(
-                    api_token=self.config.get("testops.api.token"),
-                    host=self.config.get("testops.api.host", "qase.io"),
+                    api_token=self.config.testops.api.token,
+                    host=self.config.testops.api.host
                 )
-                self.execution_plan = loader.load(self.config.get("testops.project"),
-                                                  int(self.config.get("testops.plan.id")))
+                self.execution_plan = loader.load(self.config.testops.project,
+                                                  int(self.config.testops.plan.id))
         except Exception as e:
             self.logger.log('Failed to load test plan from Qase TestOps', 'info')
             self.logger.log(e, 'error')
 
     # TODO: won't work, need to fix
-    def _selective_execution_setup(self) -> list:
-        # Load execution plan from file
-        path = self.config.get("execution_plan.path", "qase_execution_plan.json")
-        if not self.config.get("execution_plan.path", None) and path and os.path.isfile(path):
-            with open('execution_plan.json') as f:
-                return json.load(f)
-
-        # Load execution plan from command line or env variable
-        if self.config.get("execution_plan", None):
-            return [int(n) for n in str(self.config.get("execution_plan").split(","))]
+    # def _selective_execution_setup(self) -> list:
+    #     # Load execution plan from file
+    #     path = self.config.execution_plan.path
+    #     if not self.config.execution_plan.path and path and os.path.isfile(self.config.execution_plan.path):
+    #         with open(self.config.execution_plan.path) as f:
+    #             return json.load(f)
+    #
+    #     # Load execution plan from command line or env variable
+    #     if self.config.self.config.execution_plan.path:
+    #         return [int(n) for n in str(self.config.self.config.execution_plan.path.split(","))]
 
     def _fallback_setup(self) -> Union[QaseReport, None]:
-        if self.config.get("fallback", 'report'):
+        if self.config.fallback == Mode.report:
             return QaseReport(config=self.config, logger=self.logger)
         return None
