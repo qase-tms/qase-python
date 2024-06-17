@@ -18,13 +18,13 @@ class Listener:
     ROBOT_LISTENER_API_VERSION = 2
 
     def __init__(self):
-        config = ConfigManager().config
+        config = ConfigManager()
         self.reporter = QaseCoreReporter(config)
         self.runtime = Runtime()
         self.step_uuid = None
         self.suite = {}
 
-        if config.debug:
+        if config.config.debug:
             logger.setLevel(logging.DEBUG)
             ch = logging.StreamHandler()
             formatter = logging.Formatter(
