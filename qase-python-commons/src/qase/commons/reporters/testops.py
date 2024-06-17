@@ -2,10 +2,11 @@ import threading
 
 from datetime import datetime
 from typing import List
-from .. import ConfigManager, Logger, ReporterException
+from .. import Logger, ReporterException
 from ..client.api_v1_client import ApiV1Client
 from ..client.base_api_client import BaseApiClient
 from ..models import Result
+from ..models.config.qaseconfig import QaseConfig
 
 DEFAULT_BATCH_SIZE = 200
 DEFAULT_THREAD_COUNT = 4
@@ -13,8 +14,8 @@ DEFAULT_THREAD_COUNT = 4
 
 class QaseTestOps:
 
-    def __init__(self, config: ConfigManager, logger: Logger) -> None:
-        self.config = config.config
+    def __init__(self, config: QaseConfig, logger: Logger) -> None:
+        self.config = config
         self.logger = logger
 
         self.client = self._prepare_client()

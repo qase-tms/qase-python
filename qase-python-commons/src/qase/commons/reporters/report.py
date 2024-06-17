@@ -4,20 +4,21 @@ import shutil
 import json
 import re
 from ..models import Result, Run, Attachment
-from .. import QaseUtils, ConfigManager, Logger
+from .. import QaseUtils, Logger
 from ..models.config.connection import Format
+from ..models.config.qaseconfig import QaseConfig
 
 
 class QaseReport:
     def __init__(
             self,
-            config: ConfigManager,
+            config: QaseConfig,
             logger: Logger
     ):
         self.duration = 0
         self.results = []
         self.attachments = []
-        self.config = config.config
+        self.config = config
         self.logger = logger
 
         self.report_path = self.config.report.connection.path
