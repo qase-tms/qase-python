@@ -119,7 +119,7 @@ class QaseReport:
 
     # Saves a model to a file
     def _store_object(self, object, path, filename):
-        data = object.to_json()
+        data = object.__str__()
         if self.format == Format.jsonp:
             data = f"qaseJsonp({data});"
         with open(f"{path}/{filename}.{self.format.value}", 'w', encoding='utf-8') as f:
