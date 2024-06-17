@@ -38,13 +38,13 @@ class QaseCoreReporter:
         if mode == Mode.testops:
             try:
                 self._load_testops_plan()
-                self.reporter = QaseTestOps(config=config, logger=self.logger)
+                self.reporter = QaseTestOps(config=self.config, logger=self.logger)
             except Exception as e:
                 self.logger.log('Failed to initialize TestOps reporter. Using fallback.', 'info')
                 self.logger.log(e, 'error')
                 self.reporter = self.fallback
         elif mode == Mode.report:
-            self.reporter = QaseReport(config=config, logger=self.logger)
+            self.reporter = QaseReport(config=self.config, logger=self.logger)
         else:
             self.reporter = None
 

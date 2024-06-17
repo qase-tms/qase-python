@@ -12,7 +12,7 @@ def test_QaseReport_init():
     config.config.report.connection.format = Format.json
     config.config.environment = "env1"
 
-    report = QaseReport(config, logger)
+    report = QaseReport(config.config, logger)
     assert report.report_path == "custom_path"
     assert report.format == Format.json
     assert report.environment == "env1"
@@ -24,7 +24,7 @@ def test_QaseReport_init():
 def test_QaseReport_start_run(mock_exists, mock_rmtree, mock_makedirs):
     logger = Logger()
     config = ConfigManager()
-    report = QaseReport(config, logger)
+    report = QaseReport(config.config, logger)
     report.start_run()
     assert mock_exists.called
     assert mock_rmtree.called
@@ -38,7 +38,7 @@ def test_QaseReport_start_run(mock_exists, mock_rmtree, mock_makedirs):
 def test_QaseReport_check_report_path(mock_makedirs, mock_rmtree, mock_exists):
     logger = Logger()
     config = ConfigManager()
-    report = QaseReport(config, logger)
+    report = QaseReport(config.config, logger)
     report._check_report_path()
     assert mock_exists.called
     assert mock_rmtree.called
@@ -51,7 +51,7 @@ def test_QaseReport_check_report_path(mock_makedirs, mock_rmtree, mock_exists):
 def test_QaseReport_recreate_dir(mock_makedirs, mock_rmtree, mock_exists):
     logger = Logger()
     config = ConfigManager()
-    report = QaseReport(config, logger)
+    report = QaseReport(config.config, logger)
     report._recreate_dir("some_path")
     assert mock_exists.called
     assert mock_rmtree.called
@@ -62,7 +62,7 @@ def test_QaseReport_recreate_dir(mock_makedirs, mock_rmtree, mock_exists):
 def test_QaseReport_store_object(mock_open):
     logger = Logger()
     config = ConfigManager()
-    report = QaseReport(config, logger)
+    report = QaseReport(config.config, logger)
     mock_object = MagicMock()
     mock_object.to_json.return_value = '{"key": "value"}'
     report._store_object(mock_object, "/path", "filename")
