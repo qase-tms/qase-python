@@ -1,4 +1,5 @@
 from ..basemodel import BaseModel
+from ... import QaseUtils
 
 
 class PytestConfig(BaseModel):
@@ -7,8 +8,8 @@ class PytestConfig(BaseModel):
     def __init__(self):
         self.capture_logs = False
 
-    def set_capture_logs(self, capture_logs: bool):
-        self.capture_logs = capture_logs
+    def set_capture_logs(self, capture_logs):
+        self.capture_logs = QaseUtils.parse_bool(capture_logs)
 
 
 class Framework(BaseModel):

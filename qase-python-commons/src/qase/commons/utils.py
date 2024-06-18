@@ -38,6 +38,10 @@ class QaseUtils:
         return f"{os.getpid()}-{threading.current_thread().name}"
 
     @staticmethod
+    def parse_bool(value) -> bool:
+        return value in ("y", "yes", "true", "True", "TRUE", "1", 1, True)
+
+    @staticmethod
     def uuid() -> str:
         return str(uuid.uuid4())
 
