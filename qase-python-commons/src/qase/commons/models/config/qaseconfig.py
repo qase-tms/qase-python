@@ -4,6 +4,7 @@ from .framework import Framework
 from .report import ReportConfig
 from .testops import TestopsConfig
 from ..basemodel import BaseModel
+from ... import QaseUtils
 
 
 class Mode(Enum):
@@ -61,5 +62,5 @@ class QaseConfig(BaseModel):
     def set_root_suite(self, root_suite: str):
         self.root_suite = root_suite
 
-    def set_debug(self, debug: bool):
-        self.debug = debug
+    def set_debug(self, debug):
+        self.debug = QaseUtils.parse_bool(debug)

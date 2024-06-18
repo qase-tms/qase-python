@@ -1,4 +1,5 @@
 from ..basemodel import BaseModel
+from ... import QaseUtils
 
 
 class RunConfig(BaseModel):
@@ -16,8 +17,8 @@ class RunConfig(BaseModel):
     def set_description(self, description: str):
         self.description = description
 
-    def set_complete(self, complete: bool):
-        self.complete = complete
+    def set_complete(self, complete):
+        self.complete = QaseUtils.parse_bool(complete)
 
     def set_id(self, id: int):
         self.id = id

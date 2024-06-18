@@ -3,6 +3,7 @@ from .batch import BatchConfig
 from .plan import PlanConfig
 from .run import RunConfig
 from ..basemodel import BaseModel
+from ... import QaseUtils
 
 
 class TestopsConfig(BaseModel):
@@ -24,8 +25,8 @@ class TestopsConfig(BaseModel):
     def set_project(self, project: str):
         self.project = project
 
-    def set_defect(self, defect: bool):
-        self.defect = defect
+    def set_defect(self, defect):
+        self.defect = QaseUtils.parse_bool(defect)
 
-    def set_use_v2(self, use_v2: bool):
-        self.use_v2 = use_v2
+    def set_use_v2(self, use_v2):
+        self.use_v2 = QaseUtils.parse_bool(use_v2)

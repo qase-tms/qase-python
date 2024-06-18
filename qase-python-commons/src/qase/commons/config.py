@@ -10,7 +10,6 @@ class ConfigManager:
         self.logger = Logger()
         self.__config_file = config_file
         self.config = QaseConfig()
-        self.parse_bool = lambda d: d in ("y", "yes", "true", "1", 1, True)
 
         self.__load_file_config()
         self.__load_env_config()
@@ -56,7 +55,7 @@ class ConfigManager:
 
                     if config.get("debug"):
                         self.config.set_debug(
-                            self.parse_bool(config.get("debug"))
+                            config.get("debug")
                         )
 
                     if config.get("executionPlan"):
@@ -81,12 +80,12 @@ class ConfigManager:
 
                         if testops.get("defect"):
                             self.config.testops.set_defect(
-                                self.parse_bool(testops.get("defect"))
+                                testops.get("defect")
                             )
 
                         if testops.get("useV2"):
                             self.config.testops.set_use_v2(
-                                self.parse_bool(testops.get("useV2"))
+                                testops.get("useV2")
                             )
 
                         if testops.get("plan"):
@@ -109,7 +108,7 @@ class ConfigManager:
 
                             if run.get("complete"):
                                 self.config.testops.run.set_complete(
-                                    self.parse_bool(run.get("complete"))
+                                    run.get("complete")
                                 )
 
                         if testops.get("batch"):
@@ -143,7 +142,7 @@ class ConfigManager:
 
                             if pytest.get("captureLogs"):
                                 self.config.framework.pytest.set_capture_logs(
-                                    self.parse_bool(pytest.get("captureLogs"))
+                                    pytest.get("captureLogs")
                                 )
 
         except Exception as e:
@@ -168,7 +167,7 @@ class ConfigManager:
                     self.config.set_profilers(value.split(','))
 
                 if key == 'QASE_DEBUG':
-                    self.config.set_debug(self.parse_bool(value))
+                    self.config.set_debug(value)
 
                 if key == 'QASE_EXECUTION_PLAN_PATH':
                     self.config.execution_plan.set_path(value)
@@ -183,7 +182,7 @@ class ConfigManager:
                     self.config.testops.set_project(value)
 
                 if key == 'QASE_TESTOPS_DEFECT':
-                    self.config.testops.set_defect(self.parse_bool(value))
+                    self.config.testops.set_defect(value)
 
                 if key == 'QASE_TESTOPS_PLAN_ID':
                     self.config.testops.plan.set_id(value)
@@ -198,7 +197,7 @@ class ConfigManager:
                     self.config.testops.run.set_description(value)
 
                 if key == 'QASE_TESTOPS_RUN_COMPLETE':
-                    self.config.testops.run.set_complete(self.parse_bool(value))
+                    self.config.testops.run.set_complete(value)
 
                 if key == 'QASE_TESTOPS_BATCH_SIZE':
                     self.config.testops.batch.set_size(value)
@@ -213,7 +212,7 @@ class ConfigManager:
                     self.config.report.connection.set_format(value)
 
                 if key == 'QASE_PYTEST_CAPTURE_LOGS':
-                    self.config.framework.pytest.set_capture_logs(self.parse_bool(value))
+                    self.config.framework.pytest.set_capture_logs(value)
 
         except Exception as e:
             self.logger.log("Failed to load config from env vars {e}", "error")
