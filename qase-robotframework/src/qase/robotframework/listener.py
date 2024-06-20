@@ -1,4 +1,5 @@
 import logging
+import os
 import re
 import uuid
 
@@ -40,6 +41,7 @@ class Listener:
             "title": name,
             "description": attributes["doc"]
         }
+
         logger.debug("Starting suite '%s'", name)
 
     def start_test(self, name, attributes: StartTestModel):
@@ -64,6 +66,17 @@ class Listener:
 
         if self.suite:
             self.runtime.result.suite = Suite(self.suite.get("title"), self.suite.get("description"))
+
+        if "source" in attributes:
+            file_path = attributes["source"].split(os.getcwd() + '/')[1]
+            signature = '::'.join(file_path.split("/"))
+            if self.suite:
+                signature += f"::{self.suite.get('title').lower().replace(' ', '_')}::{name.lower().replace(' ', '_')}"
+
+            if self.runtime.result.testops_id:
+                signature += f"::{self.runtime.result.testops_id}"
+
+            self.runtime.result.signature = signature
 
         self.reporter.add_result(self.runtime.result)
 

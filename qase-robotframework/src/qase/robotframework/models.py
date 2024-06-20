@@ -59,6 +59,7 @@ class EndTestModel(TypedDict):
     elapsedtime: int
     status: str
     message: str
+    source: str
 
 
 class StartKeywordModel(TypedDict):

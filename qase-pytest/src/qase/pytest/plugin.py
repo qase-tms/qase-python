@@ -149,7 +149,7 @@ class QasePytestPlugin:
     def start_pytest_item(self, item):
         self.runtime.result = Result(
             title=self._get_title(item),
-            signature=self._get_signature(item),
+            signature='',
         )
         self._set_fields(item)
         self._set_tags(item)
@@ -159,6 +159,7 @@ class QasePytestPlugin:
         self._set_params(item)
         self._set_suite(item)
         self._set_relations(item)
+        self._get_signature(item)
 
     def finish_pytest_item(self, item):
         self.runtime.result.execution.complete()
@@ -212,8 +213,12 @@ class QasePytestPlugin:
 
         return str(title)
 
-    def _get_signature(self, item) -> str:
-        return re.sub(r'\[.*?\]', '', item.nodeid)
+    def _get_signature(self, item):
+        self.runtime.result.signature = item.nodeid.replace("/", "::")
+        if self.runtime.result.testops_id:
+            self.runtime.result.signature += f"::{self.runtime.result.testops_id}"
+        for key, val in self.runtime.result.params.items():
+            self.runtime.result.signature += f"::{{{key}:{val}}}"
 
     def _set_relations(self, item) -> None:
         # TODO: Add support for relations
