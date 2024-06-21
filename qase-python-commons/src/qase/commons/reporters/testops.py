@@ -1,4 +1,5 @@
 import threading
+import urllib.parse
 
 from datetime import datetime
 from typing import List
@@ -17,6 +18,7 @@ class QaseTestOps:
     def __init__(self, config: QaseConfig, logger: Logger) -> None:
         self.config = config
         self.logger = logger
+        self.__baseUrl = self.__get_host(config.testops.api.host)
 
         self.client = self._prepare_client()
 
@@ -128,6 +130,8 @@ class QaseTestOps:
             self._send_results()
 
     def add_result(self, result: Result) -> None:
+        if result.get_status() == 'failed':
+            self.__show_link(result.testops_id, result.title)
         self.results.append(result)
         if len(self.results) >= self.batch_size:
             self._send_results()
@@ -137,3 +141,21 @@ class QaseTestOps:
 
     def set_results(self, results) -> None:
         self.results = results
+
+    def __show_link(self, id, title: str):
+        link = self.__prepare_link(id, title)
+        self.logger.log(f"See why this test failed: {link}", "info")
+
+    def __prepare_link(self, id, title: str):
+        link = f"{self.__baseUrl}/run/{self.project_code}/dashboard/{self.run_id}?source=logs&status=%5B2%5D&search="
+        if id:
+            return f"{link}{id}`"
+
+        return f"{link}{urllib.parse.quote_plus(title)}"
+
+    @staticmethod
+    def __get_host(host: str):
+        if host == 'qase.io':
+            return 'https://app.qase.io'
+
+        return f'https://{host.replace("api", "app")}'
