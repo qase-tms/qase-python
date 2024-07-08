@@ -1,12 +1,12 @@
-# [Qase](https://qase.io) Python
+# [Qase TestOps](https://qase.io) reporters for Python
 
-This is a monorepo for all Python-related projects
+Monorepo with [Qase TestOps](https://qase.io) reporters for Python testing frameworks.
 
 ## Projects
 
-- [qaseio](/qaseio) - Qase TestOps API client (v1)
-- [qase-python-api](/qase-python-api) - Qase TestOps API client (v2)
+- [qase-api-client](/qase-api-client) - Qase TestOps API client (v1)
+- [qase-api-v2-client](/qase-api-v2-client) - Qase TestOps API client (v2)
 - [qase-pytest](/qase-pytest) - Pytest reporter for Qase Report and Qase TestOps
-- [qase-pytest-bdd](/qase-pytest-bdd/) - Pytest-bdd reporter
 - [qase-robotframework](/qase-robotframework) - Robot Framework reporter
 - [qase-python-commons](/qase-python-commons/) - Library with common components shared across reporters
+- [qaseio](/qaseio) - Qase TestOps API client (v1). Deprecated, use qase-api-client instead
