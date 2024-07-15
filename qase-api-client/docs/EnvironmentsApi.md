@@ -272,7 +272,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_environments**
-> EnvironmentListResponse get_environments(code, limit=limit, offset=offset)
+> EnvironmentListResponse get_environments(code, search=search, slug=slug, limit=limit, offset=offset)
 
 Get all environments
 
@@ -309,13 +309,15 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.EnvironmentsApi(api_client)
-    code = 'code_example'  # str | Code of project, where to search entities.
-    limit = 10  # int | A number of entities in result set. (optional) (default to 10)
-    offset = 0  # int | How many entities should be skipped. (optional) (default to 0)
+    code = 'code_example' # str | Code of project, where to search entities.
+    search = 'search_example' # str | A search string. Will return all environments with titles containing provided string.  (optional)
+    slug = 'slug_example' # str | A search string.  Will return all environments with slugs equal to provided string.  (optional)
+    limit = 10 # int | A number of entities in result set. (optional) (default to 10)
+    offset = 0 # int | How many entities should be skipped. (optional) (default to 0)
 
     try:
         # Get all environments
-        api_response = api_instance.get_environments(code, limit=limit, offset=offset)
+        api_response = api_instance.get_environments(code, search=search, slug=slug, limit=limit, offset=offset)
         print("The response of EnvironmentsApi->get_environments:\n")
         pprint(api_response)
     except Exception as e:
@@ -330,6 +332,8 @@ with qase.api_client_v1.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **code** | **str**| Code of project, where to search entities. | 
+ **search** | **str**| A search string. Will return all environments with titles containing provided string.  | [optional] 
+ **slug** | **str**| A search string.  Will return all environments with slugs equal to provided string.  | [optional] 
  **limit** | **int**| A number of entities in result set. | [optional] [default to 10]
  **offset** | **int**| How many entities should be skipped. | [optional] [default to 0]
 

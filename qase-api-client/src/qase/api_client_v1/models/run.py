@@ -48,7 +48,8 @@ class Run(BaseModel):
     custom_fields: Optional[List[CustomFieldValue]] = None
     tags: Optional[List[TagValue]] = None
     cases: Optional[List[StrictInt]] = None
-    __properties: ClassVar[List[str]] = ["id", "title", "description", "status", "status_text", "start_time", "end_time", "public", "stats", "time_spent", "environment", "milestone", "custom_fields", "tags", "cases"]
+    plan_id: Optional[StrictInt] = None
+    __properties: ClassVar[List[str]] = ["id", "title", "description", "status", "status_text", "start_time", "end_time", "public", "stats", "time_spent", "environment", "milestone", "custom_fields", "tags", "cases", "plan_id"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -137,6 +138,11 @@ class Run(BaseModel):
         if self.milestone is None and "milestone" in self.model_fields_set:
             _dict['milestone'] = None
 
+        # set to None if plan_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.plan_id is None and "plan_id" in self.model_fields_set:
+            _dict['plan_id'] = None
+
         return _dict
 
     @classmethod
@@ -163,7 +169,8 @@ class Run(BaseModel):
             "milestone": RunMilestone.from_dict(obj["milestone"]) if obj.get("milestone") is not None else None,
             "custom_fields": [CustomFieldValue.from_dict(_item) for _item in obj["custom_fields"]] if obj.get("custom_fields") is not None else None,
             "tags": [TagValue.from_dict(_item) for _item in obj["tags"]] if obj.get("tags") is not None else None,
-            "cases": obj.get("cases")
+            "cases": obj.get("cases"),
+            "plan_id": obj.get("plan_id")
         })
         return _obj
 

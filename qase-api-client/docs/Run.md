@@ -20,6 +20,7 @@ Name | Type | Description | Notes
 **custom_fields** | [**List[CustomFieldValue]**](CustomFieldValue.md) |  | [optional] 
 **tags** | [**List[TagValue]**](TagValue.md) |  | [optional] 
 **cases** | **List[int]** |  | [optional] 
+**plan_id** | **int** |  | [optional] 
 
 ## Example
 
