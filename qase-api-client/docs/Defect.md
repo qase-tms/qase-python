@@ -17,6 +17,8 @@ Name | Type | Description | Notes
 **member_id** | **int** | Deprecated, use &#x60;author_id&#x60; instead. | [optional] 
 **author_id** | **int** |  | [optional] 
 **external_data** | **str** |  | [optional] 
+**runs** | **List[int]** |  | [optional] 
+**results** | **List[str]** |  | [optional] 
 **tags** | [**List[TagValue]**](TagValue.md) |  | [optional] 
 **created_at** | **datetime** |  | [optional] 
 **updated_at** | **datetime** |  | [optional] 

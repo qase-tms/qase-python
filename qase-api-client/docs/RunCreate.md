@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **cases** | **List[int]** |  | [optional] 
 **is_autotest** | **bool** |  | [optional] 
 **environment_id** | **int** |  | [optional] 
+**environment_slug** | **str** |  | [optional] 
 **milestone_id** | **int** |  | [optional] 
 **plan_id** | **int** |  | [optional] 
 **author_id** | **int** |  | [optional] 

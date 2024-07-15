@@ -17,7 +17,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictInt
+from pydantic import Field, StrictInt, StrictStr
 from typing import Optional
 from typing_extensions import Annotated
 from qase.api_client_v1.models.environment_create import EnvironmentCreate
@@ -43,24 +43,24 @@ class EnvironmentsApi:
             api_client = ApiClient.get_default()
         self.api_client = api_client
 
-
     @validate_call
     def create_environment(
-        self,
-        code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        environment_create: EnvironmentCreate,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
+            self,
+            code: Annotated[str, Field(min_length=2, strict=True, max_length=10,
+                                       description="Code of project, where to search entities.")],
+            environment_create: EnvironmentCreate,
+            _request_timeout: Union[
+                None,
                 Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+                Tuple[
+                    Annotated[StrictFloat, Field(gt=0)],
+                    Annotated[StrictFloat, Field(gt=0)]
+                ]
+            ] = None,
+            _request_auth: Optional[Dict[StrictStr, Any]] = None,
+            _content_type: Optional[StrictStr] = None,
+            _headers: Optional[Dict[StrictStr, Any]] = None,
+            _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> IdResponse:
         """Create a new environment
 
@@ -90,7 +90,7 @@ class EnvironmentsApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """  # noqa: E501
 
         _param = self._create_environment_serialize(
             code=code,
@@ -120,24 +120,24 @@ class EnvironmentsApi:
             response_types_map=_response_types_map,
         ).data
 
-
     @validate_call
     def create_environment_with_http_info(
-        self,
-        code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        environment_create: EnvironmentCreate,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
+            self,
+            code: Annotated[str, Field(min_length=2, strict=True, max_length=10,
+                                       description="Code of project, where to search entities.")],
+            environment_create: EnvironmentCreate,
+            _request_timeout: Union[
+                None,
                 Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+                Tuple[
+                    Annotated[StrictFloat, Field(gt=0)],
+                    Annotated[StrictFloat, Field(gt=0)]
+                ]
+            ] = None,
+            _request_auth: Optional[Dict[StrictStr, Any]] = None,
+            _content_type: Optional[StrictStr] = None,
+            _headers: Optional[Dict[StrictStr, Any]] = None,
+            _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[IdResponse]:
         """Create a new environment
 
@@ -167,7 +167,7 @@ class EnvironmentsApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """  # noqa: E501
 
         _param = self._create_environment_serialize(
             code=code,
@@ -197,24 +197,24 @@ class EnvironmentsApi:
             response_types_map=_response_types_map,
         )
 
-
     @validate_call
     def create_environment_without_preload_content(
-        self,
-        code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        environment_create: EnvironmentCreate,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
+            self,
+            code: Annotated[str, Field(min_length=2, strict=True, max_length=10,
+                                       description="Code of project, where to search entities.")],
+            environment_create: EnvironmentCreate,
+            _request_timeout: Union[
+                None,
                 Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+                Tuple[
+                    Annotated[StrictFloat, Field(gt=0)],
+                    Annotated[StrictFloat, Field(gt=0)]
+                ]
+            ] = None,
+            _request_auth: Optional[Dict[StrictStr, Any]] = None,
+            _content_type: Optional[StrictStr] = None,
+            _headers: Optional[Dict[StrictStr, Any]] = None,
+            _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Create a new environment
 
@@ -244,7 +244,7 @@ class EnvironmentsApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """  # noqa: E501
 
         _param = self._create_environment_serialize(
             code=code,
@@ -270,15 +270,14 @@ class EnvironmentsApi:
         )
         return response_data.response
 
-
     def _create_environment_serialize(
-        self,
-        code,
-        environment_create,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
+            self,
+            code,
+            environment_create,
+            _request_auth,
+            _content_type,
+            _headers,
+            _host_index,
     ) -> RequestSerialized:
 
         _host = None
@@ -302,7 +301,6 @@ class EnvironmentsApi:
         # process the body parameter
         if environment_create is not None:
             _body_params = environment_create
-
 
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
@@ -345,26 +343,24 @@ class EnvironmentsApi:
             _request_auth=_request_auth
         )
 
-
-
-
     @validate_call
     def delete_environment(
-        self,
-        code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        id: Annotated[StrictInt, Field(description="Identifier.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
+            self,
+            code: Annotated[str, Field(min_length=2, strict=True, max_length=10,
+                                       description="Code of project, where to search entities.")],
+            id: Annotated[StrictInt, Field(description="Identifier.")],
+            _request_timeout: Union[
+                None,
                 Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+                Tuple[
+                    Annotated[StrictFloat, Field(gt=0)],
+                    Annotated[StrictFloat, Field(gt=0)]
+                ]
+            ] = None,
+            _request_auth: Optional[Dict[StrictStr, Any]] = None,
+            _content_type: Optional[StrictStr] = None,
+            _headers: Optional[Dict[StrictStr, Any]] = None,
+            _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> IdResponse:
         """Delete environment
 
@@ -394,7 +390,7 @@ class EnvironmentsApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """  # noqa: E501
 
         _param = self._delete_environment_serialize(
             code=code,
@@ -423,24 +419,24 @@ class EnvironmentsApi:
             response_types_map=_response_types_map,
         ).data
 
-
     @validate_call
     def delete_environment_with_http_info(
-        self,
-        code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        id: Annotated[StrictInt, Field(description="Identifier.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
+            self,
+            code: Annotated[str, Field(min_length=2, strict=True, max_length=10,
+                                       description="Code of project, where to search entities.")],
+            id: Annotated[StrictInt, Field(description="Identifier.")],
+            _request_timeout: Union[
+                None,
                 Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+                Tuple[
+                    Annotated[StrictFloat, Field(gt=0)],
+                    Annotated[StrictFloat, Field(gt=0)]
+                ]
+            ] = None,
+            _request_auth: Optional[Dict[StrictStr, Any]] = None,
+            _content_type: Optional[StrictStr] = None,
+            _headers: Optional[Dict[StrictStr, Any]] = None,
+            _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[IdResponse]:
         """Delete environment
 
@@ -470,7 +466,7 @@ class EnvironmentsApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """  # noqa: E501
 
         _param = self._delete_environment_serialize(
             code=code,
@@ -499,24 +495,24 @@ class EnvironmentsApi:
             response_types_map=_response_types_map,
         )
 
-
     @validate_call
     def delete_environment_without_preload_content(
-        self,
-        code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        id: Annotated[StrictInt, Field(description="Identifier.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
+            self,
+            code: Annotated[str, Field(min_length=2, strict=True, max_length=10,
+                                       description="Code of project, where to search entities.")],
+            id: Annotated[StrictInt, Field(description="Identifier.")],
+            _request_timeout: Union[
+                None,
                 Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+                Tuple[
+                    Annotated[StrictFloat, Field(gt=0)],
+                    Annotated[StrictFloat, Field(gt=0)]
+                ]
+            ] = None,
+            _request_auth: Optional[Dict[StrictStr, Any]] = None,
+            _content_type: Optional[StrictStr] = None,
+            _headers: Optional[Dict[StrictStr, Any]] = None,
+            _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Delete environment
 
@@ -546,7 +542,7 @@ class EnvironmentsApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """  # noqa: E501
 
         _param = self._delete_environment_serialize(
             code=code,
@@ -571,15 +567,14 @@ class EnvironmentsApi:
         )
         return response_data.response
 
-
     def _delete_environment_serialize(
-        self,
-        code,
-        id,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
+            self,
+            code,
+            id,
+            _request_auth,
+            _content_type,
+            _headers,
+            _host_index,
     ) -> RequestSerialized:
 
         _host = None
@@ -604,14 +599,12 @@ class EnvironmentsApi:
         # process the form parameters
         # process the body parameter
 
-
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
             [
                 'application/json'
             ]
         )
-
 
         # authentication setting
         _auth_settings: List[str] = [
@@ -633,26 +626,24 @@ class EnvironmentsApi:
             _request_auth=_request_auth
         )
 
-
-
-
     @validate_call
     def get_environment(
-        self,
-        code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        id: Annotated[StrictInt, Field(description="Identifier.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
+            self,
+            code: Annotated[str, Field(min_length=2, strict=True, max_length=10,
+                                       description="Code of project, where to search entities.")],
+            id: Annotated[StrictInt, Field(description="Identifier.")],
+            _request_timeout: Union[
+                None,
                 Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+                Tuple[
+                    Annotated[StrictFloat, Field(gt=0)],
+                    Annotated[StrictFloat, Field(gt=0)]
+                ]
+            ] = None,
+            _request_auth: Optional[Dict[StrictStr, Any]] = None,
+            _content_type: Optional[StrictStr] = None,
+            _headers: Optional[Dict[StrictStr, Any]] = None,
+            _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> EnvironmentResponse:
         """Get a specific environment
 
@@ -682,7 +673,7 @@ class EnvironmentsApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """  # noqa: E501
 
         _param = self._get_environment_serialize(
             code=code,
@@ -711,24 +702,24 @@ class EnvironmentsApi:
             response_types_map=_response_types_map,
         ).data
 
-
     @validate_call
     def get_environment_with_http_info(
-        self,
-        code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        id: Annotated[StrictInt, Field(description="Identifier.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
+            self,
+            code: Annotated[str, Field(min_length=2, strict=True, max_length=10,
+                                       description="Code of project, where to search entities.")],
+            id: Annotated[StrictInt, Field(description="Identifier.")],
+            _request_timeout: Union[
+                None,
                 Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+                Tuple[
+                    Annotated[StrictFloat, Field(gt=0)],
+                    Annotated[StrictFloat, Field(gt=0)]
+                ]
+            ] = None,
+            _request_auth: Optional[Dict[StrictStr, Any]] = None,
+            _content_type: Optional[StrictStr] = None,
+            _headers: Optional[Dict[StrictStr, Any]] = None,
+            _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[EnvironmentResponse]:
         """Get a specific environment
 
@@ -758,7 +749,7 @@ class EnvironmentsApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """  # noqa: E501
 
         _param = self._get_environment_serialize(
             code=code,
@@ -787,24 +778,24 @@ class EnvironmentsApi:
             response_types_map=_response_types_map,
         )
 
-
     @validate_call
     def get_environment_without_preload_content(
-        self,
-        code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        id: Annotated[StrictInt, Field(description="Identifier.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
+            self,
+            code: Annotated[str, Field(min_length=2, strict=True, max_length=10,
+                                       description="Code of project, where to search entities.")],
+            id: Annotated[StrictInt, Field(description="Identifier.")],
+            _request_timeout: Union[
+                None,
                 Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+                Tuple[
+                    Annotated[StrictFloat, Field(gt=0)],
+                    Annotated[StrictFloat, Field(gt=0)]
+                ]
+            ] = None,
+            _request_auth: Optional[Dict[StrictStr, Any]] = None,
+            _content_type: Optional[StrictStr] = None,
+            _headers: Optional[Dict[StrictStr, Any]] = None,
+            _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Get a specific environment
 
@@ -834,7 +825,7 @@ class EnvironmentsApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """  # noqa: E501
 
         _param = self._get_environment_serialize(
             code=code,
@@ -859,15 +850,14 @@ class EnvironmentsApi:
         )
         return response_data.response
 
-
     def _get_environment_serialize(
-        self,
-        code,
-        id,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
+            self,
+            code,
+            id,
+            _request_auth,
+            _content_type,
+            _headers,
+            _host_index,
     ) -> RequestSerialized:
 
         _host = None
@@ -892,14 +882,12 @@ class EnvironmentsApi:
         # process the form parameters
         # process the body parameter
 
-
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
             [
                 'application/json'
             ]
         )
-
 
         # authentication setting
         _auth_settings: List[str] = [
@@ -921,27 +909,31 @@ class EnvironmentsApi:
             _request_auth=_request_auth
         )
 
-
-
-
     @validate_call
     def get_environments(
-        self,
-        code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        limit: Annotated[Optional[Annotated[int, Field(le=100, strict=True, ge=1)]], Field(description="A number of entities in result set.")] = None,
-        offset: Annotated[Optional[Annotated[int, Field(le=100000, strict=True, ge=0)]], Field(description="How many entities should be skipped.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
+            self,
+            code: Annotated[str, Field(min_length=2, strict=True, max_length=10,
+                                       description="Code of project, where to search entities.")],
+            search: Annotated[Optional[StrictStr], Field(
+                description="A search string. Will return all environments with titles containing provided string. ")] = None,
+            slug: Annotated[Optional[StrictStr], Field(
+                description="A search string.  Will return all environments with slugs equal to provided string. ")] = None,
+            limit: Annotated[Optional[Annotated[int, Field(le=100, strict=True, ge=1)]], Field(
+                description="A number of entities in result set.")] = None,
+            offset: Annotated[Optional[Annotated[int, Field(le=100000, strict=True, ge=0)]], Field(
+                description="How many entities should be skipped.")] = None,
+            _request_timeout: Union[
+                None,
                 Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+                Tuple[
+                    Annotated[StrictFloat, Field(gt=0)],
+                    Annotated[StrictFloat, Field(gt=0)]
+                ]
+            ] = None,
+            _request_auth: Optional[Dict[StrictStr, Any]] = None,
+            _content_type: Optional[StrictStr] = None,
+            _headers: Optional[Dict[StrictStr, Any]] = None,
+            _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> EnvironmentListResponse:
         """Get all environments
 
@@ -949,6 +941,10 @@ class EnvironmentsApi:
 
         :param code: Code of project, where to search entities. (required)
         :type code: str
+        :param search: A search string. Will return all environments with titles containing provided string. 
+        :type search: str
+        :param slug: A search string.  Will return all environments with slugs equal to provided string. 
+        :type slug: str
         :param limit: A number of entities in result set.
         :type limit: int
         :param offset: How many entities should be skipped.
@@ -973,10 +969,12 @@ class EnvironmentsApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """  # noqa: E501
 
         _param = self._get_environments_serialize(
             code=code,
+            search=search,
+            slug=slug,
             limit=limit,
             offset=offset,
             _request_auth=_request_auth,
@@ -1003,25 +1001,31 @@ class EnvironmentsApi:
             response_types_map=_response_types_map,
         ).data
 
-
     @validate_call
     def get_environments_with_http_info(
-        self,
-        code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        limit: Annotated[Optional[Annotated[int, Field(le=100, strict=True, ge=1)]], Field(description="A number of entities in result set.")] = None,
-        offset: Annotated[Optional[Annotated[int, Field(le=100000, strict=True, ge=0)]], Field(description="How many entities should be skipped.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
+            self,
+            code: Annotated[str, Field(min_length=2, strict=True, max_length=10,
+                                       description="Code of project, where to search entities.")],
+            search: Annotated[Optional[StrictStr], Field(
+                description="A search string. Will return all environments with titles containing provided string. ")] = None,
+            slug: Annotated[Optional[StrictStr], Field(
+                description="A search string.  Will return all environments with slugs equal to provided string. ")] = None,
+            limit: Annotated[Optional[Annotated[int, Field(le=100, strict=True, ge=1)]], Field(
+                description="A number of entities in result set.")] = None,
+            offset: Annotated[Optional[Annotated[int, Field(le=100000, strict=True, ge=0)]], Field(
+                description="How many entities should be skipped.")] = None,
+            _request_timeout: Union[
+                None,
                 Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+                Tuple[
+                    Annotated[StrictFloat, Field(gt=0)],
+                    Annotated[StrictFloat, Field(gt=0)]
+                ]
+            ] = None,
+            _request_auth: Optional[Dict[StrictStr, Any]] = None,
+            _content_type: Optional[StrictStr] = None,
+            _headers: Optional[Dict[StrictStr, Any]] = None,
+            _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[EnvironmentListResponse]:
         """Get all environments
 
@@ -1029,6 +1033,10 @@ class EnvironmentsApi:
 
         :param code: Code of project, where to search entities. (required)
         :type code: str
+        :param search: A search string. Will return all environments with titles containing provided string. 
+        :type search: str
+        :param slug: A search string.  Will return all environments with slugs equal to provided string. 
+        :type slug: str
         :param limit: A number of entities in result set.
         :type limit: int
         :param offset: How many entities should be skipped.
@@ -1053,10 +1061,12 @@ class EnvironmentsApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """  # noqa: E501
 
         _param = self._get_environments_serialize(
             code=code,
+            search=search,
+            slug=slug,
             limit=limit,
             offset=offset,
             _request_auth=_request_auth,
@@ -1083,25 +1093,31 @@ class EnvironmentsApi:
             response_types_map=_response_types_map,
         )
 
-
     @validate_call
     def get_environments_without_preload_content(
-        self,
-        code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        limit: Annotated[Optional[Annotated[int, Field(le=100, strict=True, ge=1)]], Field(description="A number of entities in result set.")] = None,
-        offset: Annotated[Optional[Annotated[int, Field(le=100000, strict=True, ge=0)]], Field(description="How many entities should be skipped.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
+            self,
+            code: Annotated[str, Field(min_length=2, strict=True, max_length=10,
+                                       description="Code of project, where to search entities.")],
+            search: Annotated[Optional[StrictStr], Field(
+                description="A search string. Will return all environments with titles containing provided string. ")] = None,
+            slug: Annotated[Optional[StrictStr], Field(
+                description="A search string.  Will return all environments with slugs equal to provided string. ")] = None,
+            limit: Annotated[Optional[Annotated[int, Field(le=100, strict=True, ge=1)]], Field(
+                description="A number of entities in result set.")] = None,
+            offset: Annotated[Optional[Annotated[int, Field(le=100000, strict=True, ge=0)]], Field(
+                description="How many entities should be skipped.")] = None,
+            _request_timeout: Union[
+                None,
                 Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+                Tuple[
+                    Annotated[StrictFloat, Field(gt=0)],
+                    Annotated[StrictFloat, Field(gt=0)]
+                ]
+            ] = None,
+            _request_auth: Optional[Dict[StrictStr, Any]] = None,
+            _content_type: Optional[StrictStr] = None,
+            _headers: Optional[Dict[StrictStr, Any]] = None,
+            _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Get all environments
 
@@ -1109,6 +1125,10 @@ class EnvironmentsApi:
 
         :param code: Code of project, where to search entities. (required)
         :type code: str
+        :param search: A search string. Will return all environments with titles containing provided string. 
+        :type search: str
+        :param slug: A search string.  Will return all environments with slugs equal to provided string. 
+        :type slug: str
         :param limit: A number of entities in result set.
         :type limit: int
         :param offset: How many entities should be skipped.
@@ -1133,10 +1153,12 @@ class EnvironmentsApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """  # noqa: E501
 
         _param = self._get_environments_serialize(
             code=code,
+            search=search,
+            slug=slug,
             limit=limit,
             offset=offset,
             _request_auth=_request_auth,
@@ -1159,16 +1181,17 @@ class EnvironmentsApi:
         )
         return response_data.response
 
-
     def _get_environments_serialize(
-        self,
-        code,
-        limit,
-        offset,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
+            self,
+            code,
+            search,
+            slug,
+            limit,
+            offset,
+            _request_auth,
+            _content_type,
+            _headers,
+            _host_index,
     ) -> RequestSerialized:
 
         _host = None
@@ -1187,18 +1210,21 @@ class EnvironmentsApi:
         if code is not None:
             _path_params['code'] = code
         # process the query parameters
+        if search is not None:
+            _query_params.append(('search', search))
+
+        if slug is not None:
+            _query_params.append(('slug', slug))
+
         if limit is not None:
-            
             _query_params.append(('limit', limit))
-            
+
         if offset is not None:
-            
             _query_params.append(('offset', offset))
-            
+
         # process the header parameters
         # process the form parameters
         # process the body parameter
-
 
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
@@ -1206,7 +1232,6 @@ class EnvironmentsApi:
                 'application/json'
             ]
         )
-
 
         # authentication setting
         _auth_settings: List[str] = [
@@ -1228,27 +1253,25 @@ class EnvironmentsApi:
             _request_auth=_request_auth
         )
 
-
-
-
     @validate_call
     def update_environment(
-        self,
-        code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        id: Annotated[StrictInt, Field(description="Identifier.")],
-        environment_update: EnvironmentUpdate,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
+            self,
+            code: Annotated[str, Field(min_length=2, strict=True, max_length=10,
+                                       description="Code of project, where to search entities.")],
+            id: Annotated[StrictInt, Field(description="Identifier.")],
+            environment_update: EnvironmentUpdate,
+            _request_timeout: Union[
+                None,
                 Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+                Tuple[
+                    Annotated[StrictFloat, Field(gt=0)],
+                    Annotated[StrictFloat, Field(gt=0)]
+                ]
+            ] = None,
+            _request_auth: Optional[Dict[StrictStr, Any]] = None,
+            _content_type: Optional[StrictStr] = None,
+            _headers: Optional[Dict[StrictStr, Any]] = None,
+            _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> IdResponse:
         """Update environment
 
@@ -1280,7 +1303,7 @@ class EnvironmentsApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """  # noqa: E501
 
         _param = self._update_environment_serialize(
             code=code,
@@ -1310,25 +1333,25 @@ class EnvironmentsApi:
             response_types_map=_response_types_map,
         ).data
 
-
     @validate_call
     def update_environment_with_http_info(
-        self,
-        code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        id: Annotated[StrictInt, Field(description="Identifier.")],
-        environment_update: EnvironmentUpdate,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
+            self,
+            code: Annotated[str, Field(min_length=2, strict=True, max_length=10,
+                                       description="Code of project, where to search entities.")],
+            id: Annotated[StrictInt, Field(description="Identifier.")],
+            environment_update: EnvironmentUpdate,
+            _request_timeout: Union[
+                None,
                 Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+                Tuple[
+                    Annotated[StrictFloat, Field(gt=0)],
+                    Annotated[StrictFloat, Field(gt=0)]
+                ]
+            ] = None,
+            _request_auth: Optional[Dict[StrictStr, Any]] = None,
+            _content_type: Optional[StrictStr] = None,
+            _headers: Optional[Dict[StrictStr, Any]] = None,
+            _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[IdResponse]:
         """Update environment
 
@@ -1360,7 +1383,7 @@ class EnvironmentsApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """  # noqa: E501
 
         _param = self._update_environment_serialize(
             code=code,
@@ -1390,25 +1413,25 @@ class EnvironmentsApi:
             response_types_map=_response_types_map,
         )
 
-
     @validate_call
     def update_environment_without_preload_content(
-        self,
-        code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        id: Annotated[StrictInt, Field(description="Identifier.")],
-        environment_update: EnvironmentUpdate,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
+            self,
+            code: Annotated[str, Field(min_length=2, strict=True, max_length=10,
+                                       description="Code of project, where to search entities.")],
+            id: Annotated[StrictInt, Field(description="Identifier.")],
+            environment_update: EnvironmentUpdate,
+            _request_timeout: Union[
+                None,
                 Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+                Tuple[
+                    Annotated[StrictFloat, Field(gt=0)],
+                    Annotated[StrictFloat, Field(gt=0)]
+                ]
+            ] = None,
+            _request_auth: Optional[Dict[StrictStr, Any]] = None,
+            _content_type: Optional[StrictStr] = None,
+            _headers: Optional[Dict[StrictStr, Any]] = None,
+            _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Update environment
 
@@ -1440,7 +1463,7 @@ class EnvironmentsApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """  # noqa: E501
 
         _param = self._update_environment_serialize(
             code=code,
@@ -1466,16 +1489,15 @@ class EnvironmentsApi:
         )
         return response_data.response
 
-
     def _update_environment_serialize(
-        self,
-        code,
-        id,
-        environment_update,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
+            self,
+            code,
+            id,
+            environment_update,
+            _request_auth,
+            _content_type,
+            _headers,
+            _host_index,
     ) -> RequestSerialized:
 
         _host = None
@@ -1501,7 +1523,6 @@ class EnvironmentsApi:
         # process the body parameter
         if environment_update is not None:
             _body_params = environment_update
-
 
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
@@ -1543,5 +1564,3 @@ class EnvironmentsApi:
             _host=_host,
             _request_auth=_request_auth
         )
-
-
