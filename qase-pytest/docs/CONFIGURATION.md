@@ -19,6 +19,7 @@ and command line options override both other values.
 | Execution plan path                            | `execution_plan_path`      | `QASE_EXECUTION_PLAN_PATH`      | `--qase-execution-plan-path`      | `./build/qase-execution-plan.json`      | No       | Any string                 |
 | Qase environment                               | `environment`              | `QASE_ENVIRONMENT`              | `--qase-environment`              | `local`                                 | No       | Any string                 |
 | Root suite                                     | `rootSuite`                | `QASE_ROOT_SUITE`               | `--qase-root-suite`               |                                         | No       | Any string                 |
+| Debug logs                                     | `debug`                    | `QASE_DEBUG`                    | `--qase-debug`                    | false                                   | No       | `true`, `false`            |
 | **Qase TestOps mode configuration**            |
 | Qase project code                              | `testops.project`          | `QASE_TESTOPS_PROJECT`          | `--qase-testops-project`          |                                         | Yes      | Any string                 |
 | Qase API token                                 | `testops.api.token`        | `QASE_TESTOPS_API_TOKEN`        | `--qase-testops-api-token`        |                                         | Yes      | Any string                 |
