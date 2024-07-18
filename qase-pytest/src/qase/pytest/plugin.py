@@ -282,7 +282,11 @@ class QasePytestPlugin:
         module = file_name.split('.')[0]
         package = path.replace('/', '.') if path else None
 
-        title = file_path + '.' + module
+        if file_path:
+            title = file_path + '.' + module
+        else:
+            title = module
+
         if class_name:
             title += '.' + class_name
 
