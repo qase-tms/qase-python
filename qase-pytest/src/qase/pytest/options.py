@@ -113,6 +113,7 @@ class QasePytestOptions:
             group,
             "--qase-testops-batch-size",
             dest="qase_testops_batch_size",
+            type="int",
             help="Define batch size of results. Default: 200."
         )
 

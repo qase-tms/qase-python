@@ -106,7 +106,7 @@ def setup_config_manager(config):
                 config_manager.config.report.connection.set_format(config.option.__dict__[option])
 
             if option == "qase_testops_batch_size" and config.option.__dict__[option] is not None:
-                config_manager.config.testops.batch.set_size(config.option.__dict__[option])
+                config_manager.config.testops.batch.set_size(int(config.option.__dict__[option]))
 
             if option == "qase_pytest_capture_logs" and config.option.__dict__[option] is not None:
                 config_manager.config.pytest.set_capture_logs(config.option.__dict__[option])

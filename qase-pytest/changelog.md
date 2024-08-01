@@ -1,3 +1,17 @@
+# qase-pytest 6.1.0b2
+
+## What's new
+
+Fixed the following issues:
+
+- issue with `qase-pytest-capture-logs` parameter [#234].
+   When using the "qase-pytest-capture-logs" parameter, an error occurred:
+   `pytest: error: unrecognized arguments: --qase-pytest-capture-logs=true`
+    
+- issue with `qase-testops-batch-size` parameter [#235]. 
+  When using the "qase-testops-batch-size" parameter, an error occurred:
+  `TypeError: '>' not supported between instances of 'str' and 'int'`
+
 # qase-pytest 6.1.0b1
 
 ## What's new
