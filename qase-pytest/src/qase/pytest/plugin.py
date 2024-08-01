@@ -274,6 +274,7 @@ class QasePytestPlugin:
         marker = item.get_closest_marker("qase_suite")
         if marker:
             self.runtime.result.suite = Suite(marker.kwargs.get("title"), marker.kwargs.get("description"))
+            return
         self._get_suite(item)
 
     def _get_suite(self, item):
