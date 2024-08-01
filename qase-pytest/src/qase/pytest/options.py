@@ -165,6 +165,15 @@ class QasePytestOptions:
             help="Profilers to use for tests. Available: `network`, `db`, `sleep`"
         )
 
+        QasePytestOptions.add_option(
+            parser,
+            group,
+            "--qase-pytest-capture-logs",
+            dest="qase-pytest-capture-logs",
+            type="bool",
+            help="Capture logs from pytest"
+        )
+
     @staticmethod
     def add_option(parser, group, option, dest, default=None, type=None, **kwargs):
         # We are going to add options that were not added before through the manager
