@@ -170,7 +170,7 @@ class QasePytestOptions:
             parser,
             group,
             "--qase-pytest-capture-logs",
-            dest="qase-pytest-capture-logs",
+            dest="qase_pytest_capture_logs",
             type="bool",
             help="Capture logs from pytest"
         )

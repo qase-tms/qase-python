@@ -79,10 +79,10 @@ def setup_config_manager(config):
                 config_manager.config.testops.api.set_host(config.option.__dict__[option])
 
             if option == "qase_testops_plan_id" and config.option.__dict__[option] is not None:
-                config_manager.config.testops.plan.set_id(config.option.__dict__[option])
+                config_manager.config.testops.plan.set_id(int(config.option.__dict__[option]))
 
             if option == "qase_testops_run_id" and config.option.__dict__[option] is not None:
-                config_manager.config.testops.run.set_id(config.option.__dict__[option])
+                config_manager.config.testops.run.set_id(int(config.option.__dict__[option]))
 
             if option == "qase_testops_run_title" and config.option.__dict__[option] is not None:
                 config_manager.config.testops.run.set_title(config.option.__dict__[option])
@@ -109,7 +109,7 @@ def setup_config_manager(config):
                 config_manager.config.testops.batch.set_size(int(config.option.__dict__[option]))
 
             if option == "qase_pytest_capture_logs" and config.option.__dict__[option] is not None:
-                config_manager.config.pytest.set_capture_logs(config.option.__dict__[option])
+                config_manager.config.framework.pytest.set_capture_logs(config.option.__dict__[option])
 
     return config_manager
 

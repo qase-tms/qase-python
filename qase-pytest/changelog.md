@@ -1,3 +1,9 @@
+# qase-pytest 6.1.0b3
+
+## What's new
+
+Fixed an issue then `qase-pytest-capture-logs` parameter did not set correct value.
+
 # qase-pytest 6.1.0b2
 
 ## What's new
