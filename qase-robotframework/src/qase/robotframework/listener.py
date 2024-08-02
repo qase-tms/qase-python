@@ -7,8 +7,8 @@ from qase.commons import ConfigManager
 from qase.commons.models import Result, Suite, Step, Field
 from qase.commons.models.step import StepType, StepGherkinData
 from qase.commons.reporters import QaseCoreReporter
-from qase.commons.models.runtime import Runtime
 
+from .plugin import QaseRuntimeSingleton
 from .types import STATUSES
 from .models import *
 
@@ -21,7 +21,7 @@ class Listener:
     def __init__(self):
         config = ConfigManager()
         self.reporter = QaseCoreReporter(config)
-        self.runtime = Runtime()
+        self.runtime = QaseRuntimeSingleton.get_instance()
         self.step_uuid = None
         self.suite = {}
 

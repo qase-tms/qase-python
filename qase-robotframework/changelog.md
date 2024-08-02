@@ -1,3 +1,18 @@
+# qase-pytest 3.1.0b3
+
+## What's new
+
+Added the ability to attach attachments to step implementations.
+
+```python
+from qase.robotframework.method import qase
+
+def step01(a: int, b: int):
+    qase.attach("/some_path/file.xml")
+    qase.attach((str.encode("This is a simple string attachment"), "text/plain", "simple.txt"))
+    return str(a + b)
+```
+
 # qase-pytest 3.1.0b1
 
 ## What's new
