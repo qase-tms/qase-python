@@ -1,3 +1,15 @@
+# qase-pytest 6.1.0b4
+
+## What's new
+
+The decorator `qase.id()` supports specifying multiple IDs.
+
+```python
+@qase.id([2,3])
+def test_example():
+    pass
+```
+
 # qase-pytest 6.1.0b3
 
 ## What's new

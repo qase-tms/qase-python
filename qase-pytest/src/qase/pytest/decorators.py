@@ -1,5 +1,5 @@
 import uuid
-from typing import Tuple, Union
+from typing import Tuple, Union, List
 
 import pytest
 
@@ -13,7 +13,7 @@ class qase:
     """Class with decorators for pytest"""
 
     @staticmethod
-    def id(id):
+    def id(id: Union[int, List[int]]):
         """
         Define a persisent connection to Qase TestOps test case.
 
@@ -21,9 +21,16 @@ class qase:
         >>> def test_example():
         >>>     pass
 
-        :param id: int id of test case
+        >>> @qase.id([2,3])
+        >>> def test_example():
+        >>>     pass
+
+        :param id: int or list of int id of test case
         :return: pytest.mark instance
         """
+        if isinstance(id, list) and all(isinstance(item, int) for item in id):
+            return pytest.mark.qase_id(id=','.join(str(i) for i in id))
+
         return pytest.mark.qase_id(id=id)
 
     @staticmethod

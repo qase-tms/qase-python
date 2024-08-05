@@ -1,5 +1,5 @@
 import pathlib
-from typing import Tuple, Union
+from typing import Tuple, Union, List
 import mimetypes
 import re
 
@@ -261,7 +261,12 @@ class QasePytestPlugin:
 
     def _set_testops_id(self, item) -> None:
         try:
-            self.runtime.result.testops_id = int(item.get_closest_marker("qase_id").kwargs.get("id"))
+            ids = item.get_closest_marker("qase_id").kwargs.get("id")
+            if ',' in ids:
+                ids = [int(i) for i in re.split(r'\s*,\s*', ids)]
+                self.runtime.result.testops_id = ids
+            else:
+                self.runtime.result.testops_id = [int(ids)]
         except:
             pass
 
