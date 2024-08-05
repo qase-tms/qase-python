@@ -55,7 +55,7 @@ class Listener:
 
         case_id = self._extract_ids(attributes.get("tags"))
         if case_id:
-            self.runtime.result.testops_id = int(case_id)
+            self.runtime.result.testops_id = case_id
 
         self.runtime.result.execution.complete()
         self.runtime.result.execution.set_status(STATUSES[attributes.get("status")])
@@ -116,7 +116,12 @@ class Listener:
 
     def _extract_ids(self, list_of_tags: List[str]):
         id = re.compile(r"Q-(\d+)", re.IGNORECASE)
+        ids = []
         for tag in list_of_tags:
             if id.fullmatch(tag):
-                return int(id.match(tag).groups()[0])
+                ids.append(int(id.match(tag).groups()[0]))
+
+        if len(ids) > 0:
+            return ids
+
         return None
