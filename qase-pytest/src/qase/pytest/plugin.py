@@ -48,7 +48,7 @@ class QasePytestPlugin:
         self.runtime = Runtime()
         self.reporter = reporter
         self.run_id = None
-        self.execution_plan = None
+        self.execution_plan = reporter.get_execution_plan()
 
         self.reporter.setup_profilers(runtime=self.runtime)
 
