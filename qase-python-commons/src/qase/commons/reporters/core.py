@@ -9,7 +9,7 @@ from .report import QaseReport
 from .testops import QaseTestOps
 
 from ..models import Result, Attachment, Runtime
-from typing import Union
+from typing import Union, List
 
 """
     CoreReporter is a facade for all reporters and it is used to initialize and manage them.
@@ -21,7 +21,7 @@ class QaseCoreReporter:
     def __init__(self, config: Config):
         self.config = config
         self.logger = Logger(self.config.get('debug', False, bool))
-        self.execution_plan = None
+        self._execution_plan = None
         self.profilers = []
         self.overhead = 0
 
@@ -149,6 +149,9 @@ class QaseCoreReporter:
                 self.logger.log(e, 'error')
                 self._run_fallback()
 
+    def get_execution_plan(self) -> Union[List[int], None]:
+        return self._execution_plan
+
     def _run_fallback(self) -> None:
         if self.fallback:
             try:
@@ -174,7 +177,7 @@ class QaseCoreReporter:
                     api_token=self.config.get("testops.api.token"),
                     host=self.config.get("testops.api.host", "qase.io"),
                 )
-                self.execution_plan = loader.load(self.config.get("testops.project"),
+                self._execution_plan = loader.load(self.config.get("testops.project"),
                                                   int(self.config.get("testops.plan.id")))
         except Exception as e:
             self.logger.log('Failed to load test plan from Qase TestOps', 'info')
