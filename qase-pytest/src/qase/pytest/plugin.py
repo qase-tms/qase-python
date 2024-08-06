@@ -48,7 +48,7 @@ class QasePytestPlugin:
         self.runtime = Runtime()
         self.reporter = reporter
         self.run_id = None
-        self.execution_plan = None
+        self.execution_plan = reporter.get_execution_plan()
 
         self.reporter.setup_profilers(runtime=self.runtime)
 
@@ -70,9 +70,14 @@ class QasePytestPlugin:
     def pytest_collection_modifyitems(self, session, config, items):
         # Filter test cases based on ids
         if self.execution_plan:
-            items[:] = [item for item in items if
-                        item.get_closest_marker('qase_id') and item.get_closest_marker('qase_id').kwargs.get(
-                            "id") in self.execution_plan]
+            new_items = []
+            for item in items:
+                if item.get_closest_marker('qase_id'):
+                    ids = QasePytestPlugin._get_qase_ids(item)
+                    if any(id in self.execution_plan for id in ids):
+                        new_items.append(item)
+
+            items[:] = new_items
 
     def pytest_sessionstart(self, session):
         if is_xdist_controller(session):
@@ -261,14 +266,20 @@ class QasePytestPlugin:
 
     def _set_testops_id(self, item) -> None:
         try:
-            ids = item.get_closest_marker("qase_id").kwargs.get("id")
-            if ',' in ids:
-                ids = [int(i) for i in re.split(r'\s*,\s*', ids)]
-                self.runtime.result.testops_id = ids
-            else:
-                self.runtime.result.testops_id = [int(ids)]
+            ids = QasePytestPlugin._get_qase_ids(item)
+            self.runtime.result.testops_id = ids
         except:
             pass
+
+    @staticmethod
+    def _get_qase_ids(item) -> Union[None, List[int]]:
+        ids = item.get_closest_marker("qase_id").kwargs.get("id")
+        if ids is None:
+            return None
+        if isinstance(ids, int):
+            return [ids]
+        else:
+            return [int(i) for i in re.split(r'\s*,\s*', ids)]
 
     def _set_params(self, item) -> None:
         if hasattr(item, 'callspec'):

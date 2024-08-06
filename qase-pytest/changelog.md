@@ -2,13 +2,17 @@
 
 ## What's new
 
-The decorator `qase.id()` supports specifying multiple IDs.
+- the decorator `qase.id()` supports specifying multiple IDs.
 
-```python
-@qase.id([2,3])
-def test_example():
-    pass
-```
+    ```python
+    @qase.id([2,3])
+    def test_example():
+        pass
+    ```
+
+- if you use the `testops` mode and specify a plan ID then the reporter will run the tests specified in the test plan
+  based on their IDs.
+- exclude the default parameters that are added by additional libraries and start with `__pytest`
 
 # qase-pytest 6.1.0b3
 
@@ -23,10 +27,10 @@ Fixed an issue then `qase-pytest-capture-logs` parameter did not set correct val
 Fixed the following issues:
 
 - issue with `qase-pytest-capture-logs` parameter [#234].
-   When using the "qase-pytest-capture-logs" parameter, an error occurred:
-   `pytest: error: unrecognized arguments: --qase-pytest-capture-logs=true`
-    
-- issue with `qase-testops-batch-size` parameter [#235]. 
+  When using the "qase-pytest-capture-logs" parameter, an error occurred:
+  `pytest: error: unrecognized arguments: --qase-pytest-capture-logs=true`
+
+- issue with `qase-testops-batch-size` parameter [#235].
   When using the "qase-testops-batch-size" parameter, an error occurred:
   `TypeError: '>' not supported between instances of 'str' and 'int'`
 
