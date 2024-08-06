@@ -273,6 +273,8 @@ class QasePytestPlugin:
     def _set_params(self, item) -> None:
         if hasattr(item, 'callspec'):
             for key, val in item.callspec.params.items():
+                if key.startswith("__pytest"):
+                    continue
                 self.runtime.result.add_param(key, str(val))
 
     def _set_suite(self, item) -> None:
