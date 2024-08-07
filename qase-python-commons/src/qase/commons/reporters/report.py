@@ -117,8 +117,8 @@ class QaseReport:
         self._store_object(run, self.report_path, "report")
 
     # Saves a model to a file
-    def _store_object(self, object, path, filename):
-        data = object.to_json()
+    def _store_object(self, obj, path, filename):
+        data = obj.__str__()
         if self.format == 'jsonp':
             data = f"qaseJsonp({data});"
         with open(f"{path}/{filename}.{self.format}", 'w', encoding='utf-8') as f:
