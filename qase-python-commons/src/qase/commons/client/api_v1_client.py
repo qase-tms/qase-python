@@ -177,17 +177,13 @@ class ApiV1Client(BaseApiClient):
             "steps": steps,
             "param": result.params,
             "defect": self.config.get('testops.defect', False, bool),
+            "case": case_data
         }
 
         test_ops_id = result.get_testops_id()
 
         if test_ops_id:
             result_model["case_id"] = test_ops_id
-            result_model["case"] = None
-            return result_model
-
-        result_model["case_id"] = None
-        result_model["case"] = case_data
 
         self.logger.log_debug(f"Prepared result: {result_model}")
 
