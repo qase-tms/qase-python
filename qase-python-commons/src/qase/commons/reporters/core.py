@@ -1,5 +1,3 @@
-import os
-import json
 import time
 
 from ..config import ConfigManager
@@ -11,6 +9,9 @@ from .testops import QaseTestOps
 from ..models import Result, Attachment, Runtime
 from ..models.config.qaseconfig import Mode
 from typing import Union, List
+
+from ..models.result import InternalResult
+
 
 """
     CoreReporter is a facade for all reporters and it is used to initialize and manage them.
@@ -81,7 +82,16 @@ class QaseCoreReporter:
             try:
                 ts = time.time()
                 self.logger.log_debug(f"Adding result {result}")
-                self.reporter.add_result(result)
+                ids = result.get_testops_id()
+
+                if ids is None:
+                    int_result = InternalResult.convert_from_result(result)
+                    self.reporter.add_result(int_result)
+                else:
+                    for testops_id in ids:
+                        int_result = InternalResult.convert_from_result(result, testops_id)
+                        self.reporter.add_result(int_result)
+
                 self.logger.log_debug(f"Result {result.get_title()} added")
                 self.overhead += time.time() - ts
             except Exception as e:
@@ -180,7 +190,8 @@ class QaseCoreReporter:
                     host=self.config.testops.api.host
                 )
                 self._execution_plan = loader.load(self.config.testops.project,
-                                                  int(self.config.testops.plan.id))
+                                                   int(self.config.testops.plan.id))
+
         except Exception as e:
             self.logger.log('Failed to load test plan from Qase TestOps', 'info')
             self.logger.log(e, 'error')

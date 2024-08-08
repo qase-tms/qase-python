@@ -1,3 +1,17 @@
+# qase-pytest 3.1.0b4
+
+## What's new
+
+Added the ability to specify multiple IDs for a test case.
+
+```robotframework
+Example Test
+    [Documentation]    Example test
+    [Tags]  q-62     Q-50    subtraction
+    ${result}=         subtraction  5   3
+    Should Be Equal    ${result}    2
+```
+
 # qase-pytest 3.1.0b3
 
 ## What's new
