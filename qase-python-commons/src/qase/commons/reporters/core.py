@@ -12,6 +12,7 @@ from typing import Union, List
 
 from ..models.result import InternalResult
 
+
 """
     CoreReporter is a facade for all reporters and it is used to initialize and manage them.
     It is also used to pass configuration and logger to reporters, handle fallback logic and error handling.
@@ -190,6 +191,7 @@ class QaseCoreReporter:
                 )
                 self._execution_plan = loader.load(self.config.testops.project,
                                                    int(self.config.testops.plan.id))
+
         except Exception as e:
             self.logger.log('Failed to load test plan from Qase TestOps', 'info')
             self.logger.log(e, 'error')
