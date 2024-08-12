@@ -174,7 +174,7 @@ class QasePytestPlugin:
                     self.add_attachments((report.capstdout, "text/plain", "stdout.txt"))
                 if report.capstderr:
                     self.add_attachments((report.capstderr, "text/plain", "stderr.txt"))
-                self.add_result_message(call, report)
+            self.add_result_message(call, report)
         else:
             yield
 
