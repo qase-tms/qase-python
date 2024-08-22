@@ -1,3 +1,4 @@
+import pytest
 from qaseio.pytest.plugin import QasePytestPlugin, QasePytestPluginSingleton
 
 from qaseio.commons import QaseTestOps, QaseReport, ConfigManager
@@ -76,6 +77,8 @@ def pytest_configure(config):
                         config.getoption("qase_testops_run_id"),
                         config.getoption("qase_testops_rerun_failures"),
                     )
+                    if not execution_plan:
+                        pytest.exit("Qase returned no test cases. Nothing to execute.")
 
                 reporter = QaseTestOps(
                     api_token=config.getoption("qase_testops_api_token"),
