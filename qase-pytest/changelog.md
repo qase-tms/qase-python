@@ -1,3 +1,10 @@
+# qase-pytest 6.1.0b4
+
+## What's new
+
+- Exclude the default parameters that are added by additional libraries and start with `__pytest`
+- If you use the `testops` mode and specify a plan ID then the reporter will run the tests specified in the test plan based on their IDs.
+
 # qase-pytest 6.1.0b3
 
 ## What's new
