@@ -1,3 +1,10 @@
+# qase-python-commons@3.1.0b6
+
+## What's new
+
+Reporters didn't send information about fields, like `title`, `description`, etc, to the Qase. 
+Now, the reporters will send all the information about the test case to the Qase.
+
 # qase-python-commons@3.1.0b4
 
 ## What's new
