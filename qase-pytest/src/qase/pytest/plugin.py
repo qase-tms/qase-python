@@ -48,7 +48,7 @@ class QasePytestPlugin:
         self.runtime = Runtime()
         self.reporter = reporter
         self.run_id = None
-        self.execution_plan = None
+        self.execution_plan = reporter.get_execution_plan()
 
         self.reporter.setup_profilers(runtime=self.runtime)
 
@@ -268,6 +268,8 @@ class QasePytestPlugin:
     def _set_params(self, item) -> None:
         if hasattr(item, 'callspec'):
             for key, val in item.callspec.params.items():
+                if key.startswith("__pytest"):
+                    continue
                 self.runtime.result.add_param(key, str(val))
 
     def _set_suite(self, item) -> None:
