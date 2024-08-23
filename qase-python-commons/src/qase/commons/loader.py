@@ -11,11 +11,10 @@ class TestOpsPlanLoader:
         configuration = Configuration()
         configuration.api_key['TokenAuth'] = api_token
         configuration.host = f'https://api.{host}/v1'
+        configuration.ssl_ca_cert = certifi.where()
 
         self.client = ApiClient(configuration)
         self.case_list = []
-
-        configuration.ssl_ca_cert = certifi.where()
 
     def load(self, code: str, plan_id: int) -> list:
         try:
