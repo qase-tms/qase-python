@@ -1,3 +1,13 @@
+# qase-python-commons@3.1.0b7
+
+## What's new
+
+Fixed the following issue:
+
+```log
+HTTPSConnectionPool(host='api.qase.io', port=443): Max retries exceeded with url: /v1/plan/DEMO/1 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1000)')))
+```
+
 # qase-python-commons@3.1.0b6
 
 ## What's new
