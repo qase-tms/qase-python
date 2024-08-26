@@ -1,3 +1,10 @@
+# qase-python-commons@3.1.0
+
+## What's new
+
+Minor release that includes all changes from beta versions 3.1.0b*. 
+Also added support for group parameters.
+
 # qase-python-commons@3.1.0b7
 
 ## What's new
