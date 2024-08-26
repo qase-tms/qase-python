@@ -16,6 +16,7 @@ Name | Type | Description | Notes
 **stacktrace** | **str** |  | [optional] 
 **comment** | **str** |  | [optional] 
 **param** | **Dict[str, str]** | A map of parameters (name &#x3D;&gt; value) | [optional] 
+**param_groups** | **List[List[str]]** | A list of parameter groups | [optional] 
 **steps** | [**List[TestStepResultCreate]**](TestStepResultCreate.md) |  | [optional] 
 **author_id** | **int** |  | [optional] 
 
