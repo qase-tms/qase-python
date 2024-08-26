@@ -1,9 +1,7 @@
 import time
 import uuid
-import json
 
 from typing import Type, Optional, Union, Dict, List
-from pathlib import PosixPath
 from .basemodel import BaseModel
 from .step import Step
 from .suite import Suite
@@ -79,6 +77,7 @@ class Result(BaseModel):
         self.attachments: List[Attachment] = []
         self.steps: List[Type[Step]] = []
         self.params: Optional[dict] = {}
+        self.param_groups: Optional[List[List[str]]] = []
         self.author: Optional[str] = None
         self.relations: List[Type[Relation]] = []
         self.muted: bool = False
@@ -103,6 +102,9 @@ class Result(BaseModel):
 
     def add_param(self, key: str, value: str) -> None:
         self.params[key] = value
+
+    def add_param_groups(self, values: List[str]) -> None:
+        self.param_groups.append(values)
 
     def add_relation(self, relation: Type[Relation]) -> None:
         self.relations.append(relation)

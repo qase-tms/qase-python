@@ -185,6 +185,7 @@ class ApiV1Client(BaseApiClient):
             "attachments": [attach.hash for attach in attached],
             "steps": steps,
             "param": result.params,
+            "param_groups": result.param_groups,
             "defect": self.config.testops.defect,
             "case": case_data
         }
