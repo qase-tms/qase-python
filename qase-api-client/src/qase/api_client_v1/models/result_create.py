@@ -41,9 +41,10 @@ class ResultCreate(BaseModel):
     stacktrace: Optional[StrictStr] = None
     comment: Optional[StrictStr] = None
     param: Optional[Dict[str, StrictStr]] = Field(default=None, description="A map of parameters (name => value)")
+    param_groups: Optional[List[List[StrictStr]]] = Field(default=None, description="A list of parameter groups")
     steps: Optional[List[TestStepResultCreate]] = None
     author_id: Optional[StrictInt] = None
-    __properties: ClassVar[List[str]] = ["case_id", "case", "status", "start_time", "time", "time_ms", "defect", "attachments", "stacktrace", "comment", "param", "steps", "author_id"]
+    __properties: ClassVar[List[str]] = ["case_id", "case", "status", "start_time", "time", "time_ms", "defect", "attachments", "stacktrace", "comment", "param", "param_groups", "steps", "author_id"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -134,6 +135,11 @@ class ResultCreate(BaseModel):
         if self.param is None and "param" in self.model_fields_set:
             _dict['param'] = None
 
+        # set to None if param_groups (nullable) is None
+        # and model_fields_set contains the field
+        if self.param_groups is None and "param_groups" in self.model_fields_set:
+            _dict['param_groups'] = None
+
         # set to None if steps (nullable) is None
         # and model_fields_set contains the field
         if self.steps is None and "steps" in self.model_fields_set:
@@ -167,6 +173,7 @@ class ResultCreate(BaseModel):
             "stacktrace": obj.get("stacktrace"),
             "comment": obj.get("comment"),
             "param": obj.get("param"),
+            "param_groups": obj.get("param_groups"),
             "steps": [TestStepResultCreate.from_dict(_item) for _item in obj["steps"]] if obj.get("steps") is not None else None,
             "author_id": obj.get("author_id")
         })
