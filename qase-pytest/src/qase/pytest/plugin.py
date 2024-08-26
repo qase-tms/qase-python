@@ -1,7 +1,6 @@
 import pathlib
 from typing import Tuple, Union
 import mimetypes
-import re
 
 from qase.commons.models.result import Result, Field
 from qase.commons.models.attachment import Attachment
@@ -68,6 +67,22 @@ class QasePytestPlugin:
             QasePytestPlugin.meta_run_file.unlink()
 
     def pytest_collection_modifyitems(self, session, config, items):
+        """
+        Modify collected test items to inject our parameter capturing logic.
+        """
+        for item in items:
+            grouped_params = []
+
+            # Extract single and grouped params from the item's markers
+            for mark in item.iter_markers():
+                if mark.name == 'parametrize':
+                    param_name, values = mark.args
+                    if ',' in param_name:
+                        grouped_params.append(param_name.split(','))
+
+            # Attach the captured params to the test item
+            item._grouped_params = grouped_params
+
         # Filter test cases based on ids
         if self.execution_plan:
             items[:] = [item for item in items if
@@ -267,6 +282,9 @@ class QasePytestPlugin:
 
     def _set_params(self, item) -> None:
         if hasattr(item, 'callspec'):
+            for group in item._grouped_params:
+                self.runtime.result.add_param_groups(group)
+
             for key, val in item.callspec.params.items():
                 if key.startswith("__pytest"):
                     continue
