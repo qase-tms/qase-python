@@ -1,3 +1,10 @@
+# qase-pytest 6.1.0
+
+## What's new
+
+Minor release that includes all changes from beta versions 6.1.0b. 
+And also added support for group parameters.
+
 # qase-pytest 6.1.0b4
 
 ## What's new
