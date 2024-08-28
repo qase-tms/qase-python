@@ -1,3 +1,10 @@
+# qase-pytest 3.1.1b1
+
+## What's new
+
+Add support `robotframework-tidy` to the reporter. 
+The reporter will ignore `IF`, `ELSE IF`, `ELSE`, and `END` keywords.
+
 # qase-pytest 3.1.0
 
 ## What's new

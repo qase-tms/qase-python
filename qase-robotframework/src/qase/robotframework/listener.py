@@ -89,6 +89,9 @@ class Listener:
         )
 
     def start_keyword(self, name, attributes):
+        if attributes["type"] != "KEYWORD" or attributes["status"] == "NOT RUN":
+            return
+
         id = str(uuid.uuid4())
         step = Step(
             step_type=StepType.GHERKIN,
@@ -100,6 +103,9 @@ class Listener:
         self.step_uuid = id
 
     def end_keyword(self, name, attributes):
+        if attributes["type"] != "KEYWORD" or attributes["status"] == "NOT RUN":
+            return
+
         self.runtime.finish_step(self.step_uuid, STATUSES[attributes["status"]])
         self.step_uuid = self.runtime.steps[self.step_uuid].parent_id
 
