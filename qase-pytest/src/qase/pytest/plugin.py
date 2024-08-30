@@ -48,6 +48,8 @@ class QasePytestPlugin:
         self.reporter = reporter
         self.run_id = None
         self.execution_plan = reporter.get_execution_plan()
+        self._current_item = None
+        self.ignore = None
 
         self.reporter.setup_profilers(runtime=self.runtime)
 
@@ -114,11 +116,18 @@ class QasePytestPlugin:
         if not self.ignore:
             self.reporter.enable_profilers()
             self.start_pytest_item(item)
+            self._current_item = item
             yield
-            self.finish_pytest_item(item)
+            self._current_item = None
             self.reporter.disable_profilers()
         else:
             yield
+
+    @pytest.hookimpl
+    def pytest_runtest_logfinish(self):
+        if not self.ignore and self._current_item:
+            self.finish_pytest_item()
+            self.start_pytest_item(self._current_item)
 
     @pytest.hookimpl(hookwrapper=True)
     def pytest_runtest_makereport(self, item, call):
@@ -176,7 +185,7 @@ class QasePytestPlugin:
         self._set_relations(item)
         self._get_signature(item)
 
-    def finish_pytest_item(self, item):
+    def finish_pytest_item(self):
         self.runtime.result.execution.complete()
         self.runtime.result.add_steps([step for key, step in self.runtime.steps.items()])
         self.reporter.add_result(self.runtime.result)

@@ -1,3 +1,10 @@
+# qase-pytest 6.1.1b1
+
+## What's new
+
+Support `pytest-rerunfailures` plugin. This plugin allows you to rerun failed tests.
+Each test run will be uploaded as a separate result in Qase.
+
 # qase-pytest 6.1.0
 
 ## What's new
