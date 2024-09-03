@@ -2,12 +2,26 @@
 
 ## What's new
 
-If the video recording option is enabled and the test fails, the video will be attached to the test result when using Playwright.
+Fix an issue with the video recording option when the test fails:
+
+```log
+INTERNALERROR>     video = item.funcargs['page'].video
+INTERNALERROR>             ~~~~~~~~~~~~~^^^^^^^^
+INTERNALERROR> KeyError: 'page'
+```
+
+# qase-pytest 6.1.1b2
+
+## What's new
+
+If the video recording option is enabled and the test fails, the video will be attached to the test result when using
+Playwright.
 
 For configuration, you should create a `conftest.py` file in the root of your project and add the following code:
 
 ```python
 import pytest
+
 
 # Configure Playwright to record video for all tests
 @pytest.fixture(scope="session")
@@ -30,7 +44,7 @@ Each test run will be uploaded as a separate result in Qase.
 
 ## What's new
 
-Minor release that includes all changes from beta versions 6.1.0b. 
+Minor release that includes all changes from beta versions 6.1.0b.
 And also added support for group parameters.
 
 # qase-pytest 6.1.0b4
@@ -38,7 +52,8 @@ And also added support for group parameters.
 ## What's new
 
 - Exclude the default parameters that are added by additional libraries and start with `__pytest`
-- If you use the `testops` mode and specify a plan ID then the reporter will run the tests specified in the test plan based on their IDs.
+- If you use the `testops` mode and specify a plan ID then the reporter will run the tests specified in the test plan
+  based on their IDs.
 
 # qase-pytest 6.1.0b3
 
@@ -53,10 +68,10 @@ Fixed an issue then `qase-pytest-capture-logs` parameter did not set correct val
 Fixed the following issues:
 
 - issue with `qase-pytest-capture-logs` parameter [#234].
-   When using the "qase-pytest-capture-logs" parameter, an error occurred:
-   `pytest: error: unrecognized arguments: --qase-pytest-capture-logs=true`
-    
-- issue with `qase-testops-batch-size` parameter [#235]. 
+  When using the "qase-pytest-capture-logs" parameter, an error occurred:
+  `pytest: error: unrecognized arguments: --qase-pytest-capture-logs=true`
+
+- issue with `qase-testops-batch-size` parameter [#235].
   When using the "qase-testops-batch-size" parameter, an error occurred:
   `TypeError: '>' not supported between instances of 'str' and 'int'`
 
