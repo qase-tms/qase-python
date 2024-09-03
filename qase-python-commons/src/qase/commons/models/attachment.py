@@ -1,10 +1,8 @@
-import os
 import uuid
 import json
-import pathlib
 
-from typing import Optional, Union
-from io import BytesIO, StringIO
+from typing import Optional
+from io import BytesIO
 from .basemodel import BaseModel
 
 
@@ -26,16 +24,7 @@ class Attachment(BaseModel):
         if (not isinstance(content, str)) and (not isinstance(content, bytes)):
             self.content = json.dumps(self.content, default=lambda o: o.__dict__, sort_keys=False, indent=4)
 
-        self.size = self._get_size(content)
         self.id = str(uuid.uuid4())
-
-    def _get_size(self, content):
-        if self.file_path:
-            return os.path.getsize(self.file_path)
-        elif content:
-            return len(content)
-        else:
-            return 0
 
     def get_id(self) -> str:
         return self.id
@@ -51,4 +40,5 @@ class Attachment(BaseModel):
                 content = BytesIO(self.content)
         content.name = self.file_name
         content.mime = self.mime_type
+
         return content
