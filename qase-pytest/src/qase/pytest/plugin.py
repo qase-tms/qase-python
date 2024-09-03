@@ -171,10 +171,11 @@ class QasePytestPlugin:
             # Check if the test failed
             if report.failed and report.when == "call":
                 # Attach the video to the test result
-                video = item.funcargs['page'].video
-                if not video:
-                    return
-                self.add_attachments(video.path())
+                if hasattr(item, 'funcargs') and 'page' in item.funcargs:
+                    video = item.funcargs['page'].video
+                    if not video:
+                        return
+                    self.add_attachments(video.path())
         else:
             yield
 
@@ -258,7 +259,7 @@ class QasePytestPlugin:
 
     def _set_fields(self, item) -> None:
         # Legacy fields support
-        for name in ["description", "preconditions", "postconditions", "layer", "severity", "priority"]:
+        for name in ["description", "preconditions", "postconditions", "layer", "severity", "priority", "suite"]:
             try:
                 self.runtime.result.add_field(Field(name, item.get_closest_marker("qase_" + name).kwargs.get(name)))
             except:
