@@ -1,3 +1,24 @@
+# qase-pytest 6.1.1b2
+
+## What's new
+
+If the video recording option is enabled and the test fails, the video will be attached to the test result when using Playwright.
+
+For configuration, you should create a `conftest.py` file in the root of your project and add the following code:
+
+```python
+import pytest
+
+# Configure Playwright to record video for all tests
+@pytest.fixture(scope="session")
+def browser_context_args(browser_context_args):
+    return {
+        **browser_context_args,
+        "record_video_dir": "./videos",  # Directory where videos will be saved
+        "record_video_size": {"width": 1280, "height": 720}  # Video resolution
+    }
+```
+
 # qase-pytest 6.1.1b1
 
 ## What's new
