@@ -1,3 +1,9 @@
+# qase-python-commons@3.1.2
+
+## What's new
+
+Support `suite` field in the test case model.
+
 # qase-python-commons@3.1.0
 
 ## What's new

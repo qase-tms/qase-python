@@ -170,12 +170,15 @@ class ApiV1Client(BaseApiClient):
         if result.get_suite_title():
             suite = "\t".join(result.get_suite_title().split("."))
 
+        if result.get_field('suite'):
+            suite = result.get_field('suite')
+
         root_suite = self.config.root_suite
         if root_suite:
             suite = f"{root_suite}\t{suite}"
 
         if suite:
-            case_data["suite"] = suite
+            case_data["suite_title"] = suite
 
         result_model = {
             "status": result.execution.status,
