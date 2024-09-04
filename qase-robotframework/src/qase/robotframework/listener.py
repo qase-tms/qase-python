@@ -68,8 +68,8 @@ class Listener:
             self.runtime.result.suite = Suite(self.suite.get("title"), self.suite.get("description"))
 
         if "source" in attributes:
-            file_path = attributes["source"].split(os.getcwd() + '/')[1]
-            signature = '::'.join(file_path.split("/"))
+            file_path = attributes["source"].split(os.getcwd() + os.path.sep)[1]
+            signature = '::'.join(file_path.split(os.path.sep))
             if self.suite:
                 signature += f"::{self.suite.get('title').lower().replace(' ', '_')}::{name.lower().replace(' ', '_')}"
 

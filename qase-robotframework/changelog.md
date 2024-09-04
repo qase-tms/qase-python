@@ -1,3 +1,13 @@
+# qase-pytest 3.1.1b2
+
+## What's new
+
+Fixed the issue:
+
+```log
+Calling method 'end_test' of listener 'qase.robotframework.Listener' failed: IndexError: list index out of range
+```
+
 # qase-pytest 3.1.1b1
 
 ## What's new
