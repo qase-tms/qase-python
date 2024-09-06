@@ -1,4 +1,23 @@
-# qase-pytest 6.1.1b2
+# qase-pytest 6.1.1b4
+
+## What's new
+
+Fixed an issue with parameters like this:
+
+```python
+@pytest.mark.parametrize(argnames="foo", argvalues=["bar","baz"])
+```  
+
+The error was:
+
+```log
+INTERNALERROR> File "/usr/local/lib/python3.12/site-packages/qase/pytest/plugin.py", line 79, in pytest_collection_modifyitems
+INTERNALERROR> param_name, values = mark.args
+INTERNALERROR> ^^^^^^^^^^^^^^^^^^
+INTERNALERROR> ValueError: not enough values to unpack (expected 2, got 0)
+```
+
+# qase-pytest 6.1.1b3
 
 ## What's new
 

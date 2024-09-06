@@ -78,9 +78,14 @@ class QasePytestPlugin:
             # Extract single and grouped params from the item's markers
             for mark in item.iter_markers():
                 if mark.name == 'parametrize':
-                    param_name, values = mark.args
-                    if ',' in param_name:
-                        grouped_params.append(param_name.split(','))
+                    if len(mark.args) != 0:
+                        param_name, values = mark.args
+                        if ',' in param_name:
+                            grouped_params.append(param_name.split(','))
+                    else:
+                        param_name = mark.kwargs.get('argnames')
+                        if ',' in param_name:
+                            grouped_params.append(param_name.split(','))
 
             # Attach the captured params to the test item
             item._grouped_params = grouped_params
