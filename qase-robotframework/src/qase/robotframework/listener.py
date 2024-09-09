@@ -1,6 +1,5 @@
 import logging
 import os
-import re
 import uuid
 
 from qase.commons import ConfigManager
@@ -9,6 +8,7 @@ from qase.commons.models.step import StepType, StepGherkinData
 from qase.commons.reporters import QaseCoreReporter
 
 from .plugin import QaseRuntimeSingleton
+from .tag_parser import TagParser
 from .types import STATUSES
 from .models import *
 
@@ -55,13 +55,14 @@ class Listener:
 
         self.step_uuid = None
 
-        if self.__is_test_ignore(attributes.get("tags")):
+        test_metadata = TagParser.parse_tags(attributes.get("tags"))
+
+        if test_metadata.ignore:
             logger.info("Test '%s' is ignored", name)
             return
 
-        case_id = self._extract_ids(attributes.get("tags"))
-        if case_id:
-            self.runtime.result.testops_id = int(case_id)
+        if test_metadata.qase_id:
+            self.runtime.result.testops_id = int(test_metadata.qase_id)
 
         self.runtime.result.execution.complete()
         self.runtime.result.execution.set_status(STATUSES[attributes.get("status")])
@@ -69,6 +70,10 @@ class Listener:
         self.runtime.result.add_steps([step for key, step in self.runtime.steps.items()])
 
         self.runtime.result.add_field(Field("description", attributes.get("doc")))
+
+        if test_metadata.fields:
+            for key, value in test_metadata.fields.items():
+                self.runtime.result.add_field(Field(key, value))
 
         if self.suite:
             self.runtime.result.suite = Suite(self.suite.get("title"), self.suite.get("description"))
@@ -124,15 +129,3 @@ class Listener:
     @staticmethod
     def log_message(message):
         logger.debug("Log:", message)
-
-    @staticmethod
-    def _extract_ids(list_of_tags: List[str]):
-        qase_id = re.compile(r"Q-(\d+)", re.IGNORECASE)
-        for tag in list_of_tags:
-            if qase_id.fullmatch(tag):
-                return int(qase_id.match(tag).groups()[0])
-        return None
-
-    @staticmethod
-    def __is_test_ignore(list_of_tags: List[str]):
-        return any(tag.lower() == "ignore" for tag in list_of_tags)

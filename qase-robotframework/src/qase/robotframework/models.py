@@ -1,5 +1,5 @@
 import sys
-from typing import List
+from typing import List, Union
 
 if sys.version_info >= (3, 8):
     from typing import TypedDict
@@ -85,3 +85,14 @@ class EndKeywordModel(TypedDict):
     endtime: str
     elapsedtime: int
     status: str
+
+
+class TestMetadata:
+    qase_id: Union[int, None]
+    ignore: bool
+    fields: dict
+
+    def __init__(self) -> None:
+        self.qase_id = None
+        self.ignore = False
+        self.fields = {}
