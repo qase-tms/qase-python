@@ -53,6 +53,12 @@ class Listener:
     def end_test(self, name, attributes: EndTestModel):
         logger.debug("Finishing test '%s'", name)
 
+        self.step_uuid = None
+
+        if self.__is_test_ignore(attributes.get("tags")):
+            logger.info("Test '%s' is ignored", name)
+            return
+
         case_id = self._extract_ids(attributes.get("tags"))
         if case_id:
             self.runtime.result.testops_id = int(case_id)
@@ -79,8 +85,6 @@ class Listener:
             self.runtime.result.signature = signature
 
         self.reporter.add_result(self.runtime.result)
-
-        self.step_uuid = None
 
         logger.info(
             "Finished case result: %s, error: %s",
@@ -117,12 +121,18 @@ class Listener:
         logger.info("complete run executing")
         self.reporter.complete_run()
 
-    def log_message(self, message):
+    @staticmethod
+    def log_message(message):
         logger.debug("Log:", message)
 
-    def _extract_ids(self, list_of_tags: List[str]):
-        id = re.compile(r"Q-(\d+)", re.IGNORECASE)
+    @staticmethod
+    def _extract_ids(list_of_tags: List[str]):
+        qase_id = re.compile(r"Q-(\d+)", re.IGNORECASE)
         for tag in list_of_tags:
-            if id.fullmatch(tag):
-                return int(id.match(tag).groups()[0])
+            if qase_id.fullmatch(tag):
+                return int(qase_id.match(tag).groups()[0])
         return None
+
+    @staticmethod
+    def __is_test_ignore(list_of_tags: List[str]):
+        return any(tag.lower() == "ignore" for tag in list_of_tags)
