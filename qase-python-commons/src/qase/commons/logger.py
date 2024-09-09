@@ -11,7 +11,7 @@ class Logger:
             if not os.path.exists(dir):
                 os.makedirs(dir)
             self.log_file = os.path.join(dir, f'{filename}')
-            with open(self.log_file, 'w'):
+            with open(self.log_file, 'w', encoding='utf-8'):
                 pass
 
     def log(self, message: str, level: str = 'info'):
@@ -19,7 +19,7 @@ class Logger:
         log = f"[Qase][{time_str}][{level}] {message}\n"
         print(log)
         if self.debug:
-            with open(self.log_file, 'a') as f:
+            with open(self.log_file, 'a', encoding='utf-8') as f:
                 f.write(log)
 
     def log_debug(self, message: str):
@@ -27,6 +27,6 @@ class Logger:
             self.log(message, 'debug')
 
     @staticmethod
-    def _get_timestamp(format: str = "%Y%m%d_%H_%M_%S"):
+    def _get_timestamp(fmt: str = "%Y%m%d_%H_%M_%S"):
         now = datetime.datetime.now()
-        return now.strftime(format)
+        return now.strftime(fmt)

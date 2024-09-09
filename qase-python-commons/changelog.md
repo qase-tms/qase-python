@@ -1,3 +1,9 @@
+# qase-python-commons@3.1.3
+
+## What's new
+
+Fix an issue with logging. The logger didn't write logs to the file if the OS used special encoding.
+
 # qase-python-commons@3.1.2
 
 ## What's new
