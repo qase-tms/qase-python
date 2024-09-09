@@ -1,10 +1,28 @@
+# qase-pytest 3.1.2
+
+## What's new
+
+Support `qase.fields` tag. You can specify the fields that you want to send to Qase.
+
+```robotframework
+Simple test
+    [Tags]     qase.fields:{ "suite": "my suite", "description": "It is simple test" }
+    Should Be Equal As Numbers    1    1
+```
+
 # qase-pytest 3.1.1
 
 ## What's new
 
 Minor release that includes all changes from beta versions 3.1.1b.
 
-Support `ignore` tag. If the test has the `ignore` tag, the reporter will not send the result to Qase.
+Support `qase.ignore` tag. If the test has the `qase.ignore` tag, the reporter will not send the result to Qase.
+
+```robotframework
+Simple test
+    [Tags]     qase.ignore
+    Should Be Equal As Numbers    1    1
+```
 
 # qase-pytest 3.1.1b2
 
