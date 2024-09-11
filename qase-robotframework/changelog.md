@@ -1,3 +1,9 @@
+# qase-pytest 3.2.0b1
+
+## What's new
+
+Migrate the listener to the `ROBOT_LISTENER_API_VERSION` version 3.
+
 # qase-pytest 3.1.2
 
 ## What's new
@@ -38,7 +44,7 @@ Calling method 'end_test' of listener 'qase.robotframework.Listener' failed: Ind
 
 ## What's new
 
-Add support `robotframework-tidy` to the reporter. 
+Add support `robotframework-tidy` to the reporter.
 The reporter will ignore `IF`, `ELSE IF`, `ELSE`, and `END` keywords.
 
 # qase-pytest 3.1.0
@@ -55,6 +61,7 @@ Added the ability to attach attachments to step implementations.
 
 ```python
 from qase.robotframework.method import qase
+
 
 def step01(a: int, b: int):
     qase.attach("/some_path/file.xml")
@@ -97,4 +104,5 @@ Renamed the internal package from `qaseio` to `qase`.
 
 ## What's new
 
-Fixed an issue with unsupported step status. If the step is `skipped`, mark such a step as `blocked` in the Qase test run.
+Fixed an issue with unsupported step status. If the step is `skipped`, mark such a step as `blocked` in the Qase test
+run.
