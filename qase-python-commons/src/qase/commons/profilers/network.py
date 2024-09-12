@@ -1,4 +1,5 @@
 import sys
+import threading
 import uuid
 from functools import wraps
 from ..models.runtime import Runtime
@@ -108,11 +109,14 @@ class NetworkProfiler:
 
 class NetworkProfilerSingleton:
     _instance = None
+    _lock = threading.Lock()
 
     @staticmethod
     def init(**kwargs):
         if NetworkProfilerSingleton._instance is None:
-            NetworkProfilerSingleton._instance = NetworkProfiler(**kwargs)
+            with NetworkProfilerSingleton._lock:
+                if NetworkProfilerSingleton._instance is None:
+                    NetworkProfilerSingleton._instance = NetworkProfiler(**kwargs)
 
     @staticmethod
     def get_instance() -> NetworkProfiler:

@@ -2,7 +2,8 @@
 
 ## What's new
 
-Add `clear` method to set the runtime to the base state. 
+- Add `clear` method to set the runtime to the base state.
+- Make the `network` profiler thread safe.
 
 # qase-python-commons@3.1.3
 
