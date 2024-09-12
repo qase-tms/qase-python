@@ -6,6 +6,7 @@ from qase.commons.models import Result, Suite, Step, Field
 from qase.commons.models.step import StepType, StepGherkinData
 from qase.commons.reporters import QaseCoreReporter
 
+from .filter import Filter
 from .plugin import QaseRuntimeSingleton
 from .tag_parser import TagParser
 from .types import STATUSES
@@ -23,7 +24,6 @@ class Listener:
         self.runtime = QaseRuntimeSingleton.get_instance()
         self.step_uuid = None
         self.tests = {}
-        self.suite = {}
 
         if config.config.debug:
             logger.setLevel(logging.DEBUG)
@@ -37,6 +37,11 @@ class Listener:
         self.reporter.start_run()
 
     def start_suite(self, suite, result):
+        execution_plan = self.reporter.get_execution_plan()
+        if execution_plan:
+            selector = Filter(*execution_plan)
+            suite.visit(selector)
+
         self.tests.update(self.__extract_tests_with_suites(suite))
 
     def start_test(self, test, result):
