@@ -1,4 +1,4 @@
-from .step import Step, StepTextData
+from .step import Step
 from .attachment import Attachment
 
 
@@ -41,3 +41,8 @@ class Runtime:
                 self.result.add_attachment(attachment)
         except Exception as e:
             raise QaseRuntimeException(e)
+
+    def clear(self):
+        self.result = None
+        self.steps = {}
+        self.step_id = None
