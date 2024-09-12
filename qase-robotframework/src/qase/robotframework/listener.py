@@ -133,6 +133,8 @@ class Listener:
 
             if hasattr(result.body[i], "type") and result.body[i].type != "KEYWORD":
                 step_name = result.body[i].type
+                if hasattr(result.body[i], "values"):
+                    step_name += " " + " ".join(result.body[i].values)
             else:
                 step_name = result.body[i].name
 
