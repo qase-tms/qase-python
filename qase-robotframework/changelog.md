@@ -2,7 +2,9 @@
 
 ## What's new
 
-Migrate the listener to the `ROBOT_LISTENER_API_VERSION` version 3.
+- Migrate the listener to the `ROBOT_LISTENER_API_VERSION` version 3.
+- Support a selective execution of tests by Qase ID.
+  If the plan id is specified, the reporter will send the results only for the tests that are in the plan.
 
 # qase-pytest 3.1.2
 
