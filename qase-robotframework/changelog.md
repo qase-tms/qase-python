@@ -1,3 +1,9 @@
+# qase-pytest 3.2.0b2
+
+## What's new
+
+Fix an issue with nested steps in the Robot Framework listener.
+
 # qase-pytest 3.2.0b1
 
 ## What's new
