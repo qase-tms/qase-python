@@ -1,3 +1,19 @@
+# qase-pytest 3.2.0b3
+
+## What's new
+
+Improve handling of nested steps in the Robot Framework listener.
+
+For example, if the test has the following structure:
+
+```robotframework
+Formatted Return
+    RETURN  ${value}
+```
+
+Previously, the `RETURN` keyword was presented as `RETURN` in the Qase test run. 
+Now, the keyword is presented as `RETURN  ${value}`.
+
 # qase-pytest 3.2.0b2
 
 ## What's new
