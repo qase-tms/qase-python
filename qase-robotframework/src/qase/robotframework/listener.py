@@ -69,7 +69,7 @@ class Listener:
         if hasattr(result, 'message'):
             self.runtime.result.execution.stacktrace = result.message
 
-        steps = self.__parse_steps(test, result)
+        steps = self.__parse_steps(result)
         self.runtime.result.add_steps(steps)
 
         if hasattr(test, "doc"):
@@ -121,42 +121,49 @@ class Listener:
 
         return test_dict
 
-    def __parse_steps(self, test, result) -> List[Step]:
+    def __parse_steps(self, result) -> List[Step]:
         steps = []
 
         for i in range(len(result.body)):
-            if hasattr(test.body[i], "type") and test.body[i].type == "IF/ELSE ROOT":
-                condition_steps = self.__parse_condition_steps(test.body[i], result.body[i])
+            if hasattr(result.body[i], "type") and result.body[i].type == "IF/ELSE ROOT":
+                condition_steps = self.__parse_condition_steps(result.body[i])
                 for step in condition_steps:
                     steps.append(step)
                 continue
 
+            if hasattr(result.body[i], "type") and result.body[i].type != "KEYWORD":
+                step_name = result.body[i].type
+            else:
+                step_name = result.body[i].name
+
             step = Step(
                 step_type=StepType.GHERKIN,
                 id=str(uuid.uuid4()),
-                data=StepGherkinData(keyword=test.body[i].name, name=test.body[i].name, line=test.body[i].lineno)
+                data=StepGherkinData(keyword=step_name, name=step_name, line=0)
             )
 
             step.execution.set_status(STATUSES[result.body[i].status])
             step.execution.start_time = result.body[i].start_time.timestamp()
             step.execution.duration = result.body[i].elapsed_time.microseconds
 
+            if hasattr(result.body[i], "body"):
+                step.steps = self.__parse_steps(result.body[i])
+
             steps.append(step)
 
         return steps
 
-    def __parse_condition_steps(self, test_step, result_step) -> List[Step]:
+    def __parse_condition_steps(self, result_step) -> List[Step]:
         steps = []
         for i in range(len(result_step.body)):
             if hasattr(result_step.body[i], "type"):
                 step = Step(
                     step_type=StepType.GHERKIN,
                     id=str(uuid.uuid4()),
-                    data=StepGherkinData(keyword=test_step.body[i].type, name=test_step.body[i].type,
-                                         line=test_step.body[i].lineno)
+                    data=StepGherkinData(keyword=result_step.body[i].type, name=result_step.body[i].type, line=0)
                 )
                 step.execution.start_time = None
-                child_steps = self.__parse_steps(test_step.body[i], result_step.body[i])
+                child_steps = self.__parse_steps(result_step.body[i])
 
                 if all(s.execution.status == "skipped" for s in child_steps):
                     step.execution.set_status("skipped")
@@ -170,8 +177,7 @@ class Listener:
             step = Step(
                 step_type=StepType.GHERKIN,
                 id=str(uuid.uuid4()),
-                data=StepGherkinData(keyword=test_step.body[i].name, name=test_step.body[i].name,
-                                     line=test_step.body[i].lineno)
+                data=StepGherkinData(keyword=result_step.body[i].name, name=result_step.body[i].name, line=0)
             )
             steps.append(step)
 
