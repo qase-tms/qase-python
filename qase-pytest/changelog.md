@@ -1,3 +1,9 @@
+# qase-pytest 6.1.1b5
+
+## What's new
+
+Fixed an issue with `network` profiler. 
+
 # qase-pytest 6.1.1b4
 
 ## What's new

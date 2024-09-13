@@ -204,7 +204,7 @@ class QasePytestPlugin:
         self.runtime.result.add_steps([step for key, step in self.runtime.steps.items()])
         self.reporter.add_result(self.runtime.result)
 
-        self.runtime = Runtime()
+        self.runtime.clear()
 
     def add_attachments(
             self, *files: Union[str, Tuple[str, str], Tuple[bytes, str, str]]
