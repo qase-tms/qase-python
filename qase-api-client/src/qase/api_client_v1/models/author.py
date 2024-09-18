@@ -28,11 +28,13 @@ class Author(BaseModel):
     Author
     """ # noqa: E501
     id: Optional[StrictInt] = None
+    author_id: Optional[StrictInt] = None
     entity_type: Optional[StrictStr] = None
+    entity_id: Optional[StrictInt] = None
     email: Optional[StrictStr] = None
     name: Optional[StrictStr] = None
     is_active: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["id", "entity_type", "email", "name", "is_active"]
+    __properties: ClassVar[List[str]] = ["id", "author_id", "entity_type", "entity_id", "email", "name", "is_active"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -86,7 +88,9 @@ class Author(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
+            "author_id": obj.get("author_id"),
             "entity_type": obj.get("entity_type"),
+            "entity_id": obj.get("entity_id"),
             "email": obj.get("email"),
             "name": obj.get("name"),
             "is_active": obj.get("is_active")
