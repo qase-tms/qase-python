@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qase-api-client"
-version = "1.1.0"
+version = "1.1.1"
 description = "Qase TestOps API V1 client for Python"
 readme = "README.md"
 authors = [{name = "Qase Team", email = "support@qase.io"}]

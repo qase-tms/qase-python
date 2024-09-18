@@ -6,7 +6,9 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **int** |  | [optional] 
+**author_id** | **int** |  | [optional] 
 **entity_type** | **str** |  | [optional] 
+**entity_id** | **int** |  | [optional] 
 **email** | **str** |  | [optional] 
 **name** | **str** |  | [optional] 
 **is_active** | **bool** |  | [optional] 
