@@ -1,3 +1,9 @@
+# qase-pytest 6.1.1
+
+## What's new
+
+Minor release that includes all changes from beta versions 6.1.1b.
+
 # qase-pytest 6.1.1b5
 
 ## What's new
