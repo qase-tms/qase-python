@@ -2,6 +2,13 @@
 
 ## What's new
 
+Support `author` field in the test case model.
+You can specify author name or email in fields.
+
+# qase-python-commons@3.1.4
+
+## What's new
+
 - Add `clear` method to set the runtime to the base state.
 - Make the `network` profiler thread safe.
 

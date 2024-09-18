@@ -2,7 +2,7 @@ from typing import Dict, Union
 
 import certifi
 from qase.api_client_v1 import ApiClient, ProjectsApi, Project, EnvironmentsApi, RunsApi, AttachmentsApi, \
-    AttachmentGet, RunCreate, ResultsApi, ResultcreateBulk
+    AttachmentGet, RunCreate, ResultsApi, ResultcreateBulk, AuthorsApi
 from qase.api_client_v1.configuration import Configuration
 from .. import Logger
 from .base_api_client import BaseApiClient
@@ -16,6 +16,7 @@ class ApiV1Client(BaseApiClient):
     def __init__(self, config: QaseConfig, logger: Logger):
         self.logger = logger
         self.config = config
+        self.__authors = {}
 
         try:
             self.logger.log_debug("Preparing API client")
@@ -198,6 +199,11 @@ class ApiV1Client(BaseApiClient):
         if test_ops_id:
             result_model["case_id"] = test_ops_id
 
+        if result.get_field('author'):
+            author_id = self._get_author_id(result.get_field('author'))
+            if author_id:
+                result_model["author_id"] = author_id
+
         self.logger.log_debug(f"Prepared result: {result_model}")
 
         return result_model
@@ -257,3 +263,16 @@ class ApiV1Client(BaseApiClient):
         except Exception as e:
             self.logger.log(f"Error at preparing step: {e}", "error")
             raise ReporterException(e)
+
+    def _get_author_id(self, author: str) -> Union[str, None]:
+        if author in self.__authors:
+            return self.__authors[author]
+
+        author_api = AuthorsApi(self.client)
+        authors = author_api.get_authors(search=author)
+        if authors.result.total == 0:
+            return None
+
+        self.__authors[author] = authors.result.entities[0].author_id
+
+        return authors.result.entities[0].author_id
