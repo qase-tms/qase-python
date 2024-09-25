@@ -1,3 +1,10 @@
+# qase-pytest 6.1.2
+
+## What's new
+
+Fixed an issue with the `pytest-xdist` that caused the tests to be run in parallel and completed the test run before the
+results were uploaded to Qase.
+
 # qase-pytest 6.1.1
 
 ## What's new

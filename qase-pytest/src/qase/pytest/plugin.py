@@ -112,7 +112,8 @@ class QasePytestPlugin:
         else:
             self.reporter.complete_worker()
 
-        self.reporter.complete_run()
+        if QasePytestPlugin.meta_run_file.exists() == False:
+            self.reporter.complete_run()
 
     @pytest.hookimpl(hookwrapper=True)
     def pytest_runtest_protocol(self, item):
