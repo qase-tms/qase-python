@@ -88,8 +88,8 @@ class ApiV1Client(BaseApiClient):
             return response.result
 
         except Exception as e:
-            self.logger.log(f"Error at uploading attachment: {e}", "error")
-            raise ReporterException(e)
+            self.logger.log(f"Error at uploading attachment: {e}", "debug")
+            return None
 
     def create_test_run(self, project_code: str, title: str, description: str, plan_id=None,
                         environment_id=None) -> str:
@@ -139,7 +139,9 @@ class ApiV1Client(BaseApiClient):
         attached = []
         if result.attachments:
             for attachment in result.attachments:
-                attached.extend(self._upload_attachment(project_code, attachment))
+                attach_id = self._upload_attachment(project_code, attachment)
+                if attach_id:
+                    attached.append(attach_id)
 
         steps = []
         for step in result.steps:
@@ -252,7 +254,9 @@ class ApiV1Client(BaseApiClient):
             if step.attachments:
                 uploaded_attachments = []
                 for file in step.attachments:
-                    uploaded_attachments.extend(self._upload_attachment(project_code, file))
+                    attach_id = self._upload_attachment(project_code, file)
+                    if attach_id:
+                        uploaded_attachments.append(attach_id)
                 prepared_step['attachments'] = [attach.hash for attach in uploaded_attachments]
 
             if step.steps:

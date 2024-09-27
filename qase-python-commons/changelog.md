@@ -1,4 +1,11 @@
-# qase-python-commons@3.1.4
+# qase-python-commons@3.1.6
+
+## What's new
+
+Change logic for uploading attachments. Now, the `upload_attachment` method won't return an error if the file is not
+found.
+
+# qase-python-commons@3.1.5
 
 ## What's new
 
@@ -28,7 +35,7 @@ Support `suite` field in the test case model.
 
 ## What's new
 
-Minor release that includes all changes from beta versions 3.1.0b*. 
+Minor release that includes all changes from beta versions 3.1.0b*.
 Also added support for group parameters.
 
 # qase-python-commons@3.1.0b7
@@ -45,7 +52,7 @@ HTTPSConnectionPool(host='api.qase.io', port=443): Max retries exceeded with url
 
 ## What's new
 
-Reporters didn't send information about fields, like `title`, `description`, etc, to the Qase. 
+Reporters didn't send information about fields, like `title`, `description`, etc, to the Qase.
 Now, the reporters will send all the information about the test case to the Qase.
 
 # qase-python-commons@3.1.0b4
