@@ -2,6 +2,17 @@
 
 ## What's new
 
+Fixed an issue with the `upload_attachment` method:
+
+```log
+"attachments": [attach.hash for attach in attached],
+AttributeError: 'list' object has no attribute 'hash'
+```
+
+# qase-python-commons@3.1.7
+
+## What's new
+
 Show a test run link in end of log.
 
 # qase-python-commons@3.1.6

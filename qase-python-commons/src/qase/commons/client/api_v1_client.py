@@ -139,7 +139,7 @@ class ApiV1Client(BaseApiClient):
             for attachment in result.attachments:
                 attach_id = self._upload_attachment(project_code, attachment)
                 if attach_id:
-                    attached.append(attach_id)
+                    attached.extend(attach_id)
 
         steps = []
         for step in result.steps:
@@ -254,7 +254,7 @@ class ApiV1Client(BaseApiClient):
                 for file in step.attachments:
                     attach_id = self._upload_attachment(project_code, file)
                     if attach_id:
-                        uploaded_attachments.append(attach_id)
+                        uploaded_attachments.extend(attach_id)
                 prepared_step['attachments'] = [attach.hash for attach in uploaded_attachments]
 
             if step.steps:
