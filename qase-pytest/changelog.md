@@ -1,3 +1,13 @@
+# qase-pytest 6.1.3
+
+## What's new
+
+If a video is attached to the result, it will be added as an attachment.
+You can configure this functionality using the "video" parameter:
+
+- `--video on` - add a video to each test
+- `--video retain-on-failure` - add a video to each filed test
+
 # qase-pytest 6.1.2
 
 ## What's new
@@ -15,7 +25,7 @@ Minor release that includes all changes from beta versions 6.1.1b.
 
 ## What's new
 
-Fixed an issue with `network` profiler. 
+Fixed an issue with `network` profiler.
 
 # qase-pytest 6.1.1b4
 
@@ -24,7 +34,7 @@ Fixed an issue with `network` profiler.
 Fixed an issue with parameters like this:
 
 ```python
-@pytest.mark.parametrize(argnames="foo", argvalues=["bar","baz"])
+@pytest.mark.parametrize(argnames="foo", argvalues=["bar", "baz"])
 ```  
 
 The error was:

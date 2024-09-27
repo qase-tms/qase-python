@@ -174,8 +174,7 @@ class QasePytestPlugin:
             if self.reporter.config.framework.pytest.capture_logs and report.when == "call":
                 _attach_logs()
 
-            # Check if the test failed
-            if report.failed and report.when == "call":
+            if report.when == "call":
                 # Attach the video to the test result
                 if hasattr(item, 'funcargs') and 'page' in item.funcargs:
                     video = item.funcargs['page'].video
