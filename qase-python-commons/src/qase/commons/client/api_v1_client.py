@@ -74,7 +74,7 @@ class ApiV1Client(BaseApiClient):
             return
         try:
             api_runs.complete_run(project_code, run_id)
-            self.logger.log(f"Run {run_id} was completed successfully", "info")
+            self.logger.log(f"Test run link: {self.web}/run/{project_code}/dashboard/{run_id}", "info")
         except Exception as e:
             self.logger.log(f"Error at completing run {run_id}: {e}", "error")
             raise ReporterException(e)
@@ -106,8 +106,6 @@ class ApiV1Client(BaseApiClient):
                 code=project_code,
                 run_create=RunCreate(**{k: v for k, v in kwargs.items() if v is not None})
             )
-
-            self.logger.log(f"Test run was created: {self.web}/run/{project_code}/dashboard/{result.result.id}", "info")
 
             return result.result.id
 
