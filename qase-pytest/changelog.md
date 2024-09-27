@@ -1,3 +1,17 @@
+# qase-pytest 6.1.4b1
+
+## What's new
+
+Improve handling parameters in the `pytest.mark.parametrize` decorator.
+If you specify the `ids` parameter, the reporter will use it as value of parameter in the test case.
+
+```python
+@pytest.mark.parametrize("enter", [enter_from_meta, enter_from_expedition, enter_from_news],
+                         ids=["enter_from_meta", "enter_from_expedition", "enter_from_news"])
+def test_enter(enter):
+    enter()
+```
+
 # qase-pytest 6.1.3
 
 ## What's new
