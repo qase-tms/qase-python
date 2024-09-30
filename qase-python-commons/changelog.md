@@ -1,3 +1,9 @@
+# qase-python-commons@3.1.9
+
+## What's new
+
+Added configuration for Playwright framework. You can specify the `video`, `trace` and `output` options.
+
 # qase-python-commons@3.1.7
 
 ## What's new
