@@ -1,7 +1,9 @@
+import os
 import pathlib
 from typing import Tuple, Union
 import mimetypes
 
+from qase.commons.models.config.framework import Trace
 from qase.commons.models.result import Result, Field
 from qase.commons.models.attachment import Attachment
 from qase.commons.models.suite import Suite
@@ -46,6 +48,7 @@ class QasePytestPlugin:
     ):
         self.runtime = Runtime()
         self.reporter = reporter
+        self.config = reporter.config
         self.run_id = None
         self.execution_plan = reporter.get_execution_plan()
         self._current_item = None
@@ -175,12 +178,22 @@ class QasePytestPlugin:
                 _attach_logs()
 
             if report.when == "call":
-                # Attach the video to the test result
+                # Attach the video and the trace to the test result
                 if hasattr(item, 'funcargs') and 'page' in item.funcargs:
-                    video = item.funcargs['page'].video
-                    if not video:
+                    page = item.funcargs['page']
+                    if not page.video:
                         return
-                    self.add_attachments(video.path())
+
+                    folder_name = self.__build_folder_name(item)
+                    output_dir = self.config.framework.playwright.output_dir
+                    base_path = os.path.join(os.getcwd(), output_dir, folder_name)
+
+                    video_path = os.path.join(base_path, "video.webm")
+                    self.add_attachments(video_path)
+
+                    if self.config.framework.playwright.trace != Trace.off:
+                        trace_path = os.path.join(base_path, "trace.zip")
+                        self.add_attachments(trace_path)
         else:
             yield
 
@@ -342,6 +355,16 @@ class QasePytestPlugin:
             title += '.' + class_name
 
         self.runtime.result.suite = Suite(title, package)
+
+    @staticmethod
+    def __build_folder_name(item):
+        return (
+                item.location[0].replace(os.sep, "-").replace(".", "-").replace("_", "-")
+                + "-"
+                + item.originalname.replace(".", "-").replace("_", "-")
+                + "-"
+                + item.funcargs['browser_name']
+        )
 
 
 class QasePytestPluginSingleton:

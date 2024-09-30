@@ -47,6 +47,15 @@ def _add_markers(config):
 def setup_config_manager(config):
     config_manager = ConfigManager()
     for option in config.option.__dict__:
+        if option == "output" and config.option.__dict__[option] is not None:
+            config_manager.config.framework.playwright.set_output_dir(config.option.__dict__[option])
+
+        if option == "video" and config.option.__dict__[option] is not None:
+            config_manager.config.framework.playwright.set_video(config.option.__dict__[option])
+
+        if option == "tracing" and config.option.__dict__[option] is not None:
+            config_manager.config.framework.playwright.set_trace(config.option.__dict__[option])
+
         if option.startswith("qase_"):
             if option == "qase_mode" and config.option.__dict__[option] is not None:
                 config_manager.config.set_mode(config.option.__dict__[option])
