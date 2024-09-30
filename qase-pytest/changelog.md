@@ -1,4 +1,4 @@
-# qase-pytest 6.1.4b1
+# qase-pytest 6.1.4
 
 ## What's new
 
