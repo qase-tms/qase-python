@@ -1,3 +1,19 @@
+# qase-pytest 6.1.5
+
+## What's new
+
+Improved the handling of videos and traces for Playwright tests.
+You don't need to create a `conftest.py` file anymore. The video and trace will be attached to the test result
+automatically.
+You can configure the video and trace recording using the following parameters:
+
+- `--video on` - add a video to each test
+- `--video retain-on-failure` - add a video to each filed test
+- `--tracing on` - add a trace to each test
+- `--tracing retain-on-failure` - add a trace to each filed test
+- `--output` - the directory where the video and trace will be saved. By default, the video and trace will be saved in
+  the `test-results` directory.
+
 # qase-pytest 6.1.4
 
 ## What's new
