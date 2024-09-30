@@ -358,13 +358,23 @@ class QasePytestPlugin:
 
     @staticmethod
     def __build_folder_name(item):
-        return (
-                item.location[0].replace(os.sep, "-").replace(".", "-").replace("_", "-")
-                + "-"
-                + item.originalname.replace(".", "-").replace("_", "-")
-                + "-"
-                + item.funcargs['browser_name']
+        path_parts = [QasePytestPlugin.__sanitize_path_component(item.location[0])]
+
+        if '.' in item.location[2]:
+            path_parts.append(
+                QasePytestPlugin.__sanitize_path_component(item.location[2].split('.')[0])
+            )
+
+        path_parts.append(
+            QasePytestPlugin.__sanitize_path_component(item.originalname)
         )
+        path_parts.append(item.funcargs['browser_name'])
+
+        return "-".join(path_parts)
+
+    @staticmethod
+    def __sanitize_path_component(component):
+        return component.replace(os.sep, "-").replace(".", "-").replace("_", "-").lower()
 
 
 class QasePytestPluginSingleton:

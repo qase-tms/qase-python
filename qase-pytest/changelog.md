@@ -1,3 +1,10 @@
+# qase-pytest 6.1.6
+
+## What's new
+
+Fixed an issue with the handling video and trace recording for Playwright tests. If a test was part of a class, the video
+and trace were not attached to the test result.
+
 # qase-pytest 6.1.5
 
 ## What's new
