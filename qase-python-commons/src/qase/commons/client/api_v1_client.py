@@ -8,6 +8,7 @@ from .. import Logger
 from .base_api_client import BaseApiClient
 from ..exceptions.reporter import ReporterException
 from ..models import Attachment, Result, Step
+from ..models.config.framework import Video, Trace
 from ..models.config.qaseconfig import QaseConfig
 from ..models.step import StepType
 
@@ -137,6 +138,8 @@ class ApiV1Client(BaseApiClient):
         attached = []
         if result.attachments:
             for attachment in result.attachments:
+                if self.__should_skip_attachment(attachment, result):
+                    continue
                 attach_id = self._upload_attachment(project_code, attachment)
                 if attach_id:
                     attached.extend(attach_id)
@@ -278,3 +281,14 @@ class ApiV1Client(BaseApiClient):
         self.__authors[author] = authors.result.entities[0].author_id
 
         return authors.result.entities[0].author_id
+
+    def __should_skip_attachment(self, attachment, result):
+        if (self.config.framework.playwright.video == Video.failed and
+                result.execution.status != 'failed' and
+                attachment.file_name == 'video.webm'):
+            return True
+        if (self.config.framework.playwright.trace == Trace.failed and
+                result.execution.status != 'failed' and
+                attachment.file_name == 'trace.zip'):
+            return True
+        return False
