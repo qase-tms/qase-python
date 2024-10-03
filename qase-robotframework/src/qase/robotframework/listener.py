@@ -1,10 +1,13 @@
 import logging
+import pathlib
 import uuid
 
+from filelock import FileLock
 from qase.commons import ConfigManager
 from qase.commons.models import Result, Suite, Step, Field
 from qase.commons.models.step import StepType, StepGherkinData
 from qase.commons.reporters import QaseCoreReporter
+from robot.libraries.BuiltIn import BuiltIn
 
 from .filter import Filter
 from .plugin import QaseRuntimeSingleton
@@ -15,8 +18,14 @@ from .models import *
 logger = logging.getLogger("qase-robotframework")
 
 
+def get_pool_id():
+    return BuiltIn().get_variable_value('${PABOTQUEUEINDEX}', None)
+
+
 class Listener:
     ROBOT_LISTENER_API_VERSION = 3
+
+    meta_run_file = pathlib.Path("src.run")
 
     def __init__(self):
         config = ConfigManager()
@@ -24,6 +33,7 @@ class Listener:
         self.runtime = QaseRuntimeSingleton.get_instance()
         self.step_uuid = None
         self.tests = {}
+        self.pabot_index = None
 
         if config.config.debug:
             logger.setLevel(logging.DEBUG)
@@ -34,9 +44,26 @@ class Listener:
             ch.setFormatter(formatter)
             logger.addHandler(ch)
 
-        self.reporter.start_run()
-
     def start_suite(self, suite, result):
+        self.pabot_index = get_pool_id()
+        if self.pabot_index is not None:
+            try:
+                if int(self.pabot_index) == 0:
+                    test_run_id = self.reporter.start_run()
+                    with FileLock("qase.lock"):
+                        if test_run_id:
+                            with open(self.meta_run_file, "w") as lock_file:
+                                lock_file.write(str(test_run_id))
+                else:
+                    while True:
+                        if Listener.meta_run_file.exists():
+                            self.__load_run_from_lock()
+                            break
+            except RuntimeError:
+                logger.error("Failed to create or read lock file")
+        else:
+            self.reporter.start_run()
+
         execution_plan = self.reporter.get_execution_plan()
         if execution_plan:
             selector = Filter(*execution_plan)
@@ -99,8 +126,15 @@ class Listener:
         )
 
     def close(self):
-        logger.info("complete run executing")
-        self.reporter.complete_run()
+        if self.pabot_index is not None:
+            if int(self.pabot_index) == 0:
+                Listener.drop_run_id()
+            else:
+                self.reporter.complete_worker()
+
+        if not Listener.meta_run_file.exists():
+            logger.info("complete run executing")
+            self.reporter.complete_run()
 
     def __extract_tests_with_suites(self, suite, parent_suites=None):
         if parent_suites is None:
@@ -184,3 +218,17 @@ class Listener:
             steps.append(step)
 
         return steps
+
+    def __load_run_from_lock(self):
+        if Listener.meta_run_file.exists():
+            with open(Listener.meta_run_file, "r") as lock_file:
+                try:
+                    test_run_id = str(lock_file.read())
+                    self.reporter.set_run_id(test_run_id)
+                except ValueError:
+                    pass
+
+    @staticmethod
+    def drop_run_id():
+        if Listener.meta_run_file.exists():
+            Listener.meta_run_file.unlink()
