@@ -1,3 +1,11 @@
+# qase-pytest 3.2.0
+
+## What's new
+
+Minor release that includes all changes from beta versions 3.2.0b.
+
+Support `pabot` library. If you use the `pabot` library to run tests in parallel, the reporter will send the results
+
 # qase-pytest 3.2.0b3
 
 ## What's new
