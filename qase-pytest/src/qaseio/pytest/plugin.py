@@ -131,6 +131,8 @@ class QasePytestPlugin:
             except Exception:
                 logging.exception("\n\n!!! Qaseio plugin problem. FIX ME !!!\n\n")
             yield
+            # set params after test was executed in case their values were changed
+            self._set_params(item)
             if self.interceptor:
                 self.interceptor.disable()
             self._set_test_class_completed(nextitem)
@@ -188,7 +190,6 @@ class QasePytestPlugin:
         self._set_author(item)
         self._set_muted(item)
         self._set_testops_id(item)
-        self._set_params(item)
         self._set_suite(item)
         self._set_test_class_execution(item)
 
