@@ -85,6 +85,7 @@ class Result(object):
         self.class_execution: Optional[List[Execution]] = []
         self.test_class: bool = False
         self.test_class_completed: Optional[bool] = False
+        self.known_issue: bool = False
         QaseUtils.get_host_data()
 
     def add_message(self, message: str) -> None:

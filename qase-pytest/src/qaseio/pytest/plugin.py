@@ -1,10 +1,11 @@
 import logging
 import pathlib
-from typing import Tuple, Union
-import pytest
+from typing import Tuple, Union, Literal
 import mimetypes
 import re
 import os
+
+from lib.util.common import KNOWN_ISSUE_STASH_KEY
 from qaseio.commons.models.result import Result, Field
 from qaseio.commons.models.attachment import Attachment
 from qaseio.commons.models.suite import Suite
@@ -71,8 +72,6 @@ class QasePytestPlugin:
 
             InterceptorSingleton.init(runtime=self.runtime)
             self.interceptor = InterceptorSingleton.get_instance()
-        if self.mark_rerun:
-            PYTEST_TO_QASE_STATUS["FAILED"] = "rerun"
 
     def start_step(self, step):
         self.runtime.add_step(step)
@@ -147,27 +146,28 @@ class QasePytestPlugin:
     def pytest_runtest_makereport(self, item, call):
         if not self.ignore:
             report = (yield).get_result()
-
-            def set_result(res):
-                self.runtime.result.execution.status = res
+            self.set_known_issue_result(item)
 
             if report.longrepr:
                 self.runtime.result.execution.stacktrace = report.longreprtext
 
             if report.failed:
                 if call.excinfo.typename != "AssertionError":
-                    set_result(PYTEST_TO_QASE_STATUS["BROKEN"])
+                    self.set_result("BROKEN")
                 else:
-                    set_result(PYTEST_TO_QASE_STATUS["FAILED"])
+                    if self.mark_rerun and not self.runtime.result.known_issue:
+                        self.set_result("RERUN")
+                    else:
+                        self.set_result("FAILED")
             elif report.skipped:
                 if self.runtime.result.execution.status in (
                     None,
                     PYTEST_TO_QASE_STATUS["PASSED"],
                 ):
-                    set_result(PYTEST_TO_QASE_STATUS["SKIPPED"])
+                    self.set_result("SKIPPED")
             else:
                 if self.runtime.result.execution.status is None:
-                    set_result(PYTEST_TO_QASE_STATUS["PASSED"])
+                    self.set_result("PASSED")
 
             if self.capture_logs and report.when == "call":
                 if report.caplog:
@@ -331,6 +331,13 @@ class QasePytestPlugin:
             del os.environ["QASE_CUSTOM_MSG"]
         elif report.failed:
             self.runtime.result.add_message(call.excinfo.exconly())
+
+    def set_known_issue_result(self, item: pytest.Item):
+        if item.stash.get(KNOWN_ISSUE_STASH_KEY, None):
+            self.runtime.result.known_issue = True
+
+    def set_result(self, pytest_status: Literal["PASSED", "FAILED", "SKIPPED", "BLOCKED", "BROKEN", "RERUN"]):
+        self.runtime.result.execution.status = PYTEST_TO_QASE_STATUS[pytest_status]
 
 
 class QasePytestPluginSingleton:
