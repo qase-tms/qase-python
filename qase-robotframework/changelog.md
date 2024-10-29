@@ -1,3 +1,9 @@
+# qase-pytest 3.2.1
+
+## What's new
+
+Support new version of qase-python-commons
+
 # qase-pytest 3.2.0
 
 ## What's new
