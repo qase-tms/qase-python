@@ -1,7 +1,7 @@
 from typing import Dict
 
 import certifi
-from qase.api_client_v2 import ResultsApi
+from qase.api_client_v2 import ResultsApi, ResultCreateFields
 from qase.api_client_v2.api_client import ApiClient
 from qase.api_client_v2.configuration import Configuration
 from qase.api_client_v2.models.create_results_request_v2 import CreateResultsRequestV2
@@ -75,23 +75,25 @@ class ApiV2Client(ApiV1Client):
             execution=ResultExecution(start_time=result.execution.start_time, end_time=result.execution.end_time,
                                       status=result.execution.status, duration=result.execution.duration,
                                       stacktrace=result.execution.stacktrace, thread=result.execution.thread),
-            fields=result.fields,
+            fields=ResultCreateFields.from_dict(result.fields),
             attachments=[attach.hash for attach in attached],
             steps=steps,
-            step_type=ResultStepsType.CLASSIC,
+            steps_type=ResultStepsType.CLASSIC,
             params=result.params,
+            param_groups=result.param_groups,
             muted=False,
             message=result.message,
         )
 
-        if result.get_suite_title():
+        if result.relations is not None and result.relations.suite is not None and len(
+                result.relations.suite.data) != 0:
             data = []
             root_suite = self.config.root_suite
             if root_suite:
                 data.append(RelationSuiteItem(title=root_suite))
 
-            for suite in result.get_suite_title().split("."):
-                data.append(RelationSuiteItem(title=suite))
+            for raw in result.relations.suite.data:
+                data.append(RelationSuiteItem(title=raw.title))
 
             result_model_v2.relations = ResultRelations(suite=RelationSuite(data=data))
 

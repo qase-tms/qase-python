@@ -4,7 +4,6 @@ import uuid
 from typing import Type, Optional, Union, Dict, List
 from .basemodel import BaseModel
 from .step import Step
-from .suite import Suite
 from .attachment import Attachment
 from .relation import Relation
 from .. import QaseUtils
@@ -79,10 +78,9 @@ class Result(BaseModel):
         self.params: Optional[dict] = {}
         self.param_groups: Optional[List[List[str]]] = []
         self.author: Optional[str] = None
-        self.relations: List[Type[Relation]] = []
+        self.relations: Type[Relation] = None
         self.muted: bool = False
         self.message: Optional[str] = None
-        self.suite: Optional[Type[Suite]] = None
         QaseUtils.get_host_data()
 
     def add_message(self, message: str) -> None:
@@ -97,20 +95,14 @@ class Result(BaseModel):
     def add_attachment(self, attachment: Attachment) -> None:
         self.attachments.append(attachment)
 
-    def add_relation(self, relation: Type[Relation]) -> None:
-        self.relations.append(relation)
-
     def add_param(self, key: str, value: str) -> None:
         self.params[key] = value
 
     def add_param_groups(self, values: List[str]) -> None:
         self.param_groups.append(values)
 
-    def add_relation(self, relation: Type[Relation]) -> None:
-        self.relations.append(relation)
-
-    def add_suite(self, suite: Type[Suite]) -> None:
-        self.suite = suite
+    def set_relation(self, relation: Relation) -> None:
+        self.relations = relation
 
     def get_status(self) -> Optional[str]:
         return self.execution.status
@@ -127,17 +119,10 @@ class Result(BaseModel):
         return None
 
     def get_testops_id(self) -> Optional[int]:
-        if self.testops_id is None:
-            # Hack for old API
-            return 0
         return self.testops_id
 
     def get_duration(self) -> int:
         return self.execution.duration
-
-    def get_suite_title(self) -> Optional[str]:
-        if self.suite:
-            return self.suite.title
 
     def set_run_id(self, run_id: str) -> None:
         self.run_id = run_id

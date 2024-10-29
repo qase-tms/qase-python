@@ -68,13 +68,19 @@ class QaseReport:
                 mode = "w"
             if isinstance(attachment.content, bytes):
                 mode = "wb"
-            with open(f"{self.report_path}/attachments/{attachment.id}-{attachment.file_name}", mode) as f:
+
+            file_path = f"{self.report_path}/attachments/{attachment.id}-{attachment.file_name}"
+            with open(file_path, mode) as f:
                 f.write(attachment.content)
             # Clear content to save memory and avoid double writing
             attachment.content = None
+            attachment.file_path = file_path
+
         elif attachment.file_path:
+            file_path = f"{self.report_path}/attachments/{attachment.id}-{attachment.file_name}"
             shutil.copy2(os.path.abspath(attachment.file_path),
                          f"{self.report_path}/attachments/{attachment.id}-{attachment.file_name}")
+            attachment.file_path = file_path
 
     def _persist_attachments_in_steps(self, steps: list):
         for step in steps:

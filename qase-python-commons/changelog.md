@@ -1,3 +1,9 @@
+# qase-python-commons@3.2.0
+
+## What's new
+
+Updated the `file` reporter and support new API v2 client
+
 # qase-python-commons@3.1.9
 
 ## What's new
