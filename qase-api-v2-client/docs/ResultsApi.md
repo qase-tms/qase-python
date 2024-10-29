@@ -1,4 +1,4 @@
-# qase.ResultsApi
+# qase.api_client_v2.ResultsApi
 
 All URIs are relative to *https://api.qase.io/v2*
 
@@ -20,15 +20,15 @@ This method allows to create single test run result.  If there is no free space 
 * Api Key Authentication (TokenAuth):
 
 ```python
-import qase
-from src import ResultCreate
-from src import ApiException
+import qase.api_client_v2
+from qase.api_client_v2.models.result_create import ResultCreate
+from qase.api_client_v2.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v2
 # See configuration.py for a list of all supported configuration parameters.
-configuration = qase.Configuration(
-    host="https://api.qase.io/v2"
+configuration = qase.api_client_v2.Configuration(
+    host = "https://api.qase.io/v2"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -43,12 +43,12 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with qase.ApiClient(configuration) as api_client:
+with qase.api_client_v2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = qase.ResultsApi(api_client)
-    project_code = 'project_code_example'  # str | 
-    run_id = 56  # int | 
-    result_create = qase.ResultCreate()  # ResultCreate | 
+    api_instance = qase.api_client_v2.ResultsApi(api_client)
+    project_code = 'project_code_example' # str | 
+    run_id = 56 # int | 
+    result_create = qase.api_client_v2.ResultCreate() # ResultCreate | 
 
     try:
         # (Beta) Create test run result
@@ -106,15 +106,15 @@ This method allows to create several test run results at once.  If there is no f
 * Api Key Authentication (TokenAuth):
 
 ```python
-import qase
-from src import CreateResultsRequestV2
-from src import ApiException
+import qase.api_client_v2
+from qase.api_client_v2.models.create_results_request_v2 import CreateResultsRequestV2
+from qase.api_client_v2.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.qase.io/v2
 # See configuration.py for a list of all supported configuration parameters.
-configuration = qase.Configuration(
-    host="https://api.qase.io/v2"
+configuration = qase.api_client_v2.Configuration(
+    host = "https://api.qase.io/v2"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -129,12 +129,12 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['TokenAuth'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with qase.ApiClient(configuration) as api_client:
+with qase.api_client_v2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = qase.ResultsApi(api_client)
-    project_code = 'project_code_example'  # str | 
-    run_id = 56  # int | 
-    create_results_request_v2 = qase.CreateResultsRequestV2()  # CreateResultsRequestV2 | 
+    api_instance = qase.api_client_v2.ResultsApi(api_client)
+    project_code = 'project_code_example' # str | 
+    run_id = 56 # int | 
+    create_results_request_v2 = qase.api_client_v2.CreateResultsRequestV2() # CreateResultsRequestV2 | 
 
     try:
         # (Beta) Bulk create test run result

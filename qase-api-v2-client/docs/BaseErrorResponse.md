@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from src import BaseErrorResponse
+from qase.api_client_v2.models.base_error_response import BaseErrorResponse
 
 # TODO update the JSON string below
 json = "{}"

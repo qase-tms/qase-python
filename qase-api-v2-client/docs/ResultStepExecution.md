@@ -5,17 +5,17 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**start_time** | **float** |  | [optional] 
-**end_time** | **float** |  | [optional] 
+**start_time** | **float** | Unix epoch time in seconds (whole part) and milliseconds (fractional part). | [optional] 
+**end_time** | **float** | Unix epoch time in seconds (whole part) and milliseconds (fractional part). | [optional] 
 **status** | [**ResultStepStatus**](ResultStepStatus.md) |  | 
-**duration** | **int** |  | [optional] 
+**duration** | **int** | Duration of the test step execution in milliseconds. | [optional] 
 **comment** | **str** |  | [optional] 
 **attachments** | **List[str]** |  | [optional] 
 
 ## Example
 
 ```python
-from src import ResultStepExecution
+from qase.api_client_v2.models.result_step_execution import ResultStepExecution
 
 # TODO update the JSON string below
 json = "{}"

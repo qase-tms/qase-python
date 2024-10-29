@@ -27,10 +27,16 @@ from typing import Tuple, Optional, List, Dict
 
 from qase.api_client_v2.configuration import Configuration
 from qase.api_client_v2.api_response import ApiResponse, T as ApiResponseT
+import qase.api_client_v2.models
 from qase.api_client_v2 import rest
 from qase.api_client_v2.exceptions import (
     ApiValueError,
-    ApiException
+    ApiException,
+    BadRequestException,
+    UnauthorizedException,
+    ForbiddenException,
+    NotFoundException,
+    ServiceException
 )
 
 RequestSerialized = Tuple[str, str, Dict[str, str], Optional[str], List[str]]
@@ -415,7 +421,7 @@ class ApiClient:
             if klass in self.NATIVE_TYPES_MAPPING:
                 klass = self.NATIVE_TYPES_MAPPING[klass]
             else:
-                klass = getattr(qase.models, klass)
+                klass = getattr(qase.api_client_v2.models, klass)
 
         if klass in self.PRIMITIVE_TYPES:
             return self.__deserialize_primitive(data, klass)
