@@ -171,8 +171,14 @@ class ApiV1Client(BaseApiClient):
             case_data["layer"] = result.get_field('layer')
 
         suite = None
-        if result.get_suite_title():
-            suite = "\t".join(result.get_suite_title().split("."))
+        if result.relations is not None and result.relations.suite is not None and len(
+                result.relations.suite.data) != 0:
+            suites = []
+
+            for raw in result.relations.suite.data:
+                suites.append(raw.title)
+
+            suite = "\t".join(suites)
 
         if result.get_field('suite'):
             suite = result.get_field('suite')
