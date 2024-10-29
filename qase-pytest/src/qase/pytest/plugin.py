@@ -3,10 +3,11 @@ import pathlib
 from typing import Tuple, Union
 import mimetypes
 
+from qase.commons.models import Relation
 from qase.commons.models.config.framework import Trace
+from qase.commons.models.relation import SuiteData
 from qase.commons.models.result import Result, Field
 from qase.commons.models.attachment import Attachment
-from qase.commons.models.suite import Suite
 from qase.commons.models.runtime import Runtime
 
 from qase.commons import QaseUtils
@@ -333,7 +334,7 @@ class QasePytestPlugin:
     def _set_suite(self, item) -> None:
         marker = item.get_closest_marker("qase_suite")
         if marker:
-            self.runtime.result.suite = Suite(marker.kwargs.get("title"), marker.kwargs.get("description"))
+            self.runtime.result.relations = self.__prepare_relations([marker.kwargs.get("title")])
             return
         self._get_suite(item)
 
@@ -344,7 +345,6 @@ class QasePytestPlugin:
         file_name, file_path = islice(chain(reversed(path.rsplit('/', 1)), [None]), 2)
 
         module = file_name.split('.')[0]
-        package = path.replace('/', '.') if path else None
 
         if file_path:
             title = file_path + '.' + module
@@ -354,7 +354,16 @@ class QasePytestPlugin:
         if class_name:
             title += '.' + class_name
 
-        self.runtime.result.suite = Suite(title, package)
+        self.runtime.result.relations = self.__prepare_relations(title.split('.'))
+
+    @staticmethod
+    def __prepare_relations(suites: []):
+        relation = Relation()
+
+        for suite in suites:
+            relation.add_suite(SuiteData(title=suite))
+
+        return relation
 
     @staticmethod
     def __build_folder_name(item):
