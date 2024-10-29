@@ -4,7 +4,8 @@ import uuid
 
 from filelock import FileLock
 from qase.commons import ConfigManager
-from qase.commons.models import Result, Suite, Step, Field
+from qase.commons.models import Result, Step, Field, Relation
+from qase.commons.models.relation import SuiteData
 from qase.commons.models.step import StepType, StepGherkinData
 from qase.commons.reporters import QaseCoreReporter
 from robot.libraries.BuiltIn import BuiltIn
@@ -108,7 +109,11 @@ class Listener:
 
         suites = self.tests.get(f"{test.name}:{test.lineno}")
         if suites:
-            self.runtime.result.suite = Suite('\t'.join(suites), "")
+            relations = Relation()
+            for suite in suites:
+                relations.add_suite(SuiteData(suite))
+            self.runtime.result.relations = relations
+
             signature = "::".join(
                 suite.lower().replace(" ", "_") for suite in suites) + f"::{test.name.lower().replace(' ', '_')}"
 
