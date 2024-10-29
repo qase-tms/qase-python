@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Union
 from qase.api_client_v2.models.result_step_status import ResultStepStatus
 from typing import Optional, Set
@@ -28,10 +28,10 @@ class ResultStepExecution(BaseModel):
     """
     ResultStepExecution
     """ # noqa: E501
-    start_time: Optional[Union[StrictFloat, StrictInt]] = None
-    end_time: Optional[Union[StrictFloat, StrictInt]] = None
+    start_time: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Unix epoch time in seconds (whole part) and milliseconds (fractional part).")
+    end_time: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Unix epoch time in seconds (whole part) and milliseconds (fractional part).")
     status: ResultStepStatus
-    duration: Optional[StrictInt] = None
+    duration: Optional[StrictInt] = Field(default=None, description="Duration of the test step execution in milliseconds.")
     comment: Optional[StrictStr] = None
     attachments: Optional[List[StrictStr]] = None
     __properties: ClassVar[List[str]] = ["start_time", "end_time", "status", "duration", "comment", "attachments"]

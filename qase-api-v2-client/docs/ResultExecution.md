@@ -5,17 +5,17 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**start_time** | **float** |  | [optional] 
-**end_time** | **float** |  | [optional] 
+**start_time** | **float** | Unix epoch time in seconds (whole part) and milliseconds (fractional part). | [optional] 
+**end_time** | **float** | Unix epoch time in seconds (whole part) and milliseconds (fractional part). | [optional] 
 **status** | **str** | Can have the following values passed, failed, blocked, skipped, invalid + custom statuses | 
-**duration** | **int** |  | [optional] 
+**duration** | **int** | Duration of the test execution in milliseconds. | [optional] 
 **stacktrace** | **str** |  | [optional] 
 **thread** | **str** |  | [optional] 
 
 ## Example
 
 ```python
-from src import ResultExecution
+from qase.api_client_v2.models.result_execution import ResultExecution
 
 # TODO update the JSON string below
 json = "{}"

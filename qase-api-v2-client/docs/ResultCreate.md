@@ -10,21 +10,20 @@ Name | Type | Description | Notes
 **signature** | **str** |  | [optional] 
 **testops_id** | **int** |  | [optional] 
 **execution** | [**ResultExecution**](ResultExecution.md) |  | 
-**fields** | **Dict[str, str]** |  | [optional] 
+**fields** | [**ResultCreateFields**](ResultCreateFields.md) |  | [optional] 
 **attachments** | **List[str]** |  | [optional] 
 **steps** | [**List[ResultStep]**](ResultStep.md) |  | [optional] 
 **steps_type** | [**ResultStepsType**](ResultStepsType.md) |  | [optional] 
 **params** | **Dict[str, str]** |  | [optional] 
-**author** | **str** |  | [optional] 
+**param_groups** | **List[List[str]]** | List parameter groups by name only. Add their values in the &#39;params&#39; field | [optional] 
 **relations** | [**ResultRelations**](ResultRelations.md) |  | [optional] 
-**muted** | **bool** |  | [optional] 
 **message** | **str** |  | [optional] 
-**created_at** | **float** |  | [optional] 
+**defect** | **bool** | If true and the result is failed, the defect associated with the result will be created | [optional] 
 
 ## Example
 
 ```python
-from src import ResultCreate
+from qase.api_client_v2.models.result_create import ResultCreate
 
 # TODO update the JSON string below
 json = "{}"

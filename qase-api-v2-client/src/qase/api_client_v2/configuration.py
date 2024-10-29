@@ -69,7 +69,7 @@ class Configuration:
 
     You can programmatically set the cookie:
 
-conf = qase.Configuration(
+conf = qase.api_client_v2.Configuration(
     api_key={'cookieAuth': 'abc123'}
     api_key_prefix={'cookieAuth': 'JSESSIONID'}
 )
@@ -130,7 +130,7 @@ conf = qase.Configuration(
         self.logger = {}
         """Logging Settings
         """
-        self.logger["package_logger"] = logging.getLogger("qase")
+        self.logger["package_logger"] = logging.getLogger("qase.api_client_v2")
         self.logger["urllib3_logger"] = logging.getLogger("urllib3")
         self.logger_format = '%(asctime)s %(levelname)s %(message)s'
         """Log format

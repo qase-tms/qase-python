@@ -18,8 +18,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Union
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List
+from qase.api_client_v2.models.result_create_fields import ResultCreateFields
 from qase.api_client_v2.models.result_execution import ResultExecution
 from qase.api_client_v2.models.result_relations import ResultRelations
 from qase.api_client_v2.models.result_step import ResultStep
@@ -36,17 +37,16 @@ class ResultCreate(BaseModel):
     signature: Optional[StrictStr] = None
     testops_id: Optional[StrictInt] = None
     execution: ResultExecution
-    fields: Optional[Dict[str, StrictStr]] = None
+    fields: Optional[ResultCreateFields] = None
     attachments: Optional[List[StrictStr]] = None
     steps: Optional[List[ResultStep]] = None
     steps_type: Optional[ResultStepsType] = None
     params: Optional[Dict[str, StrictStr]] = None
-    author: Optional[StrictStr] = None
+    param_groups: Optional[List[List[StrictStr]]] = Field(default=None, description="List parameter groups by name only. Add their values in the 'params' field")
     relations: Optional[ResultRelations] = None
-    muted: Optional[StrictBool] = None
     message: Optional[StrictStr] = None
-    created_at: Optional[Union[StrictFloat, StrictInt]] = None
-    __properties: ClassVar[List[str]] = ["id", "title", "signature", "testops_id", "execution", "fields", "attachments", "steps", "steps_type", "params", "author", "relations", "muted", "message", "created_at"]
+    defect: Optional[StrictBool] = Field(default=None, description="If true and the result is failed, the defect associated with the result will be created")
+    __properties: ClassVar[List[str]] = ["id", "title", "signature", "testops_id", "execution", "fields", "attachments", "steps", "steps_type", "params", "param_groups", "relations", "message", "defect"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -90,6 +90,9 @@ class ResultCreate(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of execution
         if self.execution:
             _dict['execution'] = self.execution.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of fields
+        if self.fields:
+            _dict['fields'] = self.fields.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in steps (list)
         _items = []
         if self.steps:
@@ -110,6 +113,11 @@ class ResultCreate(BaseModel):
         if self.steps_type is None and "steps_type" in self.model_fields_set:
             _dict['steps_type'] = None
 
+        # set to None if param_groups (nullable) is None
+        # and model_fields_set contains the field
+        if self.param_groups is None and "param_groups" in self.model_fields_set:
+            _dict['param_groups'] = None
+
         # set to None if relations (nullable) is None
         # and model_fields_set contains the field
         if self.relations is None and "relations" in self.model_fields_set:
@@ -119,11 +127,6 @@ class ResultCreate(BaseModel):
         # and model_fields_set contains the field
         if self.message is None and "message" in self.model_fields_set:
             _dict['message'] = None
-
-        # set to None if created_at (nullable) is None
-        # and model_fields_set contains the field
-        if self.created_at is None and "created_at" in self.model_fields_set:
-            _dict['created_at'] = None
 
         return _dict
 
@@ -142,16 +145,15 @@ class ResultCreate(BaseModel):
             "signature": obj.get("signature"),
             "testops_id": obj.get("testops_id"),
             "execution": ResultExecution.from_dict(obj["execution"]) if obj.get("execution") is not None else None,
-            "fields": obj.get("fields"),
+            "fields": ResultCreateFields.from_dict(obj["fields"]) if obj.get("fields") is not None else None,
             "attachments": obj.get("attachments"),
             "steps": [ResultStep.from_dict(_item) for _item in obj["steps"]] if obj.get("steps") is not None else None,
             "steps_type": obj.get("steps_type"),
             "params": obj.get("params"),
-            "author": obj.get("author"),
+            "param_groups": obj.get("param_groups"),
             "relations": ResultRelations.from_dict(obj["relations"]) if obj.get("relations") is not None else None,
-            "muted": obj.get("muted"),
             "message": obj.get("message"),
-            "created_at": obj.get("created_at")
+            "defect": obj.get("defect")
         })
         return _obj
 

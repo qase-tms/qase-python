@@ -19,7 +19,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing import Any, ClassVar, Dict, List, Union
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -27,10 +27,10 @@ class ResultExecution(BaseModel):
     """
     ResultExecution
     """ # noqa: E501
-    start_time: Optional[Union[StrictFloat, StrictInt]] = None
-    end_time: Optional[Union[StrictFloat, StrictInt]] = None
+    start_time: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Unix epoch time in seconds (whole part) and milliseconds (fractional part).")
+    end_time: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Unix epoch time in seconds (whole part) and milliseconds (fractional part).")
     status: StrictStr = Field(description="Can have the following values passed, failed, blocked, skipped, invalid + custom statuses")
-    duration: Optional[StrictInt] = None
+    duration: Optional[StrictInt] = Field(default=None, description="Duration of the test execution in milliseconds.")
     stacktrace: Optional[StrictStr] = None
     thread: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["start_time", "end_time", "status", "duration", "stacktrace", "thread"]
