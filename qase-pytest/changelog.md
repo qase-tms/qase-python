@@ -1,3 +1,9 @@
+# qase-pytest 6.1.8
+
+## What's new
+
+Fixed an issue with suites [#296]
+
 # qase-pytest 6.1.7
 
 ## What's new
