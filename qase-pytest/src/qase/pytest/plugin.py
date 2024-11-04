@@ -334,7 +334,7 @@ class QasePytestPlugin:
     def _set_suite(self, item) -> None:
         marker = item.get_closest_marker("qase_suite")
         if marker:
-            self.runtime.result.relations = self.__prepare_relations([marker.kwargs.get("title")])
+            self.runtime.result.relations = self.__prepare_relations(marker.kwargs.get("title").split('.'))
             return
         self._get_suite(item)
 
