@@ -34,7 +34,7 @@ Configuration options are described in the
 
 ```json
 {
-  "mode": "testops", 
+  "mode": "testops",
   "fallback": "report",
   "testops": {
     "project": "YOUR_PROJECT_CODE",
@@ -49,21 +49,18 @@ Configuration options are described in the
       "size": 100
     }
   },
-    "report": {
+  "report": {
     "driver": "local",
     "connection": {
       "local": {
         "path": "./build/qase-report",
-        "format": "json" 
+        "format": "json"
       }
     }
   },
   "framework": {
     "pytest": {
-      "capture": {
-        "logs": true,
-        "http": true
-      }
+      "captureLogs": true
     }
   },
   "environment": "local"
