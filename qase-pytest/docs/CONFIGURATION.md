@@ -16,7 +16,7 @@ and command line options override both other values.
 | **Common**                                     |
 | Main reporting mode                            | `mode`                         | `QASE_MODE`                     | `--qase-mode`                     | `testops`                               | No       | `testops`, `report`, `off` |
 | Fallback reporting mode                        | `fallback`                     | `QASE_FALLBACK`                 | `--qase-fallback`                 | `report`                                | No       | `testops`, `report`, `off` |
-| Execution plan path                            | `execution_plan_path`          | `QASE_EXECUTION_PLAN_PATH`      | `--qase-execution-plan-path`      | `./build/qase-execution-plan.json`      | No       | Any string                 |
+| Execution plan path                            | `executionPlan.path`           | `QASE_EXECUTION_PLAN_PATH`      | `--qase-execution-plan-path`      | `./build/qase-execution-plan.json`      | No       | Any string                 |
 | Qase environment                               | `environment`                  | `QASE_ENVIRONMENT`              | `--qase-environment`              | `local`                                 | No       | Any string                 |
 | Root suite                                     | `rootSuite`                    | `QASE_ROOT_SUITE`               | `--qase-root-suite`               |                                         | No       | Any string                 |
 | Debug logs                                     | `debug`                        | `QASE_DEBUG`                    | `--qase-debug`                    | false                                   | No       | `true`, `false`            |
@@ -37,7 +37,7 @@ and command line options override both other values.
 | Driver used for report mode                    | `report.driver`                | `QASE_REPORT_DRIVER`            | `--qase-report-driver`            | `local`                                 | No       | `local`                    |
 | **Framework specific options**                 |
 | **Pytest**                                     |
-| Capture logs                                   | `framework.pytest.capturelogs` | `QASE_PYTEST_CAPTURE_LOGS`      | `--qase-pytest-capture-logs`      | `False`                                 | No       | `true`, `false`            |
+| Capture logs                                   | `framework.pytest.captureLogs` | `QASE_PYTEST_CAPTURE_LOGS`      | `--qase-pytest-capture-logs`      | `False`                                 | No       | `true`, `false`            |
 | **Earlier versions**                           |
 | **qase-pytest v5.x**                           |
 | TestOps bulk (always on since v6)              | `testops.bulk`                 | `QASE_TESTOPS_BULK`             | `--qase-testops-bulk`             | `True`                                  | No       | `true`, `false`            |
