@@ -14,7 +14,7 @@ Environment variables override the values given in the config file.
 | **Common**                                |
 | Main reporting mode                       | `mode`                     | `QASE_MODE`                     | `testops`                               | No       | `testops`, `report`, `off` |
 | Fallback reporting mode                   | `fallback`                 | `QASE_FALLBACK`                 | `report`                                | No       | `testops`, `report`, `off` |
-| Execution plan path                       | `execution_plan_path`      | `QASE_EXECUTION_PLAN_PATH`      | `./build/qase-execution-plan.json`      | No       | Any string                 |
+| Execution plan path                       | `executionPlan.path`       | `QASE_EXECUTION_PLAN_PATH`      | `./build/qase-execution-plan.json`      | No       | Any string                 |
 | Qase environment                          | `environment`              | `QASE_ENVIRONMENT`              | `local`                                 | No       | Any string                 |
 | Root suite                                | `rootSuite`                | `QASE_ROOT_SUITE`               |                                         | No       | Any string                 |
 | **Qase TestOps mode configuration**       |
