@@ -323,13 +323,19 @@ class QasePytestPlugin:
                 self.runtime.result.add_param_groups(group)
 
             ids = item.callspec.id.split("-")
-            i = 0
-            for key, val in item.callspec.params.items():
-                value = str(ids[i])
-                i += 1
-                if key.startswith("__pytest"):
-                    continue
-                self.runtime.result.add_param(key, value)
+            if len(ids) != len(item.callspec.params.items()):
+                for key, val in item.callspec.params.items():
+                    if key.startswith("__pytest"):
+                        continue
+                    self.runtime.result.add_param(key, str(val))
+            else:
+                i = 0
+                for key, val in item.callspec.params.items():
+                    value = str(ids[i])
+                    i += 1
+                    if key.startswith("__pytest"):
+                        continue
+                    self.runtime.result.add_param(key, value)
 
     def _set_suite(self, item) -> None:
         marker = item.get_closest_marker("qase_suite")
