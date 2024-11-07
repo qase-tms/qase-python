@@ -6,6 +6,7 @@ class Runtime:
         self.result = None
         self.steps = {}
         self.step_id = None
+        self.skip_publish = False
 
     def add_step(self, step: Step):
         if self.step_id:

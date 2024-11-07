@@ -5,7 +5,7 @@ import mimetypes
 import re
 import os
 
-from lib.util.common import KNOWN_ISSUE_STASH_KEY
+from lib.util.common import KNOWN_ISSUE_STASH_KEY, SKIP_RESULT
 from qaseio.commons.models.result import Result, Field
 from qaseio.commons.models.attachment import Attachment
 from qaseio.commons.models.suite import Suite
@@ -160,7 +160,12 @@ class QasePytestPlugin:
                     else:
                         self.set_result("FAILED")
             elif report.skipped:
-                if self.runtime.result.execution.status in (
+                result_stacktrace = self.runtime.result.execution.stacktrace
+                # Don't publish item result when a test is skipped by pytest.skip_result()
+                if result_stacktrace and SKIP_RESULT in result_stacktrace:
+                    self.runtime.skip_publish = True
+                    return
+                elif self.runtime.result.execution.status in (
                     None,
                     PYTEST_TO_QASE_STATUS["PASSED"],
                 ):
@@ -194,9 +199,10 @@ class QasePytestPlugin:
         self._set_test_class_execution(item)
 
     def finish_pytest_item(self, item):
-        self.runtime.result.execution.complete()
-        self.runtime.result.add_steps([step for key, step in self.runtime.steps.items()])
-        self.reporter.add_result(self.runtime.result)
+        if not self.runtime.skip_publish:
+            self.runtime.result.execution.complete()
+            self.runtime.result.add_steps([step for key, step in self.runtime.steps.items()])
+            self.reporter.add_result(self.runtime.result)
 
         self.runtime = Runtime()
 
