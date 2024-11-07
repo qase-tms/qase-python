@@ -1,3 +1,15 @@
+# qase-pytest 6.1.9
+
+## What's new
+
+Fixed an issue with parameters:
+
+```log
+INTERNALERROR>   File "/venv/lib/python3.9/site-packages/qase/pytest/plugin.py", line 331, in _set_params
+INTERNALERROR>     value = str(ids[i])
+INTERNALERROR> IndexError: list index out of range
+```
+
 # qase-pytest 6.1.8
 
 ## What's new
