@@ -21,6 +21,7 @@ PYTEST_TO_QASE_STATUS = {
     "BLOCKED": "blocked",
     "BROKEN": "invalid",
     "RERUN": "rerun",
+    "NOT APPLICABLE": "not-applicable"
 }
 
 try:
@@ -166,10 +167,17 @@ class QasePytestPlugin:
                     self.runtime.skip_publish = True
                     return
                 elif self.runtime.result.execution.status in (
-                    None,
-                    PYTEST_TO_QASE_STATUS["PASSED"],
+                        None,
+                        PYTEST_TO_QASE_STATUS["PASSED"],
                 ):
-                    self.set_result("SKIPPED")
+                    if result_stacktrace and "[NOT_APPLICABLE]" in result_stacktrace:
+                        not_applicable_msg = result_stacktrace[
+                                             result_stacktrace.rfind("Skipped: [NOT_APPLICABLE]"):-2].replace(
+                            "Skipped: ", "")
+                        self.runtime.result.execution.stacktrace = not_applicable_msg
+                        self.set_result("NOT APPLICABLE")
+                    else:
+                        self.set_result("SKIPPED")
             else:
                 if self.runtime.result.execution.status is None:
                     self.set_result("PASSED")
@@ -342,7 +350,10 @@ class QasePytestPlugin:
         if item.stash.get(KNOWN_ISSUE_STASH_KEY, None):
             self.runtime.result.known_issue = True
 
-    def set_result(self, pytest_status: Literal["PASSED", "FAILED", "SKIPPED", "BLOCKED", "BROKEN", "RERUN"]):
+
+    def set_result(
+        self, pytest_status: Literal["PASSED", "FAILED", "SKIPPED", "BLOCKED", "BROKEN", "RERUN", "NOT APPLICABLE"]
+    ):
         self.runtime.result.execution.status = PYTEST_TO_QASE_STATUS[pytest_status]
 
 

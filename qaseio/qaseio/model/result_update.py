@@ -65,6 +65,7 @@ class ResultUpdate(ModelNormal):
             'PASSED': "passed",
             'FAILED': "failed",
             'RERUN': "rerun",
+            'NOT_APPLICABLE': "not-applicable",
             'BLOCKED': "blocked",
             'SKIPPED': "skipped",
         },

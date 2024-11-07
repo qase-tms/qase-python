@@ -67,6 +67,7 @@ class ResultCreate(ModelNormal):
             'PASSED': "passed",
             'FAILED': "failed",
             'RERUN': "rerun",
+            'NOT_APPLICABLE': "not-applicable",
             'BLOCKED': "blocked",
             'SKIPPED': "skipped",
             'INVALID': "invalid",

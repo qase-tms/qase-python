@@ -32,10 +32,10 @@ class Execution(object):
         self.thread = thread
 
     def set_status(self, status: Optional[str]):
-        if status in ["passed", "failed", "skipped", "untested", "rerun"]:
+        if status in ["passed", "failed", "skipped", "untested", "rerun", "not-applicable"]:
             self.status = status
         else:
-            raise ValueError("Step status must be one of: passed, failed, skipped, untested, rerun")
+            raise ValueError("Step status must be one of: passed, failed, skipped, untested, rerun, not-applicable")
 
     def get_status(self):
         return self.status
