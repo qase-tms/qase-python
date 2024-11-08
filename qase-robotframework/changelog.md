@@ -1,10 +1,10 @@
-# qase-pytest 3.2.1
+# qase-robotframework 3.2.1
 
 ## What's new
 
 Support new version of qase-python-commons
 
-# qase-pytest 3.2.0
+# qase-robotframework 3.2.0
 
 ## What's new
 
@@ -12,7 +12,7 @@ Minor release that includes all changes from beta versions 3.2.0b.
 
 Support `pabot` library. If you use the `pabot` library to run tests in parallel, the reporter will send the results
 
-# qase-pytest 3.2.0b3
+# qase-robotframework 3.2.0b3
 
 ## What's new
 
@@ -28,13 +28,13 @@ Formatted Return
 Previously, the `RETURN` keyword was presented as `RETURN` in the Qase test run. 
 Now, the keyword is presented as `RETURN  ${value}`.
 
-# qase-pytest 3.2.0b2
+# qase-robotframework 3.2.0b2
 
 ## What's new
 
 Fix an issue with nested steps in the Robot Framework listener.
 
-# qase-pytest 3.2.0b1
+# qase-robotframework 3.2.0b1
 
 ## What's new
 
@@ -42,7 +42,7 @@ Fix an issue with nested steps in the Robot Framework listener.
 - Support a selective execution of tests by Qase ID.
   If the plan id is specified, the reporter will send the results only for the tests that are in the plan.
 
-# qase-pytest 3.1.2
+# qase-robotframework 3.1.2
 
 ## What's new
 
@@ -54,7 +54,7 @@ Simple test
     Should Be Equal As Numbers    1    1
 ```
 
-# qase-pytest 3.1.1
+# qase-robotframework 3.1.1
 
 ## What's new
 
@@ -68,7 +68,7 @@ Simple test
     Should Be Equal As Numbers    1    1
 ```
 
-# qase-pytest 3.1.1b2
+# qase-robotframework 3.1.1b2
 
 ## What's new
 
@@ -78,20 +78,20 @@ Fixed the issue:
 Calling method 'end_test' of listener 'qase.robotframework.Listener' failed: IndexError: list index out of range
 ```
 
-# qase-pytest 3.1.1b1
+# qase-robotframework 3.1.1b1
 
 ## What's new
 
 Add support `robotframework-tidy` to the reporter.
 The reporter will ignore `IF`, `ELSE IF`, `ELSE`, and `END` keywords.
 
-# qase-pytest 3.1.0
+# qase-robotframework 3.1.0
 
 ## What's new
 
 Minor release that includes all changes from beta versions 3.1.0b.
 
-# qase-pytest 3.1.0b3
+# qase-robotframework 3.1.0b3
 
 ## What's new
 
@@ -107,7 +107,7 @@ def step01(a: int, b: int):
     return str(a + b)
 ```
 
-# qase-pytest 3.1.0b1
+# qase-robotframework 3.1.0b1
 
 ## What's new
 
