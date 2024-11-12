@@ -211,6 +211,8 @@ class QasePytestPlugin:
             self.runtime.result.execution.complete()
             self.runtime.result.add_steps([step for key, step in self.runtime.steps.items()])
             self.reporter.add_result(self.runtime.result)
+        elif self.runtime.result.test_class_completed:
+            self.reporter.complete_test_class(self.runtime.result, send_results=True)
 
         self.runtime = Runtime()
 
