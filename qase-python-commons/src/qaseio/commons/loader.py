@@ -69,4 +69,8 @@ class TestOpsPlanLoader:
 
         results = Result(project=code, run_id=int(run_id)).get_results(status="passed")
         passed_cases = [result["case_id"] for result in results]
-        return list(set(run_cases).difference(passed_cases))
+        print(f"[Qase] Skipping PASSED tests cases from the run {run_id}: {passed_cases}")
+        results = Result(project=code, run_id=int(run_id)).get_results(status="failed")
+        failed_cases = [result["case_id"] for result in results]
+        print(f"[Qase] Skipping FAILED tests cases from the run {run_id}: {failed_cases}")
+        return list(set(run_cases).difference(passed_cases).difference(failed_cases))
