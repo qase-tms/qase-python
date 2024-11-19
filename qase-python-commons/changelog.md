@@ -2,6 +2,13 @@
 
 ## What's new
 
+Use the API v2 client by default. If you want to use the API v1 client, specify the `useV2` option in the config file or
+the environment variable `QASE_TESTOPS_USEV2` as `False`.
+
+# qase-python-commons@3.2.0
+
+## What's new
+
 Updated the `file` reporter and support new API v2 client
 
 # qase-python-commons@3.1.9
