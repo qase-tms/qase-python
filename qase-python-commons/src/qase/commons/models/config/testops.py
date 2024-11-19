@@ -20,7 +20,7 @@ class TestopsConfig(BaseModel):
         self.batch = BatchConfig()
         self.plan = PlanConfig()
         self.defect = False
-        self.use_v2 = False
+        self.use_v2 = True
 
     def set_project(self, project: str):
         self.project = project
