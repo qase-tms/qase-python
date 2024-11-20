@@ -91,8 +91,10 @@ class TestMetadata:
     qase_id: Union[int, None]
     ignore: bool
     fields: dict
+    params: list[str]
 
     def __init__(self) -> None:
         self.qase_id = None
         self.ignore = False
         self.fields = {}
+        self.params = []

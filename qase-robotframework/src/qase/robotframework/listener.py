@@ -32,7 +32,6 @@ class Listener:
         config = ConfigManager()
         self.reporter = QaseCoreReporter(config)
         self.runtime = QaseRuntimeSingleton.get_instance()
-        self.step_uuid = None
         self.tests = {}
         self.pabot_index = None
 
@@ -81,8 +80,6 @@ class Listener:
     def end_test(self, test, result):
         logger.debug("Finishing test '%s'", test.name)
 
-        self.step_uuid = None
-
         test_metadata = TagParser.parse_tags(test.tags)
 
         if test_metadata.ignore:
@@ -99,6 +96,12 @@ class Listener:
 
         steps = self.__parse_steps(result)
         self.runtime.result.add_steps(steps)
+
+        if len(test_metadata.params) > 0:
+            params: dict = {}
+            for param in test_metadata.params:
+                params[param] = BuiltIn().get_variable_value(f"${{{param}}}")
+            self.runtime.result.params = params
 
         if hasattr(test, "doc"):
             self.runtime.result.add_field(Field("description", test.doc))

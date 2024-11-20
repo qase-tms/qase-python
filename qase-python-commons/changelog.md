@@ -1,4 +1,4 @@
-# qase-python-commons@3.2.0
+# qase-python-commons@3.2.1
 
 ## What's new
 

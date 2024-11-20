@@ -29,7 +29,7 @@ Configuration options are described in the
 
 ```json
 {
-  "mode": "testops", 
+  "mode": "testops",
   "fallback": "report",
   "debug": true,
   "testops": {
@@ -45,12 +45,12 @@ Configuration options are described in the
       "size": 100
     }
   },
-    "report": {
+  "report": {
     "driver": "local",
     "connection": {
       "local": {
         "path": "./build/qase-report",
-        "format": "json" 
+        "format": "json"
       }
     }
   },
@@ -58,12 +58,12 @@ Configuration options are described in the
 }
 ```
 
-
 ## Usage
 
 ### Link tests with test cases in Qase TestOps
 
-To link the automated tests with the test cases in Qase TestOps, use the tags in form like `Q-<case id without project code>`.
+To link the automated tests with the test cases in Qase TestOps, use the tags in form like
+`Q-<case id without project code>`.
 Example:
 
 ```robotframework
@@ -96,6 +96,7 @@ Subtraction           12 - 2 - 2    8
 Listener supports reporting steps results:
 
 Example:
+
 ```robotframework
 Quick Get A JSON Body Test                                                  ## Test case: "Quick Get A JSON Body Test"
     [Tags]  Q-3
@@ -107,7 +108,30 @@ Initializing the test case                                                  ## T
     Set To Dictionary    ${info}   field1=A sample string                   ## 1-st step - "Set To Dictionary"
 ```
 
+### Working with parameters
+
+Listener supports reporting parameters:
+
+Example:
+
+```robotframework
+*** Variables ***
+${var1}            1
+${var2}            1
+${var3}            2
+
+*** Test Cases ***
+Simple test
+    [Arguments]    ${var1}    ${var2}   ${var3}
+    [Tags]     qase.params:[var1, var2]
+    Should Be Equal As Numbers    ${var1}    ${var2}
+    Should Be Equal As Numbers    ${var3}    ${var3} 
+```
+
+Only `var1` and `var2` will be sent to Qase.
+
 ### Execution:
+
 ```
 robot --listener qase.robotframework.Listener someTest.robot
 ```

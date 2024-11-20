@@ -21,6 +21,9 @@ class TagParser:
             if tag.lower().startswith("qase.fields"):
                 metadata.fields = TagParser.__extract_fields(tag)
 
+            if tag.lower().startswith("qase.params"):
+                metadata.params = TagParser.__extract_params(tag)
+
         return metadata
 
     @staticmethod
@@ -39,3 +42,13 @@ class TagParser:
         except ValueError as e:
             TagParser.__logger.error(f"Error parsing fields from tag '{tag}': {e}")
             return {}
+
+    @staticmethod
+    def __extract_params(tag: str) -> list[str]:
+        value = tag.split(':', 1)[-1].strip()
+        try:
+            return [item.strip() for item in value[1:-1].split(",")]
+            # return value.replace('[', '').replace(']', '').split(',')
+        except ValueError as e:
+            TagParser.__logger.error(f"Error parsing params from tag '{tag}': {e}")
+            return []
