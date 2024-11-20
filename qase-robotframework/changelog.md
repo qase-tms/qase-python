@@ -1,3 +1,25 @@
+# qase-robotframework 3.2.2
+
+## What's new
+
+Support `qase.params` tag. You can specify the params that you want to send to Qase.
+
+```robotframework
+*** Variables ***
+${var1}            1
+${var2}            1
+${var3}            2
+
+*** Test Cases ***
+Simple test
+    [Arguments]    ${var1}    ${var2}   ${var3}
+    [Tags]     qase.params:[var1, var2]
+    Should Be Equal As Numbers    ${var1}    ${var2}
+    Should Be Equal As Numbers    ${var3}    ${var3} 
+```
+
+Only `var1` and `var2` will be sent to Qase.
+
 # qase-robotframework 3.2.1
 
 ## What's new
@@ -25,7 +47,7 @@ Formatted Return
     RETURN  ${value}
 ```
 
-Previously, the `RETURN` keyword was presented as `RETURN` in the Qase test run. 
+Previously, the `RETURN` keyword was presented as `RETURN` in the Qase test run.
 Now, the keyword is presented as `RETURN  ${value}`.
 
 # qase-robotframework 3.2.0b2
