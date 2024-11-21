@@ -82,9 +82,9 @@ class Result(object):
         self.muted: bool = False
         self.message: Optional[str] = None
         self.suite: Optional[Type[Suite]] = None
-        self.class_execution: Optional[List[Execution]] = []
-        self.test_class: bool = False
-        self.test_class_completed: Optional[bool] = False
+        self.results_to_merge: Optional[List[Execution]] = []
+        self.merge_results: bool = False
+        self.merge_results_completed: Optional[bool] = False
         self.known_issue: bool = False
         QaseUtils.get_host_data()
 

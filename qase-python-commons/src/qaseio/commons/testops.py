@@ -316,8 +316,8 @@ class QaseTestOps:
         return prepared_step
 
     def _send_result(self, result: Result):
-        # Wait to complete a whole test-class
-        if result.test_class and not result.test_class_completed:
+        # Wait to complete all test results to merge
+        if result.merge_results and not result.merge_results_completed:
             return
         if self.enabled:
             api_results = ResultsApi(self.client)
@@ -396,67 +396,70 @@ class QaseTestOps:
 
     def add_result(self, result: Result):
         if self.enabled:
-            if result.test_class:
-                result = self.merge_class_results(result)
-            # Test-class results are added to self.results within merge_class_results()
-            if self.bulk and not result.test_class:
+            if result.merge_results:
+                result = self.merge_results(result)
+            # Test results to merge are added to self.results within merge_results()
+            if self.bulk and not result.merge_results:
                 self.results.append(result)
             elif not self.bulk:
                 self._send_result(result)
 
-    # Treat results from test-class as a single test-case
-    def merge_class_results(self, result: Result) -> Result:
-        class_result = next(filter(lambda all_results: result.testops_id == all_results.testops_id, self.results), None)
+    def merge_results(self, result: Result) -> Result:
+        """Merge results into single test result when:
+        - test is written as a class,
+        - Test is written as a non-class, but has the same qase-id per all parametrized params.
+        """
+        test_result = next(filter(lambda all_results: result.testops_id == all_results.testops_id, self.results), None)
         # Nothing to merge
-        if not class_result:
-            result.class_execution.append(result.execution)
+        if not test_result:
+            result.results_to_merge.append(result.execution)
             self.results.append(result)
             return result
 
-        class_result.attachments.extend(result.attachments)
-        class_result.class_execution.append(result.execution)
-        if not result.test_class_completed:
-            return class_result
-        return self.complete_test_class(result, send_results=False)
+        test_result.attachments.extend(result.attachments)
+        test_result.results_to_merge.append(result.execution)
+        if not result.merge_results_completed:
+            return test_result
+        return self.complete_merging_results(result, send_results=False)
 
-    def complete_test_class(self, result: Result, send_results: bool):
-        class_result = next(filter(lambda all_results: result.testops_id == all_results.testops_id, self.results), None)
-        if not class_result:
+    def complete_merging_results(self, result: Result, send_results: bool):
+        test_result = next(filter(lambda all_results: result.testops_id == all_results.testops_id, self.results), None)
+        if not test_result:
             return
-        class_result.test_class_completed = True
+        test_result.merge_results_completed = True
         # Sort subtests by their statuses. Worst result at the end.
-        subtests_status = [execution.status for execution in class_result.class_execution]
+        subtests_status = [execution.status for execution in test_result.results_to_merge]
         subtests_status = list(set(subtests_status))
         subtests_status.sort(key=lambda subtest_status: QASE_STATUS_IDS[subtest_status])
 
         # Leave only last status to report
         status_name_to_report = subtests_status[-1]
-        class_result.execution = next(
+        test_result.execution = next(
             filter(
                 lambda subtest_execution: subtest_execution.status == status_name_to_report,
-                class_result.class_execution,
+                test_result.results_to_merge,
             )
         )
 
         # Merge log execution attachments
-        self.merge_log_execution_attachments(class_result)
+        self.merge_log_execution_attachments(test_result)
 
         # Merge stacktrace
-        if "failed" in subtests_status:
-            self.merge_stacktrace(class_result)
+        if "failed" in subtests_status or "rerun" in subtests_status:
+            self.merge_stacktrace(test_result)
         if send_results and not self.bulk:
-            self._send_result(class_result)
-        return class_result
+            self._send_result(test_result)
+        return test_result
 
     @staticmethod
-    def merge_log_execution_attachments(class_result: Result, file_name: str = "log.txt") -> None:
+    def merge_log_execution_attachments(test_result: Result, file_name: str = "log.txt") -> None:
         log_execution_content = list()
-        for log_execution_attach in class_result.attachments[:]:
+        for log_execution_attach in test_result.attachments[:]:
             if log_execution_attach.file_name == file_name:
                 log_execution_content.append(log_execution_attach.content)
-                class_result.attachments.remove(log_execution_attach)
+                test_result.attachments.remove(log_execution_attach)
         if log_execution_content:
-            class_result.attachments.append(
+            test_result.attachments.append(
                 Attachment(
                     file_name=file_name,
                     content="\n".join(log_execution_content),
@@ -466,10 +469,10 @@ class QaseTestOps:
             )
 
     @staticmethod
-    def merge_stacktrace(class_result: Result) -> None:
+    def merge_stacktrace(test_result: Result) -> None:
         subtests_stacktrace = [
             subtest_execution.stacktrace
-            for subtest_execution in class_result.class_execution
-            if subtest_execution.stacktrace and subtest_execution.status == "failed"
+            for subtest_execution in test_result.results_to_merge
+            if subtest_execution.stacktrace and subtest_execution.status in ["failed", "rerun"]
         ]
-        class_result.execution.stacktrace = "\n\n".join(subtests_stacktrace)
+        test_result.execution.stacktrace = "\n\n".join(subtests_stacktrace)

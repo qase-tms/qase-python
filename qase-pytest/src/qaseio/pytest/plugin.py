@@ -21,7 +21,7 @@ PYTEST_TO_QASE_STATUS = {
     "BLOCKED": "blocked",
     "BROKEN": "invalid",
     "RERUN": "rerun",
-    "NOT APPLICABLE": "not-applicable"
+    "NOT APPLICABLE": "not-applicable",
 }
 
 try:
@@ -135,7 +135,7 @@ class QasePytestPlugin:
             self._set_params(item)
             if self.interceptor:
                 self.interceptor.disable()
-            self._set_test_class_completed(nextitem)
+            self._set_merge_results_completed(nextitem)
             try:
                 self.finish_pytest_item(item)
             except Exception:
@@ -167,13 +167,13 @@ class QasePytestPlugin:
                     self.runtime.skip_publish = True
                     return
                 elif self.runtime.result.execution.status in (
-                        None,
-                        PYTEST_TO_QASE_STATUS["PASSED"],
+                    None,
+                    PYTEST_TO_QASE_STATUS["PASSED"],
                 ):
                     if result_stacktrace and "[NOT_APPLICABLE]" in result_stacktrace:
                         not_applicable_msg = result_stacktrace[
-                                             result_stacktrace.rfind("Skipped: [NOT_APPLICABLE]"):-2].replace(
-                            "Skipped: ", "")
+                            result_stacktrace.rfind("Skipped: [NOT_APPLICABLE]") : -2
+                        ].replace("Skipped: ", "")
                         self.runtime.result.execution.stacktrace = not_applicable_msg
                         self.set_result("NOT APPLICABLE")
                     else:
@@ -204,15 +204,15 @@ class QasePytestPlugin:
         self._set_muted(item)
         self._set_testops_id(item)
         self._set_suite(item)
-        self._set_test_class_execution(item)
+        self._set_merge_results(item)
 
     def finish_pytest_item(self, item):
         if not self.runtime.skip_publish:
             self.runtime.result.execution.complete()
             self.runtime.result.add_steps([step for key, step in self.runtime.steps.items()])
             self.reporter.add_result(self.runtime.result)
-        elif self.runtime.result.test_class_completed:
-            self.reporter.complete_test_class(self.runtime.result, send_results=True)
+        elif self.runtime.result.merge_results_completed:
+            self.reporter.complete_merging_results(self.runtime.result, send_results=True)
 
         self.runtime = Runtime()
 
@@ -322,16 +322,21 @@ class QasePytestPlugin:
         if marker:
             self.runtime.suite = Suite(marker.kwargs.get("title"), marker.kwargs.get("description"))
 
-    def _set_test_class_execution(self, item: pytest.Item) -> None:
-        if item.cls:
-            self.runtime.result.test_class = True
-            self.runtime.result.test_class_completed = False
+    def _set_merge_results(self, item: pytest.Item) -> None:
+        """Set results merge when:
+        - test is written as a class,
+        - Test is written as a non-class, but has the same qase-id per all parametrized params.
+        """
+        if item.cls or not self.is_qase_id_marked_on_param(item):
+            self.runtime.result.merge_results = True
+            self.runtime.result.merge_results_completed = False
 
-    def _set_test_class_completed(self, nextitem: pytest.Item) -> None:
-        if not self.runtime.result.test_class:
+
+    def _set_merge_results_completed(self, nextitem: pytest.Item) -> None:
+        if not self.runtime.result.merge_results:
             return None
         if not nextitem or (self.runtime.result.testops_id != self.get_testops_id(nextitem)):
-            self.runtime.result.test_class_completed = True
+            self.runtime.result.merge_results_completed = True
 
     @staticmethod
     def get_testops_id(item: pytest.Item) -> int | None:
@@ -352,11 +357,18 @@ class QasePytestPlugin:
         if item.stash.get(KNOWN_ISSUE_STASH_KEY, None):
             self.runtime.result.known_issue = True
 
-
     def set_result(
         self, pytest_status: Literal["PASSED", "FAILED", "SKIPPED", "BLOCKED", "BROKEN", "RERUN", "NOT APPLICABLE"]
     ):
         self.runtime.result.execution.status = PYTEST_TO_QASE_STATUS[pytest_status]
+
+    @staticmethod
+    def is_qase_id_marked_on_param(item: pytest.Item) -> bool:
+        if not hasattr(item, "callspec"):
+            return False
+        param_markers = getattr(item.callspec, "marks", None)
+        qase_marker = next(filter(lambda marker: marker.name == "qase_id", param_markers), None)
+        return True if qase_marker else False
 
 
 class QasePytestPluginSingleton:
