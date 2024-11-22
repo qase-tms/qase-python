@@ -56,7 +56,10 @@ class ApiV2Client(ApiV1Client):
         attached = []
         if result.attachments:
             for attachment in result.attachments:
-                attached.extend(self._upload_attachment(project_code, attachment))
+                try:
+                    attached.extend(self._upload_attachment(project_code, attachment))
+                except Exception as e:
+                    self.logger.log(f"Error at uploading attachment: {e}", "error")
 
         steps = []
         for step in result.steps:
