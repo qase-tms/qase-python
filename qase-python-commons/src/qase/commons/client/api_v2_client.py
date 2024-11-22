@@ -16,6 +16,7 @@ from qase.api_client_v2.models.result_steps_type import ResultStepsType
 from .api_v1_client import ApiV1Client
 from .. import Logger
 from ..exceptions.reporter import ReporterException
+from ..models.config.framework import Video, Trace
 from ..models import Attachment, Result
 from ..models.config.qaseconfig import QaseConfig
 from ..models.step import StepType, Step
@@ -56,7 +57,11 @@ class ApiV2Client(ApiV1Client):
         attached = []
         if result.attachments:
             for attachment in result.attachments:
-                attached.extend(self._upload_attachment(project_code, attachment))
+                if self.__should_skip_attachment(attachment, result):
+                    continue
+                attach_id = self._upload_attachment(project_code, attachment)
+                if attach_id:
+                    attached.extend(attach_id)
 
         steps = []
         for step in result.steps:
@@ -142,7 +147,9 @@ class ApiV2Client(ApiV1Client):
             if step.attachments:
                 uploaded_attachments = []
                 for file in step.attachments:
-                    uploaded_attachments.extend(self._upload_attachment(project_code, file))
+                    attach_id = self._upload_attachment(project_code, file)
+                    if attach_id:
+                        uploaded_attachments.extend(attach_id)
 
                 prepared_step['execution']['attachments'] = [attach.hash for attach in uploaded_attachments]
 
@@ -154,3 +161,14 @@ class ApiV2Client(ApiV1Client):
         except Exception as e:
             self.logger.log(f"Error at preparing step: {e}", "error")
             raise ReporterException(e)
+
+    def __should_skip_attachment(self, attachment, result):
+        if (self.config.framework.playwright.video == Video.failed and
+                result.execution.status != 'failed' and
+                attachment.file_name == 'video.webm'):
+            return True
+        if (self.config.framework.playwright.trace == Trace.failed and
+                result.execution.status != 'failed' and
+                attachment.file_name == 'trace.zip'):
+            return True
+        return False

@@ -1,3 +1,14 @@
+# qase-python-commons@3.2.2
+
+## What's new
+
+Fixed an issue with the `upload_attachment` method:
+
+```log
+attached.extend(self._upload_attachment(project_code, attachment))
+TypeError: 'NoneType' object is not iterable
+```
+
 # qase-python-commons@3.2.1
 
 ## What's new
