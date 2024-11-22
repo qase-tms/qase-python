@@ -89,7 +89,7 @@ class ApiV1Client(BaseApiClient):
             return response.result
 
         except Exception as e:
-            self.logger.log(f"Error at uploading attachment: {e}", "debug")
+            self.logger.log(f"Error at uploading attachment: {e}", "error")
             return None
 
     def create_test_run(self, project_code: str, title: str, description: str, plan_id=None,
