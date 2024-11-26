@@ -1,12 +1,31 @@
-# [Qase TestOps](https://qase.io) reporters for Python
+# [Qase TestOps](https://qase.io) Reporters for Python
 
-Monorepo with [Qase TestOps](https://qase.io) reporters for Python testing frameworks.
+Monorepo containing [Qase TestOps](https://qase.io) integration tools for Python testing frameworks. This repository includes reporters and API clients designed to streamline the process of reporting test results to Qase TestOps.
 
-## Projects
+## Projects Overview
 
-- [qase-pytest](/qase-pytest) - Pytest reporter for Qase Report and Qase TestOps
-- [qase-robotframework](/qase-robotframework) - Robot Framework reporter
-- [qase-python-commons](/qase-python-commons/) - Library with common components shared across reporters
-- [qase-api-client](/qase-api-client) - Qase TestOps API client (v1)
-- [qase-api-v2-client](/qase-api-v2-client) - Qase TestOps API client (v2)
-- [qaseio](/qaseio) - Qase TestOps API client (v1). Deprecated, use qase-api-client instead
+### Reporters
+
+- **[qase-pytest](/qase-pytest)**  
+  Reporter for Pytest, including built-in support for Playwright-based tests.
+  
+- **[qase-robotframework](/qase-robotframework)**  
+  Reporter for Robot Framework, enabling seamless integration with Qase TestOps.
+
+### Libraries
+
+- **[qase-python-commons](/qase-python-commons/)**  
+  Shared library containing common components and utilities used by Qase reporters.
+
+### API Clients
+
+- **[qase-api-client](/qase-api-client)**  
+  Official client for interacting with the Qase TestOps API (v1). Recommended for most use cases.
+  
+- **[qase-api-v2-client](/qase-api-v2-client)**  
+  API client supporting the new Qase TestOps API (v2). Use this client for projects leveraging the latest API features.
+
+### Deprecated
+
+- **[qaseio](/qaseio)**  
+  Legacy client for the Qase TestOps API (v1). Deprecated in favor of `qase-api-client` and should not be used in new projects.
