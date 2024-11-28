@@ -12,6 +12,9 @@ Monorepo containing [Qase TestOps](https://qase.io) integration tools for Python
 - **[qase-robotframework](/qase-robotframework)**  
   Reporter for Robot Framework, enabling seamless integration with Qase TestOps.
 
+- **[qase-behave](/qase-behave)**  
+  Reporter for Behave, enabling seamless integration with Qase TestOps.
+
 ### Libraries
 
 - **[qase-python-commons](/qase-python-commons/)**  
