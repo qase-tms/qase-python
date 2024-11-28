@@ -1,3 +1,10 @@
+# qase-python-commons@3.2.3
+
+## What's new
+
+Updated the handling of Gherkin steps to concatenate `keyword` and `name` into the action field when they differ, providing
+a more descriptive step action.
+
 # qase-python-commons@3.2.2
 
 ## What's new
