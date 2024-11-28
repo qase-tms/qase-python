@@ -139,7 +139,10 @@ class ApiV2Client(ApiV1Client):
                                    mime_type='text/plain', temporary=True))
 
             if step.step_type == StepType.GHERKIN:
-                prepared_step['data']['action'] = step.data.keyword
+                action = step.data.keyword
+                if step.data.keyword != step.data.name:
+                    action += " " + step.data.name
+                prepared_step['data']['action'] = action
 
             if step.step_type == StepType.SLEEP:
                 prepared_step['data']['action'] = f"Sleep for {step.data.duration} seconds"
