@@ -28,7 +28,7 @@ Ensure that the following tools are installed on your machine:
    ```
 
 3. Create a `qase.config.json` file in the root of the project. Follow the instructions on  
-   [how to configure the file](https://github.com/qase-tms/qase-python/tree/main/qase-behave/docs/configuration).
+   [how to configure the file](https://github.com/qase-tms/qase-python/blob/main/qase-behave/docs/CONFIGURATION.md).
 
 4. To run tests and upload the results to Qase Test Management, use the following command:
    ```bash
