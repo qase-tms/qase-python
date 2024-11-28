@@ -1,0 +1,3 @@
+attrs==23.2.0
+behave>=1.2.6
+qase-python-commons~=3.2.2

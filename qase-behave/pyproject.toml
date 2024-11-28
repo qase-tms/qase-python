@@ -1,0 +1,105 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qase-behave"
+version = "1.0.0"
+description = "Qase Behave Plugin for Qase TestOps and Qase Report"
+readme = "README.md"
+keywords = ["qase", "behave", "plugin", "testops", "report", "qase reporting", "test observability"]
+authors = [{name = "Qase Team", email = "support@qase.io"}]
+license = {file = "LICENSE"}
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Programming Language :: Python",
+    "Framework :: Pytest",
+    'Intended Audience :: Developers',
+    'License :: OSI Approved :: Apache Software License',
+    'Topic :: Software Development :: Quality Assurance',
+    'Topic :: Software Development :: Testing',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3 :: Only',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+]
+requires-python = ">=3.7"
+dependencies = [
+    "qase-python-commons~=3.2.2",
+    "behave>=1.2.6",
+    "more_itertools",
+]
+
+[project.urls]
+Homepage = "https://qase.io"
+Repository = "https://github.com/qase-tms/qase-python/tree/master/qase-pytest"
+Documentation = "https://developers.qase.io"
+
+
+[project.optional-dependencies]
+testing = [
+    "pytest",
+    "pytest-cov",
+]
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+minversion = 3.7
+envlist = py{37,38,39,310,311}
+
+[testenv]
+deps =
+    pytest
+    pytest-cov
+passenv =
+    HOME
+commands =
+    pytest --cov-config=pyproject.toml {posargs}
+extras =
+    all
+    testing 
+"""
+
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = "--cov-report=term-missing --verbose"
+norecursedirs = ["dist", "build", ".tox"]
+testpaths = ["tests"]
+
+[tool.flake8]
+exclude = [".tox", "build", "dist", ".eggs"]
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.paths]
+source = ["src/qase/behave"]
+
+[tool.coverage.report]
+# Regexes for lines to exclude from consideration
+exclude_also = [
+    # Don't complain about missing debug-only code:
+    "def __repr__",
+    "if self\\.debug",
+
+    # Don't complain if tests don't hit defensive assertion code:
+    "raise AssertionError",
+    "raise NotImplementedError",
+
+    # Don't complain if non-runnable code isn't run:
+    "if 0:",
+    "if __name__ == .__main__.:",
+
+    # Don't complain about abstract methods, they aren't run:
+    "@(abc\\.)?abstractmethod",
+    ]
+
+ignore_errors = false
