@@ -82,7 +82,7 @@ class Result(object):
         self.muted: bool = False
         self.message: Optional[str] = None
         self.suite: Optional[Type[Suite]] = None
-        self.results_to_merge: Optional[List[Execution]] = []
+        self.results_to_merge: Optional[List[Result]] = []
         self.merge_results: bool = False
         self.merge_results_completed: Optional[bool] = False
         self.known_issue: bool = False

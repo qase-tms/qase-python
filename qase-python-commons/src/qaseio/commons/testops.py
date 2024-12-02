@@ -412,12 +412,12 @@ class QaseTestOps:
         test_result = next(filter(lambda all_results: result.testops_id == all_results.testops_id, self.results), None)
         # Nothing to merge
         if not test_result:
-            result.results_to_merge.append(result.execution)
+            result.results_to_merge.append(result)
             self.results.append(result)
             return result
 
         test_result.attachments.extend(result.attachments)
-        test_result.results_to_merge.append(result.execution)
+        test_result.results_to_merge.append(result)
         if not result.merge_results_completed:
             return test_result
         return self.complete_merging_results(result, send_results=False)
@@ -428,7 +428,8 @@ class QaseTestOps:
             return
         test_result.merge_results_completed = True
         # Sort subtests by their statuses. Worst result at the end.
-        subtests_status = [execution.status for execution in test_result.results_to_merge]
+        item_executions =  [res_to_merge.execution for res_to_merge in test_result.results_to_merge]
+        subtests_status = [execution.status for execution in item_executions]
         subtests_status = list(set(subtests_status))
         subtests_status.sort(key=lambda subtest_status: QASE_STATUS_IDS[subtest_status])
 
@@ -437,16 +438,19 @@ class QaseTestOps:
         test_result.execution = next(
             filter(
                 lambda subtest_execution: subtest_execution.status == status_name_to_report,
-                test_result.results_to_merge,
+                item_executions,
             )
         )
 
         # Merge log execution attachments
         self.merge_log_execution_attachments(test_result)
 
+        # Merge test message report
+        self.merge_test_msg_report(test_result)
+
         # Merge stacktrace
         if "failed" in subtests_status or "rerun" in subtests_status:
-            self.merge_stacktrace(test_result)
+            self.merge_stacktrace(test_result, item_executions)
         if send_results and not self.bulk:
             self._send_result(test_result)
         return test_result
@@ -469,10 +473,21 @@ class QaseTestOps:
             )
 
     @staticmethod
-    def merge_stacktrace(test_result: Result) -> None:
+    def merge_stacktrace(test_result: Result, item_executions: list) -> None:
         subtests_stacktrace = [
             subtest_execution.stacktrace
-            for subtest_execution in test_result.results_to_merge
+            for subtest_execution in item_executions
             if subtest_execution.stacktrace and subtest_execution.status in ["failed", "rerun"]
         ]
         test_result.execution.stacktrace = "\n\n".join(subtests_stacktrace)
+
+    @staticmethod
+    def merge_test_msg_report(test_result: Result):
+        item_messages =  [res_to_merge.message for res_to_merge in test_result.results_to_merge]
+        main_test_message = test_result.message
+        for item_msg in item_messages:
+            for msg_line in item_msg.splitlines():
+                msg_line_prefix = msg_line.split("\t")[0]
+                if msg_line_prefix not in main_test_message:
+                    main_test_message += f"\n{msg_line}"
+        test_result.message = main_test_message
