@@ -1,0 +1,28 @@
+{
+  "mode": "testops",
+  "fallback": "off",
+  "debug": true,
+  "testops": {
+    "project": "<project_code>",
+    "api": {
+      "token": "<token>",
+      "host": "qase.io"
+    },
+    "run": {
+      "title": "robot framework examples"
+    },
+    "batch": {
+      "size": 200
+    }
+  },
+  "report": {
+    "driver": "local",
+    "connection": {
+      "local": {
+        "path": "./build/qase-report",
+        "format": "json"
+      }
+    }
+  },
+  "environment": "local"
+}
