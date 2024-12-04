@@ -23,6 +23,10 @@ def get_pool_id():
     return BuiltIn().get_variable_value('${PABOTQUEUEINDEX}', None)
 
 
+def get_last_level_flag():
+    return BuiltIn().get_variable_value('${PABOTISLASTEXECUTIONINPOOL}', None)
+
+
 class Listener:
     ROBOT_LISTENER_API_VERSION = 3
 
@@ -34,6 +38,7 @@ class Listener:
         self.runtime = QaseRuntimeSingleton.get_instance()
         self.tests = {}
         self.pabot_index = None
+        self.last_level_flag = None
 
         if config.config.debug:
             logger.setLevel(logging.DEBUG)
@@ -46,6 +51,7 @@ class Listener:
 
     def start_suite(self, suite, result):
         self.pabot_index = get_pool_id()
+        self.last_level_flag = get_last_level_flag()
         if self.pabot_index is not None:
             try:
                 if int(self.pabot_index) == 0:
@@ -134,8 +140,8 @@ class Listener:
         )
 
     def close(self):
-        if self.pabot_index is not None:
-            if int(self.pabot_index) == 0:
+        if self.last_level_flag is not None:
+            if int(self.last_level_flag) == 1:
                 Listener.drop_run_id()
             else:
                 self.reporter.complete_worker()

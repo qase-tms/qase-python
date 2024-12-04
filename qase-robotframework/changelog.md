@@ -1,3 +1,11 @@
+# qase-robotframework 3.2.3
+
+## What's new
+
+Fixed an issue with Pabot
+Resolved an issue where test runs were sometimes duplicated or test executions failed to complete under certain
+conditions.
+
 # qase-robotframework 3.2.2
 
 ## What's new
