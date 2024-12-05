@@ -15,6 +15,9 @@ Monorepo containing [Qase TestOps](https://qase.io) integration tools for Python
 - **[qase-behave](/qase-behave)**  
   Reporter for Behave, enabling seamless integration with Qase TestOps.
 
+- **[qase-tavern](/qase-tavern)**
+  Reporter for Tavern, enabling seamless integration with Qase TestOps.
+
 ### Libraries
 
 - **[qase-python-commons](/qase-python-commons/)**  
