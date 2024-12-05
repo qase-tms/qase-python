@@ -8,8 +8,8 @@ version = "1.0.0"
 description = "Qase Tavern Plugin for Qase TestOps and Qase Report"
 readme = "README.md"
 keywords = ["qase", "tavern", "plugin", "testops", "report", "qase reporting", "test observability"]
-authors = [{name = "Qase Team", email = "support@qase.io"}]
-license = {file = "LICENSE"}
+authors = [{ name = "Qase Team", email = "support@qase.io" }]
+license = { file = "LICENSE" }
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Programming Language :: Python",
@@ -65,9 +65,9 @@ extras =
     testing 
 """
 
-
 [tool.setuptools.packages.find]
 where = ["src"]
+exclude = ["tests"]
 
 [tool.pytest.ini_options]
 addopts = "--cov-report=term-missing --verbose"
@@ -89,17 +89,14 @@ exclude_also = [
     # Don't complain about missing debug-only code:
     "def __repr__",
     "if self\\.debug",
-
     # Don't complain if tests don't hit defensive assertion code:
     "raise AssertionError",
     "raise NotImplementedError",
-
     # Don't complain if non-runnable code isn't run:
     "if 0:",
     "if __name__ == .__main__.:",
-
     # Don't complain about abstract methods, they aren't run:
     "@(abc\\.)?abstractmethod",
-    ]
+]
 
 ignore_errors = false
