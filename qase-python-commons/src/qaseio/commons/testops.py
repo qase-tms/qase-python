@@ -486,6 +486,8 @@ class QaseTestOps:
         item_messages =  [res_to_merge.message for res_to_merge in test_result.results_to_merge]
         main_test_message = test_result.message
         for item_msg in item_messages:
+            if not item_msg:
+                continue
             for msg_line in item_msg.splitlines():
                 msg_line_prefix = msg_line.split("\t")[0]
                 if msg_line_prefix not in main_test_message:
