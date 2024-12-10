@@ -53,7 +53,7 @@ def pytest_configure(config):
     if config.getoption("qase_execution_plan", None):
         execution_plan = [int(n) for n in str(config.getoption("qase_execution_plan").split(","))]
 
-    if mode:
+    if mode and mode != "off":
         defaultReporter = QaseReport(
                 report_path=config.getoption("qase_report_connection_local_path", "./build/qase-report"),
                 format=config.getoption("qase_report_connection_local_format", "json"),
@@ -100,24 +100,21 @@ def pytest_configure(config):
                 print('⚠️  Switching to local report mode')
                 reporter = defaultReporter
                 fallback = None
-        else:
-            reporter = defaultReporter
-            fallback = None
 
-        QasePytestPluginSingleton.init(
-            reporter=reporter,
-            fallback=fallback,
-            xdist_enabled=is_xdist_enabled(config),
-            capture_logs=config.getoption("qase_framework_pytest_capture_logs", False),
-            mark_rerun=config.getoption("qase_testops_mark_failed_as_rerun", True),
-            intercept_requests=config.getoption("qase_framework_pytest_capture_http", False),
-            execution_plan=execution_plan,
-        )
-        config.qaseio = QasePytestPluginSingleton.get_instance()
-        config.pluginmanager.register(
-            config.qaseio,
-            name="qase-pytest",
-        ) 
+            QasePytestPluginSingleton.init(
+                reporter=reporter,
+                fallback=fallback,
+                xdist_enabled=is_xdist_enabled(config),
+                capture_logs=config.getoption("qase_framework_pytest_capture_logs", False),
+                mark_rerun=config.getoption("qase_testops_mark_failed_as_rerun", True),
+                intercept_requests=config.getoption("qase_framework_pytest_capture_http", False),
+                execution_plan=execution_plan,
+            )
+            config.qaseio = QasePytestPluginSingleton.get_instance()
+            config.pluginmanager.register(
+                config.qaseio,
+                name="qase-pytest",
+            )
 
 def validate_testops_options(config) -> bool:
     if not config.getoption("qase_testops_api_token", None):
