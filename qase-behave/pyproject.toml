@@ -36,7 +36,7 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://qase.io"
-Repository = "https://github.com/qase-tms/qase-python/tree/master/qase-behave"
+Repository = "https://github.com/qase-tms/qase-python/tree/main/qase-behave"
 Documentation = "https://developers.qase.io"
 
 

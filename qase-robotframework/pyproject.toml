@@ -14,7 +14,7 @@ classifiers = [
     "Framework :: Robot Framework",
     "Programming Language :: Python",
 ]
-urls = {"Homepage" = "https://github.com/qase-tms/qase-python/tree/master/qase-robotframework"}
+urls = {"Homepage" = "https://github.com/qase-tms/qase-python/tree/main/qase-robotframework"}
 requires-python = ">=3.7"
 dependencies = [
     "qase-python-commons~=3.2.1",
