@@ -37,7 +37,7 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://qase.io"
-Repository = "https://github.com/qase-tms/qase-python/tree/master/qase-pytest"
+Repository = "https://github.com/qase-tms/qase-python/tree/main/qase-pytest"
 Documentation = "https://developers.qase.io"
 
 [project.entry-points.pytest11]
