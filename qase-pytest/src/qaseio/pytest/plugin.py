@@ -365,7 +365,7 @@ class QasePytestPlugin:
     @staticmethod
     def is_qase_id_marked_on_param(item: pytest.Item) -> bool:
         if not hasattr(item, "callspec"):
-            return False
+            return True
         param_markers = getattr(item.callspec, "marks", None)
         qase_marker = next(filter(lambda marker: marker.name == "qase_id", param_markers), None)
         return True if qase_marker else False
