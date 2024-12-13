@@ -145,6 +145,19 @@ class ConfigManager:
                                     pytest.get("captureLogs")
                                 )
 
+                            if pytest.get("xfailStatus"):
+                                xfail_status = pytest.get("xfailStatus")
+
+                                if xfail_status.get("xfail"):
+                                    self.config.framework.pytest.xfail_status.set_xfail(
+                                        xfail_status.get("xfail")
+                                    )
+
+                                if xfail_status.get("xpass"):
+                                    self.config.framework.pytest.xfail_status.set_xpass(
+                                        xfail_status.get("xpass")
+                                    )
+
         except Exception as e:
             self.logger.log("Failed to load config from file", "error")
 
@@ -213,6 +226,13 @@ class ConfigManager:
 
                 if key == 'QASE_PYTEST_CAPTURE_LOGS':
                     self.config.framework.pytest.set_capture_logs(value)
+
+                if key == 'QASE_PYTEST_XFAIL_STATUS_XFAIL':
+                    self.config.framework.pytest.xfail_status.set_xfail(value)
+
+                if key == 'QASE_PYTEST_XFAIL_STATUS_XPASS':
+                    self.config.framework.pytest.xfail_status.set_xpass(value)
+
 
         except Exception as e:
             self.logger.log("Failed to load config from env vars {e}", "error")

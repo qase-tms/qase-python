@@ -17,11 +17,28 @@ class Trace(Enum):
     failed = "retain-on-failure"
 
 
+class XFailStatus(BaseModel):
+    xfail: str = None
+    xpass: str = None
+
+    def __init__(self):
+        self.xfail = 'skipped'
+        self.xpass = 'passed'
+
+    def set_xfail(self, value: str):
+        self.xfail = value
+
+    def set_xpass(self, value: str):
+        self.xpass = value
+
+
 class PytestConfig(BaseModel):
     capture_logs: bool = None
+    xfail_status: XFailStatus = None
 
     def __init__(self):
         self.capture_logs = False
+        self.xfail_status = XFailStatus()
 
     def set_capture_logs(self, capture_logs):
         self.capture_logs = QaseUtils.parse_bool(capture_logs)
