@@ -1,3 +1,28 @@
+# qase-pytest 6.1.10
+
+## What's new
+
+The ability to override statuses for tests marked with the `xfail` marker has been added. By default, failed tests are
+assigned the `skipped` status, and passed tests are assigned the `passed` status. Custom statuses can be specified by
+providing the slug of the desired status in the configuration. Configuration values can be set via `qase.config.json` or
+environment variables:
+- `QASE_PYTEST_XFAIL_STATUS_XFAIL`
+- `QASE_PYTEST_XFAIL_STATUS_XPASS`
+
+```diff
+{ ...,
+  "framework": {
+    "pytest": {
+      "captureLogs": true,
++      "xfailStatus": {
++        "xfail": "skipped",
++        "xpass": "passed"
++      }
++    }
+  }
+}
+```
+
 # qase-pytest 6.1.9
 
 ## What's new
@@ -20,13 +45,14 @@ Fixed an issue with suites [#296]
 
 ## What's new
 
-Support new version of qase-python-commons 
+Support new version of qase-python-commons
 
 # qase-pytest 6.1.6
 
 ## What's new
 
-Fixed an issue with the handling video and trace recording for Playwright tests. If a test was part of a class, the video
+Fixed an issue with the handling video and trace recording for Playwright tests. If a test was part of a class, the
+video
 and trace were not attached to the test result.
 
 # qase-pytest 6.1.5

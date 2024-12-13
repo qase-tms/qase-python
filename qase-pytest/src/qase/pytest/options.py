@@ -175,6 +175,22 @@ class QasePytestOptions:
             help="Capture logs from pytest"
         )
 
+        QasePytestOptions.add_option(
+            parser,
+            group,
+            "--qase-pytest-xfail-status-xfail",
+            dest="qase_pytest_xfail_status",
+            help="Define xfail status for failed tests. Default: `skipped`"
+        )
+
+        QasePytestOptions.add_option(
+            parser,
+            group,
+            "--qase-pytest-xfail-status-xpass",
+            dest="qase_pytest_xpass_status",
+            help="Define xpass status for passed tests. Default: `passed`"
+        )
+
     @staticmethod
     def add_option(parser, group, option, dest, default=None, type=None, **kwargs):
         # We are going to add options that were not added before through the manager

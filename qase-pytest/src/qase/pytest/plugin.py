@@ -141,14 +141,13 @@ class QasePytestPlugin:
 
     @pytest.hookimpl(hookwrapper=True)
     def pytest_runtest_makereport(self, item, call):
-        if not self.ignore:
+        if not self.ignore and call.when == "call":
             report = (yield).get_result()
 
             def set_result(res):
                 self.runtime.result.execution.status = res
 
             def _attach_logs():
-                # TODO: can be attached twice
                 if report.caplog:
                     self.add_attachments((report.caplog, "text/plain", "log.txt"))
                 if report.capstdout:
@@ -166,35 +165,32 @@ class QasePytestPlugin:
                     set_result(PYTEST_TO_QASE_STATUS['FAILED'])
                 self.runtime.result.add_message(call.excinfo.exconly())
             elif report.skipped:
-                if self.runtime.result.execution.status in (
-                        None,
-                        PYTEST_TO_QASE_STATUS['PASSED'],
-                ):
+                if self.__is_use_xfail_mark(report):
+                    set_result(self.config.framework.pytest.xfail_status.xfail)
+                elif self.runtime.result.execution.status in (None, PYTEST_TO_QASE_STATUS['PASSED']):
                     set_result(PYTEST_TO_QASE_STATUS['SKIPPED'])
             else:
-                if self.runtime.result.execution.status is None:
+                if self.__is_use_xfail_mark(report):
+                    set_result(self.config.framework.pytest.xfail_status.xpass)
+                elif self.runtime.result.execution.status is None:
                     set_result(PYTEST_TO_QASE_STATUS['PASSED'])
 
-            if self.reporter.config.framework.pytest.capture_logs and report.when == "call":
+            if self.reporter.config.framework.pytest.capture_logs:
                 _attach_logs()
 
-            if report.when == "call":
-                # Attach the video and the trace to the test result
-                if hasattr(item, 'funcargs') and 'page' in item.funcargs:
-                    page = item.funcargs['page']
-                    if not page.video:
-                        return
-
-                    folder_name = self.__build_folder_name(item)
-                    output_dir = self.config.framework.playwright.output_dir
-                    base_path = os.path.join(os.getcwd(), output_dir, folder_name)
-
-                    video_path = os.path.join(base_path, "video.webm")
-                    self.add_attachments(video_path)
-
-                    if self.config.framework.playwright.trace != Trace.off:
-                        trace_path = os.path.join(base_path, "trace.zip")
-                        self.add_attachments(trace_path)
+            # Attach the video and the trace to the test result
+            if hasattr(item, 'funcargs') and 'page' in item.funcargs:
+                page = item.funcargs['page']
+                if not page.video:
+                    return
+                folder_name = self.__build_folder_name(item)
+                output_dir = self.config.framework.playwright.output_dir
+                base_path = os.path.join(os.getcwd(), output_dir, folder_name)
+                video_path = os.path.join(base_path, "video.webm")
+                self.add_attachments(video_path)
+                if self.config.framework.playwright.trace != Trace.off:
+                    trace_path = os.path.join(base_path, "trace.zip")
+                    self.add_attachments(trace_path)
         else:
             yield
 
@@ -390,6 +386,12 @@ class QasePytestPlugin:
     @staticmethod
     def __sanitize_path_component(component):
         return component.replace(os.sep, "-").replace(".", "-").replace("_", "-").lower()
+
+    @staticmethod
+    def __is_use_xfail_mark(report):
+        if report.keywords.get("xfail"):
+            return True
+        return False
 
 
 class QasePytestPluginSingleton:
