@@ -1,8 +1,19 @@
+# qase-python-commons@3.2.4
+
+## What's new
+
+- Support for custom statuses of xfail-marked tests in pytest.
+- Default statuses: `skipped` (failed xfail) and `passed` (successful xfail).
+- Configuration values can be set via `qase.config.json` or environment variables:
+  - `QASE_PYTEST_XFAIL_STATUS_XFAIL`
+  - `QASE_PYTEST_XFAIL_STATUS_XPASS`
+
 # qase-python-commons@3.2.3
 
 ## What's new
 
-Updated the handling of Gherkin steps to concatenate `keyword` and `name` into the action field when they differ, providing
+Updated the handling of Gherkin steps to concatenate `keyword` and `name` into the action field when they differ,
+providing
 a more descriptive step action.
 
 # qase-python-commons@3.2.2
