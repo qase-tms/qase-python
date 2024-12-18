@@ -9,7 +9,7 @@ class Result(Run):
     """Helper for ResultsApi"""
 
     def __init__(self, project=None, parent_suite_id=None, token=None, run_id=None):
-        super().__init__(project=project, parent_suite_id=parent_suite_id, token=token)
+        super().__init__(project=project, parent_suite_id=parent_suite_id, token=token, run_id=run_id)
         self.results_api = ResultsApi(self.client)
 
     def get_results(self, status=None, last_result=True, **data):

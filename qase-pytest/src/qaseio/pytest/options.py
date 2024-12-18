@@ -134,7 +134,7 @@ class QasePytestOptions:
             dest="qase_testops_rerun_failures",
             type="bool",
             default=False,
-            help="Select only not PASSED and not FAILED test cases from specified run id",
+            help="Select only not (PASSED or FAILED or BLOCKED) test cases from specified run id",
         )
 
         QasePytestOptions.add_option_ini(

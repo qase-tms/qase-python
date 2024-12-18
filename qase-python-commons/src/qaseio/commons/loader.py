@@ -67,10 +67,12 @@ class TestOpsPlanLoader:
         if not rerun:
             return run_cases
 
-        results = Result(project=code, run_id=int(run_id)).get_results(status="passed")
-        passed_cases = [result["case_id"] for result in results]
-        print(f"[Qase] Skipping PASSED tests cases from the run {run_id}: {passed_cases}")
-        results = Result(project=code, run_id=int(run_id)).get_results(status="failed")
-        failed_cases = [result["case_id"] for result in results]
-        print(f"[Qase] Skipping FAILED tests cases from the run {run_id}: {failed_cases}")
-        return list(set(run_cases).difference(passed_cases).difference(failed_cases))
+        run_cases = set(run_cases)
+        print(f"[Qase] Initial number of test cases {len(run_cases)} from the run {run_id}")
+        for tc_result in ["passed", "failed", "blocked"]:
+            results = Result(project=code, run_id=int(run_id)).get_results(status=tc_result)
+            cases_with_status = [result["case_id"] for result in results]
+            print(f"[Qase] Skipping {len(cases_with_status)} {tc_result.upper()} test cases from the run {run_id}: {cases_with_status}")
+            run_cases = run_cases.difference(cases_with_status)
+        print(f"[Qase] Final number of test cases {len(run_cases)} to start")
+        return list(run_cases)
