@@ -1,3 +1,11 @@
+# qase-pytest 6.1.11
+
+## What's new
+
+Fixed issues with using `pytest.xfail` and the `skipif` mark:
+1. Custom statuses did not work when using `pytest.xfail` within the test body.
+2. The status was incorrect when using the `skipif` mark.
+
 # qase-pytest 6.1.10
 
 ## What's new
@@ -6,6 +14,7 @@ The ability to override statuses for tests marked with the `xfail` marker has be
 assigned the `skipped` status, and passed tests are assigned the `passed` status. Custom statuses can be specified by
 providing the slug of the desired status in the configuration. Configuration values can be set via `qase.config.json` or
 environment variables:
+
 - `QASE_PYTEST_XFAIL_STATUS_XFAIL`
 - `QASE_PYTEST_XFAIL_STATUS_XPASS`
 

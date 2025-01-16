@@ -141,58 +141,68 @@ class QasePytestPlugin:
 
     @pytest.hookimpl(hookwrapper=True)
     def pytest_runtest_makereport(self, item, call):
-        if not self.ignore and call.when == "call":
-            report = (yield).get_result()
+        if self.ignore:
+            yield
+            return
 
-            def set_result(res):
-                self.runtime.result.execution.status = res
+        report = (yield).get_result()
 
-            def _attach_logs():
-                if report.caplog:
-                    self.add_attachments((report.caplog, "text/plain", "log.txt"))
-                if report.capstdout:
-                    self.add_attachments((report.capstdout, "text/plain", "stdout.txt"))
-                if report.capstderr:
-                    self.add_attachments((report.capstderr, "text/plain", "stderr.txt"))
+        def set_result(res):
+            self.runtime.result.execution.status = res
 
-            if report.longrepr:
-                self.runtime.result.execution.stacktrace = report.longreprtext
+        def attach_logs():
+            logs = [
+                (report.caplog, "text/plain", "log.txt"),
+                (report.capstdout, "text/plain", "stdout.txt"),
+                (report.capstderr, "text/plain", "stderr.txt"),
+            ]
+            for content, mime_type, filename in logs:
+                if content:
+                    self.add_attachments((content, mime_type, filename))
 
-            if report.failed:
-                if call.excinfo.typename != "AssertionError":
-                    set_result(PYTEST_TO_QASE_STATUS['BROKEN'])
-                else:
-                    set_result(PYTEST_TO_QASE_STATUS['FAILED'])
-                self.runtime.result.add_message(call.excinfo.exconly())
-            elif report.skipped:
-                if self.__is_use_xfail_mark(report):
-                    set_result(self.config.framework.pytest.xfail_status.xfail)
-                elif self.runtime.result.execution.status in (None, PYTEST_TO_QASE_STATUS['PASSED']):
-                    set_result(PYTEST_TO_QASE_STATUS['SKIPPED'])
-            else:
-                if self.__is_use_xfail_mark(report):
-                    set_result(self.config.framework.pytest.xfail_status.xpass)
-                elif self.runtime.result.execution.status is None:
-                    set_result(PYTEST_TO_QASE_STATUS['PASSED'])
+        def handle_xfail_status():
+            if self.__is_use_xfail_mark(report) and call.when == "call":
+                status = self.config.framework.pytest.xfail_status
+                return status.xfail if report.skipped else status.xpass
+            return None
 
-            if self.reporter.config.framework.pytest.capture_logs:
-                _attach_logs()
+        if report.longrepr:
+            self.runtime.result.execution.stacktrace = report.longreprtext
 
-            # Attach the video and the trace to the test result
-            if hasattr(item, 'funcargs') and 'page' in item.funcargs:
-                page = item.funcargs['page']
-                if not page.video:
-                    return
+        if report.failed:
+            result_status = PYTEST_TO_QASE_STATUS['BROKEN'] if call.excinfo.typename != "AssertionError" else \
+                PYTEST_TO_QASE_STATUS['FAILED']
+            set_result(result_status)
+            self.runtime.result.add_message(call.excinfo.exconly())
+        elif report.skipped:
+            xfail_status = handle_xfail_status()
+            if xfail_status:
+                set_result(xfail_status)
+            elif self.runtime.result.execution.status in (None, PYTEST_TO_QASE_STATUS['PASSED']):
+                set_result(PYTEST_TO_QASE_STATUS['SKIPPED'])
+        else:
+            xfail_status = handle_xfail_status()
+            if xfail_status:
+                set_result(xfail_status)
+            elif self.runtime.result.execution.status is None:
+                set_result(PYTEST_TO_QASE_STATUS['PASSED'])
+
+        if self.reporter.config.framework.pytest.capture_logs and call.when == "call":
+            attach_logs()
+
+        if hasattr(item, 'funcargs') and 'page' in item.funcargs and call.when == "call":
+            page = item.funcargs['page']
+            if page.video:
                 folder_name = self.__build_folder_name(item)
                 output_dir = self.config.framework.playwright.output_dir
                 base_path = os.path.join(os.getcwd(), output_dir, folder_name)
+
                 video_path = os.path.join(base_path, "video.webm")
                 self.add_attachments(video_path)
+
                 if self.config.framework.playwright.trace != Trace.off:
                     trace_path = os.path.join(base_path, "trace.zip")
                     self.add_attachments(trace_path)
-        else:
-            yield
 
     def start_pytest_item(self, item):
         self.runtime.result = Result(
@@ -389,7 +399,7 @@ class QasePytestPlugin:
 
     @staticmethod
     def __is_use_xfail_mark(report):
-        if report.keywords.get("xfail"):
+        if hasattr(report, 'wasxfail'):
             return True
         return False
 
