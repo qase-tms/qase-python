@@ -307,13 +307,17 @@ class QasePytestPlugin:
 
     def _set_author(self, item) -> None:
         try:
-            self.runtime.result.author = str(item.get_closest_marker("qase_author").kwargs.get("author"))
+            author = str(item.get_closest_marker("qase_author").kwargs.get("author"))
+            if author != "None":
+                self.runtime.result.add_field(Field("author", author))
         except:
             pass
 
     def _set_muted(self, item) -> None:
         try:
-            self.runtime.result.muted = True if item.get_closest_marker("qase_muted").kwargs.get("muted") else False
+            muted = True if item.get_closest_marker("qase_muted") else False
+            if muted:
+                self.runtime.result.add_field(Field("muted", "true"))
         except:
             pass
 
