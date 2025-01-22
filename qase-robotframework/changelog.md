@@ -1,3 +1,10 @@
+# qase-robotframework 3.2.4
+
+## What's new
+
+1. Fixed handling of test steps with the `Message` type to ensure proper processing.
+2. Resolved an issue with attachment handling, enabling correct attachment uploads.
+
 # qase-robotframework 3.2.3
 
 ## What's new

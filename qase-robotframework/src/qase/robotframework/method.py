@@ -11,7 +11,7 @@ class qase:
 
     @staticmethod
     def attach(
-            self, *files: Union[str, Tuple[str, str], Tuple[bytes, str, str]]
+            *files: Union[str, Tuple[str, str], Tuple[bytes, str, str]]
     ):
         """
                 Attach files to test results

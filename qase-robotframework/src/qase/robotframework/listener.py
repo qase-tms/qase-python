@@ -173,6 +173,9 @@ class Listener:
         steps = []
 
         for i in range(len(result.body)):
+            if hasattr(result.body[i], "type") and result.body[i].type == "MESSAGE":
+                continue
+
             if hasattr(result.body[i], "type") and result.body[i].type == "IF/ELSE ROOT":
                 condition_steps = self.__parse_condition_steps(result.body[i])
                 for step in condition_steps:
