@@ -153,18 +153,6 @@ class qase:
         return pytest.mark.qase_layer(layer=layer)
 
     @staticmethod
-    def tags(*tags):
-        """
-        >>> @qase.tags("tag1", "tag2")
-        >>> def test_example():
-        >>>     pass
-
-        :param tags: a list of strings with test tags.
-        :return: pytest.mark instance
-        """
-        return pytest.mark.qase_tags(tags=tags)
-
-    @staticmethod
     def ignore():
         """
         >>> @qase.ignore()
