@@ -1,3 +1,10 @@
+# qase-pytest 6.1.12
+
+## What's new
+
+1. Removed unsupported `tags` decorator as our API does not support working with tags.
+2. Fixed an issue where data was not passed correctly when using `author` and `muted` decorators.
+
 # qase-pytest 6.1.11
 
 ## What's new

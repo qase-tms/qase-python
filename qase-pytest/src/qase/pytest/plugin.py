@@ -210,7 +210,6 @@ class QasePytestPlugin:
             signature='',
         )
         self._set_fields(item)
-        self._set_tags(item)
         self._set_author(item)
         self._set_muted(item)
         self._set_testops_id(item)
@@ -294,14 +293,6 @@ class QasePytestPlugin:
             fields = item.get_closest_marker("qase_fields").kwargs.get("fields")
             for name, field in fields:
                 self.runtime.result.add_field(Field(name, field))
-        except:
-            pass
-
-    def _set_tags(self, item) -> None:
-        try:
-            tags = item.get_closest_marker("qase_tags").kwargs.get("tags")
-            for tag in tags:
-                self.runtime.result.add_tag(tag)
         except:
             pass
 
