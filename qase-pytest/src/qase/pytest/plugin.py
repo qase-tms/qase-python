@@ -192,7 +192,7 @@ class QasePytestPlugin:
 
         if hasattr(item, 'funcargs') and 'page' in item.funcargs and call.when == "call":
             page = item.funcargs['page']
-            if page.video:
+            if hasattr(page, 'video'):
                 folder_name = self.__build_folder_name(item)
                 output_dir = self.config.framework.playwright.output_dir
                 base_path = os.path.join(os.getcwd(), output_dir, folder_name)

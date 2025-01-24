@@ -1,3 +1,10 @@
+# qase-pytest 6.1.13
+
+## What's new
+
+Resolved an issue in the pytest plugin where an AttributeError ('BookingForm' object has no attribute 'video') could
+occur during pytest_runtest_makereport.
+
 # qase-pytest 6.1.12
 
 ## What's new
@@ -10,6 +17,7 @@
 ## What's new
 
 Fixed issues with using `pytest.xfail` and the `skipif` mark:
+
 1. Custom statuses did not work when using `pytest.xfail` within the test body.
 2. The status was incorrect when using the `skipif` mark.
 
