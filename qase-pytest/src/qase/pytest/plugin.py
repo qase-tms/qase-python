@@ -384,7 +384,9 @@ class QasePytestPlugin:
         path_parts.append(
             QasePytestPlugin.__sanitize_path_component(item.originalname)
         )
-        path_parts.append(item.funcargs['browser_name'])
+
+        if 'browser_name' in item.funcargs:
+            path_parts.append(item.funcargs['browser_name'])
 
         return "-".join(path_parts)
 

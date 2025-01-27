@@ -1,3 +1,10 @@
+# qase-pytest 6.1.14
+
+## What's new
+
+Resolved an issue in the pytest plugin where an KeyError ('browser_name') could
+occur during pytest_runtest_makereport.
+
 # qase-pytest 6.1.13
 
 ## What's new
