@@ -107,14 +107,11 @@ All URIs are relative to *https://api.qase.io/v2*
 
 ## Documentation For Models
 
-- [BaseErrorFieldResponse](docs/BaseErrorFieldResponse.md)
-- [BaseErrorFieldResponseErrorFieldsInner](docs/BaseErrorFieldResponseErrorFieldsInner.md)
-- [BaseErrorResponse](docs/BaseErrorResponse.md)
-- [CreateResultV2422Response](docs/CreateResultV2422Response.md)
 - [CreateResultsRequestV2](docs/CreateResultsRequestV2.md)
 - [RelationSuite](docs/RelationSuite.md)
 - [RelationSuiteItem](docs/RelationSuiteItem.md)
 - [ResultCreate](docs/ResultCreate.md)
+- [ResultCreateFields](docs/ResultCreateFields.md)
 - [ResultExecution](docs/ResultExecution.md)
 - [ResultRelations](docs/ResultRelations.md)
 - [ResultStep](docs/ResultStep.md)

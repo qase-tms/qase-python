@@ -19,7 +19,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
 from qase.api_client_v2.models.result_create_fields import ResultCreateFields
 from qase.api_client_v2.models.result_execution import ResultExecution
 from qase.api_client_v2.models.result_relations import ResultRelations
