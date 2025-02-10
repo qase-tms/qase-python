@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**author** | **str** |  | [optional] 
+**author** | **str** | Author of the related test case (member id, name or email). If set and test case auto-creation is enabled, the author will be used to create the test case | [optional] 
 **description** | **str** |  | [optional] 
 **preconditions** | **str** |  | [optional] 
 **postconditions** | **str** |  | [optional] 
@@ -16,6 +16,7 @@ Name | Type | Description | Notes
 **type** | **str** |  | [optional] 
 **muted** | **str** |  | [optional] 
 **is_flaky** | **str** |  | [optional] 
+**executed_by** | **str** | User who executed the test (member id, name or email) | [optional] 
 
 ## Example
 

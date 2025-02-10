@@ -12,22 +12,22 @@
     Do not edit the class manually.
 """  # noqa: E501
 
+
 from __future__ import annotations
 import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
-from typing import Any, ClassVar, Dict, List
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
-
 
 class ResultCreateFields(BaseModel):
     """
     ResultCreateFields
-    """  # noqa: E501
-    author: Optional[StrictStr] = None
+    """ # noqa: E501
+    author: Optional[StrictStr] = Field(default=None, description="Author of the related test case (member id, name or email). If set and test case auto-creation is enabled, the author will be used to create the test case")
     description: Optional[StrictStr] = None
     preconditions: Optional[StrictStr] = None
     postconditions: Optional[StrictStr] = None
@@ -38,15 +38,16 @@ class ResultCreateFields(BaseModel):
     type: Optional[StrictStr] = None
     muted: Optional[StrictStr] = None
     is_flaky: Optional[StrictStr] = None
+    executed_by: Optional[StrictStr] = Field(default=None, description="User who executed the test (member id, name or email)")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["author", "description", "preconditions", "postconditions", "layer",
-                                         "severity", "priority", "behavior", "type", "muted", "is_flaky"]
+    __properties: ClassVar[List[str]] = ["author", "description", "preconditions", "postconditions", "layer", "severity", "priority", "behavior", "type", "muted", "is_flaky", "executed_by"]
 
     model_config = ConfigDict(
         populate_by_name=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
+
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
@@ -109,7 +110,8 @@ class ResultCreateFields(BaseModel):
             "behavior": obj.get("behavior"),
             "type": obj.get("type"),
             "muted": obj.get("muted"),
-            "is_flaky": obj.get("is_flaky")
+            "is_flaky": obj.get("is_flaky"),
+            "executed_by": obj.get("executed_by")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():
@@ -117,3 +119,5 @@ class ResultCreateFields(BaseModel):
                 _obj.additional_properties[_key] = obj.get(_key)
 
         return _obj
+
+

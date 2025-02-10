@@ -4,14 +4,14 @@ All URIs are relative to *https://api.qase.io/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**create_result_v2**](ResultsApi.md#create_result_v2) | **POST** /{project_code}/run/{run_id}/result | (Beta) Create test run result
-[**create_results_v2**](ResultsApi.md#create_results_v2) | **POST** /{project_code}/run/{run_id}/results | (Beta) Bulk create test run result
+[**create_result_v2**](ResultsApi.md#create_result_v2) | **POST** /{project_code}/run/{run_id}/result | Create test run result
+[**create_results_v2**](ResultsApi.md#create_results_v2) | **POST** /{project_code}/run/{run_id}/results | Bulk create test run result
 
 
 # **create_result_v2**
 > create_result_v2(project_code, run_id, result_create)
 
-(Beta) Create test run result
+Create test run result
 
 This method allows to create single test run result.  If there is no free space left in your team account, when attempting to upload an attachment, e.g., through reporters, you will receive an error with code 507 - Insufficient Storage. 
 
@@ -51,7 +51,7 @@ with qase.api_client_v2.ApiClient(configuration) as api_client:
     result_create = qase.api_client_v2.ResultCreate() # ResultCreate | 
 
     try:
-        # (Beta) Create test run result
+        # Create test run result
         api_instance.create_result_v2(project_code, run_id, result_create)
     except Exception as e:
         print("Exception when calling ResultsApi->create_result_v2: %s\n" % e)
@@ -79,7 +79,7 @@ void (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: application/json
- - **Accept**: application/json
+ - **Accept**: Not defined
 
 ### HTTP response details
 
@@ -97,7 +97,7 @@ void (empty response body)
 # **create_results_v2**
 > create_results_v2(project_code, run_id, create_results_request_v2)
 
-(Beta) Bulk create test run result
+Bulk create test run result
 
 This method allows to create several test run results at once.  If there is no free space left in your team account, when attempting to upload an attachment, e.g., through reporters, you will receive an error with code 507 - Insufficient Storage. 
 
@@ -137,7 +137,7 @@ with qase.api_client_v2.ApiClient(configuration) as api_client:
     create_results_request_v2 = qase.api_client_v2.CreateResultsRequestV2() # CreateResultsRequestV2 | 
 
     try:
-        # (Beta) Bulk create test run result
+        # Bulk create test run result
         api_instance.create_results_v2(project_code, run_id, create_results_request_v2)
     except Exception as e:
         print("Exception when calling ResultsApi->create_results_v2: %s\n" % e)
@@ -165,7 +165,7 @@ void (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: application/json
- - **Accept**: application/json
+ - **Accept**: Not defined
 
 ### HTTP response details
 

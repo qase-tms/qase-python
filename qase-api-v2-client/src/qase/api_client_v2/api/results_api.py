@@ -58,7 +58,7 @@ class ResultsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> None:
-        """(Beta) Create test run result
+        """Create test run result
 
         This method allows to create single test run result.  If there is no free space left in your team account, when attempting to upload an attachment, e.g., through reporters, you will receive an error with code 507 - Insufficient Storage. 
 
@@ -106,7 +106,7 @@ class ResultsApi:
             '401': None,
             '403': None,
             '404': None,
-            '422': "CreateResultV2422Response",
+            '422': None,
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -138,7 +138,7 @@ class ResultsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[None]:
-        """(Beta) Create test run result
+        """Create test run result
 
         This method allows to create single test run result.  If there is no free space left in your team account, when attempting to upload an attachment, e.g., through reporters, you will receive an error with code 507 - Insufficient Storage. 
 
@@ -186,7 +186,7 @@ class ResultsApi:
             '401': None,
             '403': None,
             '404': None,
-            '422': "CreateResultV2422Response",
+            '422': None,
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -218,7 +218,7 @@ class ResultsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """(Beta) Create test run result
+        """Create test run result
 
         This method allows to create single test run result.  If there is no free space left in your team account, when attempting to upload an attachment, e.g., through reporters, you will receive an error with code 507 - Insufficient Storage. 
 
@@ -266,7 +266,7 @@ class ResultsApi:
             '401': None,
             '403': None,
             '404': None,
-            '422': "CreateResultV2422Response",
+            '422': None,
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -311,12 +311,6 @@ class ResultsApi:
             _body_params = result_create
 
 
-        # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
 
         # set the HTTP header `Content-Type`
         if _content_type:
@@ -374,7 +368,7 @@ class ResultsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> None:
-        """(Beta) Bulk create test run result
+        """Bulk create test run result
 
         This method allows to create several test run results at once.  If there is no free space left in your team account, when attempting to upload an attachment, e.g., through reporters, you will receive an error with code 507 - Insufficient Storage. 
 
@@ -422,7 +416,7 @@ class ResultsApi:
             '401': None,
             '403': None,
             '404': None,
-            '422': "CreateResultV2422Response",
+            '422': None,
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -454,7 +448,7 @@ class ResultsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[None]:
-        """(Beta) Bulk create test run result
+        """Bulk create test run result
 
         This method allows to create several test run results at once.  If there is no free space left in your team account, when attempting to upload an attachment, e.g., through reporters, you will receive an error with code 507 - Insufficient Storage. 
 
@@ -502,7 +496,7 @@ class ResultsApi:
             '401': None,
             '403': None,
             '404': None,
-            '422': "CreateResultV2422Response",
+            '422': None,
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -534,7 +528,7 @@ class ResultsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """(Beta) Bulk create test run result
+        """Bulk create test run result
 
         This method allows to create several test run results at once.  If there is no free space left in your team account, when attempting to upload an attachment, e.g., through reporters, you will receive an error with code 507 - Insufficient Storage. 
 
@@ -582,7 +576,7 @@ class ResultsApi:
             '401': None,
             '403': None,
             '404': None,
-            '422': "CreateResultV2422Response",
+            '422': None,
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -627,12 +621,6 @@ class ResultsApi:
             _body_params = create_results_request_v2
 
 
-        # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
 
         # set the HTTP header `Content-Type`
         if _content_type:
