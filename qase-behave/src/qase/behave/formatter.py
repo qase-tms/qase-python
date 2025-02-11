@@ -32,7 +32,7 @@ class QaseFormatter(Formatter):
         feature.scenarios = filter_scenarios(self.__case_ids, feature.scenarios)
 
     def scenario(self, scenario: Scenario):
-        if self.__current_scenario:
+        if self.__current_scenario and self.__current_scenario.ignore == False:
             self.__current_scenario.execution.complete()
             self.reporter.add_result(self.__current_scenario)
             self.__current_scenario = None
@@ -49,7 +49,7 @@ class QaseFormatter(Formatter):
         pass
 
     def eof(self):
-        if self.__current_scenario:
+        if self.__current_scenario and self.__current_scenario.ignore == False:
             self.__current_scenario.execution.complete()
             self.reporter.add_result(self.__current_scenario)
             self.__current_scenario = None
