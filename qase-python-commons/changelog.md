@@ -1,3 +1,9 @@
+# qase-python-commons@3.2.5
+
+## What's new
+
+Updated logger to write logs to a single file from multiple threads, ensuring better concurrency handling and readability.  
+
 # qase-python-commons@3.2.4
 
 ## What's new
