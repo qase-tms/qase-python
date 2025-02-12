@@ -6,6 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **int** |  | [optional] 
+**defect_id** | **int** |  | 
 **title** | **str** |  | [optional] 
 **actual_result** | **str** |  | [optional] 
 **severity** | **str** |  | [optional] 

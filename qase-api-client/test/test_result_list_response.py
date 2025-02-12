@@ -44,6 +44,7 @@ class TestResultListResponse(unittest.TestCase):
                     entities = [
                         qase.api_client_v1.models.result.Result(
                             hash = '', 
+                            result_hash = '', 
                             comment = '', 
                             stacktrace = '', 
                             run_id = 56, 

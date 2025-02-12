@@ -37,6 +37,7 @@ class TestTestCaseQuery(unittest.TestCase):
         if include_optional:
             return TestCaseQuery(
                 id = 56,
+                test_case_id = 56,
                 position = 56,
                 title = '',
                 description = '',
@@ -98,6 +99,7 @@ class TestTestCaseQuery(unittest.TestCase):
             )
         else:
             return TestCaseQuery(
+                test_case_id = 56,
         )
         """
 

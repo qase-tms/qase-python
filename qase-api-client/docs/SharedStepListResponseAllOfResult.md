@@ -25,8 +25,7 @@ print(SharedStepListResponseAllOfResult.to_json())
 # convert the object into a dict
 shared_step_list_response_all_of_result_dict = shared_step_list_response_all_of_result_instance.to_dict()
 # create an instance of SharedStepListResponseAllOfResult from a dict
-shared_step_list_response_all_of_result_form_dict = shared_step_list_response_all_of_result.from_dict(
-    shared_step_list_response_all_of_result_dict)
+shared_step_list_response_all_of_result_form_dict = shared_step_list_response_all_of_result.from_dict(shared_step_list_response_all_of_result_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

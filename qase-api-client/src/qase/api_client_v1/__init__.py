@@ -127,6 +127,7 @@ from qase.api_client_v1.models.qql_defect import QqlDefect
 from qase.api_client_v1.models.qql_plan import QqlPlan
 from qase.api_client_v1.models.qql_test_case import QqlTestCase
 from qase.api_client_v1.models.requirement import Requirement
+from qase.api_client_v1.models.requirement_query import RequirementQuery
 from qase.api_client_v1.models.response import Response
 from qase.api_client_v1.models.result import Result
 from qase.api_client_v1.models.result_create import ResultCreate
@@ -136,6 +137,7 @@ from qase.api_client_v1.models.result_create_response import ResultCreateRespons
 from qase.api_client_v1.models.result_create_response_all_of_result import ResultCreateResponseAllOfResult
 from qase.api_client_v1.models.result_list_response import ResultListResponse
 from qase.api_client_v1.models.result_list_response_all_of_result import ResultListResponseAllOfResult
+from qase.api_client_v1.models.result_query import ResultQuery
 from qase.api_client_v1.models.result_response import ResultResponse
 from qase.api_client_v1.models.result_update import ResultUpdate
 from qase.api_client_v1.models.resultcreate_bulk import ResultcreateBulk
@@ -148,6 +150,7 @@ from qase.api_client_v1.models.run_milestone import RunMilestone
 from qase.api_client_v1.models.run_public import RunPublic
 from qase.api_client_v1.models.run_public_response import RunPublicResponse
 from qase.api_client_v1.models.run_public_response_all_of_result import RunPublicResponseAllOfResult
+from qase.api_client_v1.models.run_query import RunQuery
 from qase.api_client_v1.models.run_response import RunResponse
 from qase.api_client_v1.models.run_stats import RunStats
 from qase.api_client_v1.models.search_response import SearchResponse

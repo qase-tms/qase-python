@@ -1,4 +1,4 @@
-# Result
+# ResultQuery
 
 
 ## Properties
@@ -6,7 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **hash** | **str** |  | [optional] 
-**result_hash** | **str** |  | [optional] 
+**result_hash** | **str** |  | 
 **comment** | **str** |  | [optional] 
 **stacktrace** | **str** |  | [optional] 
 **run_id** | **int** |  | [optional] 
@@ -21,19 +21,19 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from qase.api_client_v1.models.result import Result
+from qase.api_client_v1.models.result_query import ResultQuery
 
 # TODO update the JSON string below
 json = "{}"
-# create an instance of Result from a JSON string
-result_instance = Result.from_json(json)
+# create an instance of ResultQuery from a JSON string
+result_query_instance = ResultQuery.from_json(json)
 # print the JSON string representation of the object
-print(Result.to_json())
+print(ResultQuery.to_json())
 
 # convert the object into a dict
-result_dict = result_instance.to_dict()
-# create an instance of Result from a dict
-result_form_dict = result.from_dict(result_dict)
+result_query_dict = result_query_instance.to_dict()
+# create an instance of ResultQuery from a dict
+result_query_form_dict = result_query.from_dict(result_query_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

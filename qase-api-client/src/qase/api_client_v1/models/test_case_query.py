@@ -34,6 +34,7 @@ class TestCaseQuery(BaseModel):
     TestCaseQuery
     """ # noqa: E501
     id: Optional[StrictInt] = None
+    test_case_id: StrictInt
     position: Optional[StrictInt] = None
     title: Optional[StrictStr] = None
     description: Optional[StrictStr] = None
@@ -59,7 +60,7 @@ class TestCaseQuery(BaseModel):
     author_id: Optional[StrictInt] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
-    __properties: ClassVar[List[str]] = ["id", "position", "title", "description", "preconditions", "postconditions", "severity", "priority", "type", "layer", "is_flaky", "behavior", "automation", "status", "milestone_id", "suite_id", "custom_fields", "attachments", "steps_type", "steps", "params", "tags", "member_id", "author_id", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["id", "test_case_id", "position", "title", "description", "preconditions", "postconditions", "severity", "priority", "type", "layer", "is_flaky", "behavior", "automation", "status", "milestone_id", "suite_id", "custom_fields", "attachments", "steps_type", "steps", "params", "tags", "member_id", "author_id", "created_at", "updated_at"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -174,6 +175,7 @@ class TestCaseQuery(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
+            "test_case_id": obj.get("test_case_id"),
             "position": obj.get("position"),
             "title": obj.get("title"),
             "description": obj.get("description"),

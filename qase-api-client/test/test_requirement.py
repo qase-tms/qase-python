@@ -37,6 +37,7 @@ class TestRequirement(unittest.TestCase):
         if include_optional:
             return Requirement(
                 id = 56,
+                requirement_id = 56,
                 parent_id = 56,
                 member_id = 56,
                 title = '',

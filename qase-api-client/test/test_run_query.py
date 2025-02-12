@@ -15,10 +15,10 @@
 
 import unittest
 
-from qase.api_client_v1.models.run import Run
+from qase.api_client_v1.models.run_query import RunQuery
 
-class TestRun(unittest.TestCase):
-    """Run unit test stubs"""
+class TestRunQuery(unittest.TestCase):
+    """RunQuery unit test stubs"""
 
     def setUp(self):
         pass
@@ -26,16 +26,16 @@ class TestRun(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> Run:
-        """Test Run
+    def make_instance(self, include_optional) -> RunQuery:
+        """Test RunQuery
             include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `Run`
+        # uncomment below to create an instance of `RunQuery`
         """
-        model = Run()
+        model = RunQuery()
         if include_optional:
-            return Run(
+            return RunQuery(
                 id = 56,
                 run_id = 56,
                 title = '',
@@ -83,12 +83,13 @@ class TestRun(unittest.TestCase):
                 plan_id = 56
             )
         else:
-            return Run(
+            return RunQuery(
+                run_id = 56,
         )
         """
 
-    def testRun(self):
-        """Test Run"""
+    def testRunQuery(self):
+        """Test RunQuery"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

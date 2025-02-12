@@ -15,10 +15,10 @@
 
 import unittest
 
-from qase.api_client_v1.models.result import Result
+from qase.api_client_v1.models.result_query import ResultQuery
 
-class TestResult(unittest.TestCase):
-    """Result unit test stubs"""
+class TestResultQuery(unittest.TestCase):
+    """ResultQuery unit test stubs"""
 
     def setUp(self):
         pass
@@ -26,16 +26,16 @@ class TestResult(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> Result:
-        """Test Result
+    def make_instance(self, include_optional) -> ResultQuery:
+        """Test ResultQuery
             include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `Result`
+        # uncomment below to create an instance of `ResultQuery`
         """
-        model = Result()
+        model = ResultQuery()
         if include_optional:
-            return Result(
+            return ResultQuery(
                 hash = '',
                 result_hash = '',
                 comment = '',
@@ -70,12 +70,13 @@ class TestResult(unittest.TestCase):
                     ]
             )
         else:
-            return Result(
+            return ResultQuery(
+                result_hash = '',
         )
         """
 
-    def testResult(self):
-        """Test Result"""
+    def testResultQuery(self):
+        """Test ResultQuery"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

@@ -19,23 +19,46 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 
-class PlanQuery(BaseModel):
+class RequirementQuery(BaseModel):
     """
-    PlanQuery
+    RequirementQuery
     """ # noqa: E501
     id: Optional[StrictInt] = None
-    plan_id: StrictInt
+    requirement_id: StrictInt
+    parent_id: Optional[StrictInt] = None
+    member_id: Optional[StrictInt] = None
     title: Optional[StrictStr] = None
     description: Optional[StrictStr] = None
-    cases_count: Optional[StrictInt] = None
+    status: Optional[StrictStr] = None
+    type: Optional[StrictStr] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
-    __properties: ClassVar[List[str]] = ["id", "plan_id", "title", "description", "cases_count", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["id", "requirement_id", "parent_id", "member_id", "title", "description", "status", "type", "created_at", "updated_at"]
+
+    @field_validator('status')
+    def status_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['valid', 'draft', 'review', 'rework', 'finish', 'implemented', 'not-testable', 'obsolete']):
+            raise ValueError("must be one of enum values ('valid', 'draft', 'review', 'rework', 'finish', 'implemented', 'not-testable', 'obsolete')")
+        return value
+
+    @field_validator('type')
+    def type_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['epic', 'user-story', 'feature']):
+            raise ValueError("must be one of enum values ('epic', 'user-story', 'feature')")
+        return value
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -55,7 +78,7 @@ class PlanQuery(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of PlanQuery from a JSON string"""
+        """Create an instance of RequirementQuery from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -76,16 +99,26 @@ class PlanQuery(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if parent_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.parent_id is None and "parent_id" in self.model_fields_set:
+            _dict['parent_id'] = None
+
         # set to None if description (nullable) is None
         # and model_fields_set contains the field
         if self.description is None and "description" in self.model_fields_set:
             _dict['description'] = None
 
+        # set to None if updated_at (nullable) is None
+        # and model_fields_set contains the field
+        if self.updated_at is None and "updated_at" in self.model_fields_set:
+            _dict['updated_at'] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of PlanQuery from a dict"""
+        """Create an instance of RequirementQuery from a dict"""
         if obj is None:
             return None
 
@@ -94,10 +127,13 @@ class PlanQuery(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
-            "plan_id": obj.get("plan_id"),
+            "requirement_id": obj.get("requirement_id"),
+            "parent_id": obj.get("parent_id"),
+            "member_id": obj.get("member_id"),
             "title": obj.get("title"),
             "description": obj.get("description"),
-            "cases_count": obj.get("cases_count"),
+            "status": obj.get("status"),
+            "type": obj.get("type"),
             "created_at": obj.get("created_at"),
             "updated_at": obj.get("updated_at")
         })

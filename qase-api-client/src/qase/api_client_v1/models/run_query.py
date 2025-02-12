@@ -29,12 +29,12 @@ from qase.api_client_v1.models.tag_value import TagValue
 from typing import Optional, Set
 from typing_extensions import Self
 
-class Run(BaseModel):
+class RunQuery(BaseModel):
     """
-    Run
+    RunQuery
     """ # noqa: E501
     id: Optional[StrictInt] = None
-    run_id: Optional[StrictInt] = None
+    run_id: StrictInt
     title: Optional[StrictStr] = None
     description: Optional[StrictStr] = None
     status: Optional[StrictInt] = None
@@ -70,7 +70,7 @@ class Run(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of Run from a JSON string"""
+        """Create an instance of RunQuery from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -148,7 +148,7 @@ class Run(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of Run from a dict"""
+        """Create an instance of RunQuery from a dict"""
         if obj is None:
             return None
 

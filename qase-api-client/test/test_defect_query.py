@@ -37,6 +37,7 @@ class TestDefectQuery(unittest.TestCase):
         if include_optional:
             return DefectQuery(
                 id = 56,
+                defect_id = 56,
                 title = '',
                 actual_result = '',
                 severity = '',
@@ -68,6 +69,7 @@ class TestDefectQuery(unittest.TestCase):
             )
         else:
             return DefectQuery(
+                defect_id = 56,
         )
         """
 

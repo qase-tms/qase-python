@@ -27,7 +27,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters

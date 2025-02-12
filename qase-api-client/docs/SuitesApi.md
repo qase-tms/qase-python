@@ -32,7 +32,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -50,8 +50,8 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.SuitesApi(api_client)
-    code = 'code_example'  # str | Code of project, where to search entities.
-    suite_create = qase.api_client_v1.SuiteCreate()  # SuiteCreate | 
+    code = 'code_example' # str | Code of project, where to search entities.
+    suite_create = qase.api_client_v1.SuiteCreate() # SuiteCreate | 
 
     try:
         # Create a new test suite
@@ -120,7 +120,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -138,9 +138,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.SuitesApi(api_client)
-    code = 'code_example'  # str | Code of project, where to search entities.
-    id = 56  # int | Identifier.
-    suite_delete = qase.api_client_v1.SuiteDelete()  # SuiteDelete |  (optional)
+    code = 'code_example' # str | Code of project, where to search entities.
+    id = 56 # int | Identifier.
+    suite_delete = qase.api_client_v1.SuiteDelete() # SuiteDelete |  (optional)
 
     try:
         # Delete test suite
@@ -208,7 +208,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -226,8 +226,8 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.SuitesApi(api_client)
-    code = 'code_example'  # str | Code of project, where to search entities.
-    id = 56  # int | Identifier.
+    code = 'code_example' # str | Code of project, where to search entities.
+    id = 56 # int | Identifier.
 
     try:
         # Get a specific test suite
@@ -294,7 +294,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -312,10 +312,10 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.SuitesApi(api_client)
-    code = 'code_example'  # str | Code of project, where to search entities.
-    search = 'search_example'  # str | Provide a string that will be used to search by name. (optional)
-    limit = 10  # int | A number of entities in result set. (optional) (default to 10)
-    offset = 0  # int | How many entities should be skipped. (optional) (default to 0)
+    code = 'code_example' # str | Code of project, where to search entities.
+    search = 'search_example' # str | Provide a string that will be used to search by name. (optional)
+    limit = 10 # int | A number of entities in result set. (optional) (default to 10)
+    offset = 0 # int | How many entities should be skipped. (optional) (default to 0)
 
     try:
         # Get all test suites
@@ -385,7 +385,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -403,9 +403,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.SuitesApi(api_client)
-    code = 'code_example'  # str | Code of project, where to search entities.
-    id = 56  # int | Identifier.
-    suite_update = qase.api_client_v1.SuiteUpdate()  # SuiteUpdate | 
+    code = 'code_example' # str | Code of project, where to search entities.
+    id = 56 # int | Identifier.
+    suite_update = qase.api_client_v1.SuiteUpdate() # SuiteUpdate | 
 
     try:
         # Update test suite

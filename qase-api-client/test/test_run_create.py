@@ -44,6 +44,7 @@ class TestRunCreate(unittest.TestCase):
                     ],
                 is_autotest = True,
                 environment_id = 1,
+                environment_slug = '',
                 milestone_id = 1,
                 plan_id = 1,
                 author_id = 1,

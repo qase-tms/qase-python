@@ -37,6 +37,7 @@ class TestSearchResponseAllOfResultEntities(unittest.TestCase):
         if include_optional:
             return SearchResponseAllOfResultEntities(
                 id = 56,
+                run_id = 56,
                 title = '',
                 description = '',
                 status = '',
@@ -79,10 +80,11 @@ class TestSearchResponseAllOfResultEntities(unittest.TestCase):
                 cases = [
                     56
                     ],
+                plan_id = 56,
                 hash = '',
+                result_hash = '',
                 comment = '',
                 stacktrace = '',
-                run_id = 56,
                 case_id = 56,
                 steps = [
                     qase.api_client_v1.models.test_step.TestStep(
@@ -110,11 +112,13 @@ class TestSearchResponseAllOfResultEntities(unittest.TestCase):
                         filename = '', 
                         url = '', )
                     ],
+                requirement_id = 56,
                 parent_id = 56,
                 member_id = 56,
                 type = 56,
                 created_at = '2021-12-30T19:23:59Z',
                 updated_at = '2021-12-30T19:23:59Z',
+                test_case_id = 56,
                 position = 56,
                 preconditions = '',
                 postconditions = '',
@@ -129,6 +133,7 @@ class TestSearchResponseAllOfResultEntities(unittest.TestCase):
                 steps_type = '',
                 params = None,
                 author_id = 56,
+                defect_id = 56,
                 actual_result = '',
                 resolved = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 external_data = '',
@@ -136,6 +141,12 @@ class TestSearchResponseAllOfResultEntities(unittest.TestCase):
             )
         else:
             return SearchResponseAllOfResultEntities(
+                run_id = 56,
+                plan_id = 56,
+                result_hash = '',
+                requirement_id = 56,
+                test_case_id = 56,
+                defect_id = 56,
         )
         """
 

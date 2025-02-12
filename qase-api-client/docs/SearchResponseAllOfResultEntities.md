@@ -6,6 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **int** |  | [optional] 
+**run_id** | **int** |  | 
 **title** | **str** |  | [optional] 
 **description** | **str** |  | [optional] 
 **status** | **str** |  | [optional] 
@@ -20,21 +21,23 @@ Name | Type | Description | Notes
 **custom_fields** | [**List[CustomFieldValue]**](CustomFieldValue.md) |  | [optional] 
 **tags** | [**List[TagValue]**](TagValue.md) |  | [optional] 
 **cases** | **List[int]** |  | [optional] 
-**plan_id** | **int** |  | [optional] 
+**plan_id** | **int** |  | 
 **hash** | **str** |  | [optional] 
+**result_hash** | **str** |  | 
 **comment** | **str** |  | [optional] 
 **stacktrace** | **str** |  | [optional] 
-**run_id** | **int** |  | [optional] 
 **case_id** | **int** |  | [optional] 
 **steps** | [**List[TestStep]**](TestStep.md) |  | [optional] 
 **is_api_result** | **bool** |  | [optional] 
 **time_spent_ms** | **int** |  | [optional] 
 **attachments** | [**List[Attachment]**](Attachment.md) |  | [optional] 
+**requirement_id** | **int** |  | 
 **parent_id** | **int** |  | [optional] 
 **member_id** | **int** | Deprecated, use &#x60;author_id&#x60; instead. | [optional] 
 **type** | **int** |  | [optional] 
 **created_at** | **datetime** |  | [optional] 
 **updated_at** | **datetime** |  | [optional] 
+**test_case_id** | **int** |  | 
 **position** | **int** |  | [optional] 
 **preconditions** | **str** |  | [optional] 
 **postconditions** | **str** |  | [optional] 
@@ -49,6 +52,7 @@ Name | Type | Description | Notes
 **steps_type** | **str** |  | [optional] 
 **params** | [**TestCaseParams**](TestCaseParams.md) |  | [optional] 
 **author_id** | **int** |  | [optional] 
+**defect_id** | **int** |  | 
 **actual_result** | **str** |  | [optional] 
 **resolved** | **datetime** |  | [optional] 
 **external_data** | **str** |  | [optional] 
@@ -69,8 +73,7 @@ print(SearchResponseAllOfResultEntities.to_json())
 # convert the object into a dict
 search_response_all_of_result_entities_dict = search_response_all_of_result_entities_instance.to_dict()
 # create an instance of SearchResponseAllOfResultEntities from a dict
-search_response_all_of_result_entities_form_dict = search_response_all_of_result_entities.from_dict(
-    search_response_all_of_result_entities_dict)
+search_response_all_of_result_entities_form_dict = search_response_all_of_result_entities.from_dict(search_response_all_of_result_entities_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

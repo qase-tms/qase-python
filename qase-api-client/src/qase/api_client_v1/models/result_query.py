@@ -26,12 +26,12 @@ from qase.api_client_v1.models.test_step_result import TestStepResult
 from typing import Optional, Set
 from typing_extensions import Self
 
-class Result(BaseModel):
+class ResultQuery(BaseModel):
     """
-    Result
+    ResultQuery
     """ # noqa: E501
     hash: Optional[StrictStr] = None
-    result_hash: Optional[StrictStr] = None
+    result_hash: StrictStr
     comment: Optional[StrictStr] = None
     stacktrace: Optional[StrictStr] = None
     run_id: Optional[StrictInt] = None
@@ -62,7 +62,7 @@ class Result(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of Result from a JSON string"""
+        """Create an instance of ResultQuery from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -121,7 +121,7 @@ class Result(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of Result from a dict"""
+        """Create an instance of ResultQuery from a dict"""
         if obj is None:
             return None
 

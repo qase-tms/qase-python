@@ -59,6 +59,11 @@ class TestResultCreate(unittest.TestCase):
                 param = {
                     'key' : ''
                     },
+                param_groups = [
+                    [
+                        ''
+                        ]
+                    ],
                 steps = [
                     qase.api_client_v1.models.test_step_result_create.TestStepResultCreate(
                         position = 56, 

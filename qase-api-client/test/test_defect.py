@@ -58,6 +58,12 @@ class TestDefect(unittest.TestCase):
                 member_id = 56,
                 author_id = 56,
                 external_data = '',
+                runs = [
+                    56
+                    ],
+                results = [
+                    ''
+                    ],
                 tags = [
                     qase.api_client_v1.models.tag_value.TagValue(
                         title = '', 
