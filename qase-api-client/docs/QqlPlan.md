@@ -6,6 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **int** |  | [optional] 
+**plan_id** | **int** |  | 
 **title** | **str** |  | [optional] 
 **description** | **str** |  | [optional] 
 **cases_count** | **int** |  | [optional] 

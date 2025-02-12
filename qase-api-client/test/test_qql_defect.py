@@ -37,6 +37,7 @@ class TestQqlDefect(unittest.TestCase):
         if include_optional:
             return QqlDefect(
                 id = 56,
+                defect_id = 56,
                 title = '',
                 actual_result = '',
                 severity = '',
@@ -68,6 +69,7 @@ class TestQqlDefect(unittest.TestCase):
             )
         else:
             return QqlDefect(
+                defect_id = 56,
         )
         """
 

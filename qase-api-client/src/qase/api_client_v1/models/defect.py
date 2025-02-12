@@ -43,12 +43,14 @@ class Defect(BaseModel):
     member_id: Optional[StrictInt] = Field(default=None, description="Deprecated, use `author_id` instead.")
     author_id: Optional[StrictInt] = None
     external_data: Optional[StrictStr] = None
+    runs: Optional[List[StrictInt]] = None
+    results: Optional[List[StrictStr]] = None
     tags: Optional[List[TagValue]] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
     created: Optional[StrictStr] = Field(default=None, description="Deprecated, use the `created_at` property instead.")
     updated: Optional[StrictStr] = Field(default=None, description="Deprecated, use the `updated_at` property instead.")
-    __properties: ClassVar[List[str]] = ["id", "title", "actual_result", "severity", "status", "milestone_id", "custom_fields", "attachments", "resolved_at", "member_id", "author_id", "external_data", "tags", "created_at", "updated_at", "created", "updated"]
+    __properties: ClassVar[List[str]] = ["id", "title", "actual_result", "severity", "status", "milestone_id", "custom_fields", "attachments", "resolved_at", "member_id", "author_id", "external_data", "runs", "results", "tags", "created_at", "updated_at", "created", "updated"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -144,6 +146,8 @@ class Defect(BaseModel):
             "member_id": obj.get("member_id"),
             "author_id": obj.get("author_id"),
             "external_data": obj.get("external_data"),
+            "runs": obj.get("runs"),
+            "results": obj.get("results"),
             "tags": [TagValue.from_dict(_item) for _item in obj["tags"]] if obj.get("tags") is not None else None,
             "created_at": obj.get("created_at"),
             "updated_at": obj.get("updated_at"),

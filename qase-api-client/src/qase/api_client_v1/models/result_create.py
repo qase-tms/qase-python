@@ -41,7 +41,7 @@ class ResultCreate(BaseModel):
     stacktrace: Optional[StrictStr] = None
     comment: Optional[StrictStr] = None
     param: Optional[Dict[str, StrictStr]] = Field(default=None, description="A map of parameters (name => value)")
-    param_groups: Optional[List[List[StrictStr]]] = Field(default=None, description="A list of parameter groups")
+    param_groups: Optional[List[List[StrictStr]]] = Field(default=None, description="List parameter groups by name only. Add their values in the 'param' field")
     steps: Optional[List[TestStepResultCreate]] = None
     author_id: Optional[StrictInt] = None
     __properties: ClassVar[List[str]] = ["case_id", "case", "status", "start_time", "time", "time_ms", "defect", "attachments", "stacktrace", "comment", "param", "param_groups", "steps", "author_id"]

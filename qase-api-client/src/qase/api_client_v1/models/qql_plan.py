@@ -29,12 +29,13 @@ class QqlPlan(BaseModel):
     QqlPlan
     """ # noqa: E501
     id: Optional[StrictInt] = None
+    plan_id: StrictInt
     title: Optional[StrictStr] = None
     description: Optional[StrictStr] = None
     cases_count: Optional[StrictInt] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
-    __properties: ClassVar[List[str]] = ["id", "title", "description", "cases_count", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["id", "plan_id", "title", "description", "cases_count", "created_at", "updated_at"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -93,6 +94,7 @@ class QqlPlan(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
+            "plan_id": obj.get("plan_id"),
             "title": obj.get("title"),
             "description": obj.get("description"),
             "cases_count": obj.get("cases_count"),

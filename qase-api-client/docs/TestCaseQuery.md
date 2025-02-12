@@ -6,6 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **int** |  | [optional] 
+**test_case_id** | **int** |  | 
 **position** | **int** |  | [optional] 
 **title** | **str** |  | [optional] 
 **description** | **str** |  | [optional] 

@@ -39,7 +39,9 @@ class TestAuthorResponse(unittest.TestCase):
                 status = True,
                 result = qase.api_client_v1.models.author.Author(
                     id = 56, 
+                    author_id = 56, 
                     entity_type = '', 
+                    entity_id = 56, 
                     email = '', 
                     name = '', 
                     is_active = True, )

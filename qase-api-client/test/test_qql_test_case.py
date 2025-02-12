@@ -37,6 +37,7 @@ class TestQqlTestCase(unittest.TestCase):
         if include_optional:
             return QqlTestCase(
                 id = 56,
+                test_case_id = 56,
                 position = 56,
                 title = '',
                 description = '',
@@ -98,6 +99,7 @@ class TestQqlTestCase(unittest.TestCase):
             )
         else:
             return QqlTestCase(
+                test_case_id = 56,
         )
         """
 

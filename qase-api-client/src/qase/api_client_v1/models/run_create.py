@@ -27,7 +27,7 @@ from typing_extensions import Self
 class RunCreate(BaseModel):
     """
     RunCreate
-    """  # noqa: E501
+    """ # noqa: E501
     title: Annotated[str, Field(strict=True, max_length=255)]
     description: Optional[Annotated[str, Field(strict=True, max_length=10000)]] = None
     include_all_cases: Optional[StrictBool] = None
@@ -40,13 +40,10 @@ class RunCreate(BaseModel):
     author_id: Optional[Annotated[int, Field(strict=True, ge=1)]] = None
     tags: Optional[List[StrictStr]] = None
     configurations: Optional[List[StrictInt]] = None
-    custom_field: Optional[Dict[str, StrictStr]] = Field(default=None,
-                                                         description="A map of custom fields values (id => value)")
+    custom_field: Optional[Dict[str, StrictStr]] = Field(default=None, description="A map of custom fields values (id => value)")
     start_time: Optional[StrictStr] = None
     end_time: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["title", "description", "include_all_cases", "cases", "is_autotest",
-                                         "environment_id", "environment_slug", "milestone_id", "plan_id", "author_id",
-                                         "tags", "configurations", "custom_field", "start_time", "end_time"]
+    __properties: ClassVar[List[str]] = ["title", "description", "include_all_cases", "cases", "is_autotest", "environment_id", "environment_slug", "milestone_id", "plan_id", "author_id", "tags", "configurations", "custom_field", "start_time", "end_time"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -116,3 +113,5 @@ class RunCreate(BaseModel):
             "end_time": obj.get("end_time")
         })
         return _obj
+
+

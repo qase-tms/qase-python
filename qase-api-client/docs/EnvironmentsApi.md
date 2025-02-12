@@ -32,7 +32,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -50,8 +50,8 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.EnvironmentsApi(api_client)
-    code = 'code_example'  # str | Code of project, where to search entities.
-    environment_create = qase.api_client_v1.EnvironmentCreate()  # EnvironmentCreate | 
+    code = 'code_example' # str | Code of project, where to search entities.
+    environment_create = qase.api_client_v1.EnvironmentCreate() # EnvironmentCreate | 
 
     try:
         # Create a new environment
@@ -119,7 +119,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -137,8 +137,8 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.EnvironmentsApi(api_client)
-    code = 'code_example'  # str | Code of project, where to search entities.
-    id = 56  # int | Identifier.
+    code = 'code_example' # str | Code of project, where to search entities.
+    id = 56 # int | Identifier.
 
     try:
         # Delete environment
@@ -205,7 +205,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -223,8 +223,8 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.EnvironmentsApi(api_client)
-    code = 'code_example'  # str | Code of project, where to search entities.
-    id = 56  # int | Identifier.
+    code = 'code_example' # str | Code of project, where to search entities.
+    id = 56 # int | Identifier.
 
     try:
         # Get a specific environment
@@ -291,7 +291,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -384,7 +384,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -402,9 +402,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.EnvironmentsApi(api_client)
-    code = 'code_example'  # str | Code of project, where to search entities.
-    id = 56  # int | Identifier.
-    environment_update = qase.api_client_v1.EnvironmentUpdate()  # EnvironmentUpdate | 
+    code = 'code_example' # str | Code of project, where to search entities.
+    id = 56 # int | Identifier.
+    environment_update = qase.api_client_v1.EnvironmentUpdate() # EnvironmentUpdate | 
 
     try:
         # Update environment

@@ -20,34 +20,34 @@ from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, f
 from typing import Any, List, Optional
 from qase.api_client_v1.models.defect_query import DefectQuery
 from qase.api_client_v1.models.plan_query import PlanQuery
-from qase.api_client_v1.models.requirement import Requirement
-from qase.api_client_v1.models.result import Result
-from qase.api_client_v1.models.run import Run
+from qase.api_client_v1.models.requirement_query import RequirementQuery
+from qase.api_client_v1.models.result_query import ResultQuery
+from qase.api_client_v1.models.run_query import RunQuery
 from qase.api_client_v1.models.test_case_query import TestCaseQuery
 from pydantic import StrictStr, Field
 from typing import Union, List, Optional, Dict
 from typing_extensions import Literal, Self
 
-SEARCHRESPONSEALLOFRESULTENTITIES_ONE_OF_SCHEMAS = ["DefectQuery", "PlanQuery", "Requirement", "Result", "Run", "TestCaseQuery"]
+SEARCHRESPONSEALLOFRESULTENTITIES_ONE_OF_SCHEMAS = ["DefectQuery", "PlanQuery", "RequirementQuery", "ResultQuery", "RunQuery", "TestCaseQuery"]
 
 class SearchResponseAllOfResultEntities(BaseModel):
     """
     SearchResponseAllOfResultEntities
     """
-    # data type: Run
-    oneof_schema_1_validator: Optional[Run] = None
-    # data type: Result
-    oneof_schema_2_validator: Optional[Result] = None
-    # data type: Requirement
-    oneof_schema_3_validator: Optional[Requirement] = None
+    # data type: RunQuery
+    oneof_schema_1_validator: Optional[RunQuery] = None
+    # data type: ResultQuery
+    oneof_schema_2_validator: Optional[ResultQuery] = None
+    # data type: RequirementQuery
+    oneof_schema_3_validator: Optional[RequirementQuery] = None
     # data type: TestCaseQuery
     oneof_schema_4_validator: Optional[TestCaseQuery] = None
     # data type: DefectQuery
     oneof_schema_5_validator: Optional[DefectQuery] = None
     # data type: PlanQuery
     oneof_schema_6_validator: Optional[PlanQuery] = None
-    actual_instance: Optional[Union[DefectQuery, PlanQuery, Requirement, Result, Run, TestCaseQuery]] = None
-    one_of_schemas: List[str] = Field(default=Literal["DefectQuery", "PlanQuery", "Requirement", "Result", "Run", "TestCaseQuery"])
+    actual_instance: Optional[Union[DefectQuery, PlanQuery, RequirementQuery, ResultQuery, RunQuery, TestCaseQuery]] = None
+    one_of_schemas: List[str] = Field(default=Literal["DefectQuery", "PlanQuery", "RequirementQuery", "ResultQuery", "RunQuery", "TestCaseQuery"])
 
     model_config = ConfigDict(
         validate_assignment=True,
@@ -70,19 +70,19 @@ class SearchResponseAllOfResultEntities(BaseModel):
         instance = SearchResponseAllOfResultEntities.model_construct()
         error_messages = []
         match = 0
-        # validate data type: Run
-        if not isinstance(v, Run):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `Run`")
+        # validate data type: RunQuery
+        if not isinstance(v, RunQuery):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `RunQuery`")
         else:
             match += 1
-        # validate data type: Result
-        if not isinstance(v, Result):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `Result`")
+        # validate data type: ResultQuery
+        if not isinstance(v, ResultQuery):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `ResultQuery`")
         else:
             match += 1
-        # validate data type: Requirement
-        if not isinstance(v, Requirement):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `Requirement`")
+        # validate data type: RequirementQuery
+        if not isinstance(v, RequirementQuery):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `RequirementQuery`")
         else:
             match += 1
         # validate data type: TestCaseQuery
@@ -102,10 +102,10 @@ class SearchResponseAllOfResultEntities(BaseModel):
             match += 1
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in SearchResponseAllOfResultEntities with oneOf schemas: DefectQuery, PlanQuery, Requirement, Result, Run, TestCaseQuery. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when setting `actual_instance` in SearchResponseAllOfResultEntities with oneOf schemas: DefectQuery, PlanQuery, RequirementQuery, ResultQuery, RunQuery, TestCaseQuery. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in SearchResponseAllOfResultEntities with oneOf schemas: DefectQuery, PlanQuery, Requirement, Result, Run, TestCaseQuery. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting `actual_instance` in SearchResponseAllOfResultEntities with oneOf schemas: DefectQuery, PlanQuery, RequirementQuery, ResultQuery, RunQuery, TestCaseQuery. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -120,21 +120,21 @@ class SearchResponseAllOfResultEntities(BaseModel):
         error_messages = []
         match = 0
 
-        # deserialize data into Run
+        # deserialize data into RunQuery
         try:
-            instance.actual_instance = Run.from_json(json_str)
+            instance.actual_instance = RunQuery.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # deserialize data into Result
+        # deserialize data into ResultQuery
         try:
-            instance.actual_instance = Result.from_json(json_str)
+            instance.actual_instance = ResultQuery.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # deserialize data into Requirement
+        # deserialize data into RequirementQuery
         try:
-            instance.actual_instance = Requirement.from_json(json_str)
+            instance.actual_instance = RequirementQuery.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
@@ -159,10 +159,10 @@ class SearchResponseAllOfResultEntities(BaseModel):
 
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when deserializing the JSON string into SearchResponseAllOfResultEntities with oneOf schemas: DefectQuery, PlanQuery, Requirement, Result, Run, TestCaseQuery. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when deserializing the JSON string into SearchResponseAllOfResultEntities with oneOf schemas: DefectQuery, PlanQuery, RequirementQuery, ResultQuery, RunQuery, TestCaseQuery. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into SearchResponseAllOfResultEntities with oneOf schemas: DefectQuery, PlanQuery, Requirement, Result, Run, TestCaseQuery. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into SearchResponseAllOfResultEntities with oneOf schemas: DefectQuery, PlanQuery, RequirementQuery, ResultQuery, RunQuery, TestCaseQuery. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -176,7 +176,7 @@ class SearchResponseAllOfResultEntities(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], DefectQuery, PlanQuery, Requirement, Result, Run, TestCaseQuery]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], DefectQuery, PlanQuery, RequirementQuery, ResultQuery, RunQuery, TestCaseQuery]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

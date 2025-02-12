@@ -35,7 +35,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -53,8 +53,8 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.CasesApi(api_client)
-    code = 'code_example'  # str | Code of project, where to search entities.
-    test_casebulk = qase.api_client_v1.TestCasebulk()  # TestCasebulk | 
+    code = 'code_example' # str | Code of project, where to search entities.
+    test_casebulk = qase.api_client_v1.TestCasebulk() # TestCasebulk | 
 
     try:
         # Create test cases in bulk
@@ -121,7 +121,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -139,8 +139,8 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.CasesApi(api_client)
-    code = 'code_example'  # str | Code of project, where to search entities.
-    test_caseexternal_issues = qase.api_client_v1.TestCaseexternalIssues()  # TestCaseexternalIssues | 
+    code = 'code_example' # str | Code of project, where to search entities.
+    test_caseexternal_issues = qase.api_client_v1.TestCaseexternalIssues() # TestCaseexternalIssues | 
 
     try:
         # Attach the external issues to the test cases
@@ -181,6 +181,7 @@ Name | Type | Description  | Notes
 **200** | OK. |  -  |
 **400** | Bad Request. |  -  |
 **401** | Unauthorized. |  -  |
+**402** | Payment Required. |  -  |
 **403** | Forbidden. |  -  |
 **404** | Not Found. |  -  |
 **422** | Unprocessable Entity. |  -  |
@@ -207,7 +208,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -225,8 +226,8 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.CasesApi(api_client)
-    code = 'code_example'  # str | Code of project, where to search entities.
-    test_caseexternal_issues = qase.api_client_v1.TestCaseexternalIssues()  # TestCaseexternalIssues | 
+    code = 'code_example' # str | Code of project, where to search entities.
+    test_caseexternal_issues = qase.api_client_v1.TestCaseexternalIssues() # TestCaseexternalIssues | 
 
     try:
         # Detach the external issues from the test cases
@@ -267,6 +268,7 @@ Name | Type | Description  | Notes
 **200** | OK. |  -  |
 **400** | Bad Request. |  -  |
 **401** | Unauthorized. |  -  |
+**402** | Payment Required. |  -  |
 **403** | Forbidden. |  -  |
 **404** | Not Found. |  -  |
 **422** | Unprocessable Entity. |  -  |
@@ -295,7 +297,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -313,8 +315,8 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.CasesApi(api_client)
-    code = 'code_example'  # str | Code of project, where to search entities.
-    test_case_create = qase.api_client_v1.TestCaseCreate()  # TestCaseCreate | 
+    code = 'code_example' # str | Code of project, where to search entities.
+    test_case_create = qase.api_client_v1.TestCaseCreate() # TestCaseCreate | 
 
     try:
         # Create a new test case
@@ -382,7 +384,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -400,8 +402,8 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.CasesApi(api_client)
-    code = 'code_example'  # str | Code of project, where to search entities.
-    id = 56  # int | Identifier.
+    code = 'code_example' # str | Code of project, where to search entities.
+    id = 56 # int | Identifier.
 
     try:
         # Delete test case
@@ -469,7 +471,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -487,8 +489,8 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.CasesApi(api_client)
-    code = 'code_example'  # str | Code of project, where to search entities.
-    id = 56  # int | Identifier.
+    code = 'code_example' # str | Code of project, where to search entities.
+    id = 56 # int | Identifier.
 
     try:
         # Get a specific test case
@@ -556,7 +558,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -574,30 +576,25 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.CasesApi(api_client)
-    code = 'code_example'  # str | Code of project, where to search entities.
-    search = 'search_example'  # str | Provide a string that will be used to search by name. (optional)
-    milestone_id = 56  # int | ID of milestone. (optional)
-    suite_id = 56  # int | ID of test suite. (optional)
-    severity = 'severity_example'  # str | A list of severity values separated by comma. Possible values: undefined, blocker, critical, major, normal, minor, trivial  (optional)
-    priority = 'priority_example'  # str | A list of priority values separated by comma. Possible values: undefined, high, medium, low  (optional)
-    type = 'type_example'  # str | A list of type values separated by comma. Possible values: other, functional smoke, regression, security, usability, performance, acceptance  (optional)
-    behavior = 'behavior_example'  # str | A list of behavior values separated by comma. Possible values: undefined, positive negative, destructive  (optional)
-    automation = 'automation_example'  # str | A list of values separated by comma. Possible values: is-not-automated, automated to-be-automated  (optional)
-    status = 'status_example'  # str | A list of values separated by comma. Possible values: actual, draft deprecated  (optional)
-    external_issues_type = 'external_issues_type_example'  # str | An integration type.  (optional)
-    external_issues_ids = ['external_issues_ids_example']  # List[str] | A list of issue IDs. (optional)
-    include = 'include_example'  # str | A list of entities to include in response separated by comma. Possible values: external_issues.  (optional)
-    limit = 10  # int | A number of entities in result set. (optional) (default to 10)
-    offset = 0  # int | How many entities should be skipped. (optional) (default to 0)
+    code = 'code_example' # str | Code of project, where to search entities.
+    search = 'search_example' # str | Provide a string that will be used to search by name. (optional)
+    milestone_id = 56 # int | ID of milestone. (optional)
+    suite_id = 56 # int | ID of test suite. (optional)
+    severity = 'severity_example' # str | A list of severity values separated by comma. Possible values: undefined, blocker, critical, major, normal, minor, trivial  (optional)
+    priority = 'priority_example' # str | A list of priority values separated by comma. Possible values: undefined, high, medium, low  (optional)
+    type = 'type_example' # str | A list of type values separated by comma. Possible values: other, functional smoke, regression, security, usability, performance, acceptance  (optional)
+    behavior = 'behavior_example' # str | A list of behavior values separated by comma. Possible values: undefined, positive negative, destructive  (optional)
+    automation = 'automation_example' # str | A list of values separated by comma. Possible values: is-not-automated, automated to-be-automated  (optional)
+    status = 'status_example' # str | A list of values separated by comma. Possible values: actual, draft deprecated  (optional)
+    external_issues_type = 'external_issues_type_example' # str | An integration type.  (optional)
+    external_issues_ids = ['external_issues_ids_example'] # List[str] | A list of issue IDs. (optional)
+    include = 'include_example' # str | A list of entities to include in response separated by comma. Possible values: external_issues.  (optional)
+    limit = 10 # int | A number of entities in result set. (optional) (default to 10)
+    offset = 0 # int | How many entities should be skipped. (optional) (default to 0)
 
     try:
         # Get all test cases
-        api_response = api_instance.get_cases(code, search=search, milestone_id=milestone_id, suite_id=suite_id,
-                                              severity=severity, priority=priority, type=type, behavior=behavior,
-                                              automation=automation, status=status,
-                                              external_issues_type=external_issues_type,
-                                              external_issues_ids=external_issues_ids, include=include, limit=limit,
-                                              offset=offset)
+        api_response = api_instance.get_cases(code, search=search, milestone_id=milestone_id, suite_id=suite_id, severity=severity, priority=priority, type=type, behavior=behavior, automation=automation, status=status, external_issues_type=external_issues_type, external_issues_ids=external_issues_ids, include=include, limit=limit, offset=offset)
         print("The response of CasesApi->get_cases:\n")
         pprint(api_response)
     except Exception as e:
@@ -647,6 +644,7 @@ Name | Type | Description  | Notes
 **200** | A list of all cases. |  -  |
 **400** | Bad Request. |  -  |
 **401** | Unauthorized. |  -  |
+**402** | Payment Required. |  -  |
 **403** | Forbidden. |  -  |
 **404** | Not Found. |  -  |
 **429** | Too Many Requests. |  -  |
@@ -674,7 +672,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -692,9 +690,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.CasesApi(api_client)
-    code = 'code_example'  # str | Code of project, where to search entities.
-    id = 56  # int | Identifier.
-    test_case_update = qase.api_client_v1.TestCaseUpdate()  # TestCaseUpdate | 
+    code = 'code_example' # str | Code of project, where to search entities.
+    id = 56 # int | Identifier.
+    test_case_update = qase.api_client_v1.TestCaseUpdate() # TestCaseUpdate | 
 
     try:
         # Update test case

@@ -6,6 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **int** |  | [optional] 
+**requirement_id** | **int** |  | [optional] 
 **parent_id** | **int** |  | [optional] 
 **member_id** | **int** |  | [optional] 
 **title** | **str** |  | [optional] 

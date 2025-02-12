@@ -32,6 +32,7 @@ class DefectQuery(BaseModel):
     DefectQuery
     """ # noqa: E501
     id: Optional[StrictInt] = None
+    defect_id: StrictInt
     title: Optional[StrictStr] = None
     actual_result: Optional[StrictStr] = None
     severity: Optional[StrictStr] = None
@@ -46,7 +47,7 @@ class DefectQuery(BaseModel):
     tags: Optional[List[TagValue]] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
-    __properties: ClassVar[List[str]] = ["id", "title", "actual_result", "severity", "status", "milestone_id", "custom_fields", "attachments", "resolved", "member_id", "author_id", "external_data", "tags", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["id", "defect_id", "title", "actual_result", "severity", "status", "milestone_id", "custom_fields", "attachments", "resolved", "member_id", "author_id", "external_data", "tags", "created_at", "updated_at"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -131,6 +132,7 @@ class DefectQuery(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
+            "defect_id": obj.get("defect_id"),
             "title": obj.get("title"),
             "actual_result": obj.get("actual_result"),
             "severity": obj.get("severity"),

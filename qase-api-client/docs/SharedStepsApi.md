@@ -32,7 +32,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -50,8 +50,8 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.SharedStepsApi(api_client)
-    code = 'code_example'  # str | Code of project, where to search entities.
-    shared_step_create = qase.api_client_v1.SharedStepCreate()  # SharedStepCreate | 
+    code = 'code_example' # str | Code of project, where to search entities.
+    shared_step_create = qase.api_client_v1.SharedStepCreate() # SharedStepCreate | 
 
     try:
         # Create a new shared step
@@ -119,7 +119,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -137,8 +137,8 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.SharedStepsApi(api_client)
-    code = 'code_example'  # str | Code of project, where to search entities.
-    hash = 'hash_example'  # str | Hash.
+    code = 'code_example' # str | Code of project, where to search entities.
+    hash = 'hash_example' # str | Hash.
 
     try:
         # Delete shared step
@@ -205,7 +205,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -223,8 +223,8 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.SharedStepsApi(api_client)
-    code = 'code_example'  # str | Code of project, where to search entities.
-    hash = 'hash_example'  # str | Hash.
+    code = 'code_example' # str | Code of project, where to search entities.
+    hash = 'hash_example' # str | Hash.
 
     try:
         # Get a specific shared step
@@ -291,7 +291,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -309,10 +309,10 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.SharedStepsApi(api_client)
-    code = 'code_example'  # str | Code of project, where to search entities.
-    search = 'search_example'  # str | Provide a string that will be used to search by name. (optional)
-    limit = 10  # int | A number of entities in result set. (optional) (default to 10)
-    offset = 0  # int | How many entities should be skipped. (optional) (default to 0)
+    code = 'code_example' # str | Code of project, where to search entities.
+    search = 'search_example' # str | Provide a string that will be used to search by name. (optional)
+    limit = 10 # int | A number of entities in result set. (optional) (default to 10)
+    offset = 0 # int | How many entities should be skipped. (optional) (default to 0)
 
     try:
         # Get all shared steps
@@ -382,7 +382,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -400,9 +400,9 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.SharedStepsApi(api_client)
-    code = 'code_example'  # str | Code of project, where to search entities.
-    hash = 'hash_example'  # str | Hash.
-    shared_step_update = qase.api_client_v1.SharedStepUpdate()  # SharedStepUpdate | 
+    code = 'code_example' # str | Code of project, where to search entities.
+    hash = 'hash_example' # str | Hash.
+    shared_step_update = qase.api_client_v1.SharedStepUpdate() # SharedStepUpdate | 
 
     try:
         # Update shared step

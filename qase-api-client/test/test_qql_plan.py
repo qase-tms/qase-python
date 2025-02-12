@@ -37,6 +37,7 @@ class TestQqlPlan(unittest.TestCase):
         if include_optional:
             return QqlPlan(
                 id = 56,
+                plan_id = 56,
                 title = '',
                 description = '',
                 cases_count = 56,
@@ -45,6 +46,7 @@ class TestQqlPlan(unittest.TestCase):
             )
         else:
             return QqlPlan(
+                plan_id = 56,
         )
         """
 

@@ -32,7 +32,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -50,7 +50,7 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.CustomFieldsApi(api_client)
-    custom_field_create = qase.api_client_v1.CustomFieldCreate()  # CustomFieldCreate | 
+    custom_field_create = qase.api_client_v1.CustomFieldCreate() # CustomFieldCreate | 
 
     try:
         # Create new Custom Field
@@ -116,7 +116,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -134,7 +134,7 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.CustomFieldsApi(api_client)
-    id = 56  # int | Identifier.
+    id = 56 # int | Identifier.
 
     try:
         # Delete Custom Field by id
@@ -200,7 +200,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -218,7 +218,7 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.CustomFieldsApi(api_client)
-    id = 56  # int | Identifier.
+    id = 56 # int | Identifier.
 
     try:
         # Get Custom Field by id
@@ -284,7 +284,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -302,10 +302,10 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.CustomFieldsApi(api_client)
-    entity = 'entity_example'  # str |  (optional)
-    type = 'type_example'  # str |  (optional)
-    limit = 10  # int | A number of entities in result set. (optional) (default to 10)
-    offset = 0  # int | How many entities should be skipped. (optional) (default to 0)
+    entity = 'entity_example' # str |  (optional)
+    type = 'type_example' # str |  (optional)
+    limit = 10 # int | A number of entities in result set. (optional) (default to 10)
+    offset = 0 # int | How many entities should be skipped. (optional) (default to 0)
 
     try:
         # Get all Custom Fields
@@ -374,7 +374,7 @@ from pprint import pprint
 # Defining the host is optional and defaults to https://api.qase.io/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v1.Configuration(
-    host="https://api.qase.io/v1"
+    host = "https://api.qase.io/v1"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -392,8 +392,8 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.CustomFieldsApi(api_client)
-    id = 56  # int | Identifier.
-    custom_field_update = qase.api_client_v1.CustomFieldUpdate()  # CustomFieldUpdate | 
+    id = 56 # int | Identifier.
+    custom_field_update = qase.api_client_v1.CustomFieldUpdate() # CustomFieldUpdate | 
 
     try:
         # Update Custom Field by id

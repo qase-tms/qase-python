@@ -15,10 +15,10 @@
 
 import unittest
 
-from qase.api_client_v1.models.plan_query import PlanQuery
+from qase.api_client_v1.models.requirement_query import RequirementQuery
 
-class TestPlanQuery(unittest.TestCase):
-    """PlanQuery unit test stubs"""
+class TestRequirementQuery(unittest.TestCase):
+    """RequirementQuery unit test stubs"""
 
     def setUp(self):
         pass
@@ -26,32 +26,35 @@ class TestPlanQuery(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> PlanQuery:
-        """Test PlanQuery
+    def make_instance(self, include_optional) -> RequirementQuery:
+        """Test RequirementQuery
             include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `PlanQuery`
+        # uncomment below to create an instance of `RequirementQuery`
         """
-        model = PlanQuery()
+        model = RequirementQuery()
         if include_optional:
-            return PlanQuery(
+            return RequirementQuery(
                 id = 56,
-                plan_id = 56,
+                requirement_id = 56,
+                parent_id = 56,
+                member_id = 56,
                 title = '',
                 description = '',
-                cases_count = 56,
+                status = 'valid',
+                type = 'epic',
                 created_at = '2021-12-30T19:23:59Z',
                 updated_at = '2021-12-30T19:23:59Z'
             )
         else:
-            return PlanQuery(
-                plan_id = 56,
+            return RequirementQuery(
+                requirement_id = 56,
         )
         """
 
-    def testPlanQuery(self):
-        """Test PlanQuery"""
+    def testRequirementQuery(self):
+        """Test RequirementQuery"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

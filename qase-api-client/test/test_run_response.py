@@ -39,6 +39,7 @@ class TestRunResponse(unittest.TestCase):
                 status = True,
                 result = qase.api_client_v1.models.run.Run(
                     id = 56, 
+                    run_id = 56, 
                     title = '', 
                     description = '', 
                     status = 56, 
@@ -80,7 +81,8 @@ class TestRunResponse(unittest.TestCase):
                         ], 
                     cases = [
                         56
-                        ], )
+                        ], 
+                    plan_id = 56, )
             )
         else:
             return RunResponse(

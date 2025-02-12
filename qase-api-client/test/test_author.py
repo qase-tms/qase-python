@@ -37,7 +37,9 @@ class TestAuthor(unittest.TestCase):
         if include_optional:
             return Author(
                 id = 56,
+                author_id = 56,
                 entity_type = '',
+                entity_id = 56,
                 email = '',
                 name = '',
                 is_active = True

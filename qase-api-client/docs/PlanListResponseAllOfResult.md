@@ -25,8 +25,7 @@ print(PlanListResponseAllOfResult.to_json())
 # convert the object into a dict
 plan_list_response_all_of_result_dict = plan_list_response_all_of_result_instance.to_dict()
 # create an instance of PlanListResponseAllOfResult from a dict
-plan_list_response_all_of_result_form_dict = plan_list_response_all_of_result.from_dict(
-    plan_list_response_all_of_result_dict)
+plan_list_response_all_of_result_form_dict = plan_list_response_all_of_result.from_dict(plan_list_response_all_of_result_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

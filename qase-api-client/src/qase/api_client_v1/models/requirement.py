@@ -29,6 +29,7 @@ class Requirement(BaseModel):
     Requirement
     """ # noqa: E501
     id: Optional[StrictInt] = None
+    requirement_id: Optional[StrictInt] = None
     parent_id: Optional[StrictInt] = None
     member_id: Optional[StrictInt] = None
     title: Optional[StrictStr] = None
@@ -37,7 +38,7 @@ class Requirement(BaseModel):
     type: Optional[StrictStr] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
-    __properties: ClassVar[List[str]] = ["id", "parent_id", "member_id", "title", "description", "status", "type", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["id", "requirement_id", "parent_id", "member_id", "title", "description", "status", "type", "created_at", "updated_at"]
 
     @field_validator('status')
     def status_validate_enum(cls, value):
@@ -126,6 +127,7 @@ class Requirement(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
+            "requirement_id": obj.get("requirement_id"),
             "parent_id": obj.get("parent_id"),
             "member_id": obj.get("member_id"),
             "title": obj.get("title"),
