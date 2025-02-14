@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qase-tavern"
-version = "1.0.0"
+version = "1.0.1"
 description = "Qase Tavern Plugin for Qase TestOps and Qase Report"
 readme = "README.md"
 keywords = ["qase", "tavern", "plugin", "testops", "report", "qase reporting", "test observability"]
@@ -39,6 +39,9 @@ dependencies = [
 Homepage = "https://qase.io"
 Repository = "https://github.com/qase-tms/qase-python/tree/main/qase-tavern"
 Documentation = "https://developers.qase.io"
+
+[project.entry-points.pytest11]
+qase_pytest = "qase.tavern.conftest"
 
 [project.optional-dependencies]
 testing = [
