@@ -93,6 +93,7 @@ class QasePytestPlugin:
     def _get_title(item):
         if hasattr(item, "spec"):
             return item.spec["test_name"]
+        return ""
 
     def _set_relations(self, item):
         if hasattr(item, "fspath") and hasattr(item.fspath, "basename"):
