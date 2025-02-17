@@ -4,7 +4,7 @@ from typing import Tuple, Union
 import mimetypes
 
 from qase.commons.models import Relation
-from qase.commons.models.config.framework import Trace
+from qase.commons.models.config.framework import Trace, Video
 from qase.commons.models.relation import SuiteData
 from qase.commons.models.result import Result, Field
 from qase.commons.models.attachment import Attachment
@@ -197,8 +197,9 @@ class QasePytestPlugin:
                 output_dir = self.config.framework.playwright.output_dir
                 base_path = os.path.join(os.getcwd(), output_dir, folder_name)
 
-                video_path = os.path.join(base_path, "video.webm")
-                self.add_attachments(video_path)
+                if self.config.framework.playwright.video != Video.off:
+                    video_path = os.path.join(base_path, "video.webm")
+                    self.add_attachments(video_path)
 
                 if self.config.framework.playwright.trace != Trace.off:
                     trace_path = os.path.join(base_path, "trace.zip")
