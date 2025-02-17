@@ -1,3 +1,10 @@
+# qase-pytest 6.1.15
+
+## What's new
+
+Resolved an issue where a failure message for attachment uploads was displayed even when attachments were disabled in
+the configuration.
+
 # qase-pytest 6.1.14
 
 ## What's new
