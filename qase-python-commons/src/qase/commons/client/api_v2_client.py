@@ -87,6 +87,7 @@ class ApiV2Client(ApiV1Client):
             param_groups=result.param_groups,
             muted=False,
             message=result.message,
+            defect=self.config.testops.defect,
         )
 
         if result.relations is not None and result.relations.suite is not None and len(
