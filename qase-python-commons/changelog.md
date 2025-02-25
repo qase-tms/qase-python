@@ -1,3 +1,9 @@
+# qase-python-commons@3.2.7
+
+## What's new
+
+Resolved an issue where the defect field in the configuration was ignored during test result submission.
+
 # qase-python-commons@3.2.5
 
 ## What's new
