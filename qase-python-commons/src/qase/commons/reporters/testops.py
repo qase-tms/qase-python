@@ -6,7 +6,7 @@ from typing import List
 from .. import Logger, ReporterException
 from ..client.api_v1_client import ApiV1Client
 from ..client.base_api_client import BaseApiClient
-from ..models import Result
+from ..models import InternalResult
 from ..models.config.qaseconfig import QaseConfig
 
 DEFAULT_BATCH_SIZE = 200
@@ -129,7 +129,7 @@ class QaseTestOps:
         if len(self.results) > 0:
             self._send_results()
 
-    def add_result(self, result: Result) -> None:
+    def add_result(self, result: InternalResult) -> None:
         if result.get_status() == 'failed':
             self.__show_link(result.testops_id, result.title)
         self.results.append(result)

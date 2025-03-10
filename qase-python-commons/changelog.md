@@ -1,3 +1,9 @@
+# qase-python-commons@3.3.0
+
+## What's new
+
+Enabled support for assigning multiple IDs to a single test result, allowing better traceability across test cases.
+
 # qase-python-commons@3.2.7
 
 ## What's new
@@ -8,7 +14,8 @@ Resolved an issue where the defect field in the configuration was ignored during
 
 ## What's new
 
-Updated logger to write logs to a single file from multiple threads, ensuring better concurrency handling and readability.  
+Updated logger to write logs to a single file from multiple threads, ensuring better concurrency handling and
+readability.
 
 # qase-python-commons@3.2.4
 
@@ -17,8 +24,8 @@ Updated logger to write logs to a single file from multiple threads, ensuring be
 - Support for custom statuses of xfail-marked tests in pytest.
 - Default statuses: `skipped` (failed xfail) and `passed` (successful xfail).
 - Configuration values can be set via `qase.config.json` or environment variables:
-  - `QASE_PYTEST_XFAIL_STATUS_XFAIL`
-  - `QASE_PYTEST_XFAIL_STATUS_XPASS`
+    - `QASE_PYTEST_XFAIL_STATUS_XFAIL`
+    - `QASE_PYTEST_XFAIL_STATUS_XPASS`
 
 # qase-python-commons@3.2.3
 
