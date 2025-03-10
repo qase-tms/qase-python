@@ -1,6 +1,7 @@
 import os
 import pathlib
-from typing import Tuple, Union
+import re
+from typing import Tuple, Union, List
 import mimetypes
 
 from qase.commons.models import Relation
@@ -96,9 +97,14 @@ class QasePytestPlugin:
 
         # Filter test cases based on ids
         if self.execution_plan:
-            items[:] = [item for item in items if
-                        item.get_closest_marker('qase_id') and item.get_closest_marker('qase_id').kwargs.get(
-                            "id") in self.execution_plan]
+            new_items = []
+            for item in items:
+                if item.get_closest_marker('qase_id'):
+                    ids = QasePytestPlugin._get_qase_ids(item)
+                    if any(id in self.execution_plan for id in ids):
+                        new_items.append(item)
+
+            items[:] = new_items
 
     def pytest_sessionstart(self, session):
         if is_xdist_controller(session):
@@ -315,7 +321,7 @@ class QasePytestPlugin:
 
     def _set_testops_id(self, item) -> None:
         try:
-            self.runtime.result.testops_id = int(item.get_closest_marker("qase_id").kwargs.get("id"))
+            self.runtime.result.testops_id = QasePytestPlugin._get_qase_ids(item)
         except:
             pass
 
@@ -400,6 +406,16 @@ class QasePytestPlugin:
         if hasattr(report, 'wasxfail'):
             return True
         return False
+
+    @staticmethod
+    def _get_qase_ids(item) -> Union[None, List[int]]:
+        ids = item.get_closest_marker("qase_id").kwargs.get("id")
+        if ids is None:
+            return None
+        if isinstance(ids, int):
+            return [ids]
+        else:
+            return [int(i) for i in re.split(r'\s*,\s*', ids)]
 
 
 class QasePytestPluginSingleton:
