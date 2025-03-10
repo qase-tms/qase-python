@@ -89,6 +89,10 @@ from qase.pytest import qase
 )
 def test_example_1():
     pass
+
+@qase.id([14, 15])
+def test_example_2():
+    pass
 ```
 
 Each unique number can only be assigned once to the class or function being used.

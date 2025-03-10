@@ -1,3 +1,15 @@
+# qase-pytest 6.2.0
+
+## What's new
+
+Updated `qase.id()` decorator to support a list of integers, allowing one test to be linked to multiple test cases.
+
+```python
+@qase.id([2, 3])
+def test_example():
+    pass
+```
+
 # qase-pytest 6.1.15
 
 ## What's new
