@@ -22,7 +22,7 @@ def filter_scenarios(case_ids: List[int], scenarios: List[Scenario]) -> List[Sce
     for scenario in scenarios:
         tags = __parse_tags(scenario.tags)
         if TESTOPS_ID in tags:
-            if int(tags[TESTOPS_ID]) in case_ids:
+            if any(id in case_ids for id in tags[TESTOPS_ID]):
                 executed_scenarios.append(scenario)
 
     return executed_scenarios
@@ -66,7 +66,7 @@ def __parse_tags(tags) -> dict:
 
     for tag in tags:
         if tag.lower().startswith("qase.id"):
-            meta_data[TESTOPS_ID] = int(tag.split(":")[1])
+            meta_data[TESTOPS_ID] = [int(x) for x in (tag.split(":")[1]).split(',')]
             continue
 
         if tag.lower().startswith("qase.fields"):

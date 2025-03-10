@@ -1,3 +1,14 @@
+# qase-behave 1.0.2
+
+## What's new
+
+Added support for specifying multiple test case IDs for a single automated test, improving test case association and
+traceability.
+
+```gherkin
+@qase.id:2,3,4
+Scenario: Test with QaseID
+```
 # qase-behave 1.0.1
 
 ## What's new
