@@ -13,7 +13,7 @@ class TagParser:
         metadata = TestMetadata()
         for tag in tags:
             if tag.lower().startswith("q-"):
-                metadata.qase_id = TagParser.__extract_ids(tag)
+                metadata.qase_id.append(TagParser.__extract_ids(tag))
 
             if tag.lower() == "qase.ignore":
                 metadata.ignore = True
@@ -48,7 +48,6 @@ class TagParser:
         value = tag.split(':', 1)[-1].strip()
         try:
             return [item.strip() for item in value[1:-1].split(",")]
-            # return value.replace('[', '').replace(']', '').split(',')
         except ValueError as e:
             TagParser.__logger.error(f"Error parsing params from tag '{tag}': {e}")
             return []

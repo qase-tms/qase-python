@@ -93,7 +93,7 @@ class Listener:
             return
 
         if test_metadata.qase_id:
-            self.runtime.result.testops_id = int(test_metadata.qase_id)
+            self.runtime.result.testops_id = test_metadata.qase_id
 
         self.runtime.result.execution.complete()
         self.runtime.result.execution.set_status(STATUSES[result.status])

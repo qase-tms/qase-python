@@ -1,3 +1,18 @@
+# qase-robotframework 3.3.0
+
+## What's new
+
+Added support for specifying multiple test case IDs for a single automated test, improving test case association and
+traceability.
+
+```robotframework
+Example Test
+    [Documentation]    Example test
+    [Tags]  q-10     Q-20
+    ${result}=         subtraction  5   3
+    Should Be Equal    ${result}    2
+```
+
 # qase-robotframework 3.2.4
 
 ## What's new
