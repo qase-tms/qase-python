@@ -1,6 +1,7 @@
 import json
 import uuid
 import re
+from typing import Tuple, List
 
 from qase.commons.models import Runtime, Result, Relation, Attachment
 from qase.commons.models.relation import SuiteData
@@ -135,14 +136,18 @@ class QasePytestPlugin:
             self.runtime.result.signature += f"::{{{key}:{val}}}"
 
     @staticmethod
-    def extract_qase_id(text):
-        match = re.search(r'qaseid=\s*(\d+)', text, re.IGNORECASE)
-        if match:
-            qase_id = int(match.group(1))
-            remaining_text = re.sub(r'qaseid=\s*\d+', '', text, flags=re.IGNORECASE).strip()
-            return qase_id, remaining_text
-        else:
-            return None, text
+    def extract_qase_id(text) -> Tuple[List[int], str]:
+        if not isinstance(text, str):
+            raise ValueError(f"Expected a string, but got {type(text).__name__}: {repr(text)}")
+
+        match = re.search(r'QaseID=\s*([\d,]+)', text, re.IGNORECASE)
+        if not match:
+            return [], text.strip()
+
+        qase_ids = [int(qid) for qid in match.group(1).split(',')]
+        remaining_text = re.sub(r'QaseID=\s*[\d,]+', '', text, flags=re.IGNORECASE).strip()
+
+        return qase_ids, remaining_text
 
 
 class QasePytestPluginSingleton:
