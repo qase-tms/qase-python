@@ -122,7 +122,7 @@ class QasePytestPlugin:
         else:
             self.reporter.complete_worker()
 
-        if QasePytestPlugin.meta_run_file.exists() == False:
+        if not QasePytestPlugin.meta_run_file.exists():
             self.reporter.complete_run()
 
     @pytest.hookimpl(hookwrapper=True)
@@ -153,63 +153,116 @@ class QasePytestPlugin:
 
         report = (yield).get_result()
 
-        def set_result(res):
-            self.runtime.result.execution.status = res
+        # Skip processing if not in the relevant phase
+        if call.when not in ["setup", "call"]:
+            return
 
-        def attach_logs():
-            logs = [
-                (report.caplog, "text/plain", "log.txt"),
-                (report.capstdout, "text/plain", "stdout.txt"),
-                (report.capstderr, "text/plain", "stderr.txt"),
-            ]
-            for content, mime_type, filename in logs:
-                if content:
-                    self.add_attachments((content, mime_type, filename))
+        # Process test result and update status
+        self._process_test_result(report, call, item)
 
-        def handle_xfail_status():
-            if self.__is_use_xfail_mark(report) and call.when == "call":
-                status = self.config.framework.pytest.xfail_status
-                return status.xfail if report.skipped else status.xpass
-            return None
+        # Add logs if configured and in call phase
+        if self.reporter.config.framework.pytest.capture_logs and call.when == "call":
+            self._attach_logs(report)
 
+        # Handle xfail message in call phase
+        if (call.when == "call" and
+                self.__is_xfail_mark(report) and
+                self.runtime.result.execution.status != PYTEST_TO_QASE_STATUS['PASSED']):
+            self.runtime.result.add_message(report.wasxfail)
+
+        # Handle skip message in setup phase
+        if (call.when == "setup" and
+                report.longrepr and
+                self.runtime.result.execution.status == PYTEST_TO_QASE_STATUS['SKIPPED']):
+            self.runtime.result.add_message(report.longrepr[2].split(":")[1])
+
+        # Handle Playwright artifacts if applicable
+        if call.when == "call":
+            self._process_playwright_artifacts(item)
+
+    def _process_test_result(self, report, call, item):
+        """Process test results and set appropriate status."""
+        # Add stacktrace if available
         if report.longrepr:
             self.runtime.result.execution.stacktrace = report.longreprtext
 
+        # Handle failed tests
         if report.failed:
-            result_status = PYTEST_TO_QASE_STATUS['BROKEN'] if call.excinfo.typename != "AssertionError" else \
-                PYTEST_TO_QASE_STATUS['FAILED']
-            set_result(result_status)
-            self.runtime.result.add_message(call.excinfo.exconly())
+            self._handle_failed_test(call)
+        # Handle skipped tests
         elif report.skipped:
-            xfail_status = handle_xfail_status()
-            if xfail_status:
-                set_result(xfail_status)
-            elif self.runtime.result.execution.status in (None, PYTEST_TO_QASE_STATUS['PASSED']):
-                set_result(PYTEST_TO_QASE_STATUS['SKIPPED'])
+            self._handle_skipped_test(report, call)
+        # Handle passed tests
         else:
-            xfail_status = handle_xfail_status()
-            if xfail_status:
-                set_result(xfail_status)
-            elif self.runtime.result.execution.status is None:
-                set_result(PYTEST_TO_QASE_STATUS['PASSED'])
+            self._handle_passed_test(report, call)
 
-        if self.reporter.config.framework.pytest.capture_logs and call.when == "call":
-            attach_logs()
+    def _handle_failed_test(self, call):
+        """Handle failed test case and set appropriate status."""
+        is_assertion_error = call.excinfo.typename == "AssertionError"
+        status = PYTEST_TO_QASE_STATUS['FAILED'] if is_assertion_error else PYTEST_TO_QASE_STATUS['BROKEN']
+        self._set_result_status(status)
+        self.runtime.result.add_message(call.excinfo.exconly())
 
-        if hasattr(item, 'funcargs') and 'page' in item.funcargs and call.when == "call":
-            page = item.funcargs['page']
-            if hasattr(page, 'video'):
-                folder_name = self.__build_folder_name(item)
-                output_dir = self.config.framework.playwright.output_dir
-                base_path = os.path.join(os.getcwd(), output_dir, folder_name)
+    def _handle_skipped_test(self, report, call):
+        """Handle skipped test case and set appropriate status."""
+        xfail_status = self._get_xfail_status(report, call)
+        if xfail_status:
+            self._set_result_status(xfail_status)
+        elif self.runtime.result.execution.status in (None, PYTEST_TO_QASE_STATUS['PASSED']):
+            self._set_result_status(PYTEST_TO_QASE_STATUS['SKIPPED'])
 
-                if self.config.framework.playwright.video != Video.off:
-                    video_path = os.path.join(base_path, "video.webm")
-                    self.add_attachments(video_path)
+    def _handle_passed_test(self, report, call):
+        """Handle passed test case and set appropriate status."""
+        xfail_status = self._get_xfail_status(report, call)
+        if xfail_status:
+            self._set_result_status(xfail_status)
+        elif self.runtime.result.execution.status is None:
+            self._set_result_status(PYTEST_TO_QASE_STATUS['PASSED'])
 
-                if self.config.framework.playwright.trace != Trace.off:
-                    trace_path = os.path.join(base_path, "trace.zip")
-                    self.add_attachments(trace_path)
+    def _get_xfail_status(self, report, call):
+        """Get xfail status if applicable."""
+        if self.__is_xfail_mark(report) and call.when == "call":
+            status = self.config.framework.pytest.xfail_status
+            return status.xfail if report.skipped else status.xpass
+        return None
+
+    def _set_result_status(self, status):
+        """Set test result execution status."""
+        self.runtime.result.execution.status = status
+
+    def _attach_logs(self, report):
+        """Attach logs to the test result."""
+        logs = [
+            (report.caplog, "text/plain", "log.txt"),
+            (report.capstdout, "text/plain", "stdout.txt"),
+            (report.capstderr, "text/plain", "stderr.txt"),
+        ]
+        for content, mime_type, filename in logs:
+            if content:
+                self.add_attachments((content, mime_type, filename))
+
+    def _process_playwright_artifacts(self, item):
+        """Process and attach Playwright artifacts if available."""
+        if not (hasattr(item, 'funcargs') and 'page' in item.funcargs):
+            return
+
+        page = item.funcargs['page']
+        if not hasattr(page, 'video'):
+            return
+
+        folder_name = self.__build_folder_name(item)
+        output_dir = self.config.framework.playwright.output_dir
+        base_path = os.path.join(os.getcwd(), output_dir, folder_name)
+
+        # Attach video if enabled
+        if self.config.framework.playwright.video != Video.off:
+            video_path = os.path.join(base_path, "video.webm")
+            self.add_attachments(video_path)
+
+        # Attach trace if enabled
+        if self.config.framework.playwright.trace != Trace.off:
+            trace_path = os.path.join(base_path, "trace.zip")
+            self.add_attachments(trace_path)
 
     def start_pytest_item(self, item):
         self.runtime.result = Result(
@@ -402,10 +455,9 @@ class QasePytestPlugin:
         return component.replace(os.sep, "-").replace(".", "-").replace("_", "-").lower()
 
     @staticmethod
-    def __is_use_xfail_mark(report):
-        if hasattr(report, 'wasxfail'):
-            return True
-        return False
+    def __is_xfail_mark(report):
+        """Check if the test is marked as xfail."""
+        return hasattr(report, 'wasxfail')
 
     @staticmethod
     def _get_qase_ids(item) -> Union[None, List[int]]:

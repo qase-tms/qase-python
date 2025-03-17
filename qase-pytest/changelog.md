@@ -1,3 +1,9 @@
+# qase-pytest 6.2.1
+
+## What's new
+
+When specifying a reason in xfail or skip marks, this reason will be added to the result comment.
+
 # qase-pytest 6.2.0
 
 ## What's new
