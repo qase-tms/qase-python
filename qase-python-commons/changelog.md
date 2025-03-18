@@ -1,3 +1,10 @@
+# qase-python-commons@3.3.1
+
+## What's new
+
+- Implemented local time support for test run creation to improve time tracking.
+- Enhanced handling of start and end times for tests and steps, ensuring greater accuracy in reporting.
+
 # qase-python-commons@3.3.0
 
 ## What's new

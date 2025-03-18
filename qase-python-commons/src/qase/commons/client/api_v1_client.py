@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 from typing import Dict, Union
 
 import certifi
@@ -99,7 +100,8 @@ class ApiV1Client(BaseApiClient):
             description=description,
             environment_id=(int(environment_id) if environment_id else None),
             plan_id=(int(plan_id) if plan_id else plan_id),
-            is_autotest=True
+            is_autotest=True,
+            start_time=datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
         )
         self.logger.log_debug(f"Creating test run with parameters: {kwargs}")
         try:

@@ -78,6 +78,7 @@ class ApiV2Client(ApiV1Client):
             signature=result.signature,
             testops_id=result.get_testops_id(),
             execution=ResultExecution(status=result.execution.status, duration=result.execution.duration,
+                                      start_time=result.execution.start_time, end_time=result.execution.end_time,
                                       stacktrace=result.execution.stacktrace, thread=result.execution.thread),
             fields=ResultCreateFields.from_dict(result.fields),
             attachments=[attach.hash for attach in attached],
@@ -112,6 +113,8 @@ class ApiV2Client(ApiV1Client):
             prepared_step = {'execution': {}, 'data': {}, 'steps': []}
             prepared_step['execution']['status'] = ResultStepStatus(step.execution.status)
             prepared_step['execution']['duration'] = step.execution.duration
+            prepared_step['execution']['start_time'] = step.execution.start_time
+            prepared_step['execution']['end_time'] = step.execution.end_time
 
             if step.step_type == StepType.TEXT:
                 prepared_step['data']['action'] = step.data.action
