@@ -10,6 +10,8 @@ from ..models import InternalResult, Result, Attachment, Runtime
 from ..models.config.qaseconfig import Mode
 from typing import Union, List
 
+from ..util import get_host_info
+
 """
     CoreReporter is a facade for all reporters and it is used to initialize and manage them.
     It is also used to pass configuration and logger to reporters, handle fallback logic and error handling.
@@ -17,7 +19,7 @@ from typing import Union, List
 
 
 class QaseCoreReporter:
-    def __init__(self, config: ConfigManager):
+    def __init__(self, config: ConfigManager, framework: Union[str, None] = None, reporter_name: Union[str, None] = None):
         config.validate_config()
         self.config = config.config
         self.logger = Logger(self.config.debug)
@@ -29,6 +31,9 @@ class QaseCoreReporter:
         self.fallback = self._fallback_setup()
 
         self.logger.log_debug(f"Config: {self.config}")
+
+        host_data = get_host_info(framework, reporter_name)
+        self.logger.log_debug(f"Host data: {host_data}")
 
         # Reading reporter mode from config file
         mode = self.config.mode

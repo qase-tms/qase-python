@@ -1,3 +1,10 @@
+# qase-python-commons@3.3.2
+
+## What's new
+
+- Logging of host system details to improve debugging and traceability.  
+- Output of installed packages in logs for better environment visibility. 
+
 # qase-python-commons@3.3.1
 
 ## What's new
