@@ -34,7 +34,7 @@ class Listener:
 
     def __init__(self):
         config = ConfigManager()
-        self.reporter = QaseCoreReporter(config)
+        self.reporter = QaseCoreReporter(config, 'robotframework', 'qase-robotframework')
         self.runtime = QaseRuntimeSingleton.get_instance()
         self.tests = {}
         self.pabot_index = None

@@ -17,7 +17,7 @@ class QaseFormatter(Formatter):
         super(QaseFormatter, self).__init__(stream_opener, config)
 
         cfg = self.__parse_config(config.userdata)
-        self.reporter = QaseCoreReporter(cfg)
+        self.reporter = QaseCoreReporter(cfg, 'behave', 'qase-behave')
 
     def uri(self, uri):
         if not self.__already_started:
