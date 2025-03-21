@@ -34,7 +34,7 @@ def pytest_configure(config):
 
     config_manager = setup_config_manager(config)
 
-    QasePytestPluginSingleton.init(reporter=QaseCoreReporter(config_manager))
+    QasePytestPluginSingleton.init(reporter=QaseCoreReporter(config_manager, 'tavern', 'qase-tavern'))
     config.qase = QasePytestPluginSingleton.get_instance()
     config.pluginmanager.register(
         config.qase,

@@ -1,3 +1,10 @@
+# qase-behave 1.0.3
+
+## What's new
+
+- Logging of host system details to improve debugging and traceability.  
+- Output of installed packages in logs for better environment visibility.  
+
 # qase-behave 1.0.2
 
 ## What's new
