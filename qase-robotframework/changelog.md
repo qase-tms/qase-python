@@ -1,3 +1,9 @@
+# qase-robotframework 3.3.1
+
+## What's new
+
+Resolved an issue where `execution.start time` could be set incorrectly, leading to validation errors.
+
 # qase-robotframework 3.3.0
 
 ## What's new

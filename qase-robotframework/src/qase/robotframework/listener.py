@@ -198,6 +198,7 @@ class Listener:
             step.execution.set_status(STATUSES[result.body[i].status])
             step.execution.start_time = result.body[i].start_time.timestamp()
             step.execution.duration = result.body[i].elapsed_time.microseconds
+            step.execution.end_time = result.body[i].end_time.timestamp()
 
             if hasattr(result.body[i], "body"):
                 step.steps = self.__parse_steps(result.body[i])
