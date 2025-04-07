@@ -44,13 +44,14 @@ class RunQuery(BaseModel):
     public: Optional[StrictBool] = None
     stats: Optional[RunStats] = None
     time_spent: Optional[StrictInt] = Field(default=None, description="Time in ms.")
+    elapsed_time: Optional[StrictInt] = Field(default=None, description="Time in ms.")
     environment: Optional[RunEnvironment] = None
     milestone: Optional[RunMilestone] = None
     custom_fields: Optional[List[CustomFieldValue]] = None
     tags: Optional[List[TagValue]] = None
     cases: Optional[List[StrictInt]] = None
     plan_id: Optional[StrictInt] = None
-    __properties: ClassVar[List[str]] = ["id", "run_id", "title", "description", "status", "status_text", "start_time", "end_time", "public", "stats", "time_spent", "environment", "milestone", "custom_fields", "tags", "cases", "plan_id"]
+    __properties: ClassVar[List[str]] = ["id", "run_id", "title", "description", "status", "status_text", "start_time", "end_time", "public", "stats", "time_spent", "elapsed_time", "environment", "milestone", "custom_fields", "tags", "cases", "plan_id"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -167,6 +168,7 @@ class RunQuery(BaseModel):
             "public": obj.get("public"),
             "stats": RunStats.from_dict(obj["stats"]) if obj.get("stats") is not None else None,
             "time_spent": obj.get("time_spent"),
+            "elapsed_time": obj.get("elapsed_time"),
             "environment": RunEnvironment.from_dict(obj["environment"]) if obj.get("environment") is not None else None,
             "milestone": RunMilestone.from_dict(obj["milestone"]) if obj.get("milestone") is not None else None,
             "custom_fields": [CustomFieldValue.from_dict(_item) for _item in obj["custom_fields"]] if obj.get("custom_fields") is not None else None,

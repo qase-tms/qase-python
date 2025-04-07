@@ -452,7 +452,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_case**
-> TestCaseResponse get_case(code, id)
+> TestCaseResponse get_case(code, id, include=include)
 
 Get a specific test case
 
@@ -491,10 +491,11 @@ with qase.api_client_v1.ApiClient(configuration) as api_client:
     api_instance = qase.api_client_v1.CasesApi(api_client)
     code = 'code_example' # str | Code of project, where to search entities.
     id = 56 # int | Identifier.
+    include = 'include_example' # str | A list of entities to include in response separated by comma. Possible values: external_issues.  (optional)
 
     try:
         # Get a specific test case
-        api_response = api_instance.get_case(code, id)
+        api_response = api_instance.get_case(code, id, include=include)
         print("The response of CasesApi->get_case:\n")
         pprint(api_response)
     except Exception as e:
@@ -510,6 +511,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **code** | **str**| Code of project, where to search entities. | 
  **id** | **int**| Identifier. | 
+ **include** | **str**| A list of entities to include in response separated by comma. Possible values: external_issues.  | [optional] 
 
 ### Return type
 

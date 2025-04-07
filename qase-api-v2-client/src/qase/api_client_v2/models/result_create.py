@@ -35,7 +35,8 @@ class ResultCreate(BaseModel):
     id: Optional[StrictStr] = Field(default=None, description="If passed, used as an idempotency key")
     title: StrictStr
     signature: Optional[StrictStr] = None
-    testops_id: Optional[StrictInt] = None
+    testops_id: Optional[StrictInt] = Field(default=None, description="ID of the test case. Cannot be specified together with testopd_ids.")
+    testops_ids: Optional[List[StrictInt]] = Field(default=None, description="IDs of the test cases. Cannot be specified together with testopd_id.")
     execution: ResultExecution
     fields: Optional[ResultCreateFields] = None
     attachments: Optional[List[StrictStr]] = None
@@ -46,7 +47,7 @@ class ResultCreate(BaseModel):
     relations: Optional[ResultRelations] = None
     message: Optional[StrictStr] = None
     defect: Optional[StrictBool] = Field(default=None, description="If true and the result is failed, the defect associated with the result will be created")
-    __properties: ClassVar[List[str]] = ["id", "title", "signature", "testops_id", "execution", "fields", "attachments", "steps", "steps_type", "params", "param_groups", "relations", "message", "defect"]
+    __properties: ClassVar[List[str]] = ["id", "title", "signature", "testops_id", "testops_ids", "execution", "fields", "attachments", "steps", "steps_type", "params", "param_groups", "relations", "message", "defect"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -108,6 +109,11 @@ class ResultCreate(BaseModel):
         if self.testops_id is None and "testops_id" in self.model_fields_set:
             _dict['testops_id'] = None
 
+        # set to None if testops_ids (nullable) is None
+        # and model_fields_set contains the field
+        if self.testops_ids is None and "testops_ids" in self.model_fields_set:
+            _dict['testops_ids'] = None
+
         # set to None if steps_type (nullable) is None
         # and model_fields_set contains the field
         if self.steps_type is None and "steps_type" in self.model_fields_set:
@@ -144,6 +150,7 @@ class ResultCreate(BaseModel):
             "title": obj.get("title"),
             "signature": obj.get("signature"),
             "testops_id": obj.get("testops_id"),
+            "testops_ids": obj.get("testops_ids"),
             "execution": ResultExecution.from_dict(obj["execution"]) if obj.get("execution") is not None else None,
             "fields": ResultCreateFields.from_dict(obj["fields"]) if obj.get("fields") is not None else None,
             "attachments": obj.get("attachments"),
