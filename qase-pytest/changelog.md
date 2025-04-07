@@ -1,3 +1,11 @@
+# qase-pytest 6.3.0
+
+## What's new
+
+- Updated core package to the latest supported versions.
+- Improved logic for handling multiple QaseID values in test results.
+- Removed `useV2` configuration option. The reporter now always uses API v2 for sending results.
+
 # qase-pytest 6.2.2
 
 ## What's new
