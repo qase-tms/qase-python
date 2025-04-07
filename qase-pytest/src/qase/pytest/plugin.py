@@ -272,7 +272,7 @@ class QasePytestPlugin:
         self._set_fields(item)
         self._set_author(item)
         self._set_muted(item)
-        self._set_testops_id(item)
+        self._set_testops_ids(item)
         self._set_params(item)
         self._set_suite(item)
         self._set_relations(item)
@@ -332,8 +332,8 @@ class QasePytestPlugin:
 
     def _get_signature(self, item):
         self.runtime.result.signature = item.nodeid.replace("/", "::")
-        if self.runtime.result.testops_id:
-            self.runtime.result.signature += f"::{self.runtime.result.testops_id}"
+        if self.runtime.result.testops_ids:
+            self.runtime.result.signature += f"::{'-'.join(map(str,self.runtime.result.testops_ids))}"
         for key, val in self.runtime.result.params.items():
             self.runtime.result.signature += f"::{{{key}:{val}}}"
 
@@ -372,9 +372,9 @@ class QasePytestPlugin:
         except:
             pass
 
-    def _set_testops_id(self, item) -> None:
+    def _set_testops_ids(self, item) -> None:
         try:
-            self.runtime.result.testops_id = QasePytestPlugin._get_qase_ids(item)
+            self.runtime.result.testops_ids = QasePytestPlugin._get_qase_ids(item)
         except:
             pass
 
