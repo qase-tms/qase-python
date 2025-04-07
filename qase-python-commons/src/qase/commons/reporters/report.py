@@ -3,7 +3,7 @@ import os
 import shutil
 import json
 import re
-from ..models import InternalResult, Run, Attachment
+from ..models import Result, Run, Attachment
 from .. import QaseUtils, Logger
 from ..models.config.connection import Format
 from ..models.config.qaseconfig import QaseConfig
@@ -40,7 +40,7 @@ class QaseReport:
     def complete_worker(self):
         pass
 
-    def add_result(self, result: InternalResult):
+    def add_result(self, result: Result):
         result.set_run_id(self.run_id)
         for attachment in result.attachments:
             self._persist_attachment(attachment)
@@ -91,7 +91,7 @@ class QaseReport:
                     self._persist_attachments_in_steps(step.steps)
 
     # Method saves result to a file
-    def _store_result(self, result: InternalResult):
+    def _store_result(self, result: Result):
         self._store_object(result, self.report_path + "/results/", result.id)
 
     def _check_report_path(self):

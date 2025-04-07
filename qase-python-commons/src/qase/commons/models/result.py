@@ -1,4 +1,3 @@
-import copy
 import time
 import uuid
 
@@ -71,7 +70,7 @@ class Result(BaseModel):
         self.title: str = title
         self.signature: str = signature
         self.run_id: Optional[str] = None
-        self.testops_id: Optional[List[int]] = None
+        self.testops_ids: Optional[List[int]] = None
         self.execution: Type[Execution] = Execution()
         self.fields: Dict[Type[Field]] = {}
         self.attachments: List[Attachment] = []
@@ -119,96 +118,11 @@ class Result(BaseModel):
             return self.fields[name]
         return None
 
-    def get_testops_id(self) -> Optional[List[int]]:
-        return self.testops_id
+    def get_testops_ids(self) -> Optional[List[int]]:
+        return self.testops_ids
 
     def get_duration(self) -> int:
         return self.execution.duration
 
     def set_run_id(self, run_id: str) -> None:
         self.run_id = run_id
-
-
-class InternalResult(BaseModel):
-    def __init__(self, title: str, signature: str) -> None:
-        self.id: str = str(uuid.uuid4())
-        self.title: str = title
-        self.signature: str = signature
-        self.run_id: Optional[str] = None
-        self.testops_id: Optional[int] = None
-        self.execution: Type[Execution] = Execution()
-        self.fields: Dict[Type[Field]] = {}
-        self.attachments: List[Attachment] = []
-        self.steps: List[Type[Step]] = []
-        self.params: Optional[dict] = {}
-        self.param_groups: Optional[List[List[str]]] = []
-        self.author: Optional[str] = None
-        self.relations: Type[Relation] = None
-        self.muted: bool = False
-        self.message: Optional[str] = None
-        QaseUtils.get_host_data()
-
-    def add_message(self, message: str) -> None:
-        self.message = message
-
-    def add_field(self, field: Type[Field]) -> None:
-        self.fields[field.name] = field.value
-
-    def add_steps(self, steps: List[Type[Step]]) -> None:
-        self.steps = QaseUtils().build_tree(steps)
-
-    def add_attachment(self, attachment: Attachment) -> None:
-        self.attachments.append(attachment)
-
-    def add_param(self, key: str, value: str) -> None:
-        self.params[key] = value
-
-    def add_param_groups(self, values: List[str]) -> None:
-        self.param_groups.append(values)
-
-    def set_relation(self, relation: Relation) -> None:
-        self.relations = relation
-
-    def get_status(self) -> Optional[str]:
-        return self.execution.status
-
-    def get_id(self) -> str:
-        return self.id
-
-    def get_title(self) -> str:
-        return self.title
-
-    def get_field(self, name: str) -> Optional[Type[Field]]:
-        if name in self.fields:
-            return self.fields[name]
-        return None
-
-    def get_testops_id(self) -> Optional[int]:
-        return self.testops_id
-
-    def get_duration(self) -> int:
-        return self.execution.duration
-
-    def set_run_id(self, run_id: str) -> None:
-        self.run_id = run_id
-
-    @classmethod
-    def convert_from_result(cls, result: Result, testops_id: Optional[int] = None):
-        int_result = cls(result.title, result.signature)
-
-        int_result.id = result.id
-        int_result.title = result.title
-        int_result.signature = result.signature
-        int_result.run_id = result.run_id
-        int_result.testops_id = testops_id
-        int_result.execution = copy.deepcopy(result.execution)
-        int_result.fields = result.fields
-        int_result.attachments = result.attachments
-        int_result.steps = result.steps
-        int_result.params = result.params
-        int_result.author = result.author
-        int_result.relations = result.relations
-        int_result.muted = result.muted
-        int_result.message = result.message
-
-        return int_result

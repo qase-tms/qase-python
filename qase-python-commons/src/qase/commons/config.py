@@ -83,11 +83,6 @@ class ConfigManager:
                                 testops.get("defect")
                             )
 
-                        if testops.get("useV2"):
-                            self.config.testops.set_use_v2(
-                                testops.get("useV2")
-                            )
-
                         if testops.get("plan"):
                             plan = testops.get("plan")
 

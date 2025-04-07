@@ -2,11 +2,11 @@ import threading
 import urllib.parse
 
 from datetime import datetime
-from typing import List
+from typing import List, Union
 from .. import Logger, ReporterException
-from ..client.api_v1_client import ApiV1Client
+from ..client.api_v2_client import ApiV2Client
 from ..client.base_api_client import BaseApiClient
-from ..models import InternalResult
+from ..models import Result
 from ..models.config.qaseconfig import QaseConfig
 
 DEFAULT_BATCH_SIZE = 200
@@ -69,10 +69,7 @@ class QaseTestOps:
         self.client.get_project(self.project_code)
 
     def _prepare_client(self) -> BaseApiClient:
-        if self.config.testops.use_v2:
-            from ..client.api_v2_client import ApiV2Client
-            return ApiV2Client(self.config, self.logger)
-        return ApiV1Client(self.config, self.logger)
+        return ApiV2Client(self.config, self.logger)
 
     def _send_results_threaded(self, results):
         try:
@@ -129,9 +126,9 @@ class QaseTestOps:
         if len(self.results) > 0:
             self._send_results()
 
-    def add_result(self, result: InternalResult) -> None:
+    def add_result(self, result: Result) -> None:
         if result.get_status() == 'failed':
-            self.__show_link(result.testops_id, result.title)
+            self.__show_link(result.testops_ids, result.title)
         self.results.append(result)
         if len(self.results) >= self.batch_size:
             self._send_results()
@@ -142,14 +139,14 @@ class QaseTestOps:
     def set_results(self, results) -> None:
         self.results = results
 
-    def __show_link(self, id, title: str):
-        link = self.__prepare_link(id, title)
+    def __show_link(self, ids: Union[None, List[int]], title: str):
+        link = self.__prepare_link(ids, title)
         self.logger.log(f"See why this test failed: {link}", "info")
 
-    def __prepare_link(self, id, title: str):
+    def __prepare_link(self, ids: Union[None, List[int]], title: str):
         link = f"{self.__baseUrl}/run/{self.project_code}/dashboard/{self.run_id}?source=logs&status=%5B2%5D&search="
-        if id:
-            return f"{link}{id}`"
+        if ids is not None and len(ids) > 0:
+            return f"{link}{ids[0]}`"
 
         return f"{link}{urllib.parse.quote_plus(title)}"
 

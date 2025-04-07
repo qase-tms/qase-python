@@ -1,3 +1,11 @@
+# qase-python-commons@3.4.0
+
+## What's new
+
+- Updated API clients to the latest supported versions.
+- Improved logic for handling multiple QaseID values in test results.
+- Removed `useV2` configuration option. The reporter now always uses API v2 for sending results.
+
 # qase-python-commons@3.3.2
 
 ## What's new

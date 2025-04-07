@@ -1,17 +1,16 @@
 from datetime import datetime, timezone
-from typing import Dict, Union
+from typing import Union
 
 import certifi
 from qase.api_client_v1 import ApiClient, ProjectsApi, Project, EnvironmentsApi, RunsApi, AttachmentsApi, \
-    AttachmentGet, RunCreate, ResultsApi, ResultcreateBulk, AuthorsApi
+    AttachmentGet, RunCreate
 from qase.api_client_v1.configuration import Configuration
 from .. import Logger
 from .base_api_client import BaseApiClient
 from ..exceptions.reporter import ReporterException
-from ..models import Attachment, InternalResult, Step
+from ..models import Attachment
 from ..models.config.framework import Video, Trace
 from ..models.config.qaseconfig import QaseConfig
-from ..models.step import StepType
 
 
 class ApiV1Client(BaseApiClient):
@@ -123,173 +122,6 @@ class ApiV1Client(BaseApiClient):
             return True
         return False
 
-    def send_results(self, project_code: str, run_id: str, results: []) -> None:
-        api_results = ResultsApi(self.client)
-        results_to_send = [self._prepare_result(project_code, result) for result in results]
-        self.logger.log_debug(f"Sending results for run {run_id}: {results_to_send}")
-        api_results.create_result_bulk(
-            code=project_code,
-            id=run_id,
-            resultcreate_bulk=ResultcreateBulk(
-                results=results_to_send
-            )
-        )
-        self.logger.log_debug(f"Results for run {run_id} sent successfully")
-
-    def _prepare_result(self, project_code: str, result: InternalResult) -> Dict:
-        attached = []
-        if result.attachments:
-            for attachment in result.attachments:
-                if self.__should_skip_attachment(attachment, result):
-                    continue
-                attach_id = self._upload_attachment(project_code, attachment)
-                if attach_id:
-                    attached.extend(attach_id)
-
-        steps = []
-        for step in result.steps:
-            prepared = self._prepare_step(project_code, step)
-            steps.append(prepared)
-
-        case_data = {
-            "title": result.get_title(),
-            "description": result.get_field('description'),
-            "preconditions": result.get_field('preconditions'),
-            "postconditions": result.get_field('postconditions'),
-        }
-
-        for key, param in result.params.items():
-            # Hack to match old TestOps API
-            if param == "":
-                result.params[key] = "empty"
-
-        if result.get_field('severity'):
-            case_data["severity"] = result.get_field('severity')
-
-        if result.get_field('priority'):
-            case_data["priority"] = result.get_field('priority')
-
-        if result.get_field('layer'):
-            case_data["layer"] = result.get_field('layer')
-
-        suite = None
-        if result.relations is not None and result.relations.suite is not None and len(
-                result.relations.suite.data) != 0:
-            suites = []
-
-            for raw in result.relations.suite.data:
-                suites.append(raw.title)
-
-            suite = "\t".join(suites)
-
-        if result.get_field('suite'):
-            suite = result.get_field('suite')
-
-        root_suite = self.config.root_suite
-        if root_suite:
-            suite = f"{root_suite}\t{suite}"
-
-        if suite:
-            case_data["suite_title"] = suite
-
-        result_model = {
-            "status": result.execution.status,
-            "stacktrace": result.execution.stacktrace,
-            "time_ms": result.execution.duration,
-            "comment": result.message,
-            "attachments": [attach.hash for attach in attached],
-            "steps": steps,
-            "param": result.params,
-            "param_groups": result.param_groups,
-            "defect": self.config.testops.defect,
-            "case": case_data
-        }
-
-        test_ops_id = result.get_testops_id()
-
-        if test_ops_id:
-            result_model["case_id"] = test_ops_id
-
-        if result.get_field('author'):
-            author_id = self._get_author_id(result.get_field('author'))
-            if author_id:
-                result_model["author_id"] = author_id
-
-        self.logger.log_debug(f"Prepared result: {result_model}")
-
-        return result_model
-
-    def _prepare_step(self, project_code: str, step: Step) -> Dict:
-        prepared_children = []
-
-        try:
-            prepared_step = {"time": step.execution.duration, "status": step.execution.status}
-
-            if step.execution.status == 'untested':
-                prepared_step["status"] = 'passed'
-
-            if step.execution.status == 'skipped':
-                prepared_step["status"] = 'blocked'
-
-            if step.step_type == StepType.TEXT:
-                prepared_step['action'] = step.data.action
-                if step.data.expected_result:
-                    prepared_step['expected_result'] = step.data.expected_result
-
-            if step.step_type == StepType.REQUEST:
-                prepared_step['action'] = step.data.request_method + " " + step.data.request_url
-                if step.data.request_body:
-                    step.attachments.append(
-                        Attachment(file_name='request_body.txt', content=step.data.request_body, mime_type='text/plain',
-                                   temporary=True))
-                if step.data.request_headers:
-                    step.attachments.append(
-                        Attachment(file_name='request_headers.txt', content=step.data.request_headers,
-                                   mime_type='text/plain', temporary=True))
-                if step.data.response_body:
-                    step.attachments.append(Attachment(file_name='response_body.txt', content=step.data.response_body,
-                                                       mime_type='text/plain', temporary=True))
-                if step.data.response_headers:
-                    step.attachments.append(
-                        Attachment(file_name='response_headers.txt', content=step.data.response_headers,
-                                   mime_type='text/plain', temporary=True))
-
-            if step.step_type == StepType.GHERKIN:
-                prepared_step['action'] = step.data.keyword
-
-            if step.step_type == StepType.SLEEP:
-                prepared_step['action'] = f"Sleep for {step.data.duration} seconds"
-
-            if step.attachments:
-                uploaded_attachments = []
-                for file in step.attachments:
-                    attach_id = self._upload_attachment(project_code, file)
-                    if attach_id:
-                        uploaded_attachments.extend(attach_id)
-                prepared_step['attachments'] = [attach.hash for attach in uploaded_attachments]
-
-            if step.steps:
-                for substep in step.steps:
-                    prepared_children.append(self._prepare_step(project_code, substep))
-                prepared_step["steps"] = prepared_children
-            return prepared_step
-        except Exception as e:
-            self.logger.log(f"Error at preparing step: {e}", "error")
-            raise ReporterException(e)
-
-    def _get_author_id(self, author: str) -> Union[str, None]:
-        if author in self.__authors:
-            return self.__authors[author]
-
-        author_api = AuthorsApi(self.client)
-        authors = author_api.get_authors(search=author)
-        if authors.result.total == 0:
-            return None
-
-        self.__authors[author] = authors.result.entities[0].author_id
-
-        return authors.result.entities[0].author_id
-
     def __should_skip_attachment(self, attachment, result):
         if (self.config.framework.playwright.video == Video.failed and
                 result.execution.status != 'failed' and
@@ -300,3 +132,6 @@ class ApiV1Client(BaseApiClient):
                 attachment.file_name == 'trace.zip'):
             return True
         return False
+
+    def send_results(self, project_code: str, run_id: str, results: []) -> None:
+        raise NotImplementedError("use ApiV2Client instead")
