@@ -1,4 +1,4 @@
-from .result import Result, InternalResult, Field
+from .result import Result, Field
 from .run import Run
 from .attachment import Attachment
 from .relation import Relation
@@ -12,6 +12,5 @@ __all__ = [
     Relation,
     Step,
     Runtime,
-    Field,
-    InternalResult
+    Field
 ]

@@ -17,7 +17,7 @@ from .api_v1_client import ApiV1Client
 from .. import Logger
 from ..exceptions.reporter import ReporterException
 from ..models.config.framework import Video, Trace
-from ..models import Attachment, InternalResult
+from ..models import Attachment, Result
 from ..models.config.qaseconfig import QaseConfig
 from ..models.step import StepType, Step
 
@@ -53,7 +53,7 @@ class ApiV2Client(ApiV1Client):
                                       create_results_request_v2=CreateResultsRequestV2(results=results_to_send))
         self.logger.log_debug(f"Results for run {run_id} sent successfully")
 
-    def _prepare_result(self, project_code: str, result: InternalResult) -> ResultCreate:
+    def _prepare_result(self, project_code: str, result: Result) -> ResultCreate:
         attached = []
         if result.attachments:
             for attachment in result.attachments:
@@ -76,7 +76,7 @@ class ApiV2Client(ApiV1Client):
         result_model_v2 = ResultCreate(
             title=result.get_title(),
             signature=result.signature,
-            testops_id=result.get_testops_id(),
+            testops_ids=result.get_testops_ids(),
             execution=ResultExecution(status=result.execution.status, duration=result.execution.duration,
                                       start_time=result.execution.start_time, end_time=result.execution.end_time,
                                       stacktrace=result.execution.stacktrace, thread=result.execution.thread),
