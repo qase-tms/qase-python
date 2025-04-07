@@ -44,7 +44,7 @@ def test_parse_scenario_with_tags(mock_scenario):
         tags=["qase.id:123", "qase.fields:{\"key\":\"value\"}", "qase.suite:suite1||suite2"]
     )
     result = parse_scenario(scenario)
-    assert result.testops_id == [123]
+    assert result.testops_ids == [123]
     assert result.fields == {"key": "value"}
     assert len(result.relations.suite.data) == 2
     assert result.relations.suite.data[0].title == "suite1"
@@ -53,7 +53,7 @@ def test_parse_scenario_with_tags(mock_scenario):
 def test_parse_scenario_without_tags(mock_scenario):
     scenario = mock_scenario(tags=[])
     result = parse_scenario(scenario)
-    assert result.testops_id is None
+    assert result.testops_ids is None
     assert result.fields == {}
     assert len(result.relations.suite.data) == 3
 

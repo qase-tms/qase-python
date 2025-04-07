@@ -11,7 +11,7 @@ from qase.commons.models.step import StepType, StepGherkinData, Step as QaseStep
 SUITE = "suite"
 IGNORE = "ignore"
 FIELDS = "fields"
-TESTOPS_ID = "testops_id"
+TESTOPS_ID = "testops_ids"
 
 
 def filter_scenarios(case_ids: List[int], scenarios: List[Scenario]) -> List[Scenario]:
@@ -22,7 +22,7 @@ def filter_scenarios(case_ids: List[int], scenarios: List[Scenario]) -> List[Sce
     for scenario in scenarios:
         tags = __parse_tags(scenario.tags)
         if TESTOPS_ID in tags:
-            if any(id in case_ids for id in tags[TESTOPS_ID]):
+            if any(qase_id in case_ids for qase_id in tags[TESTOPS_ID]):
                 executed_scenarios.append(scenario)
 
     return executed_scenarios
@@ -33,7 +33,7 @@ def parse_scenario(scenario: Scenario) -> Result:
 
     result = Result(scenario.name, scenario.name)
 
-    result.testops_id = tags.get(TESTOPS_ID, None)
+    result.testops_ids = tags.get(TESTOPS_ID, None)
     result.fields = tags.get(FIELDS, {})
     result.ignore = tags.get(IGNORE, False)
 
@@ -102,5 +102,7 @@ def parse_step(step: Step) -> QaseStep:
     )
 
     model.execution.set_status(step.status.name)
+    model.execution.duration = int(step.duration * 1000)
+    model.execution.end_time = model.execution.start_time + int(step.duration * 1000)
 
     return model
