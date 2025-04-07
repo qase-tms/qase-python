@@ -8,7 +8,8 @@ Name | Type | Description | Notes
 **id** | **str** | If passed, used as an idempotency key | [optional] 
 **title** | **str** |  | 
 **signature** | **str** |  | [optional] 
-**testops_id** | **int** |  | [optional] 
+**testops_id** | **int** | ID of the test case. Cannot be specified together with testopd_ids. | [optional] 
+**testops_ids** | **List[int]** | IDs of the test cases. Cannot be specified together with testopd_id. | [optional] 
 **execution** | [**ResultExecution**](ResultExecution.md) |  | 
 **fields** | [**ResultCreateFields**](ResultCreateFields.md) |  | [optional] 
 **attachments** | **List[str]** |  | [optional] 

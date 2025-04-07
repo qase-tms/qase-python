@@ -16,6 +16,7 @@ Name | Type | Description | Notes
 **public** | **bool** |  | [optional] 
 **stats** | [**RunStats**](RunStats.md) |  | [optional] 
 **time_spent** | **int** | Time in ms. | [optional] 
+**elapsed_time** | **int** | Time in ms. | [optional] 
 **environment** | [**RunEnvironment**](RunEnvironment.md) |  | [optional] 
 **milestone** | [**RunMilestone**](RunMilestone.md) |  | [optional] 
 **custom_fields** | [**List[CustomFieldValue]**](CustomFieldValue.md) |  | [optional] 
@@ -52,6 +53,7 @@ Name | Type | Description | Notes
 **steps_type** | **str** |  | [optional] 
 **params** | [**TestCaseParams**](TestCaseParams.md) |  | [optional] 
 **author_id** | **int** |  | [optional] 
+**updated_by** | **int** | Author ID of the last update. | [optional] 
 **defect_id** | **int** |  | 
 **actual_result** | **str** |  | [optional] 
 **resolved** | **datetime** |  | [optional] 

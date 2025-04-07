@@ -32,6 +32,7 @@ Name | Type | Description | Notes
 **author_id** | **int** |  | [optional] 
 **created_at** | **datetime** |  | [optional] 
 **updated_at** | **datetime** |  | [optional] 
+**updated_by** | **int** | Author ID of the last update. | [optional] 
 
 ## Example
 

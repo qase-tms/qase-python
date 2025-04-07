@@ -1560,6 +1560,7 @@ class CasesApi:
         self,
         code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
         id: Annotated[StrictInt, Field(description="Identifier.")],
+        include: Annotated[Optional[StrictStr], Field(description="A list of entities to include in response separated by comma. Possible values: external_issues. ")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1581,6 +1582,8 @@ class CasesApi:
         :type code: str
         :param id: Identifier. (required)
         :type id: int
+        :param include: A list of entities to include in response separated by comma. Possible values: external_issues. 
+        :type include: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1606,6 +1609,7 @@ class CasesApi:
         _param = self._get_case_serialize(
             code=code,
             id=id,
+            include=include,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1637,6 +1641,7 @@ class CasesApi:
         self,
         code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
         id: Annotated[StrictInt, Field(description="Identifier.")],
+        include: Annotated[Optional[StrictStr], Field(description="A list of entities to include in response separated by comma. Possible values: external_issues. ")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1658,6 +1663,8 @@ class CasesApi:
         :type code: str
         :param id: Identifier. (required)
         :type id: int
+        :param include: A list of entities to include in response separated by comma. Possible values: external_issues. 
+        :type include: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1683,6 +1690,7 @@ class CasesApi:
         _param = self._get_case_serialize(
             code=code,
             id=id,
+            include=include,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1714,6 +1722,7 @@ class CasesApi:
         self,
         code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
         id: Annotated[StrictInt, Field(description="Identifier.")],
+        include: Annotated[Optional[StrictStr], Field(description="A list of entities to include in response separated by comma. Possible values: external_issues. ")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1735,6 +1744,8 @@ class CasesApi:
         :type code: str
         :param id: Identifier. (required)
         :type id: int
+        :param include: A list of entities to include in response separated by comma. Possible values: external_issues. 
+        :type include: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1760,6 +1771,7 @@ class CasesApi:
         _param = self._get_case_serialize(
             code=code,
             id=id,
+            include=include,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1786,6 +1798,7 @@ class CasesApi:
         self,
         code,
         id,
+        include,
         _request_auth,
         _content_type,
         _headers,
@@ -1810,6 +1823,10 @@ class CasesApi:
         if id is not None:
             _path_params['id'] = id
         # process the query parameters
+        if include is not None:
+            
+            _query_params.append(('include', include))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter

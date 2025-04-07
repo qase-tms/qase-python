@@ -60,7 +60,8 @@ class QqlTestCase(BaseModel):
     author_id: Optional[StrictInt] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
-    __properties: ClassVar[List[str]] = ["id", "test_case_id", "position", "title", "description", "preconditions", "postconditions", "severity", "priority", "type", "layer", "is_flaky", "behavior", "automation", "status", "milestone_id", "suite_id", "custom_fields", "attachments", "steps_type", "steps", "params", "tags", "member_id", "author_id", "created_at", "updated_at"]
+    updated_by: Optional[StrictInt] = Field(default=None, description="Author ID of the last update.")
+    __properties: ClassVar[List[str]] = ["id", "test_case_id", "position", "title", "description", "preconditions", "postconditions", "severity", "priority", "type", "layer", "is_flaky", "behavior", "automation", "status", "milestone_id", "suite_id", "custom_fields", "attachments", "steps_type", "steps", "params", "tags", "member_id", "author_id", "created_at", "updated_at", "updated_by"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -200,7 +201,8 @@ class QqlTestCase(BaseModel):
             "member_id": obj.get("member_id"),
             "author_id": obj.get("author_id"),
             "created_at": obj.get("created_at"),
-            "updated_at": obj.get("updated_at")
+            "updated_at": obj.get("updated_at"),
+            "updated_by": obj.get("updated_by")
         })
         return _obj
 

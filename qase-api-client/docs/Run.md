@@ -16,6 +16,7 @@ Name | Type | Description | Notes
 **public** | **bool** |  | [optional] 
 **stats** | [**RunStats**](RunStats.md) |  | [optional] 
 **time_spent** | **int** | Time in ms. | [optional] 
+**elapsed_time** | **int** | Time in ms. | [optional] 
 **environment** | [**RunEnvironment**](RunEnvironment.md) |  | [optional] 
 **milestone** | [**RunMilestone**](RunMilestone.md) |  | [optional] 
 **custom_fields** | [**List[CustomFieldValue]**](CustomFieldValue.md) |  | [optional] 
