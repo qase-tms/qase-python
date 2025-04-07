@@ -76,19 +76,17 @@ class QasePytestPlugin:
         self.runtime.clear()
 
     def start_pytest_item(self, item):
-        qase_id, title = self.extract_qase_id(self._get_title(item))
+        qase_ids, title = self.extract_qase_ids(self._get_title(item))
         self.runtime.result = Result(
             title=title,
             signature='',
         )
-        if qase_id:
-            self.runtime.result.testops_id = qase_id
+        if qase_ids:
+            self.runtime.result.testops_ids = qase_ids
 
         self._set_relations(item)
         self._set_steps(item)
         self._get_signature(item)
-
-        # self._set_testops_id(item)
 
     @staticmethod
     def _get_title(item):
@@ -130,13 +128,13 @@ class QasePytestPlugin:
 
     def _get_signature(self, item):
         self.runtime.result.signature = item.nodeid.replace("/", "::")
-        if self.runtime.result.testops_id:
-            self.runtime.result.signature += f"::{self.runtime.result.testops_id}"
+        if self.runtime.result.testops_ids:
+            self.runtime.result.signature += f"::{'-'.join(map(str,self.runtime.result.testops_ids))}"
         for key, val in self.runtime.result.params.items():
             self.runtime.result.signature += f"::{{{key}:{val}}}"
 
     @staticmethod
-    def extract_qase_id(text) -> Tuple[List[int], str]:
+    def extract_qase_ids(text) -> Tuple[List[int], str]:
         if not isinstance(text, str):
             raise ValueError(f"Expected a string, but got {type(text).__name__}: {repr(text)}")
 
