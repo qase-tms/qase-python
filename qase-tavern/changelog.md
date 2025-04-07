@@ -1,3 +1,11 @@
+# qase-tavern 1.1.0
+
+## What's new
+
+- Updated core package to the latest supported versions.
+- Improved logic for handling multiple QaseID values in test results.
+- Removed `useV2` configuration option. The reporter now always uses API v2 for sending results.
+
 # qase-tavern 1.0.3
 
 ## What's new
