@@ -92,8 +92,8 @@ class Listener:
             logger.info("Test '%s' is ignored", test.name)
             return
 
-        if test_metadata.qase_id:
-            self.runtime.result.testops_id = test_metadata.qase_id
+        if test_metadata.qase_ids:
+            self.runtime.result.testops_ids = test_metadata.qase_ids
 
         self.runtime.result.execution.complete()
         self.runtime.result.execution.set_status(STATUSES[result.status])
@@ -126,8 +126,8 @@ class Listener:
             signature = "::".join(
                 suite.lower().replace(" ", "_") for suite in suites) + f"::{test.name.lower().replace(' ', '_')}"
 
-            if self.runtime.result.testops_id:
-                signature += f"::{self.runtime.result.testops_id}"
+            if self.runtime.result.testops_ids:
+                signature += f"::{'-'.join(map(str, self.runtime.result.testops_ids))}"
 
             self.runtime.result.signature = signature
 

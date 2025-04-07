@@ -14,8 +14,8 @@ class Filter(SuiteVisitor):
     def _is_included(self, test):
         test_metadata = TagParser.parse_tags(test.tags)
 
-        if test_metadata.qase_id:
-            return test_metadata.qase_id in self.tests
+        if test_metadata.qase_ids:
+            return any(qase_id in self.tests for qase_id in test_metadata.qase_ids)
 
         return False
 
