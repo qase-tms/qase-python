@@ -13,7 +13,9 @@ class TagParser:
         metadata = TestMetadata()
         for tag in tags:
             if tag.lower().startswith("q-"):
-                metadata.qase_id.append(TagParser.__extract_ids(tag))
+                qase_id = TagParser.__extract_ids(tag)
+                if qase_id is not None:
+                    metadata.qase_ids.append(qase_id)
 
             if tag.lower() == "qase.ignore":
                 metadata.ignore = True
