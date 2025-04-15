@@ -14,7 +14,7 @@ and command line options override both other values.
 | Description                               | Config file                | Environment variable            | CLI option                        | Default value                           | Required | Possible values            |
 |-------------------------------------------|----------------------------|---------------------------------|-----------------------------------|-----------------------------------------|----------|----------------------------|
 | **Common**                                |
-| Main reporting mode                       | `mode`                     | `QASE_MODE`                     | `--qase-mode`                     | `testops`                               | No       | `testops`, `report`, `off` |
+| Main reporting mode                       | `mode`                     | `QASE_MODE`                     | `--qase-mode`                     | `off`                               | No       | `testops`, `report`, `off` |
 | Fallback reporting mode                   | `fallback`                 | `QASE_FALLBACK`                 | `--qase-fallback`                 | `report`                                | No       | `testops`, `report`, `off` |
 | Execution plan path                       | `executionPlan.path`       | `QASE_EXECUTION_PLAN_PATH`      | `--qase-execution-plan-path`      | `./build/qase-execution-plan.json`      | No       | Any string                 |
 | Qase environment                          | `environment`              | `QASE_ENVIRONMENT`              | `--qase-environment`              | `local`                                 | No       | Any string                 |
