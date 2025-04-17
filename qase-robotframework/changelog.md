@@ -1,3 +1,10 @@
+# qase-robotframework 3.4.1
+
+## What's new
+
+Fixed an issue with handling steps that contain IF/ELSE sections. Conditional logic is now properly parsed and
+represented in test cases.
+
 # qase-robotframework 3.4.0
 
 ## What's new
@@ -10,8 +17,8 @@
 
 ## What's new
 
-- Logging of host system details to improve debugging and traceability.  
-- Output of installed packages in logs for better environment visibility. 
+- Logging of host system details to improve debugging and traceability.
+- Output of installed packages in logs for better environment visibility.
 
 # qase-robotframework 3.3.1
 

@@ -217,6 +217,7 @@ class Listener:
                     data=StepGherkinData(keyword=result_step.body[i].type, name=result_step.body[i].type, line=0)
                 )
                 step.execution.start_time = None
+                step.execution.end_time = None
                 child_steps = self.__parse_steps(result_step.body[i])
 
                 if all(s.execution.status == "skipped" for s in child_steps):
