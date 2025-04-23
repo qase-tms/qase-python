@@ -1,3 +1,9 @@
+# qase-python-commons@3.4.1
+
+## What's new
+
+Fixed an issue with enum serialization in models
+
 # qase-python-commons@3.4.0
 
 ## What's new

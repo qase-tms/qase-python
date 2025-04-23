@@ -41,7 +41,6 @@ class QaseReport:
         pass
 
     def add_result(self, result: Result):
-        result.set_run_id(self.run_id)
         for attachment in result.attachments:
             self._persist_attachment(attachment)
 
@@ -84,8 +83,8 @@ class QaseReport:
 
     def _persist_attachments_in_steps(self, steps: list):
         for step in steps:
-            if step.attachments:
-                for attachment in step.attachments:
+            if step.execution.attachments:
+                for attachment in step.execution.attachments:
                     self._persist_attachment(attachment)
                 if step.steps:
                     self._persist_attachments_in_steps(step.steps)

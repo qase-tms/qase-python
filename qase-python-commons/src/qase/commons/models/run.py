@@ -1,5 +1,3 @@
-import json
-
 from typing import Optional, List
 
 from .basemodel import BaseModel
@@ -71,6 +69,7 @@ class Run(BaseModel):
             "duration": result["execution"]["duration"],
             "thread": result["execution"]["thread"]
         }
+        self._extract_path_from_relations(result)
         self.results.append(compact_result)
         self.execution.track(result)
         self.stats.track(result)
@@ -79,3 +78,16 @@ class Run(BaseModel):
 
     def add_host_data(self, host_data: dict):
         self.host_data = host_data
+
+    def _extract_path_from_relations(self, relations_dict):
+
+        titles = []
+        if "relations" in relations_dict and "suite" in relations_dict["relations"]:
+            if "data" in relations_dict["relations"]["suite"]:
+                data_list = relations_dict["relations"]["suite"]["data"]
+                titles = [item["title"] for item in data_list if "title" in item]
+
+        path = "/".join(titles)
+
+        if path and path not in self.suites:
+            self.suites.append(path)

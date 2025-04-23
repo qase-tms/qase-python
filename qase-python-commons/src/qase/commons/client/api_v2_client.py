@@ -125,18 +125,18 @@ class ApiV2Client(ApiV1Client):
                 prepared_step['data']['action'] = step.data.request_method + " " + step.data.request_url
 
                 if step.data.request_body:
-                    step.attachments.append(
+                    step.add_attachment(
                         Attachment(file_name='request_body.txt', content=step.data.request_body, mime_type='text/plain',
                                    temporary=True))
                 if step.data.request_headers:
-                    step.attachments.append(
+                    step.add_attachment(
                         Attachment(file_name='request_headers.txt', content=step.data.request_headers,
                                    mime_type='text/plain', temporary=True))
                 if step.data.response_body:
-                    step.attachments.append(Attachment(file_name='response_body.txt', content=step.data.response_body,
-                                                       mime_type='text/plain', temporary=True))
+                    step.add_attachment(Attachment(file_name='response_body.txt', content=step.data.response_body,
+                                                   mime_type='text/plain', temporary=True))
                 if step.data.response_headers:
-                    step.attachments.append(
+                    step.add_attachment(
                         Attachment(file_name='response_headers.txt', content=step.data.response_headers,
                                    mime_type='text/plain', temporary=True))
 
@@ -149,9 +149,9 @@ class ApiV2Client(ApiV1Client):
             if step.step_type == StepType.SLEEP:
                 prepared_step['data']['action'] = f"Sleep for {step.data.duration} seconds"
 
-            if step.attachments:
+            if step.execution.attachments:
                 uploaded_attachments = []
-                for file in step.attachments:
+                for file in step.execution.attachments:
                     attach_id = self._upload_attachment(project_code, file)
                     if attach_id:
                         uploaded_attachments.extend(attach_id)

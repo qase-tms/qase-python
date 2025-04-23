@@ -24,7 +24,12 @@ class Logger:
     def log(self, message: str, level: str = 'info'):
         time_str = self._get_timestamp("%H:%M:%S")
         log = f"[Qase][{time_str}][{level}] {message}\n"
-        print(log)
+
+        try:
+            print(log, end='')
+        except (OSError, IOError):
+            pass
+
         if self.debug:
             with self.lock:
                 with open(Logger._log_file, 'a', encoding='utf-8') as f:
