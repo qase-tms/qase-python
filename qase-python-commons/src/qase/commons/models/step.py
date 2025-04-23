@@ -20,6 +20,7 @@ class StepTextData(BaseModel):
     def __init__(self, action: str, expected_result: Optional[str] = None):
         self.action = action
         self.expected_result = expected_result
+        self.input_data = None
 
 
 class StepAssertData(BaseModel):
@@ -78,6 +79,7 @@ class StepExecution(BaseModel):
         self.status = status
         self.end_time = end_time
         self.duration = duration
+        self.attachments = []
 
     def set_status(self, status: Optional[str]):
         if status in ['passed', 'failed', 'skipped', 'blocked', 'untested']:
@@ -88,6 +90,9 @@ class StepExecution(BaseModel):
     def complete(self):
         self.end_time = time.time()
         self.duration = int((self.end_time - self.start_time) * 1000)
+
+    def add_attachment(self, attachment: Attachment):
+        self.attachments.append(attachment)
 
 
 class Step(BaseModel):
@@ -107,7 +112,6 @@ class Step(BaseModel):
         self.data = data
         self.parent_id = parent_id
         self.execution = StepExecution()
-        self.attachments = []
         self.steps = []
 
     def set_parent_id(self, parent_id: Optional[str]):
@@ -132,4 +136,4 @@ class Step(BaseModel):
         self.steps = steps
 
     def add_attachment(self, attachment: Attachment):
-        self.attachments.append(attachment)
+        self.execution.add_attachment(attachment)

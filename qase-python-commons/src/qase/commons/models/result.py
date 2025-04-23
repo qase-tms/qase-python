@@ -69,7 +69,6 @@ class Result(BaseModel):
         self.id: str = str(uuid.uuid4())
         self.title: str = title
         self.signature: str = signature
-        self.run_id: Optional[str] = None
         self.testops_ids: Optional[List[int]] = None
         self.execution: Type[Execution] = Execution()
         self.fields: Dict[Type[Field]] = {}
@@ -77,11 +76,9 @@ class Result(BaseModel):
         self.steps: List[Type[Step]] = []
         self.params: Optional[dict] = {}
         self.param_groups: Optional[List[List[str]]] = []
-        self.author: Optional[str] = None
         self.relations: Type[Relation] = None
         self.muted: bool = False
         self.message: Optional[str] = None
-        QaseUtils.get_host_data()
 
     def add_message(self, message: str) -> None:
         self.message = message
@@ -123,6 +120,3 @@ class Result(BaseModel):
 
     def get_duration(self) -> int:
         return self.execution.duration
-
-    def set_run_id(self, run_id: str) -> None:
-        self.run_id = run_id
