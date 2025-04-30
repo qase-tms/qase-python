@@ -53,7 +53,7 @@ class ConfigManager:
                     if config.get("profilers"):
                         self.config.set_profilers(config.get("profilers"))
 
-                    if config.get("debug"):
+                    if config.get("debug") is not None:
                         self.config.set_debug(
                             config.get("debug")
                         )
@@ -78,7 +78,7 @@ class ConfigManager:
                         if testops.get("project"):
                             self.config.testops.set_project(testops.get("project"))
 
-                        if testops.get("defect"):
+                        if testops.get("defect") is not None:
                             self.config.testops.set_defect(
                                 testops.get("defect")
                             )
@@ -101,7 +101,7 @@ class ConfigManager:
                             if run.get("description"):
                                 self.config.testops.run.set_description(run.get("description"))
 
-                            if run.get("complete"):
+                            if run.get("complete") is not None:
                                 self.config.testops.run.set_complete(
                                     run.get("complete")
                                 )
@@ -135,7 +135,7 @@ class ConfigManager:
                         if framework.get("pytest"):
                             pytest = framework.get("pytest")
 
-                            if pytest.get("captureLogs"):
+                            if pytest.get("captureLogs") is not None:
                                 self.config.framework.pytest.set_capture_logs(
                                     pytest.get("captureLogs")
                                 )

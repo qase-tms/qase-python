@@ -1,3 +1,9 @@
+# qase-python-commons@3.4.2
+
+## What's new
+
+Fixed an issue with parsing boolean values from file-based configuration.
+
 # qase-python-commons@3.4.1
 
 ## What's new
