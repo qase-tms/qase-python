@@ -1,3 +1,9 @@
+# qase-robotframework 3.4.2
+
+## What's new
+
+Fixed an issue with handling steps that include conditional execution logic, ensuring correct structure and reporting.
+
 # qase-robotframework 3.4.1
 
 ## What's new
