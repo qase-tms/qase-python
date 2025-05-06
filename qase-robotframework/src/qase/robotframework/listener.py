@@ -209,34 +209,61 @@ class Listener:
 
     def __parse_condition_steps(self, result_step) -> List[Step]:
         steps = []
-        for i in range(len(result_step.body)):
-            if hasattr(result_step.body[i], "type"):
-                step = Step(
-                    step_type=StepType.GHERKIN,
-                    id=str(uuid.uuid4()),
-                    data=StepGherkinData(keyword=result_step.body[i].type, name=result_step.body[i].type, line=0)
-                )
-                step.execution.start_time = None
-                step.execution.end_time = None
-                child_steps = self.__parse_steps(result_step.body[i])
 
-                if all(s.execution.status == "skipped" for s in child_steps):
-                    step.execution.set_status("skipped")
-                else:
-                    step.execution.set_status("passed")
+        for body_element in result_step.body:
+            if hasattr(body_element, "type"):
+                step = Listener._create_gherkin_step_with_type(body_element)
+                child_steps = self.__parse_steps(body_element)
 
+                Listener._set_step_status_based_on_children(step, child_steps)
                 step.steps = child_steps
-                steps.append(step)
-                continue
+            else:
+                step = Listener._create_gherkin_step_from_name(body_element)
 
-            step = Step(
-                step_type=StepType.GHERKIN,
-                id=str(uuid.uuid4()),
-                data=StepGherkinData(keyword=result_step.body[i].name, name=result_step.body[i].name, line=0)
-            )
+            step.execution.start_time = None
+            step.execution.end_time = None
+
             steps.append(step)
 
         return steps
+
+    @staticmethod
+    def _create_gherkin_step_with_type(body_element) -> Step:
+        """Create a Gherkin step from a body element with type attribute."""
+        step = Step(
+            step_type=StepType.GHERKIN,
+            id=str(uuid.uuid4()),
+            data=StepGherkinData(
+                keyword=body_element.type,
+                name=body_element.type,
+                line=0
+            )
+        )
+
+        return step
+
+    @staticmethod
+    def _create_gherkin_step_from_name(body_element) -> Step:
+        """Create a Gherkin step from a body element with name attribute."""
+        step = Step(
+            step_type=StepType.GHERKIN,
+            id=str(uuid.uuid4()),
+            data=StepGherkinData(
+                keyword=body_element.name,
+                name=body_element.name,
+                line=0
+            )
+        )
+
+        return step
+
+    @staticmethod
+    def _set_step_status_based_on_children(step: Step, child_steps: List[Step]) -> None:
+        """Set the status of a step based on its children's statuses."""
+        if all(s.execution.status == "skipped" for s in child_steps):
+            step.execution.set_status("skipped")
+        else:
+            step.execution.set_status("passed")
 
     def __load_run_from_lock(self):
         if Listener.meta_run_file.exists():
