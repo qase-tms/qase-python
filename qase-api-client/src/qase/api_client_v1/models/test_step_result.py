@@ -28,7 +28,7 @@ class TestStepResult(BaseModel):
     """
     TestStepResult
     """ # noqa: E501
-    status: Optional[StrictInt] = None
+    status: Optional[StrictInt] = Field(default=None, description="1 - passed, 2 - failed, 3 - blocked, 5 - skipped, 7 - in_progress")
     position: Optional[StrictInt] = None
     attachments: Optional[List[Attachment]] = None
     steps: Optional[List[Dict[str, Any]]] = Field(default=None, description="Nested steps results will be here. The same structure is used for them for them.")

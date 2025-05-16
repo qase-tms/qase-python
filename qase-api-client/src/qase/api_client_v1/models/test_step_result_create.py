@@ -40,8 +40,8 @@ class TestStepResultCreate(BaseModel):
     @field_validator('status')
     def status_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['passed', 'failed', 'blocked']):
-            raise ValueError("must be one of enum values ('passed', 'failed', 'blocked')")
+        if value not in set(['passed', 'failed', 'blocked', 'in_progress']):
+            raise ValueError("must be one of enum values ('passed', 'failed', 'blocked', 'in_progress')")
         return value
 
     model_config = ConfigDict(
