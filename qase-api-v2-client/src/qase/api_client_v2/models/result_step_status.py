@@ -31,6 +31,7 @@ class ResultStepStatus(str, Enum):
     FAILED = 'failed'
     BLOCKED = 'blocked'
     SKIPPED = 'skipped'
+    IN_PROGRESS = 'in_progress'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
