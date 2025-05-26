@@ -1,3 +1,9 @@
+# qase-python-commons@3.4.3
+
+## What's new
+
+Improved logging and fixed several issues.
+
 # qase-python-commons@3.4.2
 
 ## What's new

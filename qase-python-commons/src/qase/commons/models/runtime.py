@@ -1,3 +1,4 @@
+from . import Result
 from .step import Step
 from .attachment import Attachment
 
@@ -41,6 +42,14 @@ class Runtime:
                 self.result.add_attachment(attachment)
         except Exception as e:
             raise QaseRuntimeException(e)
+
+
+    def add_param(self, key: str, value: str):
+        """
+        Add a parameter to the current result.
+        """
+        if self.result is not None:
+            self.result.params[key] = value
 
     def clear(self):
         self.result = None
