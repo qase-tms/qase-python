@@ -86,11 +86,11 @@ class QasePytestPlugin:
                     if len(mark.args) != 0:
                         param_name, values = mark.args
                         if ',' in param_name:
-                            grouped_params.append(param_name.split(','))
+                            grouped_params.append([item.strip() for item in param_name.split(',')])
                     else:
                         param_name = mark.kwargs.get('argnames')
                         if ',' in param_name:
-                            grouped_params.append(param_name.split(','))
+                            grouped_params.append([item.strip() for item in param_name.split(',')])
 
             # Attach the captured params to the test item
             item._grouped_params = grouped_params
@@ -307,6 +307,14 @@ class QasePytestPlugin:
             attachment = Attachment(file_name=filename, content=content, mime_type=mime, file_path=file_path)
             self.runtime.add_attachment(attachment)
 
+    def add_param(self, name: str, value: str):
+        """
+        Add a parameter to the current test result.
+        """
+        if not self.runtime.result:
+            return
+        self.runtime.result.add_param(name, value)
+
     def load_run_from_lock(self):
         if QasePytestPlugin.meta_run_file.exists():
             with open(QasePytestPlugin.meta_run_file, "r") as lock_file:
@@ -333,7 +341,7 @@ class QasePytestPlugin:
     def _get_signature(self, item):
         self.runtime.result.signature = item.nodeid.replace("/", "::")
         if self.runtime.result.testops_ids:
-            self.runtime.result.signature += f"::{'-'.join(map(str,self.runtime.result.testops_ids))}"
+            self.runtime.result.signature += f"::{'-'.join(map(str, self.runtime.result.testops_ids))}"
         for key, val in self.runtime.result.params.items():
             self.runtime.result.signature += f"::{{{key}:{val}}}"
 
