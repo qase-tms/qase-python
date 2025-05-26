@@ -205,6 +205,23 @@ class qase:
             pass
 
     @staticmethod
+    def param(name: str, value: str):
+        """
+        Add a parameter to the current test.
+
+        `name` and `value` are strings.
+
+        >>>
+        ... qase.param("param_name", "param_value")
+        """
+        try:
+            plugin = QasePytestPluginSingleton.get_instance()
+            plugin.add_param(name=name, value=value)
+        except Exception:
+            print("Failed to add parameter")
+            pass
+
+    @staticmethod
     @contextdecorator
     def step(title, expected=None):
         """

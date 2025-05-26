@@ -1,3 +1,20 @@
+# qase-pytest 6.3.1
+
+## What's new
+
+Added support specifing test parameters using `qase.param` method inside the test body.
+
+```python
+def test_example():
+    qase.param("foo", "bar")
+    qase.param("baz", "qux")
+    pass
+
+def test_example(param1: str):
+    qase.param("param1", param1)
+    pass    
+```
+
 # qase-pytest 6.3.0
 
 ## What's new
@@ -11,7 +28,7 @@
 ## What's new
 
 - Logging of host system details to improve debugging and traceability.  
-- Output of installed packages in logs for better environment visibility. 
+- Output of installed packages in logs for better environment visibility.
 
 # qase-pytest 6.2.1
 
