@@ -30,7 +30,7 @@ class BaseApiClient(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def complete_run(self, project_code: str, run_id: str) -> None:
+    def complete_run(self, project_code: str, run_id: int) -> None:
         """
         Complete a test run in Qase TestOps
 

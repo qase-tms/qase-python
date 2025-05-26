@@ -19,7 +19,8 @@ from ..util import get_host_info
 
 
 class QaseCoreReporter:
-    def __init__(self, config: ConfigManager, framework: Union[str, None] = None, reporter_name: Union[str, None] = None):
+    def __init__(self, config: ConfigManager, framework: Union[str, None] = None,
+                 reporter_name: Union[str, None] = None):
         config.validate_config()
         self.config = config.config
         self.logger = Logger(self.config.debug)
@@ -64,14 +65,15 @@ class QaseCoreReporter:
                 self.logger.log('Failed to start run, disabling reporting', 'info')
                 self.logger.log(e, 'error')
                 self.reporter = None
+                return None
+
+        return None
 
     def complete_run(self) -> None:
         if self.reporter:
             try:
                 ts = time.time()
-                self.logger.log_debug("Completing run")
                 self.reporter.complete_run()
-                self.logger.log_debug("Run completed")
                 self.overhead += time.time() - ts
                 self.logger.log(f"Overhead for Qase Report: {round(self.overhead * 1000)}ms", 'info')
             except Exception as e:

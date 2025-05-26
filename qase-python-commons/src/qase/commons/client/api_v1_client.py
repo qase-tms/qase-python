@@ -66,7 +66,7 @@ class ApiV1Client(BaseApiClient):
             self.logger.log("Exception when calling EnvironmentsApi->get_environments: %s\n" % e, "error")
             raise ReporterException(e)
 
-    def complete_run(self, project_code: str, run_id: str) -> None:
+    def complete_run(self, project_code: str, run_id: int) -> None:
         api_runs = RunsApi(self.client)
         self.logger.log_debug(f"Completing run {run_id}")
         res = api_runs.get_run(project_code, run_id).result
