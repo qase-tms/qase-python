@@ -111,10 +111,16 @@ class ApiV2Client(ApiV1Client):
 
         try:
             prepared_step = {'execution': {}, 'data': {}, 'steps': []}
-            prepared_step['execution']['status'] = ResultStepStatus(step.execution.status)
-            prepared_step['execution']['duration'] = step.execution.duration
-            prepared_step['execution']['start_time'] = step.execution.start_time
-            prepared_step['execution']['end_time'] = step.execution.end_time
+            if step.execution.status == 'untested':
+                prepared_step['execution']['status'] = ResultStepStatus('skipped')
+                prepared_step['execution']['duration'] = 0
+                prepared_step['execution']['start_time'] = None
+                prepared_step['execution']['end_time'] = None
+            else:
+                prepared_step['execution']['status'] = ResultStepStatus(step.execution.status)
+                prepared_step['execution']['duration'] = step.execution.duration
+                prepared_step['execution']['start_time'] = step.execution.start_time
+                prepared_step['execution']['end_time'] = step.execution.end_time
 
             if step.step_type == StepType.TEXT:
                 prepared_step['data']['action'] = step.data.action
