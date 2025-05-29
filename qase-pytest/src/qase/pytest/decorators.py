@@ -1,5 +1,5 @@
 import uuid
-from typing import Tuple, Union, List
+from typing import Tuple, Union, List, Any, Callable
 
 import pytest
 
@@ -258,3 +258,28 @@ class qase:
         except Exception as e:
             plugin.finish_step(id=id, exception=e)
             raise e
+
+    @staticmethod
+    def parametrize_ignore(argnames: Union[str, List[str]], argvalues: List[Any], ids: List[str] = None):
+        """
+        Extended version of pytest.mark.parametrize that prevents parameter collection for Qase reports.
+        The test will still be reported, but without parameter values.
+
+        >>> @qase.parametrize_ignore(
+        ...     "test_input,expected",
+        ...     [("3+5", 8), ("2+4", 6), ("6*9", 42)],
+        ...     ids=["add_3_5", "add_2_4", "multiply_6_9"]
+        ... )
+        >>> def test_eval(test_input, expected):
+        ...     assert eval(test_input) == expected
+
+        :param argnames: A comma-separated string or list of strings denoting one or more argument names
+        :param argvalues: The list of argvalues to use for the parametrized test
+        :param ids: Optional list of test IDs
+        :return: pytest.mark instance
+        """
+        def decorator(func):
+            func = pytest.mark.parametrize(argnames, argvalues, ids=ids)(func)
+            func = pytest.mark.qase_parametrize_ignore(argnames=argnames)(func)
+            return func
+        return decorator

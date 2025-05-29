@@ -1,3 +1,20 @@
+# qase-pytest 6.3.2
+
+## What's new
+
+Added new decorator `qase.parametrize_ignore` that allows to ignore specific parameters in Qase reports while still collecting other parameters.
+
+```python
+@pytest.mark.parametrize("browser", ["chrome", "firefox", "safari"])
+@qase.parametrize_ignore("test_data", ["data1", "data2", "data3"])
+def test_login(browser, test_data):
+    # test_data will be ignored in Qase report
+    # browser parameter will be included in the report
+    pass
+```
+
+The decorator can be used with any number of parameters. Only parameters specified in `qase.parametrize_ignore` will be excluded from the report.
+
 # qase-pytest 6.3.1
 
 ## What's new
