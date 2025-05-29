@@ -1,3 +1,9 @@
+# qase-python-commons@3.4.4
+
+## What's new
+
+Fixed an issue with the usage of the `pytest.skip` method iside a step body.
+
 # qase-python-commons@3.4.3
 
 ## What's new
@@ -29,7 +35,7 @@ Fixed an issue with enum serialization in models
 ## What's new
 
 - Logging of host system details to improve debugging and traceability.  
-- Output of installed packages in logs for better environment visibility. 
+- Output of installed packages in logs for better environment visibility.
 
 # qase-python-commons@3.3.1
 
@@ -64,8 +70,8 @@ readability.
 - Support for custom statuses of xfail-marked tests in pytest.
 - Default statuses: `skipped` (failed xfail) and `passed` (successful xfail).
 - Configuration values can be set via `qase.config.json` or environment variables:
-    - `QASE_PYTEST_XFAIL_STATUS_XFAIL`
-    - `QASE_PYTEST_XFAIL_STATUS_XPASS`
+  - `QASE_PYTEST_XFAIL_STATUS_XFAIL`
+  - `QASE_PYTEST_XFAIL_STATUS_XPASS`
 
 # qase-python-commons@3.2.3
 
