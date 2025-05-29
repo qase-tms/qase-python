@@ -13,6 +13,10 @@ def pytest_addoption(parser):
 
 def pytest_configure(config):
     config = _add_markers(config)
+    config.addinivalue_line(
+        "markers",
+        "qase_parametrize_ignore: mark test to ignore parameters in Qase reports"
+    )
 
     config_manager = setup_config_manager(config)
 

@@ -388,22 +388,37 @@ class QasePytestPlugin:
 
     def _set_params(self, item) -> None:
         if hasattr(item, 'callspec'):
-            for group in item._grouped_params:
-                self.runtime.result.add_param_groups(group)
+            # Get parameters that should be ignored
+            ignored_params = set()
+            for mark in item.iter_markers():
+                if mark.name == 'qase_parametrize_ignore':
+                    param_name = mark.kwargs.get('argnames')
+                    if param_name:
+                        if ',' in param_name:
+                            ignored_params.update([p.strip() for p in param_name.split(',')])
+                        else:
+                            ignored_params.add(param_name)
 
+            # Add grouped parameters that are not ignored
+            for group in item._grouped_params:
+                if not any(param in ignored_params for param in group):
+                    self.runtime.result.add_param_groups(group)
+
+            # Add individual parameters that are not ignored
             ids = item.callspec.id.split("-")
             if len(ids) != len(item.callspec.params.items()):
                 for key, val in item.callspec.params.items():
-                    if key.startswith("__pytest"):
+                    if key.startswith("__pytest") or key in ignored_params:
                         continue
                     self.runtime.result.add_param(key, str(val))
             else:
                 i = 0
                 for key, val in item.callspec.params.items():
+                    if key.startswith("__pytest") or key in ignored_params:
+                        i += 1
+                        continue
                     value = str(ids[i])
                     i += 1
-                    if key.startswith("__pytest"):
-                        continue
                     self.runtime.result.add_param(key, value)
 
     def _set_suite(self, item) -> None:
