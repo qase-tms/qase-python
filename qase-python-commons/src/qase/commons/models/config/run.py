@@ -1,3 +1,4 @@
+from typing import List
 from ..basemodel import BaseModel
 from ... import QaseUtils
 
@@ -7,9 +8,12 @@ class RunConfig(BaseModel):
     description: str = None
     complete: bool = None
     id: int = None
+    tags: List[str] = None
+
 
     def __init__(self):
         self.complete = True
+        self.tags = []
 
     def set_title(self, title: str):
         self.title = title
@@ -22,3 +26,6 @@ class RunConfig(BaseModel):
 
     def set_id(self, id: int):
         self.id = id
+
+    def set_tags(self, tags: List[str]):
+        self.tags = tags

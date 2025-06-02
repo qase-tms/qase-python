@@ -1,3 +1,11 @@
+# qase-python-commons@3.5.0
+
+## What's new
+
+- Added support for test run tags.
+- Added support for excluding parameters from test results.
+- Added support for signature generation. Now, the signature is generated based on the testops ids, suites and parameters.
+
 # qase-python-commons@3.4.4
 
 ## What's new

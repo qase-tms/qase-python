@@ -2,6 +2,7 @@ import os
 import platform
 import threading
 import sys
+from typing import Union, List
 import pip
 import string
 import uuid
@@ -63,6 +64,22 @@ class QaseUtils:
     @staticmethod
     def get_filename(path) -> str:
         return os.path.basename(path)
+
+    @staticmethod
+    def get_signature(testops_ids: Union[List[int], None], suites: List[str], params: dict) -> str:
+        signature_parts = []
+
+        if testops_ids:
+            signature_parts.append(
+                f"{'-'.join(map(str, testops_ids))}")
+
+        for suite in suites:
+            signature_parts.append(suite.lower().replace(" ", "_"))
+
+        for key, val in params.items():
+            signature_parts.append(f"{{{key}:{val}}}")
+
+        return "::".join(signature_parts)
 
 
 class StringFormatter(string.Formatter):
