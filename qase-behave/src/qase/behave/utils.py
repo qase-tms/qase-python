@@ -7,6 +7,7 @@ from behave.model import Scenario, Step
 from qase.commons.models import Result, Relation
 from qase.commons.models.relation import SuiteData
 from qase.commons.models.step import StepType, StepGherkinData, Step as QaseStep
+from qase.commons.utils import QaseUtils
 
 SUITE = "suite"
 IGNORE = "ignore"
@@ -51,6 +52,12 @@ def parse_scenario(scenario: Scenario) -> Result:
     result.params = __parse_parameters(scenario)
 
     result.execution.set_status("passed")
+    
+    result.signature = QaseUtils.get_signature(
+        result.testops_ids,
+        [suite.title for suite in relation.suite.data] + [scenario.name],
+        result.params
+    )
 
     return result
 
