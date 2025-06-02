@@ -1,3 +1,10 @@
+# qase-behave 1.1.1
+
+## What's new
+
+- Added support for test run tags.
+- Added support for excluding parameters from test results.
+
 # qase-behave 1.1.0
 
 ## What's new

@@ -29,7 +29,8 @@ class QaseFormatter(Formatter):
             self.__already_started = True
 
     def feature(self, feature: Feature):
-        feature.scenarios = filter_scenarios(self.__case_ids, feature.scenarios)
+        feature.scenarios = filter_scenarios(
+            self.__case_ids, feature.scenarios)
 
     def scenario(self, scenario: Scenario):
         if self.__current_scenario and self.__current_scenario.ignore == False:
@@ -79,35 +80,52 @@ class QaseFormatter(Formatter):
         if 'qase-debug' in userdata:
             cfg_mgr.config.set_debug(userdata['qase-debug'])
 
+        if 'qase-exclude-params' in userdata:
+            cfg_mgr.config.set_exclude_params(
+                [param.strip() for param in userdata['qase-exclude-params'].split(',')])
+
         if 'qase-testops-project' in userdata:
-            cfg_mgr.config.testops.set_project(userdata['qase-testops-project'])
+            cfg_mgr.config.testops.set_project(
+                userdata['qase-testops-project'])
 
         if 'qase-testops-api-token' in userdata:
-            cfg_mgr.config.testops.api.set_token(userdata['qase-testops-api-token'])
+            cfg_mgr.config.testops.api.set_token(
+                userdata['qase-testops-api-token'])
 
         if 'qase-testops-api-host' in userdata:
-            cfg_mgr.config.testops.api.set_host(userdata['qase-testops-api-host'])
+            cfg_mgr.config.testops.api.set_host(
+                userdata['qase-testops-api-host'])
 
         if 'qase-testops-run-title' in userdata:
-            cfg_mgr.config.testops.run.set_title(userdata['qase-testops-run-title'])
+            cfg_mgr.config.testops.run.set_title(
+                userdata['qase-testops-run-title'])
 
         if 'qase-testops-run-description' in userdata:
-            cfg_mgr.config.testops.run.set_description(userdata['qase-testops-run-description'])
+            cfg_mgr.config.testops.run.set_description(
+                userdata['qase-testops-run-description'])
 
         if 'qase-testops-run-complete' in userdata:
-            cfg_mgr.config.testops.run.set_complete(userdata['qase-testops-run-complete'])
+            cfg_mgr.config.testops.run.set_complete(
+                userdata['qase-testops-run-complete'])
+
+        if 'qase-testops-run-tags' in userdata:
+            cfg_mgr.config.testops.run.set_tags(
+                [tag.strip() for tag in userdata['qase-testops-run-tags'].split(',')])
 
         if 'qase-testops-plan-id' in userdata:
-            cfg_mgr.config.testops.plan.set_id(userdata['qase-testops-plan-id'])
+            cfg_mgr.config.testops.plan.set_id(
+                userdata['qase-testops-plan-id'])
 
         if 'qase-testops-run-id' in userdata:
             cfg_mgr.config.testops.run.set_id(userdata['qase-testops-run-id'])
 
         if 'qase-execution-plan-path' in userdata:
-            cfg_mgr.config.execution_plan.set_path(userdata['qase-execution-plan-path'])
+            cfg_mgr.config.execution_plan.set_path(
+                userdata['qase-execution-plan-path'])
 
         if 'qase-testops-batch-size' in userdata:
-            cfg_mgr.config.testops.batch.set_size(userdata['qase-testops-batch-size'])
+            cfg_mgr.config.testops.batch.set_size(
+                userdata['qase-testops-batch-size'])
 
         if 'qase-testops-defect' in userdata:
             cfg_mgr.config.testops.set_defect(userdata['qase-testops-defect'])
@@ -116,9 +134,11 @@ class QaseFormatter(Formatter):
             cfg_mgr.config.report.set_driver(userdata['qase-report-driver'])
 
         if 'qase-report-connection-path' in userdata:
-            cfg_mgr.config.report.connection.set_path(userdata['qase-report-connection-path'])
+            cfg_mgr.config.report.connection.set_path(
+                userdata['qase-report-connection-path'])
 
         if 'qase-report-connection-format' in userdata:
-            cfg_mgr.config.report.connection.set_format(userdata['qase-report-connection-format'])
+            cfg_mgr.config.report.connection.set_format(
+                userdata['qase-report-connection-format'])
 
         return cfg_mgr
