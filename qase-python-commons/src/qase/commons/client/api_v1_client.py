@@ -100,7 +100,8 @@ class ApiV1Client(BaseApiClient):
             environment_id=(int(environment_id) if environment_id else None),
             plan_id=(int(plan_id) if plan_id else plan_id),
             is_autotest=True,
-            start_time=datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+            start_time=datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S"),
+            tags=self.config.testops.run.tags
         )
         self.logger.log_debug(f"Creating test run with parameters: {kwargs}")
         try:

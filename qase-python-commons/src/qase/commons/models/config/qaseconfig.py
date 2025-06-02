@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import List
 
 from .framework import Framework
 from .report import ReportConfig
@@ -34,6 +35,7 @@ class QaseConfig(BaseModel):
     report: ReportConfig = None
     profilers: list = None
     framework: Framework = None
+    exclude_params: list = None
 
     def __init__(self):
         self.mode = Mode.off
@@ -44,6 +46,7 @@ class QaseConfig(BaseModel):
         self.execution_plan = ExecutionPlan()
         self.framework = Framework()
         self.profilers = []
+        self.exclude_params = []
 
     def set_mode(self, mode: str):
         if any(mode == e.value for e in Mode.__members__.values()):
@@ -64,3 +67,6 @@ class QaseConfig(BaseModel):
 
     def set_debug(self, debug):
         self.debug = QaseUtils.parse_bool(debug)
+
+    def set_exclude_params(self, exclude_params: List[str]):
+        self.exclude_params = exclude_params

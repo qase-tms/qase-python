@@ -84,7 +84,7 @@ class ApiV2Client(ApiV1Client):
             attachments=[attach.hash for attach in attached],
             steps=steps,
             steps_type=ResultStepsType.CLASSIC,
-            params=result.params,
+            params=result.params if not self.config.exclude_params else {key: value for key, value in result.params.items() if key not in self.config.exclude_params},
             param_groups=result.param_groups,
             message=result.message,
             defect=self.config.testops.defect,

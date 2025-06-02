@@ -58,10 +58,16 @@ class ConfigManager:
                             config.get("debug")
                         )
 
+                    if config.get("excludeParams"):
+                        self.config.set_exclude_params(
+                            config.get("excludeParams")
+                        )
+
                     if config.get("executionPlan"):
                         execution_plan = config.get("executionPlan")
                         if execution_plan.get("path"):
-                            self.config.execution_plan.set_path(execution_plan.get("path"))
+                            self.config.execution_plan.set_path(
+                                execution_plan.get("path"))
 
                     if config.get("testops"):
                         testops = config.get("testops")
@@ -70,13 +76,16 @@ class ConfigManager:
                             api = testops.get("api")
 
                             if api.get("host"):
-                                self.config.testops.api.set_host(api.get("host"))
+                                self.config.testops.api.set_host(
+                                    api.get("host"))
 
                             if api.get("token"):
-                                self.config.testops.api.set_token(api.get("token"))
+                                self.config.testops.api.set_token(
+                                    api.get("token"))
 
                         if testops.get("project"):
-                            self.config.testops.set_project(testops.get("project"))
+                            self.config.testops.set_project(
+                                testops.get("project"))
 
                         if testops.get("defect") is not None:
                             self.config.testops.set_defect(
@@ -96,21 +105,28 @@ class ConfigManager:
                                 self.config.testops.run.set_id(run.get("id"))
 
                             if run.get("title"):
-                                self.config.testops.run.set_title(run.get("title"))
+                                self.config.testops.run.set_title(
+                                    run.get("title"))
 
                             if run.get("description"):
-                                self.config.testops.run.set_description(run.get("description"))
+                                self.config.testops.run.set_description(
+                                    run.get("description"))
 
                             if run.get("complete") is not None:
                                 self.config.testops.run.set_complete(
                                     run.get("complete")
                                 )
 
+                            if run.get("tags"):
+                                self.config.testops.run.set_tags(
+                                    [tag.strip() for tag in run.get("tags")])
+
                         if testops.get("batch"):
                             batch = testops.get("batch")
 
                             if batch.get("size"):
-                                self.config.testops.batch.set_size(batch.get("size"))
+                                self.config.testops.batch.set_size(
+                                    batch.get("size"))
 
                     if config.get("report"):
                         report = config.get("report")
@@ -122,7 +138,8 @@ class ConfigManager:
                             connection = report.get("connection")
 
                             if connection.get("path"):
-                                self.config.report.connection.set_path(connection.get("path"))
+                                self.config.report.connection.set_path(
+                                    connection.get("path"))
 
                             if connection.get("format"):
                                 self.config.report.connection.set_format(
@@ -177,6 +194,10 @@ class ConfigManager:
                 if key == 'QASE_DEBUG':
                     self.config.set_debug(value)
 
+                if key == 'QASE_EXCLUDE_PARAMS':
+                    self.config.set_exclude_params(
+                        [param.strip() for param in value.split(',')])
+
                 if key == 'QASE_EXECUTION_PLAN_PATH':
                     self.config.execution_plan.set_path(value)
 
@@ -207,6 +228,10 @@ class ConfigManager:
                 if key == 'QASE_TESTOPS_RUN_COMPLETE':
                     self.config.testops.run.set_complete(value)
 
+                if key == 'QASE_TESTOPS_RUN_TAGS':
+                    self.config.testops.run.set_tags(
+                        [tag.strip() for tag in value.split(',')])
+
                 if key == 'QASE_TESTOPS_BATCH_SIZE':
                     self.config.testops.batch.set_size(value)
 
@@ -227,7 +252,6 @@ class ConfigManager:
 
                 if key == 'QASE_PYTEST_XFAIL_STATUS_XPASS':
                     self.config.framework.pytest.xfail_status.set_xpass(value)
-
 
         except Exception as e:
             self.logger.log("Failed to load config from env vars {e}", "error")
