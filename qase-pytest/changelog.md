@@ -1,3 +1,10 @@
+# qase-pytest 6.3.3
+
+## What's new
+
+- Added support for test run tags.
+- Added support for excluding parameters from test results.
+
 # qase-pytest 6.3.2
 
 ## What's new

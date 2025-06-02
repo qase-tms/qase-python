@@ -86,11 +86,13 @@ class QasePytestPlugin:
                     if len(mark.args) != 0:
                         param_name, values = mark.args
                         if ',' in param_name:
-                            grouped_params.append([item.strip() for item in param_name.split(',')])
+                            grouped_params.append(
+                                [item.strip() for item in param_name.split(',')])
                     else:
                         param_name = mark.kwargs.get('argnames')
                         if ',' in param_name:
-                            grouped_params.append([item.strip() for item in param_name.split(',')])
+                            grouped_params.append(
+                                [item.strip() for item in param_name.split(',')])
 
             # Attach the captured params to the test item
             item._grouped_params = grouped_params
@@ -280,7 +282,8 @@ class QasePytestPlugin:
 
     def finish_pytest_item(self):
         self.runtime.result.execution.complete()
-        self.runtime.result.add_steps([step for key, step in self.runtime.steps.items()])
+        self.runtime.result.add_steps(
+            [step for key, step in self.runtime.steps.items()])
         self.reporter.add_result(self.runtime.result)
 
         self.runtime.clear()
@@ -304,7 +307,8 @@ class QasePytestPlugin:
                 mime = mimetypes.guess_type(file)[0]
                 filename = QaseUtils.get_filename(file_path)
 
-            attachment = Attachment(file_name=filename, content=content, mime_type=mime, file_path=file_path)
+            attachment = Attachment(
+                file_name=filename, content=content, mime_type=mime, file_path=file_path)
             self.runtime.add_attachment(attachment)
 
     def add_param(self, name: str, value: str):
@@ -339,11 +343,8 @@ class QasePytestPlugin:
         return str(title)
 
     def _get_signature(self, item):
-        self.runtime.result.signature = item.nodeid.replace("/", "::")
-        if self.runtime.result.testops_ids:
-            self.runtime.result.signature += f"::{'-'.join(map(str, self.runtime.result.testops_ids))}"
-        for key, val in self.runtime.result.params.items():
-            self.runtime.result.signature += f"::{{{key}:{val}}}"
+        self.runtime.result.signature = QaseUtils.get_signature(
+            self.runtime.result.testops_ids, item.nodeid.split("/"), self.runtime.result.params)
 
     def _set_relations(self, item) -> None:
         # TODO: Add support for relations
@@ -353,12 +354,14 @@ class QasePytestPlugin:
         # Legacy fields support
         for name in ["description", "preconditions", "postconditions", "layer", "severity", "priority", "suite"]:
             try:
-                self.runtime.result.add_field(Field(name, item.get_closest_marker("qase_" + name).kwargs.get(name)))
+                self.runtime.result.add_field(
+                    Field(name, item.get_closest_marker("qase_" + name).kwargs.get(name)))
             except:
                 pass
 
         try:
-            fields = item.get_closest_marker("qase_fields").kwargs.get("fields")
+            fields = item.get_closest_marker(
+                "qase_fields").kwargs.get("fields")
             for name, field in fields:
                 self.runtime.result.add_field(Field(name, field))
         except:
@@ -366,7 +369,8 @@ class QasePytestPlugin:
 
     def _set_author(self, item) -> None:
         try:
-            author = str(item.get_closest_marker("qase_author").kwargs.get("author"))
+            author = str(item.get_closest_marker(
+                "qase_author").kwargs.get("author"))
             if author != "None":
                 self.runtime.result.add_field(Field("author", author))
         except:
@@ -382,7 +386,8 @@ class QasePytestPlugin:
 
     def _set_testops_ids(self, item) -> None:
         try:
-            self.runtime.result.testops_ids = QasePytestPlugin._get_qase_ids(item)
+            self.runtime.result.testops_ids = QasePytestPlugin._get_qase_ids(
+                item)
         except:
             pass
 
@@ -395,7 +400,8 @@ class QasePytestPlugin:
                     param_name = mark.kwargs.get('argnames')
                     if param_name:
                         if ',' in param_name:
-                            ignored_params.update([p.strip() for p in param_name.split(',')])
+                            ignored_params.update(
+                                [p.strip() for p in param_name.split(',')])
                         else:
                             ignored_params.add(param_name)
 
@@ -424,15 +430,18 @@ class QasePytestPlugin:
     def _set_suite(self, item) -> None:
         marker = item.get_closest_marker("qase_suite")
         if marker:
-            self.runtime.result.relations = self.__prepare_relations(marker.kwargs.get("title").split('.'))
+            self.runtime.result.relations = self.__prepare_relations(
+                marker.kwargs.get("title").split('.'))
             return
         self._get_suite(item)
 
     def _get_suite(self, item):
-        path, class_name, tail = islice(chain(item.nodeid.split('::'), [None], [None]), 3)
+        path, class_name, tail = islice(
+            chain(item.nodeid.split('::'), [None], [None]), 3)
 
         class_name = class_name if tail else None
-        file_name, file_path = islice(chain(reversed(path.rsplit('/', 1)), [None]), 2)
+        file_name, file_path = islice(
+            chain(reversed(path.rsplit('/', 1)), [None]), 2)
 
         module = file_name.split('.')[0]
 
@@ -444,7 +453,8 @@ class QasePytestPlugin:
         if class_name:
             title += '.' + class_name
 
-        self.runtime.result.relations = self.__prepare_relations(title.split('.'))
+        self.runtime.result.relations = self.__prepare_relations(
+            title.split('.'))
 
     @staticmethod
     def __prepare_relations(suites: []):
@@ -457,11 +467,13 @@ class QasePytestPlugin:
 
     @staticmethod
     def __build_folder_name(item):
-        path_parts = [QasePytestPlugin.__sanitize_path_component(item.location[0])]
+        path_parts = [
+            QasePytestPlugin.__sanitize_path_component(item.location[0])]
 
         if '.' in item.location[2]:
             path_parts.append(
-                QasePytestPlugin.__sanitize_path_component(item.location[2].split('.')[0])
+                QasePytestPlugin.__sanitize_path_component(
+                    item.location[2].split('.')[0])
             )
 
         path_parts.append(

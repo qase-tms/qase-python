@@ -1,5 +1,5 @@
 import uuid
-from typing import Tuple, Union, List, Any, Callable
+from typing import Sequence, Tuple, Union, List, Any, Callable
 
 import pytest
 
@@ -260,7 +260,7 @@ class qase:
             raise e
 
     @staticmethod
-    def parametrize_ignore(argnames: Union[str, List[str]], argvalues: List[Any], ids: List[str] = None):
+    def parametrize_ignore(argnames: Union[str, Sequence[str]], argvalues: List[Any], ids: List[str] = None):
         """
         Extended version of pytest.mark.parametrize that prevents parameter collection for Qase reports.
         The test will still be reported, but without parameter values.

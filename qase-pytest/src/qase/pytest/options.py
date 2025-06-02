@@ -38,6 +38,14 @@ class QasePytestOptions:
         QasePytestOptions.add_option(
             parser,
             group,
+            "--qase-exclude-params",
+            dest="qase_exclude_params",
+            help="Exclude params from test results"
+        )
+
+        QasePytestOptions.add_option(
+            parser,
+            group,
             "--qase-execution-plan-path",
             dest="qase_execution_plan_path",
             help="Path to file with execution plan"
@@ -81,6 +89,14 @@ class QasePytestOptions:
             "--qase-testops-run-id",
             dest="qase_testops_run_id",
             help="Test Run ID in Qase TestOps"
+        )
+
+        QasePytestOptions.add_option(
+            parser,
+            group,
+            "--qase-testops-run-tags",
+            dest="qase_testops_run_tags",
+            help="Test Run tags in Qase TestOps"
         )
 
         QasePytestOptions.add_option(
