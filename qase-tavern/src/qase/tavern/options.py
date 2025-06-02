@@ -38,6 +38,14 @@ class QasePytestOptions:
         QasePytestOptions.add_option(
             parser,
             group,
+            "--qase-exclude-params",
+            dest="qase_exclude_params",
+            help="Comma-separated list of parameter names to exclude from test results"
+        )
+
+        QasePytestOptions.add_option(
+            parser,
+            group,
             "--qase-execution-plan-path",
             dest="qase_execution_plan_path",
             help="Path to file with execution plan"
@@ -124,6 +132,14 @@ class QasePytestOptions:
             dest="qase_testops_defect",
             type="bool",
             help="Create defect if test failed"
+        )
+
+        QasePytestOptions.add_option(
+            parser,
+            group,
+            "--qase-testops-run-tags",
+            dest="qase_testops_run_tags",
+            help="Comma-separated list of tags to add to the test run"
         )
 
         QasePytestOptions.add_option(

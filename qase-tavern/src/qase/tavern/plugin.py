@@ -6,6 +6,7 @@ from typing import Tuple, List
 from qase.commons.models import Runtime, Result, Relation, Attachment
 from qase.commons.models.relation import SuiteData
 from qase.commons.models.step import Step, StepType, StepTextData
+from qase.commons.utils import QaseUtils
 
 
 class QasePytestPlugin:
@@ -127,11 +128,11 @@ class QasePytestPlugin:
         return step
 
     def _get_signature(self, item):
-        self.runtime.result.signature = item.nodeid.replace("/", "::")
-        if self.runtime.result.testops_ids:
-            self.runtime.result.signature += f"::{'-'.join(map(str,self.runtime.result.testops_ids))}"
-        for key, val in self.runtime.result.params.items():
-            self.runtime.result.signature += f"::{{{key}:{val}}}"
+        self.runtime.result.signature = QaseUtils.get_signature(
+            self.runtime.result.testops_ids,
+            [suite.title for suite in self.runtime.result.relations.suite.data] + [self._get_title(item)],
+            self.runtime.result.params
+        )
 
     @staticmethod
     def extract_qase_ids(text) -> Tuple[List[int], str]:
