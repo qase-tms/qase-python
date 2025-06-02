@@ -20,7 +20,7 @@ and command line options override both other values.
 | Qase environment                          | `environment`              | `QASE_ENVIRONMENT`              | `--qase-environment`              | `local`                                 | No       | Any string                 |
 | Root suite                                | `rootSuite`                | `QASE_ROOT_SUITE`               | `--qase-root-suite`               |                                         | No       | Any string                 |
 | Debug logs                                | `debug`                    | `QASE_DEBUG`                    | `--qase-debug`                    | false                                   | No       | `true`, `false`            |
-| Exclude parameters from test results      | `exclude.params`           | `QASE_EXCLUDE_PARAMS`           | `--qase-exclude-params`           | None                                    | No       | Comma-separated list of parameter names |
+| Exclude parameters from test results      | `excludeParams`           | `QASE_EXCLUDE_PARAMS`           | `--qase-exclude-params`           | None                                    | No       | Comma-separated list of parameter names |
 | **Qase TestOps mode configuration**       |
 | Qase project code                         | `testops.project`          | `QASE_TESTOPS_PROJECT`          | `--qase-testops-project`          |                                         | Yes      | Any string                 |
 | Qase API token                            | `testops.api.token`        | `QASE_TESTOPS_API_TOKEN`        | `--qase-testops-api-token`        |                                         | Yes      | Any string                 |

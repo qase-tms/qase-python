@@ -17,7 +17,7 @@ Environment variables override the values given in the config file.
 | Execution plan path                       | `executionPlan.path`       | `QASE_EXECUTION_PLAN_PATH`      | `./build/qase-execution-plan.json`      | No       | Any string                 |
 | Qase environment                          | `environment`              | `QASE_ENVIRONMENT`              | `local`                                 | No       | Any string                 |
 | Root suite                                | `rootSuite`                | `QASE_ROOT_SUITE`               |                                         | No       | Any string                 |
-| Exclude parameters from test results      | `exclude.params`           | `QASE_EXCLUDE_PARAMS`           | None, don't exclude any parameters      | No       | Comma-separated list of parameter names |
+| Exclude parameters from test results      | `excludeParams`           | `QASE_EXCLUDE_PARAMS`           | None, don't exclude any parameters      | No       | Comma-separated list of parameter names |
 | **Qase TestOps mode configuration**       |
 | Qase project code                         | `testops.project`          | `QASE_TESTOPS_PROJECT`          |                                         | Yes      | Any string                 |
 | Qase API token                            | `testops.api.token`        | `QASE_TESTOPS_API_TOKEN`        |                                         | Yes      | Any string                 |
