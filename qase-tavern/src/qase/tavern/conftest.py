@@ -80,6 +80,10 @@ def setup_config_manager(config):
             if option == "qase_debug" and config.option.__dict__[option] is not None:
                 config_manager.config.set_debug(config.option.__dict__[option])
 
+            if option == "qase_exclude_params" and config.option.__dict__[option] is not None:
+                config_manager.config.set_exclude_params(
+                    [param.strip() for param in config.option.__dict__[option].split(',')])
+
             if option == "qase_execution_plan_path" and config.option.__dict__[option] is not None:
                 config_manager.config.execution_plan.set_path(config.option.__dict__[option])
 
@@ -106,6 +110,10 @@ def setup_config_manager(config):
 
             if option == "qase_testops_run_complete" and config.option.__dict__[option] is not None:
                 config_manager.config.testops.run.set_complete(config.option.__dict__[option])
+
+            if option == "qase_testops_run_tags" and config.option.__dict__[option] is not None:
+                config_manager.config.testops.run.set_tags(
+                    [tag.strip() for tag in config.option.__dict__[option].split(',')])
 
             if option == "qase_testops_defect" and config.option.__dict__[option] is not None:
                 config_manager.config.testops.set_defect(config.option.__dict__[option])
