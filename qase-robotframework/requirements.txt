@@ -1,2 +1,2 @@
-qase-python-commons~=3.4.0
+qase-python-commons~=3.5.0
 robotframework~=7.1

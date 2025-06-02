@@ -17,6 +17,7 @@ Environment variables override the values given in the config file.
 | Execution plan path                       | `executionPlan.path`       | `QASE_EXECUTION_PLAN_PATH`      | `./build/qase-execution-plan.json`      | No       | Any string                 |
 | Qase environment                          | `environment`              | `QASE_ENVIRONMENT`              | `local`                                 | No       | Any string                 |
 | Root suite                                | `rootSuite`                | `QASE_ROOT_SUITE`               |                                         | No       | Any string                 |
+| Exclude parameters from test results      | `exclude.params`           | `QASE_EXCLUDE_PARAMS`           | None, don't exclude any parameters      | No       | Comma-separated list of parameter names |
 | **Qase TestOps mode configuration**       |
 | Qase project code                         | `testops.project`          | `QASE_TESTOPS_PROJECT`          |                                         | Yes      | Any string                 |
 | Qase API token                            | `testops.api.token`        | `QASE_TESTOPS_API_TOKEN`        |                                         | Yes      | Any string                 |
@@ -28,6 +29,7 @@ Environment variables override the values given in the config file.
 | ID of the Qase test run to report results | `testops.run.id`           | `QASE_TESTOPS_RUN_ID`           | None, create a new test run             | No       | Any integer                |
 | Batch size for uploading test results     | `testops.batch.size`       | `QASE_TESTOPS_BATCH_SIZE`       | 200                                     | No       | 1 to 2000                  |
 | Create defects in Qase                    | `testops.defect`           | `QASE_TESTOPS_DEFECT`           | `False`, don't create defects           | No       | `True`, `False`            |
+| Test run tags                             | `testops.run.tags`         | `QASE_TESTOPS_RUN_TAGS`         | None, don't add any tags                | No       | Comma-separated list of tags |
 | **Qase Report mode configuration**        |
 | Local path to store report                | `report.connection.path`   | `QASE_REPORT_CONNECTION_PATH`   | `./build/qase-report`                   | No       | Any string                 |
 | Report format                             | `report.connection.format` | `QASE_REPORT_CONNECTION_FORMAT` | `json`                                  | No       | `json`, `jsonp`            |

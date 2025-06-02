@@ -9,6 +9,7 @@ from qase.commons.models.relation import SuiteData
 from qase.commons.models.step import StepType, StepGherkinData
 from qase.commons.reporters import QaseCoreReporter
 from robot.libraries.BuiltIn import BuiltIn
+from qase.commons.utils import QaseUtils
 
 from .filter import Filter
 from .plugin import QaseRuntimeSingleton
@@ -34,7 +35,8 @@ class Listener:
 
     def __init__(self):
         config = ConfigManager()
-        self.reporter = QaseCoreReporter(config, 'robotframework', 'qase-robotframework')
+        self.reporter = QaseCoreReporter(
+            config, 'robotframework', 'qase-robotframework')
         self.runtime = QaseRuntimeSingleton.get_instance()
         self.tests = {}
         self.pabot_index = None
@@ -123,13 +125,12 @@ class Listener:
                 relations.add_suite(SuiteData(suite))
             self.runtime.result.relations = relations
 
-            signature = "::".join(
-                suite.lower().replace(" ", "_") for suite in suites) + f"::{test.name.lower().replace(' ', '_')}"
-
-            if self.runtime.result.testops_ids:
-                signature += f"::{'-'.join(map(str, self.runtime.result.testops_ids))}"
-
-            self.runtime.result.signature = signature
+            self.runtime.result.signature = QaseUtils.get_signature(
+                self.runtime.result.testops_ids,
+                [suite.lower().replace(" ", "_") for suite in suites] +
+                [test.name.lower().replace(" ", "_")],
+                self.runtime.result.params
+            )
 
         self.reporter.add_result(self.runtime.result)
 
@@ -160,7 +161,8 @@ class Listener:
 
         if hasattr(suite, 'suites') and suite.suites:
             for sub_suite in suite.suites:
-                test_dict.update(self.__extract_tests_with_suites(sub_suite, current_suites))
+                test_dict.update(self.__extract_tests_with_suites(
+                    sub_suite, current_suites))
 
         if hasattr(suite, 'tests') and suite.tests:
             for test in suite.tests:
