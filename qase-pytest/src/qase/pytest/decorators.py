@@ -260,7 +260,12 @@ class qase:
             raise e
 
     @staticmethod
-    def parametrize_ignore(argnames: Union[str, Sequence[str]], argvalues: List[Any], ids: List[str] = None):
+    def parametrize_ignore(
+        argnames: Union[str, Sequence[str]],
+        argvalues: List[Any],
+        ids: List[str] = None,
+        indirect: Union[bool, List[str]] = False
+    ):
         """
         Extended version of pytest.mark.parametrize that prevents parameter collection for Qase reports.
         The test will still be reported, but without parameter values.
@@ -268,7 +273,8 @@ class qase:
         >>> @qase.parametrize_ignore(
         ...     "test_input,expected",
         ...     [("3+5", 8), ("2+4", 6), ("6*9", 42)],
-        ...     ids=["add_3_5", "add_2_4", "multiply_6_9"]
+        ...     ids=["add_3_5", "add_2_4", "multiply_6_9"],
+        ...     indirect=True
         ... )
         >>> def test_eval(test_input, expected):
         ...     assert eval(test_input) == expected
@@ -276,10 +282,14 @@ class qase:
         :param argnames: A comma-separated string or list of strings denoting one or more argument names
         :param argvalues: The list of argvalues to use for the parametrized test
         :param ids: Optional list of test IDs
+        :param indirect: If True, argvalues will be passed as keyword arguments to the test function.
+            If a list, it should contain the names of arguments that should be treated as indirect parameters.
         :return: pytest.mark instance
         """
         def decorator(func):
-            func = pytest.mark.parametrize(argnames, argvalues, ids=ids)(func)
+            func = pytest.mark.parametrize(
+                argnames, argvalues, ids=ids, indirect=indirect)(func)
             func = pytest.mark.qase_parametrize_ignore(argnames=argnames)(func)
             return func
+
         return decorator
