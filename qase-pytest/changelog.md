@@ -1,3 +1,9 @@
+# qase-pytest 6.3.4
+
+## What's new
+
+- Added support for indirect parameters in `qase.parametrize_ignore` decorator.
+
 # qase-pytest 6.3.3
 
 ## What's new
