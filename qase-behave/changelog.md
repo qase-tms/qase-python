@@ -1,3 +1,9 @@
+# qase-behave 1.1.2
+
+## What's new
+
+- Fixed an issue with the start time of the step execution.
+
 # qase-behave 1.1.1
 
 ## What's new
