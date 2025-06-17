@@ -1,5 +1,7 @@
+import datetime
 import json
 import os
+import time
 import uuid
 from typing import List
 
@@ -108,8 +110,10 @@ def parse_step(step: Step) -> QaseStep:
         data=StepGherkinData(keyword=step.keyword, name=step.name, line=step.line)
     )
 
+    current_time = time.time()
     model.execution.set_status(step.status.name)
+    model.execution.start_time = current_time - step.duration
     model.execution.duration = int(step.duration * 1000)
-    model.execution.end_time = model.execution.start_time + int(step.duration * 1000)
+    model.execution.end_time = current_time
 
     return model
