@@ -127,6 +127,9 @@ class QaseTestOps:
     def complete_worker(self) -> None:
         if len(self.results) > 0:
             self._send_results()
+        while self.count_running_threads > 0:
+            pass
+        self.logger.log_debug("Worker completed")
 
     def add_result(self, result: Result) -> None:
         if result.get_status() == 'failed':
@@ -148,7 +151,7 @@ class QaseTestOps:
     def __prepare_link(self, ids: Union[None, List[int]], title: str):
         link = f"{self.__baseUrl}/run/{self.project_code}/dashboard/{self.run_id}?source=logs&status=%5B2%5D&search="
         if ids is not None and len(ids) > 0:
-            return f"{link}{ids[0]}"
+            return f"{link}{self.project_code}-{ids[0]}"
         return f"{link}{urllib.parse.quote_plus(title)}"
 
     @staticmethod

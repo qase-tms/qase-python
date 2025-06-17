@@ -1,3 +1,9 @@
+# qase-python-commons@3.5.1
+
+## What's new
+
+- Fixed an issue where the test run was being completed before the results were uploaded.
+
 # qase-python-commons@3.5.0
 
 ## What's new
