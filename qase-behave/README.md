@@ -7,7 +7,7 @@
 To install the latest version, run:
 
 ```sh
-pip install pre qase-behave
+pip install qase-behave
 ```
 
 ## Getting started
