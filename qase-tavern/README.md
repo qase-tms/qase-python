@@ -22,6 +22,8 @@ from Qase.io before executing tests. It's a more reliable way to bind
 autotests to test cases, that persists when you rename, move, or
 parameterize your tests.
 
+For detailed instructions on using annotations and methods, refer to [Usage](docs/usage.md).
+
 For example:
 
 ```yaml

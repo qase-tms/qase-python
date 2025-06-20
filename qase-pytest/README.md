@@ -69,6 +69,8 @@ Configuration options are described in the
 
 ## Usage
 
+For detailed instructions on using annotations and methods, refer to [Usage](docs/usage.md).
+
 ### Link tests with test cases in Qase TestOps
 
 To link the automated tests with the test cases in Qase TestOps, use the `@qase.id()` decorator.

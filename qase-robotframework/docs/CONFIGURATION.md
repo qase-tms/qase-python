@@ -21,7 +21,7 @@ Environment variables override the values given in the config file.
 | **Qase TestOps mode configuration**       |
 | Qase project code                         | `testops.project`          | `QASE_TESTOPS_PROJECT`          |                                         | Yes      | Any string                 |
 | Qase API token                            | `testops.api.token`        | `QASE_TESTOPS_API_TOKEN`        |                                         | Yes      | Any string                 |
-| Qase API host                             | `testops.api.host`         | `QASE_TESTOPS_API_HOST`         | `qase.io`                               | No       | Any string                 |
+| Qase API host. For enterprise users, specify address: `example.qase.io`                            | `testops.api.host`         | `QASE_TESTOPS_API_HOST`         | `qase.io`                               | No       | Any string                 |
 | Title of the Qase test run                | `testops.run.title`        | `QASE_TESTOPS_RUN_TITLE`        | `Automated Run {current date and time}` | No       | Any string                 |
 | Description of the Qase test run          | `testops.run.description`  | `QASE_TESTOPS_RUN_DESCRIPTION`  | None, leave empty                       | No       | Any string                 |
 | Create test run using a test plan         | `testops.plan.id`          | `QASE_TESTOPS_PLAN_ID`          | None, don't use plans for the test run  | No       | Any integer                |

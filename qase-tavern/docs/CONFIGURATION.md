@@ -24,7 +24,7 @@ and command line options override both other values.
 | **Qase TestOps mode configuration**       |
 | Qase project code                         | `testops.project`          | `QASE_TESTOPS_PROJECT`          | `--qase-testops-project`          |                                         | Yes      | Any string                 |
 | Qase API token                            | `testops.api.token`        | `QASE_TESTOPS_API_TOKEN`        | `--qase-testops-api-token`        |                                         | Yes      | Any string                 |
-| Qase API host                             | `testops.api.host`         | `QASE_TESTOPS_API_HOST`         | `--qase-testops-api-host`         | `qase.io`                               | No       | Any string                 |
+| Qase API host. For enterprise users, specify address: `example.qase.io`                             | `testops.api.host`         | `QASE_TESTOPS_API_HOST`         | `--qase-testops-api-host`         | `qase.io`                               | No       | Any string                 |
 | Title of the Qase test run                | `testops.run.title`        | `QASE_TESTOPS_RUN_TITLE`        | `--qase-testops-run-title`        | `Automated Run {current date and time}` | No       | Any string                 |
 | Description of the Qase test run          | `testops.run.description`  | `QASE_TESTOPS_RUN_DESCRIPTION`  | `--qase-testops-run-description`  | None, leave empty                       | No       | Any string                 |
 | Create test run using a test plan         | `testops.plan.id`          | `QASE_TESTOPS_PLAN_ID`          | `--qase-testops-plan-id`          | None, don't use plans for the test run  | No       | Any integer                |
