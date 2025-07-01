@@ -1,3 +1,37 @@
+# qase-behave 1.1.3
+
+## What's new
+
+- Added support for file and content attachments to test results using `qase.attach()` method.
+- Added support for adding comments to test results using `qase.comment()` method.
+- Improved MIME type detection for attachments.
+- Updated documentation with examples and usage instructions.
+
+### Attachment Usage
+
+```python
+from qase.behave import qase
+
+# Attach a file
+qase.attach(file_path="/path/to/file.txt")
+
+# Attach content directly
+qase.attach(content="test data", file_name="data.txt")
+
+# Attach binary data
+qase.attach(content=b"binary data", file_name="screenshot.png", mime_type="image/png")
+```
+
+### Comment Usage
+
+```python
+from qase.behave import qase
+
+# Add comments to test results
+qase.comment("Test completed successfully")
+qase.comment("Debug info: user logged in")
+```
+
 # qase-behave 1.1.2
 
 ## What's new

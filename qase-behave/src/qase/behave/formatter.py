@@ -4,6 +4,7 @@ from qase.commons import ConfigManager
 from qase.commons.reporters import QaseCoreReporter
 
 from qase.behave.utils import filter_scenarios, parse_scenario, parse_step
+from qase.behave.qase_global import qase
 
 
 class QaseFormatter(Formatter):
@@ -38,6 +39,8 @@ class QaseFormatter(Formatter):
             self.reporter.add_result(self.__current_scenario)
             self.__current_scenario = None
         self.__current_scenario = parse_scenario(scenario)
+        # Update global qase object with current scenario
+        qase._set_current_scenario(self.__current_scenario)
         pass
 
     def result(self, result: Step):
