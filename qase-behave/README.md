@@ -31,6 +31,8 @@ parameterize your tests.
 
 For detailed instructions on using annotations and methods, refer to [Usage](docs/usage.md).
 
+For information about attaching files and content or adding comments to test results, see [Attachments](docs/ATTACHMENTS.md).
+
 For example:
 
 ```gherkin
@@ -106,4 +108,3 @@ We maintain the reporter on [LTS versions of Python](https://devguide.python.org
 
 <!-- references -->
 
-[auth]: https://developers.qase.io/#authentication
