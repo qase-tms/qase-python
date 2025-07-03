@@ -9,6 +9,8 @@ Method | HTTP request | Description
 [**delete_run**](RunsApi.md#delete_run) | **DELETE** /run/{code}/{id} | Delete run
 [**get_run**](RunsApi.md#get_run) | **GET** /run/{code}/{id} | Get a specific run
 [**get_runs**](RunsApi.md#get_runs) | **GET** /run/{code} | Get all runs
+[**run_update_external_issue**](RunsApi.md#run_update_external_issue) | **POST** /run/{code}/external-issue | Update external issues for runs
+[**update_run**](RunsApi.md#update_run) | **PATCH** /run/{code}/{id} | Update a specific run
 [**update_run_publicity**](RunsApi.md#update_run_publicity) | **PATCH** /run/{code}/{id}/public | Update publicity of a specific run
 
 
@@ -313,7 +315,7 @@ with qase.api_client_v1.ApiClient(configuration) as api_client:
     api_instance = qase.api_client_v1.RunsApi(api_client)
     code = 'code_example' # str | Code of project, where to search entities.
     id = 56 # int | Identifier.
-    include = 'include_example' # str | Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects  (optional)
+    include = 'include_example' # str | Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects, external_issue  (optional)
 
     try:
         # Get a specific run
@@ -333,7 +335,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **code** | **str**| Code of project, where to search entities. | 
  **id** | **int**| Identifier. | 
- **include** | **str**| Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects  | [optional] 
+ **include** | **str**| Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects, external_issue  | [optional] 
 
 ### Return type
 
@@ -408,7 +410,7 @@ with qase.api_client_v1.ApiClient(configuration) as api_client:
     to_start_time = 56 # int |  (optional)
     limit = 10 # int | A number of entities in result set. (optional) (default to 10)
     offset = 0 # int | How many entities should be skipped. (optional) (default to 0)
-    include = 'include_example' # str | Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects  (optional)
+    include = 'include_example' # str | Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects, external_issue  (optional)
 
     try:
         # Get all runs
@@ -435,7 +437,7 @@ Name | Type | Description  | Notes
  **to_start_time** | **int**|  | [optional] 
  **limit** | **int**| A number of entities in result set. | [optional] [default to 10]
  **offset** | **int**| How many entities should be skipped. | [optional] [default to 0]
- **include** | **str**| Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects  | [optional] 
+ **include** | **str**| Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects, external_issue  | [optional] 
 
 ### Return type
 
@@ -455,6 +457,179 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of all runs. |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**429** | Too Many Requests. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **run_update_external_issue**
+> run_update_external_issue(code, runexternal_issues)
+
+Update external issues for runs
+
+This method allows you to update links between test runs and external issues (such as Jira tickets).  You can use this endpoint to: - Link test runs to external issues by providing the external issue identifier (e.g., \"PROJ-1234\") - Update existing links by providing a new external issue identifier - Remove existing links by setting the external_issue field to null  **Important**: Each test run can have only one link with an external issue. If a test run already has an external issue link, providing a new external_issue value will replace the existing link.  The endpoint supports both Jira Cloud and Jira Server integrations. Each request can update multiple test run links in a single operation. 
+
+### Example
+
+* Api Key Authentication (TokenAuth):
+
+```python
+import qase.api_client_v1
+from qase.api_client_v1.models.runexternal_issues import RunexternalIssues
+from qase.api_client_v1.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://api.qase.io/v1
+# See configuration.py for a list of all supported configuration parameters.
+configuration = qase.api_client_v1.Configuration(
+    host = "https://api.qase.io/v1"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: TokenAuth
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['TokenAuth'] = 'Bearer'
+
+# Enter a context with an instance of the API client
+with qase.api_client_v1.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = qase.api_client_v1.RunsApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    runexternal_issues = qase.api_client_v1.RunexternalIssues() # RunexternalIssues | 
+
+    try:
+        # Update external issues for runs
+        api_instance.run_update_external_issue(code, runexternal_issues)
+    except Exception as e:
+        print("Exception when calling RunsApi->run_update_external_issue: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **code** | **str**| Code of project, where to search entities. | 
+ **runexternal_issues** | [**RunexternalIssues**](RunexternalIssues.md)|  | 
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+[TokenAuth](../README.md#TokenAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: Not defined
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK. |  -  |
+**400** | Bad Request. |  -  |
+**401** | Unauthorized. |  -  |
+**403** | Forbidden. |  -  |
+**404** | Not Found. |  -  |
+**429** | Too Many Requests. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **update_run**
+> BaseResponse update_run(code, id, runupdate)
+
+Update a specific run
+
+This method allows to update a specific run. 
+
+### Example
+
+* Api Key Authentication (TokenAuth):
+
+```python
+import qase.api_client_v1
+from qase.api_client_v1.models.base_response import BaseResponse
+from qase.api_client_v1.models.runupdate import Runupdate
+from qase.api_client_v1.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://api.qase.io/v1
+# See configuration.py for a list of all supported configuration parameters.
+configuration = qase.api_client_v1.Configuration(
+    host = "https://api.qase.io/v1"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: TokenAuth
+configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['TokenAuth'] = 'Bearer'
+
+# Enter a context with an instance of the API client
+with qase.api_client_v1.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = qase.api_client_v1.RunsApi(api_client)
+    code = 'code_example' # str | Code of project, where to search entities.
+    id = 56 # int | Identifier.
+    runupdate = qase.api_client_v1.Runupdate() # Runupdate | 
+
+    try:
+        # Update a specific run
+        api_response = api_instance.update_run(code, id, runupdate)
+        print("The response of RunsApi->update_run:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling RunsApi->update_run: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **code** | **str**| Code of project, where to search entities. | 
+ **id** | **int**| Identifier. | 
+ **runupdate** | [**Runupdate**](Runupdate.md)|  | 
+
+### Return type
+
+[**BaseResponse**](BaseResponse.md)
+
+### Authorization
+
+[TokenAuth](../README.md#TokenAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | A result. |  -  |
 **400** | Bad Request. |  -  |
 **401** | Unauthorized. |  -  |
 **403** | Forbidden. |  -  |

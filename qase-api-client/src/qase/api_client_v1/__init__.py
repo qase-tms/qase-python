@@ -144,6 +144,7 @@ from qase.api_client_v1.models.resultcreate_bulk import ResultcreateBulk
 from qase.api_client_v1.models.run import Run
 from qase.api_client_v1.models.run_create import RunCreate
 from qase.api_client_v1.models.run_environment import RunEnvironment
+from qase.api_client_v1.models.run_external_issue import RunExternalIssue
 from qase.api_client_v1.models.run_list_response import RunListResponse
 from qase.api_client_v1.models.run_list_response_all_of_result import RunListResponseAllOfResult
 from qase.api_client_v1.models.run_milestone import RunMilestone
@@ -153,6 +154,9 @@ from qase.api_client_v1.models.run_public_response_all_of_result import RunPubli
 from qase.api_client_v1.models.run_query import RunQuery
 from qase.api_client_v1.models.run_response import RunResponse
 from qase.api_client_v1.models.run_stats import RunStats
+from qase.api_client_v1.models.runexternal_issues import RunexternalIssues
+from qase.api_client_v1.models.runexternal_issues_links_inner import RunexternalIssuesLinksInner
+from qase.api_client_v1.models.runupdate import Runupdate
 from qase.api_client_v1.models.search_response import SearchResponse
 from qase.api_client_v1.models.search_response_all_of_result import SearchResponseAllOfResult
 from qase.api_client_v1.models.search_response_all_of_result_entities import SearchResponseAllOfResultEntities

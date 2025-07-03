@@ -23,6 +23,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, Strict
 from typing import Any, ClassVar, Dict, List, Optional
 from qase.api_client_v1.models.custom_field_value import CustomFieldValue
 from qase.api_client_v1.models.run_environment import RunEnvironment
+from qase.api_client_v1.models.run_external_issue import RunExternalIssue
 from qase.api_client_v1.models.run_milestone import RunMilestone
 from qase.api_client_v1.models.run_stats import RunStats
 from qase.api_client_v1.models.tag_value import TagValue
@@ -51,7 +52,9 @@ class Run(BaseModel):
     tags: Optional[List[TagValue]] = None
     cases: Optional[List[StrictInt]] = None
     plan_id: Optional[StrictInt] = None
-    __properties: ClassVar[List[str]] = ["id", "run_id", "title", "description", "status", "status_text", "start_time", "end_time", "public", "stats", "time_spent", "elapsed_time", "environment", "milestone", "custom_fields", "tags", "cases", "plan_id"]
+    configurations: Optional[List[StrictInt]] = None
+    external_issue: Optional[RunExternalIssue] = None
+    __properties: ClassVar[List[str]] = ["id", "run_id", "title", "description", "status", "status_text", "start_time", "end_time", "public", "stats", "time_spent", "elapsed_time", "environment", "milestone", "custom_fields", "tags", "cases", "plan_id", "configurations", "external_issue"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -115,6 +118,9 @@ class Run(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict['tags'] = _items
+        # override the default output from pydantic by calling `to_dict()` of external_issue
+        if self.external_issue:
+            _dict['external_issue'] = self.external_issue.to_dict()
         # set to None if description (nullable) is None
         # and model_fields_set contains the field
         if self.description is None and "description" in self.model_fields_set:
@@ -145,6 +151,11 @@ class Run(BaseModel):
         if self.plan_id is None and "plan_id" in self.model_fields_set:
             _dict['plan_id'] = None
 
+        # set to None if external_issue (nullable) is None
+        # and model_fields_set contains the field
+        if self.external_issue is None and "external_issue" in self.model_fields_set:
+            _dict['external_issue'] = None
+
         return _dict
 
     @classmethod
@@ -174,7 +185,9 @@ class Run(BaseModel):
             "custom_fields": [CustomFieldValue.from_dict(_item) for _item in obj["custom_fields"]] if obj.get("custom_fields") is not None else None,
             "tags": [TagValue.from_dict(_item) for _item in obj["tags"]] if obj.get("tags") is not None else None,
             "cases": obj.get("cases"),
-            "plan_id": obj.get("plan_id")
+            "plan_id": obj.get("plan_id"),
+            "configurations": obj.get("configurations"),
+            "external_issue": RunExternalIssue.from_dict(obj["external_issue"]) if obj.get("external_issue") is not None else None
         })
         return _obj
 

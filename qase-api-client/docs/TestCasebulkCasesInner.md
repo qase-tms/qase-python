@@ -15,7 +15,6 @@ Name | Type | Description | Notes
 **type** | **int** |  | [optional] 
 **layer** | **int** |  | [optional] 
 **is_flaky** | **int** |  | [optional] 
-**author_id** | **int** |  | [optional] 
 **suite_id** | **int** |  | [optional] 
 **milestone_id** | **int** |  | [optional] 
 **automation** | **int** |  | [optional] 
