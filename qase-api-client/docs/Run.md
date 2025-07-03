@@ -23,6 +23,8 @@ Name | Type | Description | Notes
 **tags** | [**List[TagValue]**](TagValue.md) |  | [optional] 
 **cases** | **List[int]** |  | [optional] 
 **plan_id** | **int** |  | [optional] 
+**configurations** | **List[int]** |  | [optional] 
+**external_issue** | [**RunExternalIssue**](RunExternalIssue.md) |  | [optional] 
 
 ## Example
 

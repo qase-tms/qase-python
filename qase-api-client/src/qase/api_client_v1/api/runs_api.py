@@ -27,6 +27,8 @@ from qase.api_client_v1.models.run_list_response import RunListResponse
 from qase.api_client_v1.models.run_public import RunPublic
 from qase.api_client_v1.models.run_public_response import RunPublicResponse
 from qase.api_client_v1.models.run_response import RunResponse
+from qase.api_client_v1.models.runexternal_issues import RunexternalIssues
+from qase.api_client_v1.models.runupdate import Runupdate
 
 from qase.api_client_v1.api_client import ApiClient, RequestSerialized
 from qase.api_client_v1.api_response import ApiResponse
@@ -934,7 +936,7 @@ class RunsApi:
         self,
         code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
         id: Annotated[StrictInt, Field(description="Identifier.")],
-        include: Annotated[Optional[StrictStr], Field(description="Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects ")] = None,
+        include: Annotated[Optional[StrictStr], Field(description="Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects, external_issue ")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -956,7 +958,7 @@ class RunsApi:
         :type code: str
         :param id: Identifier. (required)
         :type id: int
-        :param include: Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects 
+        :param include: Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects, external_issue 
         :type include: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1014,7 +1016,7 @@ class RunsApi:
         self,
         code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
         id: Annotated[StrictInt, Field(description="Identifier.")],
-        include: Annotated[Optional[StrictStr], Field(description="Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects ")] = None,
+        include: Annotated[Optional[StrictStr], Field(description="Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects, external_issue ")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1036,7 +1038,7 @@ class RunsApi:
         :type code: str
         :param id: Identifier. (required)
         :type id: int
-        :param include: Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects 
+        :param include: Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects, external_issue 
         :type include: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1094,7 +1096,7 @@ class RunsApi:
         self,
         code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
         id: Annotated[StrictInt, Field(description="Identifier.")],
-        include: Annotated[Optional[StrictStr], Field(description="Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects ")] = None,
+        include: Annotated[Optional[StrictStr], Field(description="Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects, external_issue ")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1116,7 +1118,7 @@ class RunsApi:
         :type code: str
         :param id: Identifier. (required)
         :type id: int
-        :param include: Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects 
+        :param include: Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects, external_issue 
         :type include: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1246,7 +1248,7 @@ class RunsApi:
         to_start_time: Optional[StrictInt] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=100, strict=True, ge=1)]], Field(description="A number of entities in result set.")] = None,
         offset: Annotated[Optional[Annotated[int, Field(le=100000, strict=True, ge=0)]], Field(description="How many entities should be skipped.")] = None,
-        include: Annotated[Optional[StrictStr], Field(description="Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects ")] = None,
+        include: Annotated[Optional[StrictStr], Field(description="Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects, external_issue ")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1282,7 +1284,7 @@ class RunsApi:
         :type limit: int
         :param offset: How many entities should be skipped.
         :type offset: int
-        :param include: Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects 
+        :param include: Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects, external_issue 
         :type include: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1354,7 +1356,7 @@ class RunsApi:
         to_start_time: Optional[StrictInt] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=100, strict=True, ge=1)]], Field(description="A number of entities in result set.")] = None,
         offset: Annotated[Optional[Annotated[int, Field(le=100000, strict=True, ge=0)]], Field(description="How many entities should be skipped.")] = None,
-        include: Annotated[Optional[StrictStr], Field(description="Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects ")] = None,
+        include: Annotated[Optional[StrictStr], Field(description="Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects, external_issue ")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1390,7 +1392,7 @@ class RunsApi:
         :type limit: int
         :param offset: How many entities should be skipped.
         :type offset: int
-        :param include: Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects 
+        :param include: Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects, external_issue 
         :type include: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1462,7 +1464,7 @@ class RunsApi:
         to_start_time: Optional[StrictInt] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=100, strict=True, ge=1)]], Field(description="A number of entities in result set.")] = None,
         offset: Annotated[Optional[Annotated[int, Field(le=100000, strict=True, ge=0)]], Field(description="How many entities should be skipped.")] = None,
-        include: Annotated[Optional[StrictStr], Field(description="Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects ")] = None,
+        include: Annotated[Optional[StrictStr], Field(description="Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects, external_issue ")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1498,7 +1500,7 @@ class RunsApi:
         :type limit: int
         :param offset: How many entities should be skipped.
         :type offset: int
-        :param include: Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects 
+        :param include: Include a list of related entities IDs into response. Should be separated by comma. Possible values: cases, defects, external_issue 
         :type include: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1645,6 +1647,617 @@ class RunsApi:
         return self.api_client.param_serialize(
             method='GET',
             resource_path='/run/{code}',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def run_update_external_issue(
+        self,
+        code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
+        runexternal_issues: RunexternalIssues,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> None:
+        """Update external issues for runs
+
+        This method allows you to update links between test runs and external issues (such as Jira tickets).  You can use this endpoint to: - Link test runs to external issues by providing the external issue identifier (e.g., \"PROJ-1234\") - Update existing links by providing a new external issue identifier - Remove existing links by setting the external_issue field to null  **Important**: Each test run can have only one link with an external issue. If a test run already has an external issue link, providing a new external_issue value will replace the existing link.  The endpoint supports both Jira Cloud and Jira Server integrations. Each request can update multiple test run links in a single operation. 
+
+        :param code: Code of project, where to search entities. (required)
+        :type code: str
+        :param runexternal_issues: (required)
+        :type runexternal_issues: RunexternalIssues
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._run_update_external_issue_serialize(
+            code=code,
+            runexternal_issues=runexternal_issues,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': None,
+            '400': None,
+            '401': None,
+            '403': None,
+            '404': None,
+            '429': None,
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def run_update_external_issue_with_http_info(
+        self,
+        code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
+        runexternal_issues: RunexternalIssues,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[None]:
+        """Update external issues for runs
+
+        This method allows you to update links between test runs and external issues (such as Jira tickets).  You can use this endpoint to: - Link test runs to external issues by providing the external issue identifier (e.g., \"PROJ-1234\") - Update existing links by providing a new external issue identifier - Remove existing links by setting the external_issue field to null  **Important**: Each test run can have only one link with an external issue. If a test run already has an external issue link, providing a new external_issue value will replace the existing link.  The endpoint supports both Jira Cloud and Jira Server integrations. Each request can update multiple test run links in a single operation. 
+
+        :param code: Code of project, where to search entities. (required)
+        :type code: str
+        :param runexternal_issues: (required)
+        :type runexternal_issues: RunexternalIssues
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._run_update_external_issue_serialize(
+            code=code,
+            runexternal_issues=runexternal_issues,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': None,
+            '400': None,
+            '401': None,
+            '403': None,
+            '404': None,
+            '429': None,
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def run_update_external_issue_without_preload_content(
+        self,
+        code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
+        runexternal_issues: RunexternalIssues,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Update external issues for runs
+
+        This method allows you to update links between test runs and external issues (such as Jira tickets).  You can use this endpoint to: - Link test runs to external issues by providing the external issue identifier (e.g., \"PROJ-1234\") - Update existing links by providing a new external issue identifier - Remove existing links by setting the external_issue field to null  **Important**: Each test run can have only one link with an external issue. If a test run already has an external issue link, providing a new external_issue value will replace the existing link.  The endpoint supports both Jira Cloud and Jira Server integrations. Each request can update multiple test run links in a single operation. 
+
+        :param code: Code of project, where to search entities. (required)
+        :type code: str
+        :param runexternal_issues: (required)
+        :type runexternal_issues: RunexternalIssues
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._run_update_external_issue_serialize(
+            code=code,
+            runexternal_issues=runexternal_issues,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': None,
+            '400': None,
+            '401': None,
+            '403': None,
+            '404': None,
+            '429': None,
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _run_update_external_issue_serialize(
+        self,
+        code,
+        runexternal_issues,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, str] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if code is not None:
+            _path_params['code'] = code
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if runexternal_issues is not None:
+            _body_params = runexternal_issues
+
+
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'TokenAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/run/{code}/external-issue',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def update_run(
+        self,
+        code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
+        id: Annotated[StrictInt, Field(description="Identifier.")],
+        runupdate: Runupdate,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> BaseResponse:
+        """Update a specific run
+
+        This method allows to update a specific run. 
+
+        :param code: Code of project, where to search entities. (required)
+        :type code: str
+        :param id: Identifier. (required)
+        :type id: int
+        :param runupdate: (required)
+        :type runupdate: Runupdate
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._update_run_serialize(
+            code=code,
+            id=id,
+            runupdate=runupdate,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "BaseResponse",
+            '400': None,
+            '401': None,
+            '403': None,
+            '404': None,
+            '429': None,
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def update_run_with_http_info(
+        self,
+        code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
+        id: Annotated[StrictInt, Field(description="Identifier.")],
+        runupdate: Runupdate,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[BaseResponse]:
+        """Update a specific run
+
+        This method allows to update a specific run. 
+
+        :param code: Code of project, where to search entities. (required)
+        :type code: str
+        :param id: Identifier. (required)
+        :type id: int
+        :param runupdate: (required)
+        :type runupdate: Runupdate
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._update_run_serialize(
+            code=code,
+            id=id,
+            runupdate=runupdate,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "BaseResponse",
+            '400': None,
+            '401': None,
+            '403': None,
+            '404': None,
+            '429': None,
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def update_run_without_preload_content(
+        self,
+        code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
+        id: Annotated[StrictInt, Field(description="Identifier.")],
+        runupdate: Runupdate,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Update a specific run
+
+        This method allows to update a specific run. 
+
+        :param code: Code of project, where to search entities. (required)
+        :type code: str
+        :param id: Identifier. (required)
+        :type id: int
+        :param runupdate: (required)
+        :type runupdate: Runupdate
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._update_run_serialize(
+            code=code,
+            id=id,
+            runupdate=runupdate,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "BaseResponse",
+            '400': None,
+            '401': None,
+            '403': None,
+            '404': None,
+            '429': None,
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _update_run_serialize(
+        self,
+        code,
+        id,
+        runupdate,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, str] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if code is not None:
+            _path_params['code'] = code
+        if id is not None:
+            _path_params['id'] = id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if runupdate is not None:
+            _body_params = runupdate
+
+
+        # set the HTTP header `Accept`
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            [
+                'application/json'
+            ]
+        )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'TokenAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='PATCH',
+            resource_path='/run/{code}/{id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
