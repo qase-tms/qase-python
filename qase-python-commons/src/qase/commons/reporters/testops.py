@@ -117,9 +117,11 @@ class QaseTestOps:
     def complete_run(self) -> None:
         if len(self.results) > 0:
             self._send_results()
+
+        while self.count_running_threads > 0:
+                pass    
+        
         if self.complete_after_run:
-            while self.count_running_threads > 0:
-                pass
             self.logger.log_debug("Completing run")
             self.client.complete_run(self.project_code, self.run_id)
             self.logger.log_debug("Run completed")
