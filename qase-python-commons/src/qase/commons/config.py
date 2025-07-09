@@ -128,6 +128,20 @@ class ConfigManager:
                                 self.config.testops.batch.set_size(
                                     batch.get("size"))
 
+                        if testops.get("configurations"):
+                            configurations = testops.get("configurations")
+
+                            if configurations.get("values"):
+                                values = configurations.get("values")
+                                for value in values:
+                                    if value.get("name") and value.get("value"):
+                                        self.config.testops.configurations.add_value(
+                                            value.get("name"), value.get("value"))
+
+                            if configurations.get("createIfNotExists") is not None:
+                                self.config.testops.configurations.set_create_if_not_exists(
+                                    configurations.get("createIfNotExists"))
+
                     if config.get("report"):
                         report = config.get("report")
 
@@ -234,6 +248,19 @@ class ConfigManager:
 
                 if key == 'QASE_TESTOPS_BATCH_SIZE':
                     self.config.testops.batch.set_size(value)
+
+                if key == 'QASE_TESTOPS_CONFIGURATIONS_VALUES':
+                    # Parse configurations from environment variable
+                    # Format: "group1=value1,group2=value2"
+                    if value:
+                        config_pairs = value.split(',')
+                        for pair in config_pairs:
+                            if '=' in pair:
+                                name, config_value = pair.split('=', 1)
+                                self.config.testops.configurations.add_value(name.strip(), config_value.strip())
+
+                if key == 'QASE_TESTOPS_CONFIGURATIONS_CREATE_IF_NOT_EXISTS':
+                    self.config.testops.configurations.set_create_if_not_exists(value)
 
                 if key == 'QASE_REPORT_DRIVER':
                     self.config.report.set_driver(value)

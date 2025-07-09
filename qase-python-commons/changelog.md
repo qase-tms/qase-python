@@ -1,3 +1,37 @@
+# qase-python-commons@3.5.3
+
+## What's new
+
+- Added support for test run configurations. You can now specify configurations when creating test runs.
+- Configurations can be specified in `qase.config.json`, environment variables, or CLI parameters.
+- Support for automatic creation of configurations if they don't exist (controlled by `createIfNotExists` option).
+- Added new models: `ConfigurationValue` and `ConfigurationsConfig` for handling test run configurations.
+- Added methods in `ApiV1Client` for getting, finding, and creating configurations via API.
+
+Example configuration:
+```json
+{
+  "testops": {
+    "configurations": {
+      "values": [
+        {
+          "name": "browser",
+          "value": "chrome"
+        },
+        {
+          "name": "environment", 
+          "value": "staging"
+        }
+      ],
+      "createIfNotExists": true
+    }
+  }
+}
+```
+
+Environment variable format: `QASE_TESTOPS_CONFIGURATIONS_VALUES="browser=chrome,environment=staging"`
+CLI parameter format: `--qase-testops-configurations-values="browser=chrome,environment=staging"`
+
 # qase-python-commons@3.5.2
 
 ## What's new
