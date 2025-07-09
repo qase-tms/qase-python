@@ -1,9 +1,71 @@
+# qase-robotframework 3.4.4
+
+## What's new
+
+- Added support for test run configurations. You can now specify configurations when creating test runs.
+- Configurations can be specified in `qase.config.json` or environment variables.
+- Support for automatic creation of configurations if they don't exist (controlled by `createIfNotExists` option).
+
+Example configuration:
+```json
+{
+  "testops": {
+    "configurations": {
+      "values": [
+        {
+          "name": "browser",
+          "value": "chrome"
+        },
+        {
+          "name": "environment", 
+          "value": "staging"
+        }
+      ],
+      "createIfNotExists": true
+    }
+  }
+}
+```
+
+Environment variable format: `QASE_TESTOPS_CONFIGURATIONS_VALUES="browser=chrome,environment=staging"`
+
 # qase-robotframework 3.4.3
 
 ## What's new
 
 - Added support for test run tags.
 - Added support for excluding parameters from test results.
+
+# qase-robotframework 3.4.4
+
+## What's new
+
+- Added support for test run configurations. You can now specify configurations when creating test runs.
+- Configurations can be specified in `qase.config.json` or environment variables.
+- Support for automatic creation of configurations if they don't exist (controlled by `createIfNotExists` option).
+
+Example configuration:
+```json
+{
+  "testops": {
+    "configurations": {
+      "values": [
+        {
+          "name": "browser",
+          "value": "chrome"
+        },
+        {
+          "name": "environment", 
+          "value": "staging"
+        }
+      ],
+      "createIfNotExists": true
+    }
+  }
+}
+```
+
+Environment variable format: `QASE_TESTOPS_CONFIGURATIONS_VALUES="browser=chrome,environment=staging"`
 
 # qase-robotframework 3.4.2
 

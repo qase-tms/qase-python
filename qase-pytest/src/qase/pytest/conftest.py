@@ -171,6 +171,19 @@ def setup_config_manager(config):
                 config_manager.config.framework.pytest.xfail_status.set_xpass(
                     config.option.__dict__[option])
 
+            if option == "qase_testops_configurations_values" and config.option.__dict__[option] is not None:
+                # Parse configurations from CLI parameter
+                # Format: "group1=value1,group2=value2"
+                config_pairs = config.option.__dict__[option].split(',')
+                for pair in config_pairs:
+                    if '=' in pair:
+                        name, config_value = pair.split('=', 1)
+                        config_manager.config.testops.configurations.add_value(name.strip(), config_value.strip())
+
+            if option == "qase_testops_configurations_create_if_not_exists" and config.option.__dict__[option] is not None:
+                config_manager.config.testops.configurations.set_create_if_not_exists(
+                    config.option.__dict__[option])
+
     return config_manager
 
 

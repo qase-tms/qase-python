@@ -30,6 +30,8 @@ Environment variables override the values given in the config file.
 | Batch size for uploading test results     | `testops.batch.size`       | `QASE_TESTOPS_BATCH_SIZE`       | 200                                     | No       | 1 to 2000                  |
 | Create defects in Qase                    | `testops.defect`           | `QASE_TESTOPS_DEFECT`           | `False`, don't create defects           | No       | `True`, `False`            |
 | Test run tags                             | `testops.run.tags`         | `QASE_TESTOPS_RUN_TAGS`         | None, don't add any tags                | No       | Comma-separated list of tags |
+| Test run configurations                   | `testops.configurations.values` | `QASE_TESTOPS_CONFIGURATIONS_VALUES` | None, don't add any configurations      | No       | Format: "group1=value1,group2=value2" |
+| Create configurations if not exists       | `testops.configurations.createIfNotExists` | `QASE_TESTOPS_CONFIGURATIONS_CREATE_IF_NOT_EXISTS` | `False`, don't create configurations     | No       | `True`, `False`            |
 | **Qase Report mode configuration**        |
 | Local path to store report                | `report.connection.path`   | `QASE_REPORT_CONNECTION_PATH`   | `./build/qase-report`                   | No       | Any string                 |
 | Report format                             | `report.connection.format` | `QASE_REPORT_CONNECTION_FORMAT` | `json`                                  | No       | `json`, `jsonp`            |

@@ -133,6 +133,19 @@ class QaseFormatter(Formatter):
         if 'qase-testops-defect' in userdata:
             cfg_mgr.config.testops.set_defect(userdata['qase-testops-defect'])
 
+        if 'qase-testops-configurations-values' in userdata:
+            # Parse configurations from userdata
+            # Format: "group1=value1,group2=value2"
+            config_pairs = userdata['qase-testops-configurations-values'].split(',')
+            for pair in config_pairs:
+                if '=' in pair:
+                    name, config_value = pair.split('=', 1)
+                    cfg_mgr.config.testops.configurations.add_value(name.strip(), config_value.strip())
+
+        if 'qase-testops-configurations-create-if-not-exists' in userdata:
+            cfg_mgr.config.testops.configurations.set_create_if_not_exists(
+                userdata['qase-testops-configurations-create-if-not-exists'])
+
         if 'qase-report-driver' in userdata:
             cfg_mgr.config.report.set_driver(userdata['qase-report-driver'])
 

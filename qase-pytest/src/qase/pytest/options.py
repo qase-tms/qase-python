@@ -145,6 +145,23 @@ class QasePytestOptions:
         QasePytestOptions.add_option(
             parser,
             group,
+            "--qase-testops-configurations-values",
+            dest="qase_testops_configurations_values",
+            help="Configurations for test run. Format: 'group1=value1,group2=value2'"
+        )
+
+        QasePytestOptions.add_option(
+            parser,
+            group,
+            "--qase-testops-configurations-create-if-not-exists",
+            dest="qase_testops_configurations_create_if_not_exists",
+            type="bool",
+            help="Create configurations if they don't exist. Default: false"
+        )
+
+        QasePytestOptions.add_option(
+            parser,
+            group,
             "--qase-report-driver",
             dest="qase_report_driver",
             help="Define report driver: `local`. More options coming soon."

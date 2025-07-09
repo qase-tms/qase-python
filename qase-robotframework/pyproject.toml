@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qase-robotframework"
-version = "3.4.3"
+version = "3.4.4"
 description = "Qase Robot Framework Plugin"
 readme = "README.md"
 authors = [{name = "Qase Team", email = "support@qase.io"}]
@@ -17,7 +17,7 @@ classifiers = [
 urls = {"Homepage" = "https://github.com/qase-tms/qase-python/tree/main/qase-robotframework"}
 requires-python = ">=3.7"
 dependencies = [
-    "qase-python-commons~=3.5.0",
+    "qase-python-commons~=3.5.3",
     "filelock~=3.12.2",
 ]
 
