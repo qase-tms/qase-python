@@ -23,7 +23,20 @@
 		},
 		"defect": true,
 		"project": "<project_code>",
-		"chunk": 200
+		"chunk": 200,
+		"configurations": {
+			"values": [
+				{
+					"name": "browser",
+					"value": "chrome"
+				},
+				{
+					"name": "environment",
+					"value": "staging"
+				}
+			],
+			"createIfNotExists": true
+		}
 	},
 	"framework": {
 		"pytest": {
