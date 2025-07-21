@@ -404,6 +404,10 @@ class QasePytestPlugin:
                                 [p.strip() for p in param_name.split(',')])
                         else:
                             ignored_params.add(param_name)
+                elif mark.name == 'qase_ignore_parameters':
+                    parameters = mark.kwargs.get('parameters', [])
+                    if parameters:
+                        ignored_params.update(parameters)
 
             # Add grouped parameters that are not ignored
             for group in item._grouped_params:

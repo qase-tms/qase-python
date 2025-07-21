@@ -293,3 +293,28 @@ class qase:
             return func
 
         return decorator
+
+    @staticmethod
+    def ignore_parameters(*parameters: str):
+        """
+        Mark specific parameters to be ignored in Qase reports.
+        This decorator can be used in combination with existing parametrize decorators.
+
+        >>> @pytest.mark.parametrize("browser", ["chrome", "firefox"])
+        ... @pytest.mark.parametrize("user", ["user1", "user2"])
+        ... @qase.ignore_parameters("user", "browser")
+        ... def test_login(browser, user):
+        ...     # Both browser and user parameters will be ignored in Qase reports
+        ...     pass
+
+        >>> @pytest.mark.parametrize("browser", ["chrome", "firefox"])
+        ... @pytest.mark.parametrize("user", ["user1", "user2"])
+        ... @qase.ignore_parameters("user")
+        ... def test_login(browser, user):
+        ...     # Only user parameter will be ignored, browser will be included
+        ...     pass
+
+        :param parameters: Variable number of parameter names to ignore
+        :return: pytest.mark instance
+        """
+        return pytest.mark.qase_ignore_parameters(parameters=parameters)

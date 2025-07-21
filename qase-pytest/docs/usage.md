@@ -123,7 +123,11 @@ def test_example():
 
 ### Ignoring Parameters
 
-To exclude specific parameters from Qase reports. Only `param1` and `param2` will be reported.
+There are two ways to exclude specific parameters from Qase reports:
+
+#### Using parametrize_ignore
+
+To exclude parameters from a specific parametrize decorator:
 
 ```python
 from qase.pytest import qase
@@ -140,6 +144,54 @@ from qase.pytest import qase
 def test_eval(test_input, expected, param1, param2):
     print(param1, param2)
     assert eval(test_input) == expected
+```
+
+#### Using ignore_parameters
+
+To exclude specific parameters from any parametrize decorator:
+
+```python
+from qase.pytest import qase
+
+@pytest.mark.parametrize("browser", ["chrome", "firefox"])
+@pytest.mark.parametrize("user", ["user1", "user2"])
+@qase.ignore_parameters("user", "browser")
+def test_login(browser, user):
+    # Both browser and user parameters will be ignored in Qase reports
+    assert browser in ["chrome", "firefox"]
+    assert user in ["user1", "user2"]
+```
+
+You can also ignore only specific parameters:
+
+```python
+from qase.pytest import qase
+
+@pytest.mark.parametrize("browser", ["chrome", "firefox"])
+@pytest.mark.parametrize("user", ["user1", "user2"])
+@pytest.mark.parametrize("env", ["staging", "production"])
+@qase.ignore_parameters("user")
+def test_login(browser, user, env):
+    # Only user parameter will be ignored, browser and env will be included
+    assert browser in ["chrome", "firefox"]
+    assert user in ["user1", "user2"]
+    assert env in ["staging", "production"]
+```
+
+#### Combining both approaches
+
+You can use both decorators together:
+
+```python
+from qase.pytest import qase
+
+@qase.parametrize_ignore("test_data", ["data1", "data2"])
+@pytest.mark.parametrize("browser", ["chrome", "firefox"])
+@qase.ignore_parameters("browser")
+def test_combined(browser, test_data):
+    # Both test_data (from parametrize_ignore) and browser (from ignore_parameters) will be ignored
+    assert browser in ["chrome", "firefox"]
+    assert test_data in ["data1", "data2"]
 ```
 
 ---
