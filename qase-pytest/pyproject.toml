@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qase-pytest"
-version = "6.3.5"
+version = "6.3.6"
 description = "Qase Pytest Plugin for Qase TestOps and Qase Report"
 readme = "README.md"
 keywords = ["qase", "pytest", "plugin", "testops", "report", "qase reporting", "test observability"]

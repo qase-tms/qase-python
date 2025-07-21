@@ -40,6 +40,8 @@ def _add_markers(config):
     config.addinivalue_line("markers", "qase_author: mark test with author")
     config.addinivalue_line("markers", "qase_fields: mark test with meta data")
     config.addinivalue_line("markers", "qase_suite: mark test with suite")
+    config.addinivalue_line(
+        "markers", "qase_ignore_parameters: mark test to ignore specific parameters in Qase reports")
 
     # Legacy markers | These markers are deprecated and will be removed in future versions
     config.addinivalue_line(
