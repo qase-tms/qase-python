@@ -1,3 +1,9 @@
+# qase-pytest 6.3.7
+
+## What's new
+
+Fixed an issue where the plugin would crash with `TypeError: 'ExceptionChainRepr' object is not subscriptable` when handling skip messages in newer versions of pytest. The plugin now properly handles both tuple/list format longrepr (old pytest versions) and ExceptionChainRepr format (new pytest versions) for skip message extraction.
+
 # qase-pytest 6.3.6
 
 ## What's new

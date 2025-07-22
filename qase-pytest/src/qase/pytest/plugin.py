@@ -173,10 +173,7 @@ class QasePytestPlugin:
             self.runtime.result.add_message(report.wasxfail)
 
         # Handle skip message in setup phase
-        if (call.when == "setup" and
-                report.longrepr and
-                self.runtime.result.execution.status == PYTEST_TO_QASE_STATUS['SKIPPED']):
-            self.runtime.result.add_message(report.longrepr[2].split(":")[1])
+        self._handle_skip_message_in_setup(report, call)
 
         # Handle Playwright artifacts if applicable
         if call.when == "call":
@@ -231,6 +228,29 @@ class QasePytestPlugin:
     def _set_result_status(self, status):
         """Set test result execution status."""
         self.runtime.result.execution.status = status
+
+    def _handle_skip_message_in_setup(self, report, call):
+        """Handle skip message in setup phase with proper longrepr handling."""
+        if (call.when == "setup" and
+                report.longrepr and
+                self.runtime.result.execution.status == PYTEST_TO_QASE_STATUS['SKIPPED']):
+            # Handle different types of longrepr
+            skip_message = None
+            if hasattr(report.longrepr, '__getitem__'):
+                # Handle tuple/list format (old pytest versions)
+                try:
+                    skip_message = report.longrepr[2].split(":")[1]
+                except (IndexError, AttributeError):
+                    pass
+            elif hasattr(report.longrepr, 'reprcrash'):
+                # Handle ExceptionChainRepr format (new pytest versions)
+                try:
+                    skip_message = str(report.longrepr.reprcrash.message)
+                except AttributeError:
+                    pass
+            
+            if skip_message:
+                self.runtime.result.add_message(skip_message)
 
     def _attach_logs(self, report):
         """Attach logs to the test result."""
