@@ -21,6 +21,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
+from qase.api_client_v1.models.run_create_cloud_run_config import RunCreateCloudRunConfig
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -43,7 +44,9 @@ class RunCreate(BaseModel):
     custom_field: Optional[Dict[str, StrictStr]] = Field(default=None, description="A map of custom fields values (id => value)")
     start_time: Optional[StrictStr] = None
     end_time: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["title", "description", "include_all_cases", "cases", "is_autotest", "environment_id", "environment_slug", "milestone_id", "plan_id", "author_id", "tags", "configurations", "custom_field", "start_time", "end_time"]
+    is_cloud: Optional[StrictBool] = Field(default=None, description="Indicates if the run is created for the Test Cases produced by AIDEN")
+    cloud_run_config: Optional[RunCreateCloudRunConfig] = None
+    __properties: ClassVar[List[str]] = ["title", "description", "include_all_cases", "cases", "is_autotest", "environment_id", "environment_slug", "milestone_id", "plan_id", "author_id", "tags", "configurations", "custom_field", "start_time", "end_time", "is_cloud", "cloud_run_config"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -84,6 +87,9 @@ class RunCreate(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of cloud_run_config
+        if self.cloud_run_config:
+            _dict['cloud_run_config'] = self.cloud_run_config.to_dict()
         return _dict
 
     @classmethod
@@ -110,7 +116,9 @@ class RunCreate(BaseModel):
             "configurations": obj.get("configurations"),
             "custom_field": obj.get("custom_field"),
             "start_time": obj.get("start_time"),
-            "end_time": obj.get("end_time")
+            "end_time": obj.get("end_time"),
+            "is_cloud": obj.get("is_cloud"),
+            "cloud_run_config": RunCreateCloudRunConfig.from_dict(obj["cloud_run_config"]) if obj.get("cloud_run_config") is not None else None
         })
         return _obj
 

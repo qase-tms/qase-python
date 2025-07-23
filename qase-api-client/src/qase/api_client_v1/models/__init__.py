@@ -111,6 +111,7 @@ from qase.api_client_v1.models.result_update import ResultUpdate
 from qase.api_client_v1.models.resultcreate_bulk import ResultcreateBulk
 from qase.api_client_v1.models.run import Run
 from qase.api_client_v1.models.run_create import RunCreate
+from qase.api_client_v1.models.run_create_cloud_run_config import RunCreateCloudRunConfig
 from qase.api_client_v1.models.run_environment import RunEnvironment
 from qase.api_client_v1.models.run_external_issue import RunExternalIssue
 from qase.api_client_v1.models.run_list_response import RunListResponse
