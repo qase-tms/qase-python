@@ -20,6 +20,8 @@ Name | Type | Description | Notes
 **custom_field** | **Dict[str, str]** | A map of custom fields values (id &#x3D;&gt; value) | [optional] 
 **start_time** | **str** |  | [optional] 
 **end_time** | **str** |  | [optional] 
+**is_cloud** | **bool** | Indicates if the run is created for the Test Cases produced by AIDEN | [optional] 
+**cloud_run_config** | [**RunCreateCloudRunConfig**](RunCreateCloudRunConfig.md) |  | [optional] 
 
 ## Example
 
