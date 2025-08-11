@@ -1,3 +1,9 @@
+# qase-python-commons@3.5.4
+
+## What's new
+
+- Added support for filtering test results by status.
+
 # qase-python-commons@3.5.3
 
 ## What's new
