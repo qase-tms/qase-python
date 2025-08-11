@@ -162,6 +162,14 @@ class QasePytestOptions:
         QasePytestOptions.add_option(
             parser,
             group,
+            "--qase-testops-status-filter",
+            dest="qase_testops_status_filter",
+            help="Filter results by status. Format: 'passed,failed,skipped'"
+        )
+
+        QasePytestOptions.add_option(
+            parser,
+            group,
             "--qase-report-driver",
             dest="qase_report_driver",
             help="Define report driver: `local`. More options coming soon."

@@ -186,6 +186,10 @@ def setup_config_manager(config):
                 config_manager.config.testops.configurations.set_create_if_not_exists(
                     config.option.__dict__[option])
 
+            if option == "qase_testops_status_filter" and config.option.__dict__[option] is not None:
+                config_manager.config.testops.set_status_filter(
+                    [status.strip() for status in config.option.__dict__[option].split(',')])
+
     return config_manager
 
 

@@ -1,3 +1,9 @@
+# qase-behave 1.1.5
+
+## What's new
+
+- Added support for filtering test results by status.
+
 # qase-behave 1.1.4
 
 ## What's new
