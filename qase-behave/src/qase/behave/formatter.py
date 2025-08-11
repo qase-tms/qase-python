@@ -146,6 +146,10 @@ class QaseFormatter(Formatter):
             cfg_mgr.config.testops.configurations.set_create_if_not_exists(
                 userdata['qase-testops-configurations-create-if-not-exists'])
 
+        if 'qase-testops-status-filter' in userdata:
+            cfg_mgr.config.testops.set_status_filter(
+                [status.strip() for status in userdata['qase-testops-status-filter'].split(',')])
+
         if 'qase-report-driver' in userdata:
             cfg_mgr.config.report.set_driver(userdata['qase-report-driver'])
 

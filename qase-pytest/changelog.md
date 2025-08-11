@@ -1,3 +1,9 @@
+# qase-pytest 6.3.8
+
+## What's new
+
+- Added support for filtering test results by status.
+
 # qase-pytest 6.3.7
 
 ## What's new

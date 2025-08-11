@@ -32,7 +32,59 @@ Environment variables override the values given in the config file.
 | Test run tags                             | `testops.run.tags`         | `QASE_TESTOPS_RUN_TAGS`         | None, don't add any tags                | No       | Comma-separated list of tags |
 | Test run configurations                   | `testops.configurations.values` | `QASE_TESTOPS_CONFIGURATIONS_VALUES` | None, don't add any configurations      | No       | Format: "group1=value1,group2=value2" |
 | Create configurations if not exists       | `testops.configurations.createIfNotExists` | `QASE_TESTOPS_CONFIGURATIONS_CREATE_IF_NOT_EXISTS` | `False`, don't create configurations     | No       | `True`, `False`            |
+| Filter results by status                  | `testops.statusFilter`     | `QASE_TESTOPS_STATUS_FILTER`    | None, don't filter any results          | No       | Comma-separated list of statuses |
 | **Qase Report mode configuration**        |
 | Local path to store report                | `report.connection.path`   | `QASE_REPORT_CONNECTION_PATH`   | `./build/qase-report`                   | No       | Any string                 |
 | Report format                             | `report.connection.format` | `QASE_REPORT_CONNECTION_FORMAT` | `json`                                  | No       | `json`, `jsonp`            |
 | Driver used for report mode               | `report.driver`            | `QASE_REPORT_DRIVER`            | `local`                                 | No       | `local`                    |
+
+## Example `qase.config.json` config:
+
+```json
+{
+  "mode": "testops",
+  "fallback": "report",
+  "debug": false,
+  "environment": "local",
+  "report": {
+    "driver": "local",
+    "connection": {
+      "local": {
+        "path": "./build/qase-report",
+        "format": "json"
+      }
+    }
+  },
+  "testops": {
+    "api": {
+      "token": "<token>",
+      "host": "qase.io"
+    },
+    "run": {
+      "title": "Regress run",
+      "description": "Regress run description",
+      "complete": true,
+      "tags": ["tag1", "tag2"]
+    },
+    "defect": false,
+    "project": "<project_code>",
+    "batch": {
+      "size": 100
+    },
+    "statusFilter": ["passed", "failed"],
+    "configurations": {
+      "values": [
+        {
+          "name": "group1",
+          "value": "value1"
+        },
+        {
+          "name": "group2", 
+          "value": "value2"
+        }
+      ],
+      "createIfNotExists": true
+    }
+  }
+}
+```
