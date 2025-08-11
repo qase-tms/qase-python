@@ -48,6 +48,7 @@ class TestopsConfig(BaseModel):
     plan: PlanConfig = None
     batch: BatchConfig = None
     configurations: ConfigurationsConfig = None
+    status_filter: List[str] = None
 
     def __init__(self):
         self.api = ApiConfig()
@@ -56,9 +57,13 @@ class TestopsConfig(BaseModel):
         self.plan = PlanConfig()
         self.configurations = ConfigurationsConfig()
         self.defect = False
+        self.status_filter = []
 
     def set_project(self, project: str):
         self.project = project
 
     def set_defect(self, defect):
         self.defect = QaseUtils.parse_bool(defect)
+
+    def set_status_filter(self, status_filter: List[str]):
+        self.status_filter = status_filter

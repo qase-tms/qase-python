@@ -142,6 +142,14 @@ class ConfigManager:
                                 self.config.testops.configurations.set_create_if_not_exists(
                                     configurations.get("createIfNotExists"))
 
+                        if testops.get("statusFilter"):
+                            status_filter = testops.get("statusFilter")
+                            if isinstance(status_filter, list):
+                                self.config.testops.set_status_filter(status_filter)
+                            elif isinstance(status_filter, str):
+                                # Parse comma-separated string
+                                self.config.testops.set_status_filter([s.strip() for s in status_filter.split(',')])
+
                     if config.get("report"):
                         report = config.get("report")
 
@@ -261,6 +269,10 @@ class ConfigManager:
 
                 if key == 'QASE_TESTOPS_CONFIGURATIONS_CREATE_IF_NOT_EXISTS':
                     self.config.testops.configurations.set_create_if_not_exists(value)
+
+                if key == 'QASE_TESTOPS_STATUS_FILTER':
+                    # Parse comma-separated string
+                    self.config.testops.set_status_filter([s.strip() for s in value.split(',')])
 
                 if key == 'QASE_REPORT_DRIVER':
                     self.config.report.set_driver(value)

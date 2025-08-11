@@ -86,15 +86,34 @@ class QaseTestOps:
 
     def _send_results(self) -> None:
         if self.results:
-            # Acquire semaphore before starting the send operation
-            self.send_semaphore.acquire()
-            self.count_running_threads += 1
+            # Filter results by status if status_filter is configured
             results_to_send = self.results.copy()
-            self.results = []
+            
+            if self.config.testops.status_filter and len(self.config.testops.status_filter) > 0:
+                filtered_results = []
+                for result in results_to_send:
+                    result_status = result.get_status()
+                    if result_status and result_status not in self.config.testops.status_filter:
+                        filtered_results.append(result)
+                    else:
+                        self.logger.log_debug(f"Filtering out result '{result.title}' with status '{result_status}'")
+                
+                results_to_send = filtered_results
+                self.logger.log_debug(f"Filtered {len(self.results) - len(results_to_send)} results by status filter")
+            
+            if results_to_send:
+                # Acquire semaphore before starting the send operation
+                self.send_semaphore.acquire()
+                self.count_running_threads += 1
 
-            # Start a new thread for sending results
-            send_thread = threading.Thread(target=self._send_results_threaded, args=(results_to_send,))
-            send_thread.start()
+                # Start a new thread for sending results
+                send_thread = threading.Thread(target=self._send_results_threaded, args=(results_to_send,))
+                send_thread.start()
+            else:
+                self.logger.log("No results to send after filtering", "info")
+            
+            # Clear results regardless of filtering
+            self.results = []
         else:
             self.logger.log("No results to send", "info")
 
