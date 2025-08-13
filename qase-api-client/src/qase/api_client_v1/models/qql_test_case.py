@@ -23,8 +23,8 @@ from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from qase.api_client_v1.models.attachment import Attachment
 from qase.api_client_v1.models.custom_field_value import CustomFieldValue
+from qase.api_client_v1.models.qql_test_case_params import QqlTestCaseParams
 from qase.api_client_v1.models.tag_value import TagValue
-from qase.api_client_v1.models.test_case_params import TestCaseParams
 from qase.api_client_v1.models.test_step import TestStep
 from typing import Optional, Set
 from typing_extensions import Self
@@ -54,7 +54,7 @@ class QqlTestCase(BaseModel):
     attachments: Optional[List[Attachment]] = None
     steps_type: Optional[StrictStr] = None
     steps: Optional[List[TestStep]] = None
-    params: Optional[TestCaseParams] = None
+    params: Optional[QqlTestCaseParams] = None
     tags: Optional[List[TagValue]] = None
     member_id: Optional[StrictInt] = Field(default=None, description="Deprecated, use `author_id` instead.")
     author_id: Optional[StrictInt] = None
@@ -196,7 +196,7 @@ class QqlTestCase(BaseModel):
             "attachments": [Attachment.from_dict(_item) for _item in obj["attachments"]] if obj.get("attachments") is not None else None,
             "steps_type": obj.get("steps_type"),
             "steps": [TestStep.from_dict(_item) for _item in obj["steps"]] if obj.get("steps") is not None else None,
-            "params": TestCaseParams.from_dict(obj["params"]) if obj.get("params") is not None else None,
+            "params": QqlTestCaseParams.from_dict(obj["params"]) if obj.get("params") is not None else None,
             "tags": [TagValue.from_dict(_item) for _item in obj["tags"]] if obj.get("tags") is not None else None,
             "member_id": obj.get("member_id"),
             "author_id": obj.get("author_id"),

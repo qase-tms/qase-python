@@ -14,6 +14,7 @@ from qase.api_client_v1.api.projects_api import ProjectsApi
 from qase.api_client_v1.api.results_api import ResultsApi
 from qase.api_client_v1.api.runs_api import RunsApi
 from qase.api_client_v1.api.search_api import SearchApi
+from qase.api_client_v1.api.shared_parameters_api import SharedParametersApi
 from qase.api_client_v1.api.shared_steps_api import SharedStepsApi
 from qase.api_client_v1.api.suites_api import SuitesApi
 from qase.api_client_v1.api.system_fields_api import SystemFieldsApi
