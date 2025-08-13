@@ -71,6 +71,9 @@ from qase.api_client_v1.models.milestone_list_response import MilestoneListRespo
 from qase.api_client_v1.models.milestone_list_response_all_of_result import MilestoneListResponseAllOfResult
 from qase.api_client_v1.models.milestone_response import MilestoneResponse
 from qase.api_client_v1.models.milestone_update import MilestoneUpdate
+from qase.api_client_v1.models.parameter_group import ParameterGroup
+from qase.api_client_v1.models.parameter_shared import ParameterShared
+from qase.api_client_v1.models.parameter_single import ParameterSingle
 from qase.api_client_v1.models.plan import Plan
 from qase.api_client_v1.models.plan_create import PlanCreate
 from qase.api_client_v1.models.plan_detailed import PlanDetailed
@@ -94,6 +97,7 @@ from qase.api_client_v1.models.project_response import ProjectResponse
 from qase.api_client_v1.models.qql_defect import QqlDefect
 from qase.api_client_v1.models.qql_plan import QqlPlan
 from qase.api_client_v1.models.qql_test_case import QqlTestCase
+from qase.api_client_v1.models.qql_test_case_params import QqlTestCaseParams
 from qase.api_client_v1.models.requirement import Requirement
 from qase.api_client_v1.models.requirement_query import RequirementQuery
 from qase.api_client_v1.models.response import Response
@@ -129,6 +133,13 @@ from qase.api_client_v1.models.runupdate import Runupdate
 from qase.api_client_v1.models.search_response import SearchResponse
 from qase.api_client_v1.models.search_response_all_of_result import SearchResponseAllOfResult
 from qase.api_client_v1.models.search_response_all_of_result_entities import SearchResponseAllOfResultEntities
+from qase.api_client_v1.models.shared_parameter import SharedParameter
+from qase.api_client_v1.models.shared_parameter_create import SharedParameterCreate
+from qase.api_client_v1.models.shared_parameter_list_response import SharedParameterListResponse
+from qase.api_client_v1.models.shared_parameter_list_response_all_of_result import SharedParameterListResponseAllOfResult
+from qase.api_client_v1.models.shared_parameter_parameter import SharedParameterParameter
+from qase.api_client_v1.models.shared_parameter_response import SharedParameterResponse
+from qase.api_client_v1.models.shared_parameter_update import SharedParameterUpdate
 from qase.api_client_v1.models.shared_step import SharedStep
 from qase.api_client_v1.models.shared_step_content import SharedStepContent
 from qase.api_client_v1.models.shared_step_content_create import SharedStepContentCreate
@@ -154,6 +165,11 @@ from qase.api_client_v1.models.test_case_external_issues import TestCaseExternal
 from qase.api_client_v1.models.test_case_external_issues_links_inner import TestCaseExternalIssuesLinksInner
 from qase.api_client_v1.models.test_case_list_response import TestCaseListResponse
 from qase.api_client_v1.models.test_case_list_response_all_of_result import TestCaseListResponseAllOfResult
+from qase.api_client_v1.models.test_case_parameter import TestCaseParameter
+from qase.api_client_v1.models.test_case_parameter_base import TestCaseParameterBase
+from qase.api_client_v1.models.test_case_parameter_group import TestCaseParameterGroup
+from qase.api_client_v1.models.test_case_parameter_single import TestCaseParameterSingle
+from qase.api_client_v1.models.test_case_parametercreate import TestCaseParametercreate
 from qase.api_client_v1.models.test_case_params import TestCaseParams
 from qase.api_client_v1.models.test_case_query import TestCaseQuery
 from qase.api_client_v1.models.test_case_response import TestCaseResponse
@@ -165,3 +181,5 @@ from qase.api_client_v1.models.test_step import TestStep
 from qase.api_client_v1.models.test_step_create import TestStepCreate
 from qase.api_client_v1.models.test_step_result import TestStepResult
 from qase.api_client_v1.models.test_step_result_create import TestStepResultCreate
+from qase.api_client_v1.models.uuid_response import UuidResponse
+from qase.api_client_v1.models.uuid_response_all_of_result import UuidResponseAllOfResult

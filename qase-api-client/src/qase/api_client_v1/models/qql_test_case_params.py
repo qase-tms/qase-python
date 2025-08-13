@@ -24,11 +24,11 @@ from typing import Union, Any, List, TYPE_CHECKING, Optional, Dict
 from typing_extensions import Literal, Self
 from pydantic import Field
 
-TESTCASEPARAMS_ANY_OF_SCHEMAS = ["List[object]", "object"]
+QQLTESTCASEPARAMS_ANY_OF_SCHEMAS = ["List[object]", "object"]
 
-class TestCaseParams(BaseModel):
+class QqlTestCaseParams(BaseModel):
     """
-    Deprecated, use `parameters` instead.
+    QqlTestCaseParams
     """
 
     # data type: List[object]
@@ -58,7 +58,7 @@ class TestCaseParams(BaseModel):
 
     @field_validator('actual_instance')
     def actual_instance_must_validate_anyof(cls, v):
-        instance = TestCaseParams.model_construct()
+        instance = QqlTestCaseParams.model_construct()
         error_messages = []
         # validate data type: List[object]
         try:
@@ -74,7 +74,7 @@ class TestCaseParams(BaseModel):
             error_messages.append(str(e))
         if error_messages:
             # no match
-            raise ValueError("No match found when setting the actual_instance in TestCaseParams with anyOf schemas: List[object], object. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting the actual_instance in QqlTestCaseParams with anyOf schemas: List[object], object. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -108,7 +108,7 @@ class TestCaseParams(BaseModel):
 
         if error_messages:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into TestCaseParams with anyOf schemas: List[object], object. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into QqlTestCaseParams with anyOf schemas: List[object], object. Details: " + ", ".join(error_messages))
         else:
             return instance
 

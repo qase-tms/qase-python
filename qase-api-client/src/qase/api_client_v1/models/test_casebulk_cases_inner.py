@@ -21,6 +21,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
+from qase.api_client_v1.models.test_case_parametercreate import TestCaseParametercreate
 from qase.api_client_v1.models.test_step_create import TestStepCreate
 from typing import Optional, Set
 from typing_extensions import Self
@@ -46,12 +47,13 @@ class TestCasebulkCasesInner(BaseModel):
     attachments: Optional[List[StrictStr]] = Field(default=None, description="A list of Attachment hashes.")
     steps: Optional[List[TestStepCreate]] = None
     tags: Optional[List[StrictStr]] = None
-    params: Optional[Dict[str, List[StrictStr]]] = None
+    params: Optional[Dict[str, List[StrictStr]]] = Field(default=None, description="Deprecated, use `parameters` instead.")
+    parameters: Optional[List[TestCaseParametercreate]] = None
     custom_field: Optional[Dict[str, StrictStr]] = Field(default=None, description="A map of custom fields values (id => value)")
     created_at: Optional[StrictStr] = None
     updated_at: Optional[StrictStr] = None
     id: Optional[StrictInt] = None
-    __properties: ClassVar[List[str]] = ["description", "preconditions", "postconditions", "title", "severity", "priority", "behavior", "type", "layer", "is_flaky", "suite_id", "milestone_id", "automation", "status", "attachments", "steps", "tags", "params", "custom_field", "created_at", "updated_at", "id"]
+    __properties: ClassVar[List[str]] = ["description", "preconditions", "postconditions", "title", "severity", "priority", "behavior", "type", "layer", "is_flaky", "suite_id", "milestone_id", "automation", "status", "attachments", "steps", "tags", "params", "parameters", "custom_field", "created_at", "updated_at", "id"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -99,10 +101,22 @@ class TestCasebulkCasesInner(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict['steps'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in parameters (list)
+        _items = []
+        if self.parameters:
+            for _item in self.parameters:
+                if _item:
+                    _items.append(_item.to_dict())
+            _dict['parameters'] = _items
         # set to None if params (nullable) is None
         # and model_fields_set contains the field
         if self.params is None and "params" in self.model_fields_set:
             _dict['params'] = None
+
+        # set to None if parameters (nullable) is None
+        # and model_fields_set contains the field
+        if self.parameters is None and "parameters" in self.model_fields_set:
+            _dict['parameters'] = None
 
         # set to None if id (nullable) is None
         # and model_fields_set contains the field
@@ -139,6 +153,7 @@ class TestCasebulkCasesInner(BaseModel):
             "steps": [TestStepCreate.from_dict(_item) for _item in obj["steps"]] if obj.get("steps") is not None else None,
             "tags": obj.get("tags"),
             "params": obj.get("params"),
+            "parameters": [TestCaseParametercreate.from_dict(_item) for _item in obj["parameters"]] if obj.get("parameters") is not None else None,
             "custom_field": obj.get("custom_field"),
             "created_at": obj.get("created_at"),
             "updated_at": obj.get("updated_at"),

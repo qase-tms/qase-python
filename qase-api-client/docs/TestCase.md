@@ -26,6 +26,7 @@ Name | Type | Description | Notes
 **steps_type** | **str** |  | [optional] 
 **steps** | [**List[TestStep]**](TestStep.md) |  | [optional] 
 **params** | [**TestCaseParams**](TestCaseParams.md) |  | [optional] 
+**parameters** | [**List[TestCaseParameter]**](TestCaseParameter.md) |  | [optional] 
 **tags** | [**List[TagValue]**](TagValue.md) |  | [optional] 
 **member_id** | **int** | Deprecated, use &#x60;author_id&#x60; instead. | [optional] 
 **author_id** | **int** |  | [optional] 

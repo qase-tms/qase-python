@@ -25,6 +25,7 @@ from qase.api_client_v1.models.attachment import Attachment
 from qase.api_client_v1.models.custom_field_value import CustomFieldValue
 from qase.api_client_v1.models.external_issue import ExternalIssue
 from qase.api_client_v1.models.tag_value import TagValue
+from qase.api_client_v1.models.test_case_parameter import TestCaseParameter
 from qase.api_client_v1.models.test_case_params import TestCaseParams
 from qase.api_client_v1.models.test_step import TestStep
 from typing import Optional, Set
@@ -55,6 +56,7 @@ class TestCase(BaseModel):
     steps_type: Optional[StrictStr] = None
     steps: Optional[List[TestStep]] = None
     params: Optional[TestCaseParams] = None
+    parameters: Optional[List[TestCaseParameter]] = None
     tags: Optional[List[TagValue]] = None
     member_id: Optional[StrictInt] = Field(default=None, description="Deprecated, use `author_id` instead.")
     author_id: Optional[StrictInt] = None
@@ -64,7 +66,7 @@ class TestCase(BaseModel):
     created: Optional[StrictStr] = Field(default=None, description="Deprecated, use the `created_at` property instead.")
     updated: Optional[StrictStr] = Field(default=None, description="Deprecated, use the `updated_at` property instead.")
     external_issues: Optional[List[ExternalIssue]] = None
-    __properties: ClassVar[List[str]] = ["id", "position", "title", "description", "preconditions", "postconditions", "severity", "priority", "type", "layer", "is_flaky", "behavior", "automation", "status", "milestone_id", "suite_id", "custom_fields", "attachments", "steps_type", "steps", "params", "tags", "member_id", "author_id", "created_at", "updated_at", "deleted", "created", "updated", "external_issues"]
+    __properties: ClassVar[List[str]] = ["id", "position", "title", "description", "preconditions", "postconditions", "severity", "priority", "type", "layer", "is_flaky", "behavior", "automation", "status", "milestone_id", "suite_id", "custom_fields", "attachments", "steps_type", "steps", "params", "parameters", "tags", "member_id", "author_id", "created_at", "updated_at", "deleted", "created", "updated", "external_issues"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -129,6 +131,13 @@ class TestCase(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of params
         if self.params:
             _dict['params'] = self.params.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in parameters (list)
+        _items = []
+        if self.parameters:
+            for _item in self.parameters:
+                if _item:
+                    _items.append(_item.to_dict())
+            _dict['parameters'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in tags (list)
         _items = []
         if self.tags:
@@ -211,6 +220,7 @@ class TestCase(BaseModel):
             "steps_type": obj.get("steps_type"),
             "steps": [TestStep.from_dict(_item) for _item in obj["steps"]] if obj.get("steps") is not None else None,
             "params": TestCaseParams.from_dict(obj["params"]) if obj.get("params") is not None else None,
+            "parameters": [TestCaseParameter.from_dict(_item) for _item in obj["parameters"]] if obj.get("parameters") is not None else None,
             "tags": [TagValue.from_dict(_item) for _item in obj["tags"]] if obj.get("tags") is not None else None,
             "member_id": obj.get("member_id"),
             "author_id": obj.get("author_id"),

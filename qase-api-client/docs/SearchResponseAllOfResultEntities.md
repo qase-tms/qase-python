@@ -51,7 +51,7 @@ Name | Type | Description | Notes
 **milestone_id** | **int** |  | [optional] 
 **suite_id** | **int** |  | [optional] 
 **steps_type** | **str** |  | [optional] 
-**params** | [**TestCaseParams**](TestCaseParams.md) |  | [optional] 
+**params** | [**QqlTestCaseParams**](QqlTestCaseParams.md) |  | [optional] 
 **author_id** | **int** |  | [optional] 
 **updated_by** | **int** | Author ID of the last update. | [optional] 
 **defect_id** | **int** |  | 
