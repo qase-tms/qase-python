@@ -83,7 +83,7 @@ jobs:
           python -m build
       - name: Publish distribution to PyPI
         if: contains(github.event.ref, matrix.prefix)
-        uses: pypa/gh-action-pypi-publish@v1.4.2
+        uses: pypa/gh-action-pypi-publish@v1.13.0
         with:
           user: __token__
           password: ${{ secrets.PYPI_PASSWORD }}
