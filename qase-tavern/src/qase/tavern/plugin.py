@@ -35,7 +35,10 @@ class QasePytestPlugin:
     def pytest_runtest_makereport(self, item, call):
         if call.when == "call":
             if call.excinfo:
-                self.runtime.result.execution.status = "failed"
+                # Determine if it's an assertion error or other error
+                is_assertion_error = call.excinfo.typename == "AssertionError"
+                status = "failed" if is_assertion_error else "invalid"
+                self.runtime.result.execution.status = status
                 if hasattr(call.excinfo, "value"):
                     self.runtime.result.execution.stacktrace = '\n'.join(call.excinfo.value.args)
                     if hasattr(call.excinfo.value, "failures"):
