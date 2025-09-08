@@ -24,6 +24,7 @@ class RunStats(BaseModel):
         self.failed = 0
         self.skipped = 0
         self.broken = 0
+        self.invalid = 0
         self.muted = 0
         self.total = 0
 
@@ -37,6 +38,8 @@ class RunStats(BaseModel):
             self.skipped += 1
         elif status == "broken":
             self.broken += 1
+        elif status == "invalid":
+            self.invalid += 1
         self.total += 1
         if result.get('muted', False):
             self.muted += 1
