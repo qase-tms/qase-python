@@ -98,7 +98,16 @@ class Listener:
             self.runtime.result.testops_ids = test_metadata.qase_ids
 
         self.runtime.result.execution.complete()
-        self.runtime.result.execution.set_status(STATUSES[result.status])
+        
+        # Determine if it's an assertion error or other error
+        status = STATUSES[result.status]
+        if status == "failed" and hasattr(result, 'message'):
+            # Check if the error message contains assertion-related keywords
+            assertion_keywords = ['assert', 'AssertionError', 'expect', 'should', 'must', 'equal', 'not equal']
+            is_assertion_error = any(keyword in result.message for keyword in assertion_keywords)
+            status = "failed" if is_assertion_error else "invalid"
+        
+        self.runtime.result.execution.set_status(status)
         if hasattr(result, 'message'):
             self.runtime.result.execution.stacktrace = result.message
 
@@ -197,7 +206,13 @@ class Listener:
                 data=StepGherkinData(keyword=step_name, name=step_name, line=0)
             )
 
-            step.execution.set_status(STATUSES[result.body[i].status])
+            # Determine step status
+            step_status = STATUSES[result.body[i].status]
+            if step_status == "failed":
+                # For steps, we'll use a simpler approach - check if it's a keyword failure
+                # Robot Framework doesn't provide detailed error info for individual steps
+                step_status = "failed"  # Keep as failed for steps, main test status is handled above
+            step.execution.set_status(step_status)
             step.execution.start_time = result.body[i].start_time.timestamp()
             step.execution.duration = result.body[i].elapsed_time.microseconds
             step.execution.end_time = result.body[i].end_time.timestamp()

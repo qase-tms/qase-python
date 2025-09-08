@@ -46,7 +46,21 @@ class QaseFormatter(Formatter):
     def result(self, result: Step):
         step = parse_step(result)
         if step.execution.status != 'passed':
-            self.__current_scenario.execution.set_status(step.execution.status)
+            # Check if it's an assertion error or other error
+            is_assertion_error = False
+            if result.error_message:
+                # Check if the error message contains assertion-related keywords
+                assertion_keywords = ['assert', 'AssertionError', 'expect', 'should', 'must']
+                is_assertion_error = any(keyword in result.error_message for keyword in assertion_keywords)
+            
+            # Set appropriate status
+            if step.execution.status == 'failed':
+                status = 'failed' if is_assertion_error else 'invalid'
+                step.execution.set_status(status)
+                self.__current_scenario.execution.set_status(status)
+            else:
+                self.__current_scenario.execution.set_status(step.execution.status)
+            
             if result.error_message:
                 self.__current_scenario.execution.stacktrace = result.error_message
         self.__current_scenario.steps.append(step)
