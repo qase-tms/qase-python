@@ -82,10 +82,10 @@ class StepExecution(BaseModel):
         self.attachments = []
 
     def set_status(self, status: Optional[str]):
-        if status in ['passed', 'failed', 'skipped', 'blocked', 'untested']:
+        if status in ['passed', 'failed', 'skipped', 'blocked', 'untested', 'invalid']:
             self.status = status
         else:
-            raise ValueError('Step status must be one of: passed, failed, skipped, blocked, untested')
+            raise ValueError('Step status must be one of: passed, failed, skipped, blocked, untested, invalid')
 
     def complete(self):
         self.end_time = time.time()

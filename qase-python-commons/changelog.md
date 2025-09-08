@@ -1,3 +1,23 @@
+# qase-python-commons@3.5.5
+
+## What's new
+
+- Improved test failure status handling across all reporters
+- Added support for `invalid` status to distinguish non-assertion errors from assertion failures
+- Updated `Execution` and `StepExecution` models to support `invalid` status
+- Updated `RunStats` to track `invalid` status count
+- Enhanced status filtering documentation to include `invalid` status
+- Assertion errors (AssertionError) now map to `failed` status
+- Non-assertion errors (setup failures, exceptions, etc.) now map to `invalid` status
+
+## Migration Guide
+
+The new `invalid` status provides better distinction between:
+- `failed`: Test failed due to assertion error (test logic issue)
+- `invalid`: Test failed due to non-assertion error (infrastructure/setup issue)
+
+This change affects all reporters (pytest, tavern, behave, robotframework) and provides more accurate test result reporting.
+
 # qase-python-commons@3.5.4
 
 ## What's new
