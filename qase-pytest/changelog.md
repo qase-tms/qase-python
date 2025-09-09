@@ -1,3 +1,10 @@
+# qase-pytest 6.3.10
+
+## What's new
+
+- Added support for updating external link for a test run.
+- Updated dependency on qase-python-commons to version 3.5.6.
+
 # qase-pytest 6.3.9
 
 ## What's new

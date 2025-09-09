@@ -1,3 +1,10 @@
+# qase-behave 1.1.7
+
+## What's new
+
+- Added support for updating external link for a test run.
+- Updated dependency on qase-python-commons to version 3.5.6.
+
 # qase-behave 1.1.6
 
 ## What's new

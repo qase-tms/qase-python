@@ -1,3 +1,10 @@
+# qase-robotframework 3.4.7
+
+## What's new
+
+- Added support for updating external link for a test run.
+- Updated dependency on qase-python-commons to version 3.5.6.
+
 # qase-robotframework 3.4.6
 
 ## What's new

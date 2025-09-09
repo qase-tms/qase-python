@@ -129,6 +129,18 @@ class QaseFormatter(Formatter):
             cfg_mgr.config.testops.run.set_tags(
                 [tag.strip() for tag in userdata['qase-testops-run-tags'].split(',')])
 
+        if 'qase-testops-run-external-link-type' in userdata:
+            if not cfg_mgr.config.testops.run.external_link:
+                from qase.commons.models.external_link import ExternalLinkConfig
+                cfg_mgr.config.testops.run.external_link = ExternalLinkConfig()
+            cfg_mgr.config.testops.run.external_link.set_type(userdata['qase-testops-run-external-link-type'])
+
+        if 'qase-testops-run-external-link-url' in userdata:
+            if not cfg_mgr.config.testops.run.external_link:
+                from qase.commons.models.external_link import ExternalLinkConfig
+                cfg_mgr.config.testops.run.external_link = ExternalLinkConfig()
+            cfg_mgr.config.testops.run.external_link.set_link(userdata['qase-testops-run-external-link-url'])
+
         if 'qase-testops-plan-id' in userdata:
             cfg_mgr.config.testops.plan.set_id(
                 userdata['qase-testops-plan-id'])

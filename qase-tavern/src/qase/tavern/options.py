@@ -119,6 +119,22 @@ class QasePytestOptions:
         QasePytestOptions.add_option(
             parser,
             group,
+            "--qase-testops-run-external-link-type",
+            dest="qase_testops_run_external_link_type",
+            help="External link type for test run: `jiraCloud` or `jiraServer`"
+        )
+
+        QasePytestOptions.add_option(
+            parser,
+            group,
+            "--qase-testops-run-external-link-url",
+            dest="qase_testops_run_external_link_url",
+            help="External link URL or identifier for test run"
+        )
+
+        QasePytestOptions.add_option(
+            parser,
+            group,
             "--qase-testops-batch-size",
             dest="qase_testops_batch_size",
             type="int",
