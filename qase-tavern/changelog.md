@@ -1,3 +1,10 @@
+# qase-tavern 1.1.5
+
+## What's new
+
+- Added support for updating external link for a test run.
+- Updated dependency on qase-python-commons to version 3.5.6.
+
 # qase-tavern 1.1.4
 
 ## What's new

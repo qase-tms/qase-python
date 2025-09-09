@@ -132,6 +132,18 @@ def setup_config_manager(config):
                 config_manager.config.testops.set_status_filter(
                     [status.strip() for status in config.option.__dict__[option].split(',')])
 
+            if option == "qase_testops_run_external_link_type" and config.option.__dict__[option] is not None:
+                if not config_manager.config.testops.run.external_link:
+                    from qase.commons.models.external_link import ExternalLinkConfig
+                    config_manager.config.testops.run.external_link = ExternalLinkConfig()
+                config_manager.config.testops.run.external_link.set_type(config.option.__dict__[option])
+
+            if option == "qase_testops_run_external_link_url" and config.option.__dict__[option] is not None:
+                if not config_manager.config.testops.run.external_link:
+                    from qase.commons.models.external_link import ExternalLinkConfig
+                    config_manager.config.testops.run.external_link = ExternalLinkConfig()
+                config_manager.config.testops.run.external_link.set_link(config.option.__dict__[option])
+
             if option == "qase_testops_defect" and config.option.__dict__[option] is not None:
                 config_manager.config.testops.set_defect(config.option.__dict__[option])
 

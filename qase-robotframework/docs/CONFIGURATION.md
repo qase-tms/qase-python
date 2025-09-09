@@ -27,6 +27,8 @@ Environment variables override the values given in the config file.
 | Create test run using a test plan         | `testops.plan.id`          | `QASE_TESTOPS_PLAN_ID`          | None, don't use plans for the test run  | No       | Any integer                |
 | Complete test run after running tests     | `testops.run.complete`     | `QASE_TESTOPS_RUN_COMPLETE`     | `True`                                  | No       | `true`, `false`            |
 | ID of the Qase test run to report results | `testops.run.id`           | `QASE_TESTOPS_RUN_ID`           | None, create a new test run             | No       | Any integer                |
+| External link type for test run           | `testops.run.externalLink.type` | `QASE_TESTOPS_RUN_EXTERNAL_LINK_TYPE` | None, don't add external link           | No       | `jiraCloud`, `jiraServer`   |
+| External link URL for test run            | `testops.run.externalLink.link` | `QASE_TESTOPS_RUN_EXTERNAL_LINK_URL` | None, don't add external link           | No       | Any string (e.g., "PROJ-1234") |
 | Batch size for uploading test results     | `testops.batch.size`       | `QASE_TESTOPS_BATCH_SIZE`       | 200                                     | No       | 1 to 2000                  |
 | Create defects in Qase                    | `testops.defect`           | `QASE_TESTOPS_DEFECT`           | `False`, don't create defects           | No       | `True`, `False`            |
 | Test run tags                             | `testops.run.tags`         | `QASE_TESTOPS_RUN_TAGS`         | None, don't add any tags                | No       | Comma-separated list of tags |
@@ -64,7 +66,11 @@ Environment variables override the values given in the config file.
       "title": "Regress run",
       "description": "Regress run description",
       "complete": true,
-      "tags": ["tag1", "tag2"]
+      "tags": ["tag1", "tag2"],
+      "externalLink": {
+        "type": "jiraCloud",
+        "link": "PROJ-1234"
+      }
     },
     "defect": false,
     "project": "<project_code>",

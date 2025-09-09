@@ -33,6 +33,8 @@ and command line options override both other values.
 | Batch size for uploading test results          | `testops.batch.size`                 | `QASE_TESTOPS_BATCH_SIZE`        | `--qase-testops-batch-size`        | 200                                     | No       | 1 to 2000                  |
 | Create defects in Qase                         | `testops.defect`                     | `QASE_TESTOPS_DEFECT`            | `--qase-testops-defect`            | `False`, don't create defects           | No       | `True`, `False`            |
 | Test run tags                                  | `testops.run.tags`                   | `QASE_TESTOPS_RUN_TAGS`          | `--qase-testops-run-tags`          | None, don't add any tags                | No       | Comma-separated list of tags |
+| External link type for test run                | `testops.run.externalLink.type`      | `QASE_TESTOPS_RUN_EXTERNAL_LINK_TYPE` | `--qase-testops-run-external-link-type` | None, don't add external link           | No       | `jiraCloud`, `jiraServer`   |
+| External link URL for test run                 | `testops.run.externalLink.link`      | `QASE_TESTOPS_RUN_EXTERNAL_LINK_URL` | `--qase-testops-run-external-link-url` | None, don't add external link           | No       | Any string (e.g., "PROJ-1234") |
 | Test run configurations                        | `testops.configurations.values`      | `QASE_TESTOPS_CONFIGURATIONS_VALUES` | `--qase-testops-configurations-values` | None, don't add any configurations      | No       | Format: "group1=value1,group2=value2" |
 | Create configurations if not exists            | `testops.configurations.createIfNotExists` | `QASE_TESTOPS_CONFIGURATIONS_CREATE_IF_NOT_EXISTS` | `--qase-testops-configurations-create-if-not-exists` | `False`, don't create configurations     | No       | `True`, `False`            |
 | Filter results by status                      | `testops.statusFilter`                | `QASE_TESTOPS_STATUS_FILTER`     | `--qase-testops-status-filter`     | None, don't filter any results          | No       | Comma-separated list of statuses |
@@ -76,7 +78,11 @@ and command line options override both other values.
       "title": "Regress run",
       "description": "Regress run description",
       "complete": true,
-      "tags": ["tag1", "tag2"]
+      "tags": ["tag1", "tag2"],
+      "externalLink": {
+        "type": "jiraCloud",
+        "link": "PROJ-1234"
+      }
     },
     "defect": false,
     "project": "<project_code>",

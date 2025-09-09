@@ -30,6 +30,8 @@ and command line options override both other values.
 | Create test run using a test plan         | `testops.plan.id`          | `QASE_TESTOPS_PLAN_ID`          | `--qase-testops-plan-id`          | None, don't use plans for the test run  | No       | Any integer                |
 | Complete test run after running tests     | `testops.run.complete`     | `QASE_TESTOPS_RUN_COMPLETE`     | `--qase-testops-run-complete`     | `True`                                  | No       | `true`, `false`            |
 | ID of the Qase test run to report results | `testops.run.id`           | `QASE_TESTOPS_RUN_ID`           | `--qase-testops-run-id`           | None, create a new test run             | No       | Any integer                |
+| External link type for test run           | `testops.run.externalLink.type` | `QASE_TESTOPS_RUN_EXTERNAL_LINK_TYPE` | `--qase-testops-run-external-link-type` | None, don't add external link           | No       | `jiraCloud`, `jiraServer`   |
+| External link URL for test run            | `testops.run.externalLink.link` | `QASE_TESTOPS_RUN_EXTERNAL_LINK_URL` | `--qase-testops-run-external-link-url` | None, don't add external link           | No       | Any string (e.g., "PROJ-1234") |
 | Batch size for uploading test results     | `testops.batch.size`       | `QASE_TESTOPS_BATCH_SIZE`       | `--qase-testops-batch-size`       | 200                                     | No       | 1 to 2000                  |
 | Create defects in Qase                    | `testops.defect`           | `QASE_TESTOPS_DEFECT`           | `--qase-testops-defect`           | `False`, don't create defects           | No       | `True`, `False`            |
 | Tags for test run                         | `testops.run.tags`         | `QASE_TESTOPS_RUN_TAGS`         | `--qase-testops-run-tags`         | None                                    | No       | Comma-separated list of tags |
@@ -67,7 +69,11 @@ and command line options override both other values.
       "title": "Regress run",
       "description": "Regress run description",
       "complete": true,
-      "tags": ["tag1", "tag2"]
+      "tags": ["tag1", "tag2"],
+      "externalLink": {
+        "type": "jiraCloud",
+        "link": "PROJ-1234"
+      }
     },
     "defect": false,
     "project": "<project_code>",
