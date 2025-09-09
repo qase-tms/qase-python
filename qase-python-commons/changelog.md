@@ -1,3 +1,9 @@
+# qase-python-commons@3.5.6
+
+## What's new
+
+- Added support for updating external link for a test run.
+
 # qase-python-commons@3.5.5
 
 ## What's new

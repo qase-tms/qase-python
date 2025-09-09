@@ -191,7 +191,13 @@ class ApiV1Client(BaseApiClient):
                 run_create=RunCreate(**{k: v for k, v in kwargs.items() if v is not None})
             )
 
-            return result.result.id
+            run_id = result.result.id
+            
+            # Update external link if configured
+            if self.config.testops.run.external_link and run_id:
+                self.update_external_link(project_code, run_id)
+
+            return run_id
 
         except Exception as e:
             self.logger.log(f"Error at creating test run: {e}", "error")
@@ -203,6 +209,35 @@ class ApiV1Client(BaseApiClient):
         if run.result.id:
             return True
         return False
+
+    def update_external_link(self, project_code: str, run_id: int):
+        """Update external link for a test run"""
+        try:
+            from qase.api_client_v1.models.runexternal_issues import RunexternalIssues
+            from qase.api_client_v1.models.runexternal_issues_links_inner import RunexternalIssuesLinksInner
+            
+            external_link = self.config.testops.run.external_link
+            api_type = external_link.to_api_type()
+            
+            run_external_issues = RunexternalIssues(
+                type=api_type,
+                links=[
+                    RunexternalIssuesLinksInner(
+                        run_id=run_id,
+                        external_issue=external_link.link
+                    )
+                ]
+            )
+            
+            RunsApi(self.client).run_update_external_issue(
+                code=project_code,
+                runexternal_issues=run_external_issues
+            )
+            
+            self.logger.log(f"External link updated for run {run_id}: {external_link.link}", "debug")
+            
+        except Exception as e:
+            self.logger.log(f"Error at updating external link: {e}", "error")
 
     def __should_skip_attachment(self, attachment, result):
         if (self.config.framework.playwright.video == Video.failed and

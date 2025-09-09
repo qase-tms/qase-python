@@ -121,6 +121,10 @@ class ConfigManager:
                                 self.config.testops.run.set_tags(
                                     [tag.strip() for tag in run.get("tags")])
 
+                            if run.get("externalLink"):
+                                self.config.testops.run.set_external_link(
+                                    run.get("externalLink"))
+
                         if testops.get("batch"):
                             batch = testops.get("batch")
 
@@ -253,6 +257,18 @@ class ConfigManager:
                 if key == 'QASE_TESTOPS_RUN_TAGS':
                     self.config.testops.run.set_tags(
                         [tag.strip() for tag in value.split(',')])
+
+                if key == 'QASE_TESTOPS_RUN_EXTERNAL_LINK_TYPE':
+                    if not self.config.testops.run.external_link:
+                        from .models.external_link import ExternalLinkConfig
+                        self.config.testops.run.external_link = ExternalLinkConfig()
+                    self.config.testops.run.external_link.set_type(value)
+
+                if key == 'QASE_TESTOPS_RUN_EXTERNAL_LINK_URL':
+                    if not self.config.testops.run.external_link:
+                        from .models.external_link import ExternalLinkConfig
+                        self.config.testops.run.external_link = ExternalLinkConfig()
+                    self.config.testops.run.external_link.set_link(value)
 
                 if key == 'QASE_TESTOPS_BATCH_SIZE':
                     self.config.testops.batch.set_size(value)
