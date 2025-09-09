@@ -49,7 +49,13 @@ class TagParser:
     def __extract_params(tag: str) -> list[str]:
         value = tag.split(':', 1)[-1].strip()
         try:
-            return [item.strip() for item in value[1:-1].split(",")]
-        except ValueError as e:
+            # Remove square brackets and split by comma
+            if value.startswith('[') and value.endswith(']'):
+                params_str = value[1:-1]
+                return [item.strip() for item in params_str.split(",") if item.strip()]
+            else:
+                # Handle case without brackets
+                return [item.strip() for item in value.split(",") if item.strip()]
+        except (ValueError, IndexError) as e:
             TagParser.__logger.error(f"Error parsing params from tag '{tag}': {e}")
             return []
