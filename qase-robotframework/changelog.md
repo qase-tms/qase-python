@@ -1,3 +1,10 @@
+# qase-robotframework 3.4.6
+
+## What's new
+
+- Added support for parameters in user keywords.
+- Added support for fields in user keywords.
+
 # qase-robotframework 3.4.5
 
 ## What's new

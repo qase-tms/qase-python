@@ -85,6 +85,25 @@ class Listener:
         self.runtime.result = Result(title=test.name, signature=test.name)
         self.runtime.steps = {}
 
+    def end_user_keyword(self, data, implementation, result):
+        logger.debug("Ending user keyword '%s'", data.name)
+
+        test_metadata = TagParser.parse_tags(result.tags)
+
+        if test_metadata.params:
+            # Get argument names from the implementation
+            args_names = implementation.args.argument_names if hasattr(implementation.args, 'argument_names') else []
+            args_values = result.args if hasattr(result, 'args') else []
+            params: dict = {}
+            for param in test_metadata.params:
+                if param in args_names:
+                    params[param] = args_values[args_names.index(param)]
+            self.runtime.result.params = params
+        
+        if test_metadata.fields:
+            for key, value in test_metadata.fields.items():
+                self.runtime.result.add_field(Field(key, value))
+
     def end_test(self, test, result):
         logger.debug("Finishing test '%s'", test.name)
 
@@ -114,11 +133,12 @@ class Listener:
         steps = self.__parse_steps(result)
         self.runtime.result.add_steps(steps)
 
-        if len(test_metadata.params) > 0:
-            params: dict = {}
+        # Process parameters if they exist
+        if test_metadata.params:
             for param in test_metadata.params:
-                params[param] = BuiltIn().get_variable_value(f"${{{param}}}")
-            self.runtime.result.params = params
+                param_value = BuiltIn().get_variable_value(f"${{{param}}}")
+                if param_value is not None:
+                    self.runtime.result.add_param(param, param_value)
 
         if hasattr(test, "doc"):
             self.runtime.result.add_field(Field("description", test.doc))

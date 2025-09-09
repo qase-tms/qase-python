@@ -78,6 +78,28 @@ Browser Test
     Close browser
 ```
 
+### Adding Parameters and Fields to a User Keyword
+
+The `qase.params` tag can also be used in user keywords to specify which Robot Framework variables should be reported as parameters.
+
+```robotframework
+*** Settings ***
+Test Template    Check Status
+
+*** Keywords ***
+Check Status
+    [Arguments]    ${module}     
+    [Tags]    qase.params:[module]    qase.fields:{ "severity": "critical" }
+    Log    Checking status of module: ${module}
+
+*** Test Cases ***
+Check Status of BMS
+    [Tags]   Q-20     qase.fields:{ "preconditions": "Module BMS is connected", "description": "Flash firmware to BMS module and check status" }
+    [Template]    Check Status
+    BMS 
+
+```
+
 ---
 
 ## Ignoring a Test in Qase
