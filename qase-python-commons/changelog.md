@@ -1,3 +1,9 @@
+# qase-python-commons@3.5.7
+
+## What's new
+
+- Fixed an issue where step request data was not being set correctly.
+
 # qase-python-commons@3.5.6
 
 ## What's new

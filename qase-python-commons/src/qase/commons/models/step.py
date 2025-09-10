@@ -43,10 +43,20 @@ class StepRequestData(BaseModel):
         self.response_body = None
         self.status_code = None
         if isinstance(request_body, bytes):
-            request_body = request_body.decode('utf-8')
+            try:
+                request_body = request_body.decode('utf-8')
+            except UnicodeDecodeError:
+                # For binary data (like file uploads), keep as base64 encoded string
+                import base64
+                request_body = base64.b64encode(request_body).decode('ascii')
         self.request_body = request_body
         if isinstance(request_headers, bytes):
-            request_headers = request_headers.decode('utf-8')
+            try:
+                request_headers = request_headers.decode('utf-8')
+            except UnicodeDecodeError:
+                # For binary headers, keep as base64 encoded string
+                import base64
+                request_headers = base64.b64encode(request_headers).decode('ascii')
         self.request_headers = request_headers
         self.request_method = request_method
         self.request_url = request_url
@@ -56,10 +66,20 @@ class StepRequestData(BaseModel):
         self.status_code = status_code
 
         if isinstance(response_body, bytes):
-            response_body = response_body.decode('utf-8')
+            try:
+                response_body = response_body.decode('utf-8')
+            except UnicodeDecodeError:
+                # For binary data (like file downloads), keep as base64 encoded string
+                import base64
+                response_body = base64.b64encode(response_body).decode('ascii')
         self.response_body = response_body
         if isinstance(response_headers, bytes):
-            response_headers = response_headers.decode('utf-8')
+            try:
+                response_headers = response_headers.decode('utf-8')
+            except UnicodeDecodeError:
+                # For binary headers, keep as base64 encoded string
+                import base64
+                response_headers = base64.b64encode(response_headers).decode('ascii')
         self.response_headers = response_headers
 
 
