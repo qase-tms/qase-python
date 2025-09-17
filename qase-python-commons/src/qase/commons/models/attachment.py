@@ -29,16 +29,19 @@ class Attachment(BaseModel):
     def get_id(self) -> str:
         return self.id
 
-    def get_for_upload(self) -> BytesIO:
+    def get_for_upload(self) -> tuple:
+        """Returns attachment data in format expected by new API client: (filename, filedata)"""
+        
         if self.file_path:
             with open(self.file_path, "rb") as fc:
-                content = BytesIO(fc.read())
+                filedata = fc.read()
         else:
             if isinstance(self.content, str):
-                content = BytesIO(bytes(self.content, 'utf-8'))
+                filedata = bytes(self.content, 'utf-8')
             elif isinstance(self.content, bytes):
-                content = BytesIO(self.content)
-        content.name = self.file_name
-        content.mime = self.mime_type
-
-        return content
+                filedata = self.content
+            else:
+                # Handle case where content is not str or bytes (e.g., JSON serialized)
+                filedata = bytes(self.content, 'utf-8')
+        
+        return (self.file_name, filedata)

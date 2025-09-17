@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qase-python-commons"
-version = "3.5.7"
+version = "4.0.0"
 description = "A library for Qase TestOps and Qase Report"
 readme = "README.md"
 authors = [{name = "Qase Team", email = "support@qase.io"}]
@@ -18,20 +18,19 @@ classifiers = [
     'Topic :: Software Development :: Testing',
     'Programming Language :: Python :: 3',
     'Programming Language :: Python :: 3 :: Only',
-    'Programming Language :: Python :: 3.7',
-    'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
     'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
 ]
 urls = {"Homepage" = "https://github.com/qase-tms/qase-python/tree/main/qase-python-commons"}
-requires-python = ">=3.7"
+requires-python = ">=3.9"
 dependencies = [
     "certifi>=2024.2.2",
     "attrs>=23.2.0",
-    "qase-api-client~=1.2.3",
-    "qase-api-v2-client~=1.2.2",
+    "qase-api-client~=2.0.0",
+    "qase-api-v2-client~=2.0.0",
     "more_itertools"
 ]
 
@@ -48,8 +47,8 @@ testing = [
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-minversion = 3.7
-envlist = py{37,38,39,310,311}
+minversion = 3.9
+envlist = py{39,310,311,312,313}
 
 [testenv]
 deps =
