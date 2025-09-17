@@ -1,3 +1,9 @@
+# qase-python-commons@3.5.8
+
+## What's new
+
+- Updated the `qase-api-client` dependency to the latest version.
+
 # qase-python-commons@3.5.7
 
 ## What's new
