@@ -73,9 +73,9 @@ class TestCasebulk(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of each item in cases (list)
         _items = []
         if self.cases:
-            for _item in self.cases:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_cases in self.cases:
+                if _item_cases:
+                    _items.append(_item_cases.to_dict())
             _dict['cases'] = _items
         return _dict
 

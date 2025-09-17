@@ -28,7 +28,7 @@ print(PlanQuery.to_json())
 # convert the object into a dict
 plan_query_dict = plan_query_instance.to_dict()
 # create an instance of PlanQuery from a dict
-plan_query_form_dict = plan_query.from_dict(plan_query_dict)
+plan_query_from_dict = PlanQuery.from_dict(plan_query_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

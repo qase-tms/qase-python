@@ -15,7 +15,8 @@ Method | HTTP request | Description
 
 Remove attachment by Hash
 
-This method allows to remove attachment by Hash. 
+This method allows to remove attachment by Hash.
+
 
 ### Example
 
@@ -99,7 +100,8 @@ Name | Type | Description  | Notes
 
 Get attachment by Hash
 
-This method allows to retrieve attachment by Hash. 
+This method allows to retrieve attachment by Hash.
+
 
 ### Example
 
@@ -183,7 +185,8 @@ Name | Type | Description  | Notes
 
 Get all attachments
 
-This method allows to retrieve attachments. 
+This method allows to retrieve attachments.
+
 
 ### Example
 
@@ -270,7 +273,15 @@ Name | Type | Description  | Notes
 
 Upload attachment
 
-This method allows to upload attachment to Qase. Max upload size: * Up to 32 Mb per file * Up to 128 Mb per single request * Up to 20 files per single request  If there is no free space left in your team account, you will receive an error with code 507 - Insufficient Storage. 
+This method allows to upload attachment to Qase.
+Max upload size:
+* Up to 32 Mb per file
+* Up to 128 Mb per single request
+* Up to 20 files per single request
+
+If there is no free space left in your team account,
+you will receive an error with code 507 - Insufficient Storage.
+
 
 ### Example
 

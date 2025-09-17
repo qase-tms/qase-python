@@ -18,7 +18,8 @@ Method | HTTP request | Description
 
 Create a new defect
 
-This method allows to create a defect in selected project. 
+This method allows to create a defect in selected project.
+
 
 ### Example
 
@@ -106,7 +107,8 @@ Name | Type | Description  | Notes
 
 Delete defect
 
-This method completely deletes a defect from repository. 
+This method completely deletes a defect from repository.
+
 
 ### Example
 
@@ -192,7 +194,8 @@ Name | Type | Description  | Notes
 
 Get a specific defect
 
-This method allows to retrieve a specific defect. 
+This method allows to retrieve a specific defect.
+
 
 ### Example
 
@@ -278,7 +281,8 @@ Name | Type | Description  | Notes
 
 Get all defects
 
-This method allows to retrieve all defects stored in selected project. 
+This method allows to retrieve all defects stored in selected project.
+
 
 ### Example
 
@@ -368,7 +372,8 @@ Name | Type | Description  | Notes
 
 Resolve a specific defect
 
-This method allows to resolve a specific defect. 
+This method allows to resolve a specific defect.
+
 
 ### Example
 
@@ -455,7 +460,8 @@ Name | Type | Description  | Notes
 
 Update defect
 
-This method updates a defect. 
+This method updates a defect.
+
 
 ### Example
 
@@ -545,7 +551,8 @@ Name | Type | Description  | Notes
 
 Update a specific defect status
 
-This method allows to update a specific defect status. 
+This method allows to update a specific defect status.
+
 
 ### Example
 

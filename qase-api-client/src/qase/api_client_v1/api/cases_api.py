@@ -24,11 +24,11 @@ from qase.api_client_v1.models.base_response import BaseResponse
 from qase.api_client_v1.models.bulk200_response import Bulk200Response
 from qase.api_client_v1.models.id_response import IdResponse
 from qase.api_client_v1.models.test_case_create import TestCaseCreate
+from qase.api_client_v1.models.test_case_external_issues import TestCaseExternalIssues
 from qase.api_client_v1.models.test_case_list_response import TestCaseListResponse
 from qase.api_client_v1.models.test_case_response import TestCaseResponse
 from qase.api_client_v1.models.test_case_update import TestCaseUpdate
 from qase.api_client_v1.models.test_casebulk import TestCasebulk
-from qase.api_client_v1.models.test_caseexternal_issues import TestCaseexternalIssues
 
 from qase.api_client_v1.api_client import ApiClient, RequestSerialized
 from qase.api_client_v1.api_response import ApiResponse
@@ -294,7 +294,9 @@ class CasesApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -309,11 +311,12 @@ class CasesApi:
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
         # set the HTTP header `Content-Type`
         if _content_type:
@@ -356,7 +359,7 @@ class CasesApi:
     def case_attach_external_issue(
         self,
         code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        test_caseexternal_issues: TestCaseexternalIssues,
+        test_case_external_issues: TestCaseExternalIssues,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -375,8 +378,8 @@ class CasesApi:
 
         :param code: Code of project, where to search entities. (required)
         :type code: str
-        :param test_caseexternal_issues: (required)
-        :type test_caseexternal_issues: TestCaseexternalIssues
+        :param test_case_external_issues: (required)
+        :type test_case_external_issues: TestCaseExternalIssues
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -401,7 +404,7 @@ class CasesApi:
 
         _param = self._case_attach_external_issue_serialize(
             code=code,
-            test_caseexternal_issues=test_caseexternal_issues,
+            test_case_external_issues=test_case_external_issues,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -433,7 +436,7 @@ class CasesApi:
     def case_attach_external_issue_with_http_info(
         self,
         code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        test_caseexternal_issues: TestCaseexternalIssues,
+        test_case_external_issues: TestCaseExternalIssues,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -452,8 +455,8 @@ class CasesApi:
 
         :param code: Code of project, where to search entities. (required)
         :type code: str
-        :param test_caseexternal_issues: (required)
-        :type test_caseexternal_issues: TestCaseexternalIssues
+        :param test_case_external_issues: (required)
+        :type test_case_external_issues: TestCaseExternalIssues
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -478,7 +481,7 @@ class CasesApi:
 
         _param = self._case_attach_external_issue_serialize(
             code=code,
-            test_caseexternal_issues=test_caseexternal_issues,
+            test_case_external_issues=test_case_external_issues,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -510,7 +513,7 @@ class CasesApi:
     def case_attach_external_issue_without_preload_content(
         self,
         code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        test_caseexternal_issues: TestCaseexternalIssues,
+        test_case_external_issues: TestCaseExternalIssues,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -529,8 +532,8 @@ class CasesApi:
 
         :param code: Code of project, where to search entities. (required)
         :type code: str
-        :param test_caseexternal_issues: (required)
-        :type test_caseexternal_issues: TestCaseexternalIssues
+        :param test_case_external_issues: (required)
+        :type test_case_external_issues: TestCaseExternalIssues
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -555,7 +558,7 @@ class CasesApi:
 
         _param = self._case_attach_external_issue_serialize(
             code=code,
-            test_caseexternal_issues=test_caseexternal_issues,
+            test_case_external_issues=test_case_external_issues,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -582,7 +585,7 @@ class CasesApi:
     def _case_attach_external_issue_serialize(
         self,
         code,
-        test_caseexternal_issues,
+        test_case_external_issues,
         _request_auth,
         _content_type,
         _headers,
@@ -598,7 +601,9 @@ class CasesApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -608,16 +613,17 @@ class CasesApi:
         # process the header parameters
         # process the form parameters
         # process the body parameter
-        if test_caseexternal_issues is not None:
-            _body_params = test_caseexternal_issues
+        if test_case_external_issues is not None:
+            _body_params = test_case_external_issues
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
         # set the HTTP header `Content-Type`
         if _content_type:
@@ -660,7 +666,7 @@ class CasesApi:
     def case_detach_external_issue(
         self,
         code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        test_caseexternal_issues: TestCaseexternalIssues,
+        test_case_external_issues: TestCaseExternalIssues,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -679,8 +685,8 @@ class CasesApi:
 
         :param code: Code of project, where to search entities. (required)
         :type code: str
-        :param test_caseexternal_issues: (required)
-        :type test_caseexternal_issues: TestCaseexternalIssues
+        :param test_case_external_issues: (required)
+        :type test_case_external_issues: TestCaseExternalIssues
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -705,7 +711,7 @@ class CasesApi:
 
         _param = self._case_detach_external_issue_serialize(
             code=code,
-            test_caseexternal_issues=test_caseexternal_issues,
+            test_case_external_issues=test_case_external_issues,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -737,7 +743,7 @@ class CasesApi:
     def case_detach_external_issue_with_http_info(
         self,
         code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        test_caseexternal_issues: TestCaseexternalIssues,
+        test_case_external_issues: TestCaseExternalIssues,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -756,8 +762,8 @@ class CasesApi:
 
         :param code: Code of project, where to search entities. (required)
         :type code: str
-        :param test_caseexternal_issues: (required)
-        :type test_caseexternal_issues: TestCaseexternalIssues
+        :param test_case_external_issues: (required)
+        :type test_case_external_issues: TestCaseExternalIssues
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -782,7 +788,7 @@ class CasesApi:
 
         _param = self._case_detach_external_issue_serialize(
             code=code,
-            test_caseexternal_issues=test_caseexternal_issues,
+            test_case_external_issues=test_case_external_issues,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -814,7 +820,7 @@ class CasesApi:
     def case_detach_external_issue_without_preload_content(
         self,
         code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        test_caseexternal_issues: TestCaseexternalIssues,
+        test_case_external_issues: TestCaseExternalIssues,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -833,8 +839,8 @@ class CasesApi:
 
         :param code: Code of project, where to search entities. (required)
         :type code: str
-        :param test_caseexternal_issues: (required)
-        :type test_caseexternal_issues: TestCaseexternalIssues
+        :param test_case_external_issues: (required)
+        :type test_case_external_issues: TestCaseExternalIssues
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -859,7 +865,7 @@ class CasesApi:
 
         _param = self._case_detach_external_issue_serialize(
             code=code,
-            test_caseexternal_issues=test_caseexternal_issues,
+            test_case_external_issues=test_case_external_issues,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -886,7 +892,7 @@ class CasesApi:
     def _case_detach_external_issue_serialize(
         self,
         code,
-        test_caseexternal_issues,
+        test_case_external_issues,
         _request_auth,
         _content_type,
         _headers,
@@ -902,7 +908,9 @@ class CasesApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -912,16 +920,17 @@ class CasesApi:
         # process the header parameters
         # process the form parameters
         # process the body parameter
-        if test_caseexternal_issues is not None:
-            _body_params = test_caseexternal_issues
+        if test_case_external_issues is not None:
+            _body_params = test_case_external_issues
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
         # set the HTTP header `Content-Type`
         if _content_type:
@@ -1206,7 +1215,9 @@ class CasesApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -1221,11 +1232,12 @@ class CasesApi:
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
         # set the HTTP header `Content-Type`
         if _content_type:
@@ -1510,7 +1522,9 @@ class CasesApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -1525,11 +1539,12 @@ class CasesApi:
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
 
         # authentication setting
@@ -1814,7 +1829,9 @@ class CasesApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -1833,11 +1850,12 @@ class CasesApi:
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
 
         # authentication setting
@@ -2279,7 +2297,9 @@ class CasesApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -2348,11 +2368,12 @@ class CasesApi:
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
 
         # authentication setting
@@ -2637,7 +2658,9 @@ class CasesApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -2654,11 +2677,12 @@ class CasesApi:
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
         # set the HTTP header `Content-Type`
         if _content_type:

@@ -24,7 +24,7 @@ print(PlanUpdate.to_json())
 # convert the object into a dict
 plan_update_dict = plan_update_instance.to_dict()
 # create an instance of PlanUpdate from a dict
-plan_update_form_dict = plan_update.from_dict(plan_update_dict)
+plan_update_from_dict = PlanUpdate.from_dict(plan_update_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

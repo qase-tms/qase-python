@@ -21,7 +21,7 @@ from typing import Any, List, Optional
 from qase.api_client_v1.models.test_case_parameter_group import TestCaseParameterGroup
 from qase.api_client_v1.models.test_case_parameter_single import TestCaseParameterSingle
 from pydantic import StrictStr, Field
-from typing import Union, List, Optional, Dict
+from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
 TESTCASEPARAMETER_ONE_OF_SCHEMAS = ["TestCaseParameterGroup", "TestCaseParameterSingle"]
@@ -35,7 +35,7 @@ class TestCaseParameter(BaseModel):
     # data type: TestCaseParameterGroup
     oneof_schema_2_validator: Optional[TestCaseParameterGroup] = None
     actual_instance: Optional[Union[TestCaseParameterGroup, TestCaseParameterSingle]] = None
-    one_of_schemas: List[str] = Field(default=Literal["TestCaseParameterGroup", "TestCaseParameterSingle"])
+    one_of_schemas: Set[str] = { "TestCaseParameterGroup", "TestCaseParameterSingle" }
 
     model_config = ConfigDict(
         validate_assignment=True,

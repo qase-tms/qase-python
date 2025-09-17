@@ -29,7 +29,7 @@ print(Runupdate.to_json())
 # convert the object into a dict
 runupdate_dict = runupdate_instance.to_dict()
 # create an instance of Runupdate from a dict
-runupdate_form_dict = runupdate.from_dict(runupdate_dict)
+runupdate_from_dict = Runupdate.from_dict(runupdate_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

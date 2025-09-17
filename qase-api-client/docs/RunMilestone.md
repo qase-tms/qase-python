@@ -23,7 +23,7 @@ print(RunMilestone.to_json())
 # convert the object into a dict
 run_milestone_dict = run_milestone_instance.to_dict()
 # create an instance of RunMilestone from a dict
-run_milestone_form_dict = run_milestone.from_dict(run_milestone_dict)
+run_milestone_from_dict = RunMilestone.from_dict(run_milestone_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

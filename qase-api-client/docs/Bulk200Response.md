@@ -23,7 +23,7 @@ print(Bulk200Response.to_json())
 # convert the object into a dict
 bulk200_response_dict = bulk200_response_instance.to_dict()
 # create an instance of Bulk200Response from a dict
-bulk200_response_form_dict = bulk200_response.from_dict(bulk200_response_dict)
+bulk200_response_from_dict = Bulk200Response.from_dict(bulk200_response_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

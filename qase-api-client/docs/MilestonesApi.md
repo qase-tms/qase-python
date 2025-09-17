@@ -16,7 +16,8 @@ Method | HTTP request | Description
 
 Create a new milestone
 
-This method allows to create a milestone in selected project. 
+This method allows to create a milestone in selected project.
+
 
 ### Example
 
@@ -104,7 +105,8 @@ Name | Type | Description  | Notes
 
 Delete milestone
 
-This method completely deletes a milestone from repository. 
+This method completely deletes a milestone from repository.
+
 
 ### Example
 
@@ -190,7 +192,8 @@ Name | Type | Description  | Notes
 
 Get a specific milestone
 
-This method allows to retrieve a specific milestone. 
+This method allows to retrieve a specific milestone.
+
 
 ### Example
 
@@ -276,7 +279,8 @@ Name | Type | Description  | Notes
 
 Get all milestones
 
-This method allows to retrieve all milestones stored in selected project. 
+This method allows to retrieve all milestones stored in selected project.
+
 
 ### Example
 
@@ -366,7 +370,8 @@ Name | Type | Description  | Notes
 
 Update milestone
 
-This method updates a milestone. 
+This method updates a milestone.
+
 
 ### Example
 

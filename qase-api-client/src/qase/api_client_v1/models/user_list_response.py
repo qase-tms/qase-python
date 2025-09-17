@@ -18,26 +18,19 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List
-from qase.api_client_v1.models.runexternal_issues_links_inner import RunexternalIssuesLinksInner
+from pydantic import BaseModel, ConfigDict, StrictBool
+from typing import Any, ClassVar, Dict, List, Optional
+from qase.api_client_v1.models.user_list_response_all_of_result import UserListResponseAllOfResult
 from typing import Optional, Set
 from typing_extensions import Self
 
-class RunexternalIssues(BaseModel):
+class UserListResponse(BaseModel):
     """
-    RunexternalIssues
+    UserListResponse
     """ # noqa: E501
-    type: StrictStr
-    links: List[RunexternalIssuesLinksInner] = Field(description="Array of external issue links. Each test run (run_id) can have only one external issue link.")
-    __properties: ClassVar[List[str]] = ["type", "links"]
-
-    @field_validator('type')
-    def type_validate_enum(cls, value):
-        """Validates the enum"""
-        if value not in set(['jira-cloud', 'jira-server']):
-            raise ValueError("must be one of enum values ('jira-cloud', 'jira-server')")
-        return value
+    status: Optional[StrictBool] = None
+    result: Optional[UserListResponseAllOfResult] = None
+    __properties: ClassVar[List[str]] = ["status", "result"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -57,7 +50,7 @@ class RunexternalIssues(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of RunexternalIssues from a JSON string"""
+        """Create an instance of UserListResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -78,18 +71,14 @@ class RunexternalIssues(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in links (list)
-        _items = []
-        if self.links:
-            for _item in self.links:
-                if _item:
-                    _items.append(_item.to_dict())
-            _dict['links'] = _items
+        # override the default output from pydantic by calling `to_dict()` of result
+        if self.result:
+            _dict['result'] = self.result.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of RunexternalIssues from a dict"""
+        """Create an instance of UserListResponse from a dict"""
         if obj is None:
             return None
 
@@ -97,8 +86,8 @@ class RunexternalIssues(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "type": obj.get("type"),
-            "links": [RunexternalIssuesLinksInner.from_dict(_item) for _item in obj["links"]] if obj.get("links") is not None else None
+            "status": obj.get("status"),
+            "result": UserListResponseAllOfResult.from_dict(obj["result"]) if obj.get("result") is not None else None
         })
         return _obj
 

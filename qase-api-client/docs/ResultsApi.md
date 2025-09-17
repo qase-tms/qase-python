@@ -17,7 +17,8 @@ Method | HTTP request | Description
 
 Create test run result
 
-This method allows to create test run result by Run Id. 
+This method allows to create test run result by Run Id.
+
 
 ### Example
 
@@ -103,11 +104,16 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create_result_bulk**
-> BaseResponse create_result_bulk(code, id, resultcreate_bulk)
+> BaseResponse create_result_bulk(code, id, result_create_bulk)
 
 Bulk create test run result
 
-This method allows to create a lot of test run result at once.  If you try to send more than 2,000 results in a single bulk request, you will receive an error with code 413 - Payload Too Large.  If there is no free space left in your team account, when attempting to upload an attachment, e.g., through reporters, you will receive an error with code 507 - Insufficient Storage. 
+This method allows to create a lot of test run result at once.
+
+If you try to send more than 2,000 results in a single bulk request, you will receive an error with code 413 - Payload Too Large.
+
+If there is no free space left in your team account, when attempting to upload an attachment, e.g., through reporters, you will receive an error with code 507 - Insufficient Storage.
+
 
 ### Example
 
@@ -116,7 +122,7 @@ This method allows to create a lot of test run result at once.  If you try to se
 ```python
 import qase.api_client_v1
 from qase.api_client_v1.models.base_response import BaseResponse
-from qase.api_client_v1.models.resultcreate_bulk import ResultcreateBulk
+from qase.api_client_v1.models.result_create_bulk import ResultCreateBulk
 from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
@@ -143,11 +149,11 @@ with qase.api_client_v1.ApiClient(configuration) as api_client:
     api_instance = qase.api_client_v1.ResultsApi(api_client)
     code = 'code_example' # str | Code of project, where to search entities.
     id = 56 # int | Identifier.
-    resultcreate_bulk = qase.api_client_v1.ResultcreateBulk() # ResultcreateBulk | 
+    result_create_bulk = qase.api_client_v1.ResultCreateBulk() # ResultCreateBulk | 
 
     try:
         # Bulk create test run result
-        api_response = api_instance.create_result_bulk(code, id, resultcreate_bulk)
+        api_response = api_instance.create_result_bulk(code, id, result_create_bulk)
         print("The response of ResultsApi->create_result_bulk:\n")
         pprint(api_response)
     except Exception as e:
@@ -163,7 +169,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **code** | **str**| Code of project, where to search entities. | 
  **id** | **int**| Identifier. | 
- **resultcreate_bulk** | [**ResultcreateBulk**](ResultcreateBulk.md)|  | 
+ **result_create_bulk** | [**ResultCreateBulk**](ResultCreateBulk.md)|  | 
 
 ### Return type
 
@@ -198,7 +204,8 @@ Name | Type | Description  | Notes
 
 Delete test run result
 
-This method allows to delete test run result. 
+This method allows to delete test run result.
+
 
 ### Example
 
@@ -286,7 +293,8 @@ Name | Type | Description  | Notes
 
 Get test run result by code
 
-This method allows to retrieve a specific test run result by Hash. 
+This method allows to retrieve a specific test run result by Hash.
+
 
 ### Example
 
@@ -372,7 +380,9 @@ Name | Type | Description  | Notes
 
 Get all test run results
 
-This method allows to retrieve all test run results stored in selected project. 
+This method allows to retrieve all test run
+results stored in selected project.
+
 
 ### Example
 
@@ -474,7 +484,8 @@ Name | Type | Description  | Notes
 
 Update test run result
 
-This method allows to update test run result. 
+This method allows to update test run result.
+
 
 ### Example
 

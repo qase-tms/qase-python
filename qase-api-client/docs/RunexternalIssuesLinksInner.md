@@ -1,4 +1,4 @@
-# RunexternalIssuesLinksInner
+# RunExternalIssuesLinksInner
 
 
 ## Properties
@@ -11,19 +11,19 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from qase.api_client_v1.models.runexternal_issues_links_inner import RunexternalIssuesLinksInner
+from qase.api_client_v1.models.run_external_issues_links_inner import RunExternalIssuesLinksInner
 
 # TODO update the JSON string below
 json = "{}"
-# create an instance of RunexternalIssuesLinksInner from a JSON string
-runexternal_issues_links_inner_instance = RunexternalIssuesLinksInner.from_json(json)
+# create an instance of RunExternalIssuesLinksInner from a JSON string
+run_external_issues_links_inner_instance = RunExternalIssuesLinksInner.from_json(json)
 # print the JSON string representation of the object
-print(RunexternalIssuesLinksInner.to_json())
+print(RunExternalIssuesLinksInner.to_json())
 
 # convert the object into a dict
-runexternal_issues_links_inner_dict = runexternal_issues_links_inner_instance.to_dict()
-# create an instance of RunexternalIssuesLinksInner from a dict
-runexternal_issues_links_inner_form_dict = runexternal_issues_links_inner.from_dict(runexternal_issues_links_inner_dict)
+run_external_issues_links_inner_dict = run_external_issues_links_inner_instance.to_dict()
+# create an instance of RunExternalIssuesLinksInner from a dict
+run_external_issues_links_inner_from_dict = RunExternalIssuesLinksInner.from_dict(run_external_issues_links_inner_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -28,7 +28,7 @@ print(SystemField.to_json())
 # convert the object into a dict
 system_field_dict = system_field_instance.to_dict()
 # create an instance of SystemField from a dict
-system_field_form_dict = system_field.from_dict(system_field_dict)
+system_field_from_dict = SystemField.from_dict(system_field_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

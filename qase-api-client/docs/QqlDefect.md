@@ -37,7 +37,7 @@ print(QqlDefect.to_json())
 # convert the object into a dict
 qql_defect_dict = qql_defect_instance.to_dict()
 # create an instance of QqlDefect from a dict
-qql_defect_form_dict = qql_defect.from_dict(qql_defect_dict)
+qql_defect_from_dict = QqlDefect.from_dict(qql_defect_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

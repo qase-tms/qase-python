@@ -23,7 +23,7 @@ print(AttachmentUploadsResponse.to_json())
 # convert the object into a dict
 attachment_uploads_response_dict = attachment_uploads_response_instance.to_dict()
 # create an instance of AttachmentUploadsResponse from a dict
-attachment_uploads_response_form_dict = attachment_uploads_response.from_dict(attachment_uploads_response_dict)
+attachment_uploads_response_from_dict = AttachmentUploadsResponse.from_dict(attachment_uploads_response_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

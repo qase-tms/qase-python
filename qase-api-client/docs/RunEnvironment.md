@@ -25,7 +25,7 @@ print(RunEnvironment.to_json())
 # convert the object into a dict
 run_environment_dict = run_environment_instance.to_dict()
 # create an instance of RunEnvironment from a dict
-run_environment_form_dict = run_environment.from_dict(run_environment_dict)
+run_environment_from_dict = RunEnvironment.from_dict(run_environment_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

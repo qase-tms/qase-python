@@ -30,7 +30,7 @@ print(ResultCreateCase.to_json())
 # convert the object into a dict
 result_create_case_dict = result_create_case_instance.to_dict()
 # create an instance of ResultCreateCase from a dict
-result_create_case_form_dict = result_create_case.from_dict(result_create_case_dict)
+result_create_case_from_dict = ResultCreateCase.from_dict(result_create_case_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

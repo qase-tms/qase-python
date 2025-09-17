@@ -23,7 +23,7 @@ print(PlanListResponse.to_json())
 # convert the object into a dict
 plan_list_response_dict = plan_list_response_instance.to_dict()
 # create an instance of PlanListResponse from a dict
-plan_list_response_form_dict = plan_list_response.from_dict(plan_list_response_dict)
+plan_list_response_from_dict = PlanListResponse.from_dict(plan_list_response_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

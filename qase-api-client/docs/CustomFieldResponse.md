@@ -23,7 +23,7 @@ print(CustomFieldResponse.to_json())
 # convert the object into a dict
 custom_field_response_dict = custom_field_response_instance.to_dict()
 # create an instance of CustomFieldResponse from a dict
-custom_field_response_form_dict = custom_field_response.from_dict(custom_field_response_dict)
+custom_field_response_from_dict = CustomFieldResponse.from_dict(custom_field_response_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

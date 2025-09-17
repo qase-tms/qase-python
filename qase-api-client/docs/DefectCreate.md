@@ -28,7 +28,7 @@ print(DefectCreate.to_json())
 # convert the object into a dict
 defect_create_dict = defect_create_instance.to_dict()
 # create an instance of DefectCreate from a dict
-defect_create_form_dict = defect_create.from_dict(defect_create_dict)
+defect_create_from_dict = DefectCreate.from_dict(defect_create_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -30,7 +30,7 @@ print(TestStep.to_json())
 # convert the object into a dict
 test_step_dict = test_step_instance.to_dict()
 # create an instance of TestStep from a dict
-test_step_form_dict = test_step.from_dict(test_step_dict)
+test_step_from_dict = TestStep.from_dict(test_step_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

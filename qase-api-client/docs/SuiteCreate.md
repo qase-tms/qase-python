@@ -25,7 +25,7 @@ print(SuiteCreate.to_json())
 # convert the object into a dict
 suite_create_dict = suite_create_instance.to_dict()
 # create an instance of SuiteCreate from a dict
-suite_create_form_dict = suite_create.from_dict(suite_create_dict)
+suite_create_from_dict = SuiteCreate.from_dict(suite_create_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

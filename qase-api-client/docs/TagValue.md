@@ -23,7 +23,7 @@ print(TagValue.to_json())
 # convert the object into a dict
 tag_value_dict = tag_value_instance.to_dict()
 # create an instance of TagValue from a dict
-tag_value_form_dict = tag_value.from_dict(tag_value_dict)
+tag_value_from_dict = TagValue.from_dict(tag_value_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

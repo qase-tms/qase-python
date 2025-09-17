@@ -24,7 +24,7 @@ print(ParameterSingle.to_json())
 # convert the object into a dict
 parameter_single_dict = parameter_single_instance.to_dict()
 # create an instance of ParameterSingle from a dict
-parameter_single_form_dict = parameter_single.from_dict(parameter_single_dict)
+parameter_single_from_dict = ParameterSingle.from_dict(parameter_single_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -27,7 +27,7 @@ print(Attachmentupload.to_json())
 # convert the object into a dict
 attachmentupload_dict = attachmentupload_instance.to_dict()
 # create an instance of Attachmentupload from a dict
-attachmentupload_form_dict = attachmentupload.from_dict(attachmentupload_dict)
+attachmentupload_from_dict = Attachmentupload.from_dict(attachmentupload_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

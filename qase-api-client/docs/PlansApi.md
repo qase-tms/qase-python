@@ -16,7 +16,8 @@ Method | HTTP request | Description
 
 Create a new plan
 
-This method allows to create a plan in selected project. 
+This method allows to create a plan in selected project.
+
 
 ### Example
 
@@ -104,7 +105,8 @@ Name | Type | Description  | Notes
 
 Delete plan
 
-This method completely deletes a plan from repository. 
+This method completely deletes a plan from repository.
+
 
 ### Example
 
@@ -190,7 +192,8 @@ Name | Type | Description  | Notes
 
 Get a specific plan
 
-This method allows to retrieve a specific plan. 
+This method allows to retrieve a specific plan.
+
 
 ### Example
 
@@ -276,7 +279,8 @@ Name | Type | Description  | Notes
 
 Get all plans
 
-This method allows to retrieve all plans stored in selected project. 
+This method allows to retrieve all plans stored in selected project.
+
 
 ### Example
 
@@ -364,7 +368,8 @@ Name | Type | Description  | Notes
 
 Update plan
 
-This method updates a plan. 
+This method updates a plan.
+
 
 ### Example
 

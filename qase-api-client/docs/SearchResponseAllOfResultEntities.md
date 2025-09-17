@@ -75,7 +75,7 @@ print(SearchResponseAllOfResultEntities.to_json())
 # convert the object into a dict
 search_response_all_of_result_entities_dict = search_response_all_of_result_entities_instance.to_dict()
 # create an instance of SearchResponseAllOfResultEntities from a dict
-search_response_all_of_result_entities_form_dict = search_response_all_of_result_entities.from_dict(search_response_all_of_result_entities_dict)
+search_response_all_of_result_entities_from_dict = SearchResponseAllOfResultEntities.from_dict(search_response_all_of_result_entities_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

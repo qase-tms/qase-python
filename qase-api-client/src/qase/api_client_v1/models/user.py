@@ -18,26 +18,21 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List
-from qase.api_client_v1.models.test_case_external_issues_links_inner import TestCaseExternalIssuesLinksInner
+from pydantic import BaseModel, ConfigDict, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 
-class TestCaseexternalIssues(BaseModel):
+class User(BaseModel):
     """
-    TestCaseexternalIssues
+    User
     """ # noqa: E501
-    type: StrictStr
-    links: List[TestCaseExternalIssuesLinksInner]
-    __properties: ClassVar[List[str]] = ["type", "links"]
-
-    @field_validator('type')
-    def type_validate_enum(cls, value):
-        """Validates the enum"""
-        if value not in set(['jira-cloud', 'jira-server']):
-            raise ValueError("must be one of enum values ('jira-cloud', 'jira-server')")
-        return value
+    id: Optional[StrictInt] = None
+    name: Optional[StrictStr] = None
+    email: Optional[StrictStr] = None
+    title: Optional[StrictStr] = None
+    status: Optional[StrictInt] = None
+    __properties: ClassVar[List[str]] = ["id", "name", "email", "title", "status"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -57,7 +52,7 @@ class TestCaseexternalIssues(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of TestCaseexternalIssues from a JSON string"""
+        """Create an instance of User from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -78,18 +73,11 @@ class TestCaseexternalIssues(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in links (list)
-        _items = []
-        if self.links:
-            for _item in self.links:
-                if _item:
-                    _items.append(_item.to_dict())
-            _dict['links'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of TestCaseexternalIssues from a dict"""
+        """Create an instance of User from a dict"""
         if obj is None:
             return None
 
@@ -97,8 +85,11 @@ class TestCaseexternalIssues(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "type": obj.get("type"),
-            "links": [TestCaseExternalIssuesLinksInner.from_dict(_item) for _item in obj["links"]] if obj.get("links") is not None else None
+            "id": obj.get("id"),
+            "name": obj.get("name"),
+            "email": obj.get("email"),
+            "title": obj.get("title"),
+            "status": obj.get("status")
         })
         return _obj
 

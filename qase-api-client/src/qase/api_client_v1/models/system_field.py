@@ -79,9 +79,9 @@ class SystemField(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of each item in options (list)
         _items = []
         if self.options:
-            for _item in self.options:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_options in self.options:
+                if _item_options:
+                    _items.append(_item_options.to_dict())
             _dict['options'] = _items
         # set to None if default_value (nullable) is None
         # and model_fields_set contains the field

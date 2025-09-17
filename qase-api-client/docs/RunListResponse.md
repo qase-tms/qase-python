@@ -23,7 +23,7 @@ print(RunListResponse.to_json())
 # convert the object into a dict
 run_list_response_dict = run_list_response_instance.to_dict()
 # create an instance of RunListResponse from a dict
-run_list_response_form_dict = run_list_response.from_dict(run_list_response_dict)
+run_list_response_from_dict = RunListResponse.from_dict(run_list_response_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -19,7 +19,8 @@ Method | HTTP request | Description
 
 Create test cases in bulk
 
-This method allows to bulk create new test cases in a project. 
+This method allows to bulk create new test cases in a project.
+
 
 ### Example
 
@@ -103,7 +104,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **case_attach_external_issue**
-> BaseResponse case_attach_external_issue(code, test_caseexternal_issues)
+> BaseResponse case_attach_external_issue(code, test_case_external_issues)
 
 Attach the external issues to the test cases
 
@@ -114,7 +115,7 @@ Attach the external issues to the test cases
 ```python
 import qase.api_client_v1
 from qase.api_client_v1.models.base_response import BaseResponse
-from qase.api_client_v1.models.test_caseexternal_issues import TestCaseexternalIssues
+from qase.api_client_v1.models.test_case_external_issues import TestCaseExternalIssues
 from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
@@ -140,11 +141,11 @@ with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.CasesApi(api_client)
     code = 'code_example' # str | Code of project, where to search entities.
-    test_caseexternal_issues = qase.api_client_v1.TestCaseexternalIssues() # TestCaseexternalIssues | 
+    test_case_external_issues = qase.api_client_v1.TestCaseExternalIssues() # TestCaseExternalIssues | 
 
     try:
         # Attach the external issues to the test cases
-        api_response = api_instance.case_attach_external_issue(code, test_caseexternal_issues)
+        api_response = api_instance.case_attach_external_issue(code, test_case_external_issues)
         print("The response of CasesApi->case_attach_external_issue:\n")
         pprint(api_response)
     except Exception as e:
@@ -159,7 +160,7 @@ with qase.api_client_v1.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **code** | **str**| Code of project, where to search entities. | 
- **test_caseexternal_issues** | [**TestCaseexternalIssues**](TestCaseexternalIssues.md)|  | 
+ **test_case_external_issues** | [**TestCaseExternalIssues**](TestCaseExternalIssues.md)|  | 
 
 ### Return type
 
@@ -190,7 +191,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **case_detach_external_issue**
-> BaseResponse case_detach_external_issue(code, test_caseexternal_issues)
+> BaseResponse case_detach_external_issue(code, test_case_external_issues)
 
 Detach the external issues from the test cases
 
@@ -201,7 +202,7 @@ Detach the external issues from the test cases
 ```python
 import qase.api_client_v1
 from qase.api_client_v1.models.base_response import BaseResponse
-from qase.api_client_v1.models.test_caseexternal_issues import TestCaseexternalIssues
+from qase.api_client_v1.models.test_case_external_issues import TestCaseExternalIssues
 from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
@@ -227,11 +228,11 @@ with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.CasesApi(api_client)
     code = 'code_example' # str | Code of project, where to search entities.
-    test_caseexternal_issues = qase.api_client_v1.TestCaseexternalIssues() # TestCaseexternalIssues | 
+    test_case_external_issues = qase.api_client_v1.TestCaseExternalIssues() # TestCaseExternalIssues | 
 
     try:
         # Detach the external issues from the test cases
-        api_response = api_instance.case_detach_external_issue(code, test_caseexternal_issues)
+        api_response = api_instance.case_detach_external_issue(code, test_case_external_issues)
         print("The response of CasesApi->case_detach_external_issue:\n")
         pprint(api_response)
     except Exception as e:
@@ -246,7 +247,7 @@ with qase.api_client_v1.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **code** | **str**| Code of project, where to search entities. | 
- **test_caseexternal_issues** | [**TestCaseexternalIssues**](TestCaseexternalIssues.md)|  | 
+ **test_case_external_issues** | [**TestCaseExternalIssues**](TestCaseExternalIssues.md)|  | 
 
 ### Return type
 
@@ -281,7 +282,8 @@ Name | Type | Description  | Notes
 
 Create a new test case
 
-This method allows to create a new test case in selected project. 
+This method allows to create a new test case in selected project.
+
 
 ### Example
 
@@ -369,7 +371,8 @@ Name | Type | Description  | Notes
 
 Delete test case
 
-This method completely deletes a test case from repository. 
+This method completely deletes a test case from repository.
+
 
 ### Example
 
@@ -456,7 +459,8 @@ Name | Type | Description  | Notes
 
 Get a specific test case
 
-This method allows to retrieve a specific test case. 
+This method allows to retrieve a specific test case.
+
 
 ### Example
 
@@ -545,7 +549,8 @@ Name | Type | Description  | Notes
 
 Get all test cases
 
-This method allows to retrieve all test cases stored in selected project. 
+This method allows to retrieve all test cases stored in selected project.
+
 
 ### Example
 
@@ -658,7 +663,8 @@ Name | Type | Description  | Notes
 
 Update test case
 
-This method updates a test case. 
+This method updates a test case.
+
 
 ### Example
 

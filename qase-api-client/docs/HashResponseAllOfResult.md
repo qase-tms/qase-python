@@ -22,7 +22,7 @@ print(HashResponseAllOfResult.to_json())
 # convert the object into a dict
 hash_response_all_of_result_dict = hash_response_all_of_result_instance.to_dict()
 # create an instance of HashResponseAllOfResult from a dict
-hash_response_all_of_result_form_dict = hash_response_all_of_result.from_dict(hash_response_all_of_result_dict)
+hash_response_all_of_result_from_dict = HashResponseAllOfResult.from_dict(hash_response_all_of_result_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

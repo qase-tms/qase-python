@@ -18,19 +18,19 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
-from typing_extensions import Annotated
-from qase.api_client_v1.models.result_create import ResultCreate
+from pydantic import BaseModel, ConfigDict, StrictBool
+from typing import Any, ClassVar, Dict, List, Optional
+from qase.api_client_v1.models.uuid_response_all_of_result import UuidResponseAllOfResult
 from typing import Optional, Set
 from typing_extensions import Self
 
-class ResultcreateBulk(BaseModel):
+class UuidResponse1(BaseModel):
     """
-    ResultcreateBulk
+    UuidResponse1
     """ # noqa: E501
-    results: Annotated[List[ResultCreate], Field(max_length=2000)]
-    __properties: ClassVar[List[str]] = ["results"]
+    status: Optional[StrictBool] = None
+    result: Optional[UuidResponseAllOfResult] = None
+    __properties: ClassVar[List[str]] = ["status", "result"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -50,7 +50,7 @@ class ResultcreateBulk(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ResultcreateBulk from a JSON string"""
+        """Create an instance of UuidResponse1 from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -71,18 +71,14 @@ class ResultcreateBulk(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in results (list)
-        _items = []
-        if self.results:
-            for _item in self.results:
-                if _item:
-                    _items.append(_item.to_dict())
-            _dict['results'] = _items
+        # override the default output from pydantic by calling `to_dict()` of result
+        if self.result:
+            _dict['result'] = self.result.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ResultcreateBulk from a dict"""
+        """Create an instance of UuidResponse1 from a dict"""
         if obj is None:
             return None
 
@@ -90,7 +86,8 @@ class ResultcreateBulk(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "results": [ResultCreate.from_dict(_item) for _item in obj["results"]] if obj.get("results") is not None else None
+            "status": obj.get("status"),
+            "result": UuidResponseAllOfResult.from_dict(obj["result"]) if obj.get("result") is not None else None
         })
         return _obj
 

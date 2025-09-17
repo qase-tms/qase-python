@@ -23,7 +23,7 @@ print(ExternalIssueIssuesInner.to_json())
 # convert the object into a dict
 external_issue_issues_inner_dict = external_issue_issues_inner_instance.to_dict()
 # create an instance of ExternalIssueIssuesInner from a dict
-external_issue_issues_inner_form_dict = external_issue_issues_inner.from_dict(external_issue_issues_inner_dict)
+external_issue_issues_inner_from_dict = ExternalIssueIssuesInner.from_dict(external_issue_issues_inner_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

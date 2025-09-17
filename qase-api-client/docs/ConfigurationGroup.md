@@ -24,7 +24,7 @@ print(ConfigurationGroup.to_json())
 # convert the object into a dict
 configuration_group_dict = configuration_group_instance.to_dict()
 # create an instance of ConfigurationGroup from a dict
-configuration_group_form_dict = configuration_group.from_dict(configuration_group_dict)
+configuration_group_from_dict = ConfigurationGroup.from_dict(configuration_group_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -96,7 +96,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **delete_shared_parameter**
-> UuidResponse delete_shared_parameter(id)
+> UuidResponse1 delete_shared_parameter(id)
 
 Delete shared parameter
 
@@ -108,7 +108,7 @@ Delete shared parameter along with all its usages in test cases and reviews.
 
 ```python
 import qase.api_client_v1
-from qase.api_client_v1.models.uuid_response import UuidResponse
+from qase.api_client_v1.models.uuid_response1 import UuidResponse1
 from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
@@ -155,7 +155,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UuidResponse**](UuidResponse.md)
+[**UuidResponse1**](UuidResponse1.md)
 
 ### Authorization
 
@@ -352,7 +352,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **update_shared_parameter**
-> UuidResponse update_shared_parameter(id, shared_parameter_update)
+> UuidResponse1 update_shared_parameter(id, shared_parameter_update)
 
 Update shared parameter
 
@@ -363,7 +363,7 @@ Update shared parameter
 ```python
 import qase.api_client_v1
 from qase.api_client_v1.models.shared_parameter_update import SharedParameterUpdate
-from qase.api_client_v1.models.uuid_response import UuidResponse
+from qase.api_client_v1.models.uuid_response1 import UuidResponse1
 from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
@@ -412,7 +412,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UuidResponse**](UuidResponse.md)
+[**UuidResponse1**](UuidResponse1.md)
 
 ### Authorization
 

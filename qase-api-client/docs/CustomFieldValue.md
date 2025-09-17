@@ -23,7 +23,7 @@ print(CustomFieldValue.to_json())
 # convert the object into a dict
 custom_field_value_dict = custom_field_value_instance.to_dict()
 # create an instance of CustomFieldValue from a dict
-custom_field_value_form_dict = custom_field_value.from_dict(custom_field_value_dict)
+custom_field_value_from_dict = CustomFieldValue.from_dict(custom_field_value_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

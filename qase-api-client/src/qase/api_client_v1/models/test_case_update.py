@@ -21,7 +21,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
-from qase.api_client_v1.models.test_case_parametercreate import TestCaseParametercreate
+from qase.api_client_v1.models.test_case_parameter_create import TestCaseParameterCreate
 from qase.api_client_v1.models.test_step_create import TestStepCreate
 from typing import Optional, Set
 from typing_extensions import Self
@@ -48,7 +48,7 @@ class TestCaseUpdate(BaseModel):
     steps: Optional[List[TestStepCreate]] = None
     tags: Optional[List[StrictStr]] = None
     params: Optional[Dict[str, List[StrictStr]]] = Field(default=None, description="Deprecated, use `parameters` instead.")
-    parameters: Optional[List[TestCaseParametercreate]] = None
+    parameters: Optional[List[TestCaseParameterCreate]] = None
     custom_field: Optional[Dict[str, StrictStr]] = Field(default=None, description="A map of custom fields values (id => value)")
     __properties: ClassVar[List[str]] = ["description", "preconditions", "postconditions", "title", "severity", "priority", "behavior", "type", "layer", "is_flaky", "suite_id", "milestone_id", "automation", "status", "attachments", "steps", "tags", "params", "parameters", "custom_field"]
 
@@ -94,16 +94,16 @@ class TestCaseUpdate(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of each item in steps (list)
         _items = []
         if self.steps:
-            for _item in self.steps:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_steps in self.steps:
+                if _item_steps:
+                    _items.append(_item_steps.to_dict())
             _dict['steps'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in parameters (list)
         _items = []
         if self.parameters:
-            for _item in self.parameters:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_parameters in self.parameters:
+                if _item_parameters:
+                    _items.append(_item_parameters.to_dict())
             _dict['parameters'] = _items
         # set to None if params (nullable) is None
         # and model_fields_set contains the field
@@ -145,7 +145,7 @@ class TestCaseUpdate(BaseModel):
             "steps": [TestStepCreate.from_dict(_item) for _item in obj["steps"]] if obj.get("steps") is not None else None,
             "tags": obj.get("tags"),
             "params": obj.get("params"),
-            "parameters": [TestCaseParametercreate.from_dict(_item) for _item in obj["parameters"]] if obj.get("parameters") is not None else None,
+            "parameters": [TestCaseParameterCreate.from_dict(_item) for _item in obj["parameters"]] if obj.get("parameters") is not None else None,
             "custom_field": obj.get("custom_field")
         })
         return _obj

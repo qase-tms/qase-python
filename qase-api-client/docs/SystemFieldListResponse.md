@@ -23,7 +23,7 @@ print(SystemFieldListResponse.to_json())
 # convert the object into a dict
 system_field_list_response_dict = system_field_list_response_instance.to_dict()
 # create an instance of SystemFieldListResponse from a dict
-system_field_list_response_form_dict = system_field_list_response.from_dict(system_field_list_response_dict)
+system_field_list_response_from_dict = SystemFieldListResponse.from_dict(system_field_list_response_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

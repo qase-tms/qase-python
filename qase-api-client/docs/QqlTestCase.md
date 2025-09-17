@@ -49,7 +49,7 @@ print(QqlTestCase.to_json())
 # convert the object into a dict
 qql_test_case_dict = qql_test_case_instance.to_dict()
 # create an instance of QqlTestCase from a dict
-qql_test_case_form_dict = qql_test_case.from_dict(qql_test_case_dict)
+qql_test_case_from_dict = QqlTestCase.from_dict(qql_test_case_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
