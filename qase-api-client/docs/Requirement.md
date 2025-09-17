@@ -31,7 +31,7 @@ print(Requirement.to_json())
 # convert the object into a dict
 requirement_dict = requirement_instance.to_dict()
 # create an instance of Requirement from a dict
-requirement_form_dict = requirement.from_dict(requirement_dict)
+requirement_from_dict = Requirement.from_dict(requirement_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

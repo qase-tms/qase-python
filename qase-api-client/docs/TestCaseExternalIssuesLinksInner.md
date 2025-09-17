@@ -23,7 +23,7 @@ print(TestCaseExternalIssuesLinksInner.to_json())
 # convert the object into a dict
 test_case_external_issues_links_inner_dict = test_case_external_issues_links_inner_instance.to_dict()
 # create an instance of TestCaseExternalIssuesLinksInner from a dict
-test_case_external_issues_links_inner_form_dict = test_case_external_issues_links_inner.from_dict(test_case_external_issues_links_inner_dict)
+test_case_external_issues_links_inner_from_dict = TestCaseExternalIssuesLinksInner.from_dict(test_case_external_issues_links_inner_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

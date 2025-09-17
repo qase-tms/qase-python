@@ -33,7 +33,7 @@ print(SharedStep.to_json())
 # convert the object into a dict
 shared_step_dict = shared_step_instance.to_dict()
 # create an instance of SharedStep from a dict
-shared_step_form_dict = shared_step.from_dict(shared_step_dict)
+shared_step_from_dict = SharedStep.from_dict(shared_step_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

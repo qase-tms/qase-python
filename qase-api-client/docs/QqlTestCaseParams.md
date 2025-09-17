@@ -21,7 +21,7 @@ print(QqlTestCaseParams.to_json())
 # convert the object into a dict
 qql_test_case_params_dict = qql_test_case_params_instance.to_dict()
 # create an instance of QqlTestCaseParams from a dict
-qql_test_case_params_form_dict = qql_test_case_params.from_dict(qql_test_case_params_dict)
+qql_test_case_params_from_dict = QqlTestCaseParams.from_dict(qql_test_case_params_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

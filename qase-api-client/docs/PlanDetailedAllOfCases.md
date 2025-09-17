@@ -23,7 +23,7 @@ print(PlanDetailedAllOfCases.to_json())
 # convert the object into a dict
 plan_detailed_all_of_cases_dict = plan_detailed_all_of_cases_instance.to_dict()
 # create an instance of PlanDetailedAllOfCases from a dict
-plan_detailed_all_of_cases_form_dict = plan_detailed_all_of_cases.from_dict(plan_detailed_all_of_cases_dict)
+plan_detailed_all_of_cases_from_dict = PlanDetailedAllOfCases.from_dict(plan_detailed_all_of_cases_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

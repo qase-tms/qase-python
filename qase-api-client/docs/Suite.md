@@ -32,7 +32,7 @@ print(Suite.to_json())
 # convert the object into a dict
 suite_dict = suite_instance.to_dict()
 # create an instance of Suite from a dict
-suite_form_dict = suite.from_dict(suite_dict)
+suite_from_dict = Suite.from_dict(suite_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

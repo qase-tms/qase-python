@@ -23,11 +23,11 @@ from typing_extensions import Annotated
 from qase.api_client_v1.models.base_response import BaseResponse
 from qase.api_client_v1.models.hash_response import HashResponse
 from qase.api_client_v1.models.result_create import ResultCreate
+from qase.api_client_v1.models.result_create_bulk import ResultCreateBulk
 from qase.api_client_v1.models.result_create_response import ResultCreateResponse
 from qase.api_client_v1.models.result_list_response import ResultListResponse
 from qase.api_client_v1.models.result_response import ResultResponse
 from qase.api_client_v1.models.result_update import ResultUpdate
-from qase.api_client_v1.models.resultcreate_bulk import ResultcreateBulk
 
 from qase.api_client_v1.api_client import ApiClient, RequestSerialized
 from qase.api_client_v1.api_response import ApiResponse
@@ -306,7 +306,9 @@ class ResultsApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -323,11 +325,12 @@ class ResultsApi:
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
         # set the HTTP header `Content-Type`
         if _content_type:
@@ -371,7 +374,7 @@ class ResultsApi:
         self,
         code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
         id: Annotated[StrictInt, Field(description="Identifier.")],
-        resultcreate_bulk: ResultcreateBulk,
+        result_create_bulk: ResultCreateBulk,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -393,8 +396,8 @@ class ResultsApi:
         :type code: str
         :param id: Identifier. (required)
         :type id: int
-        :param resultcreate_bulk: (required)
-        :type resultcreate_bulk: ResultcreateBulk
+        :param result_create_bulk: (required)
+        :type result_create_bulk: ResultCreateBulk
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -420,7 +423,7 @@ class ResultsApi:
         _param = self._create_result_bulk_serialize(
             code=code,
             id=id,
-            resultcreate_bulk=resultcreate_bulk,
+            result_create_bulk=result_create_bulk,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -453,7 +456,7 @@ class ResultsApi:
         self,
         code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
         id: Annotated[StrictInt, Field(description="Identifier.")],
-        resultcreate_bulk: ResultcreateBulk,
+        result_create_bulk: ResultCreateBulk,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -475,8 +478,8 @@ class ResultsApi:
         :type code: str
         :param id: Identifier. (required)
         :type id: int
-        :param resultcreate_bulk: (required)
-        :type resultcreate_bulk: ResultcreateBulk
+        :param result_create_bulk: (required)
+        :type result_create_bulk: ResultCreateBulk
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -502,7 +505,7 @@ class ResultsApi:
         _param = self._create_result_bulk_serialize(
             code=code,
             id=id,
-            resultcreate_bulk=resultcreate_bulk,
+            result_create_bulk=result_create_bulk,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -535,7 +538,7 @@ class ResultsApi:
         self,
         code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
         id: Annotated[StrictInt, Field(description="Identifier.")],
-        resultcreate_bulk: ResultcreateBulk,
+        result_create_bulk: ResultCreateBulk,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -557,8 +560,8 @@ class ResultsApi:
         :type code: str
         :param id: Identifier. (required)
         :type id: int
-        :param resultcreate_bulk: (required)
-        :type resultcreate_bulk: ResultcreateBulk
+        :param result_create_bulk: (required)
+        :type result_create_bulk: ResultCreateBulk
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -584,7 +587,7 @@ class ResultsApi:
         _param = self._create_result_bulk_serialize(
             code=code,
             id=id,
-            resultcreate_bulk=resultcreate_bulk,
+            result_create_bulk=result_create_bulk,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -612,7 +615,7 @@ class ResultsApi:
         self,
         code,
         id,
-        resultcreate_bulk,
+        result_create_bulk,
         _request_auth,
         _content_type,
         _headers,
@@ -628,7 +631,9 @@ class ResultsApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -640,16 +645,17 @@ class ResultsApi:
         # process the header parameters
         # process the form parameters
         # process the body parameter
-        if resultcreate_bulk is not None:
-            _body_params = resultcreate_bulk
+        if result_create_bulk is not None:
+            _body_params = result_create_bulk
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
         # set the HTTP header `Content-Type`
         if _content_type:
@@ -944,7 +950,9 @@ class ResultsApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -961,11 +969,12 @@ class ResultsApi:
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
 
         # authentication setting
@@ -1234,7 +1243,9 @@ class ResultsApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -1249,11 +1260,12 @@ class ResultsApi:
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
 
         # authentication setting
@@ -1626,7 +1638,9 @@ class ResultsApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -1675,11 +1689,12 @@ class ResultsApi:
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
 
         # authentication setting
@@ -1977,7 +1992,9 @@ class ResultsApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -1996,11 +2013,12 @@ class ResultsApi:
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
         # set the HTTP header `Content-Type`
         if _content_type:

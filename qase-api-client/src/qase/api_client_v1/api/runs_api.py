@@ -23,11 +23,11 @@ from typing_extensions import Annotated
 from qase.api_client_v1.models.base_response import BaseResponse
 from qase.api_client_v1.models.id_response import IdResponse
 from qase.api_client_v1.models.run_create import RunCreate
+from qase.api_client_v1.models.run_external_issues import RunExternalIssues
 from qase.api_client_v1.models.run_list_response import RunListResponse
 from qase.api_client_v1.models.run_public import RunPublic
 from qase.api_client_v1.models.run_public_response import RunPublicResponse
 from qase.api_client_v1.models.run_response import RunResponse
-from qase.api_client_v1.models.runexternal_issues import RunexternalIssues
 from qase.api_client_v1.models.runupdate import Runupdate
 
 from qase.api_client_v1.api_client import ApiClient, RequestSerialized
@@ -294,7 +294,9 @@ class RunsApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -309,11 +311,12 @@ class RunsApi:
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
 
         # authentication setting
@@ -585,7 +588,9 @@ class RunsApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -600,11 +605,12 @@ class RunsApi:
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
         # set the HTTP header `Content-Type`
         if _content_type:
@@ -886,7 +892,9 @@ class RunsApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -901,11 +909,12 @@ class RunsApi:
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
 
         # authentication setting
@@ -1187,7 +1196,9 @@ class RunsApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -1206,11 +1217,12 @@ class RunsApi:
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
 
         # authentication setting
@@ -1583,7 +1595,9 @@ class RunsApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -1632,11 +1646,12 @@ class RunsApi:
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
 
         # authentication setting
@@ -1666,7 +1681,7 @@ class RunsApi:
     def run_update_external_issue(
         self,
         code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        runexternal_issues: RunexternalIssues,
+        run_external_issues: RunExternalIssues,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1686,8 +1701,8 @@ class RunsApi:
 
         :param code: Code of project, where to search entities. (required)
         :type code: str
-        :param runexternal_issues: (required)
-        :type runexternal_issues: RunexternalIssues
+        :param run_external_issues: (required)
+        :type run_external_issues: RunExternalIssues
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1712,7 +1727,7 @@ class RunsApi:
 
         _param = self._run_update_external_issue_serialize(
             code=code,
-            runexternal_issues=runexternal_issues,
+            run_external_issues=run_external_issues,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1742,7 +1757,7 @@ class RunsApi:
     def run_update_external_issue_with_http_info(
         self,
         code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        runexternal_issues: RunexternalIssues,
+        run_external_issues: RunExternalIssues,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1762,8 +1777,8 @@ class RunsApi:
 
         :param code: Code of project, where to search entities. (required)
         :type code: str
-        :param runexternal_issues: (required)
-        :type runexternal_issues: RunexternalIssues
+        :param run_external_issues: (required)
+        :type run_external_issues: RunExternalIssues
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1788,7 +1803,7 @@ class RunsApi:
 
         _param = self._run_update_external_issue_serialize(
             code=code,
-            runexternal_issues=runexternal_issues,
+            run_external_issues=run_external_issues,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1818,7 +1833,7 @@ class RunsApi:
     def run_update_external_issue_without_preload_content(
         self,
         code: Annotated[str, Field(min_length=2, strict=True, max_length=10, description="Code of project, where to search entities.")],
-        runexternal_issues: RunexternalIssues,
+        run_external_issues: RunExternalIssues,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1838,8 +1853,8 @@ class RunsApi:
 
         :param code: Code of project, where to search entities. (required)
         :type code: str
-        :param runexternal_issues: (required)
-        :type runexternal_issues: RunexternalIssues
+        :param run_external_issues: (required)
+        :type run_external_issues: RunExternalIssues
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1864,7 +1879,7 @@ class RunsApi:
 
         _param = self._run_update_external_issue_serialize(
             code=code,
-            runexternal_issues=runexternal_issues,
+            run_external_issues=run_external_issues,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1889,7 +1904,7 @@ class RunsApi:
     def _run_update_external_issue_serialize(
         self,
         code,
-        runexternal_issues,
+        run_external_issues,
         _request_auth,
         _content_type,
         _headers,
@@ -1905,7 +1920,9 @@ class RunsApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -1915,8 +1932,8 @@ class RunsApi:
         # process the header parameters
         # process the form parameters
         # process the body parameter
-        if runexternal_issues is not None:
-            _body_params = runexternal_issues
+        if run_external_issues is not None:
+            _body_params = run_external_issues
 
 
 
@@ -2213,7 +2230,9 @@ class RunsApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -2230,11 +2249,12 @@ class RunsApi:
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
         # set the HTTP header `Content-Type`
         if _content_type:
@@ -2529,7 +2549,9 @@ class RunsApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -2546,11 +2568,12 @@ class RunsApi:
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
         # set the HTTP header `Content-Type`
         if _content_type:

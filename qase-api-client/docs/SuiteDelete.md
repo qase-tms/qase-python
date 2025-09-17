@@ -22,7 +22,7 @@ print(SuiteDelete.to_json())
 # convert the object into a dict
 suite_delete_dict = suite_delete_instance.to_dict()
 # create an instance of SuiteDelete from a dict
-suite_delete_form_dict = suite_delete.from_dict(suite_delete_dict)
+suite_delete_from_dict = SuiteDelete.from_dict(suite_delete_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

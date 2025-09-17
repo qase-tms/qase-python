@@ -13,7 +13,8 @@ Method | HTTP request | Description
 
 Get a specific author
 
-This method allows to retrieve a specific author. 
+This method allows to retrieve a specific author.
+
 
 ### Example
 
@@ -97,7 +98,8 @@ Name | Type | Description  | Notes
 
 Get all authors
 
-This method allows to retrieve all authors in selected project. 
+This method allows to retrieve all authors in selected project.
+
 
 ### Example
 

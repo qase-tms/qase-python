@@ -1,4 +1,4 @@
-# TestCaseParametercreate
+# TestCaseParameterCreate
 
 
 ## Properties
@@ -13,19 +13,19 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from qase.api_client_v1.models.test_case_parametercreate import TestCaseParametercreate
+from qase.api_client_v1.models.test_case_parameter_create import TestCaseParameterCreate
 
 # TODO update the JSON string below
 json = "{}"
-# create an instance of TestCaseParametercreate from a JSON string
-test_case_parametercreate_instance = TestCaseParametercreate.from_json(json)
+# create an instance of TestCaseParameterCreate from a JSON string
+test_case_parameter_create_instance = TestCaseParameterCreate.from_json(json)
 # print the JSON string representation of the object
-print(TestCaseParametercreate.to_json())
+print(TestCaseParameterCreate.to_json())
 
 # convert the object into a dict
-test_case_parametercreate_dict = test_case_parametercreate_instance.to_dict()
-# create an instance of TestCaseParametercreate from a dict
-test_case_parametercreate_form_dict = test_case_parametercreate.from_dict(test_case_parametercreate_dict)
+test_case_parameter_create_dict = test_case_parameter_create_instance.to_dict()
+# create an instance of TestCaseParameterCreate from a dict
+test_case_parameter_create_from_dict = TestCaseParameterCreate.from_dict(test_case_parameter_create_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

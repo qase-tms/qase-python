@@ -19,7 +19,8 @@ Method | HTTP request | Description
 
 Complete a specific run
 
-This method allows to complete a specific run. 
+This method allows to complete a specific run.
+
 
 ### Example
 
@@ -106,7 +107,8 @@ Name | Type | Description  | Notes
 
 Create a new run
 
-This method allows to create a run in selected project. 
+This method allows to create a run in selected project.
+
 
 ### Example
 
@@ -194,7 +196,8 @@ Name | Type | Description  | Notes
 
 Delete run
 
-This method completely deletes a run from repository. 
+This method completely deletes a run from repository.
+
 
 ### Example
 
@@ -280,7 +283,8 @@ Name | Type | Description  | Notes
 
 Get a specific run
 
-This method allows to retrieve a specific run. 
+This method allows to retrieve a specific run.
+
 
 ### Example
 
@@ -368,7 +372,8 @@ Name | Type | Description  | Notes
 
 Get all runs
 
-This method allows to retrieve all runs stored in selected project. 
+This method allows to retrieve all runs stored in selected project.
+
 
 ### Example
 
@@ -466,11 +471,21 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **run_update_external_issue**
-> run_update_external_issue(code, runexternal_issues)
+> run_update_external_issue(code, run_external_issues)
 
 Update external issues for runs
 
-This method allows you to update links between test runs and external issues (such as Jira tickets).  You can use this endpoint to: - Link test runs to external issues by providing the external issue identifier (e.g., \"PROJ-1234\") - Update existing links by providing a new external issue identifier - Remove existing links by setting the external_issue field to null  **Important**: Each test run can have only one link with an external issue. If a test run already has an external issue link, providing a new external_issue value will replace the existing link.  The endpoint supports both Jira Cloud and Jira Server integrations. Each request can update multiple test run links in a single operation. 
+This method allows you to update links between test runs and external issues (such as Jira tickets).
+
+You can use this endpoint to:
+- Link test runs to external issues by providing the external issue identifier (e.g., "PROJ-1234")
+- Update existing links by providing a new external issue identifier
+- Remove existing links by setting the external_issue field to null
+
+**Important**: Each test run can have only one link with an external issue. If a test run already has an external issue link, providing a new external_issue value will replace the existing link.
+
+The endpoint supports both Jira Cloud and Jira Server integrations. Each request can update multiple test run links in a single operation.
+
 
 ### Example
 
@@ -478,7 +493,7 @@ This method allows you to update links between test runs and external issues (su
 
 ```python
 import qase.api_client_v1
-from qase.api_client_v1.models.runexternal_issues import RunexternalIssues
+from qase.api_client_v1.models.run_external_issues import RunExternalIssues
 from qase.api_client_v1.rest import ApiException
 from pprint import pprint
 
@@ -504,11 +519,11 @@ with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.RunsApi(api_client)
     code = 'code_example' # str | Code of project, where to search entities.
-    runexternal_issues = qase.api_client_v1.RunexternalIssues() # RunexternalIssues | 
+    run_external_issues = qase.api_client_v1.RunExternalIssues() # RunExternalIssues | 
 
     try:
         # Update external issues for runs
-        api_instance.run_update_external_issue(code, runexternal_issues)
+        api_instance.run_update_external_issue(code, run_external_issues)
     except Exception as e:
         print("Exception when calling RunsApi->run_update_external_issue: %s\n" % e)
 ```
@@ -521,7 +536,7 @@ with qase.api_client_v1.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **code** | **str**| Code of project, where to search entities. | 
- **runexternal_issues** | [**RunexternalIssues**](RunexternalIssues.md)|  | 
+ **run_external_issues** | [**RunExternalIssues**](RunExternalIssues.md)|  | 
 
 ### Return type
 
@@ -554,7 +569,8 @@ void (empty response body)
 
 Update a specific run
 
-This method allows to update a specific run. 
+This method allows to update a specific run.
+
 
 ### Example
 
@@ -643,7 +659,8 @@ Name | Type | Description  | Notes
 
 Update publicity of a specific run
 
-This method allows to update a publicity of specific run. 
+This method allows to update a publicity of specific run.
+
 
 ### Example
 

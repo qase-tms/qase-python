@@ -20,6 +20,8 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
+from qase.api_client_v1.models.parameter_single import ParameterSingle
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -27,10 +29,10 @@ class TestCaseParameterSingle(BaseModel):
     """
     TestCaseParameterSingle
     """ # noqa: E501
-    shared_id: Optional[StrictStr] = None
+    shared_id: Optional[UUID] = None
     type: StrictStr
-    items: Dict[str, Any]
-    __properties: ClassVar[List[str]] = ["shared_id", "type", "items"]
+    item: ParameterSingle
+    __properties: ClassVar[List[str]] = ["shared_id", "type", "item"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -78,6 +80,9 @@ class TestCaseParameterSingle(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of item
+        if self.item:
+            _dict['item'] = self.item.to_dict()
         # set to None if shared_id (nullable) is None
         # and model_fields_set contains the field
         if self.shared_id is None and "shared_id" in self.model_fields_set:
@@ -97,7 +102,7 @@ class TestCaseParameterSingle(BaseModel):
         _obj = cls.model_validate({
             "shared_id": obj.get("shared_id"),
             "type": obj.get("type"),
-            "items": obj.get("items")
+            "item": ParameterSingle.from_dict(obj["item"]) if obj.get("item") is not None else None
         })
         return _obj
 

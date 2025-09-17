@@ -4,28 +4,29 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qase-api-client"
-version = "1.2.5"
+version = "2.0.0"
 description = "Qase TestOps API V1 client for Python"
 readme = "README.md"
 authors = [{name = "Qase Team", email = "support@qase.io"}]
 license = {file = "LICENSE"}
 classifiers = [
     "Development Status :: 5 - Production/Stable",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Typing :: Typed",
 ]
 urls = {"Homepage" = "https://github.com/qase-tms/qase-python"}
 keywords = ["OpenAPI", "OpenAPI-Generator", "Qase.io TestOps API"]
-requires-python = ">=3.7"
+requires-python = ">=3.9"
 dependencies = [
     "urllib3 >= 1.25.3, <= 2.5.0",
     "python-dateutil",
     "pydantic >= 2",
     "typing-extensions >= 4.7.1",
+    "lazy-imports >= 1, < 2",
 ]
 
 [project.optional-dependencies]
@@ -34,8 +35,8 @@ dependencies = [
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-minversion = 3.7
-envlist = py{37,38,39,310,311}
+minversion = 3.9
+envlist = py{39,310,311,312,313}
 
 [testenv]
 deps =

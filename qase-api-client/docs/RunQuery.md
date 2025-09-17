@@ -39,7 +39,7 @@ print(RunQuery.to_json())
 # convert the object into a dict
 run_query_dict = run_query_instance.to_dict()
 # create an instance of RunQuery from a dict
-run_query_form_dict = run_query.from_dict(run_query_dict)
+run_query_from_dict = RunQuery.from_dict(run_query_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

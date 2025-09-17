@@ -26,7 +26,7 @@ print(SharedStepContentCreate.to_json())
 # convert the object into a dict
 shared_step_content_create_dict = shared_step_content_create_instance.to_dict()
 # create an instance of SharedStepContentCreate from a dict
-shared_step_content_create_form_dict = shared_step_content_create.from_dict(shared_step_content_create_dict)
+shared_step_content_create_from_dict = SharedStepContentCreate.from_dict(shared_step_content_create_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

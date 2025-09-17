@@ -23,7 +23,7 @@ Name | Type | Description | Notes
 **steps** | [**List[TestStepCreate]**](TestStepCreate.md) |  | [optional] 
 **tags** | **List[str]** |  | [optional] 
 **params** | **Dict[str, List[str]]** | Deprecated, use &#x60;parameters&#x60; instead. | [optional] 
-**parameters** | [**List[TestCaseParametercreate]**](TestCaseParametercreate.md) |  | [optional] 
+**parameters** | [**List[TestCaseParameterCreate]**](TestCaseParameterCreate.md) |  | [optional] 
 **custom_field** | **Dict[str, str]** | A map of custom fields values (id &#x3D;&gt; value) | [optional] 
 **created_at** | **str** |  | [optional] 
 **updated_at** | **str** |  | [optional] 
@@ -43,7 +43,7 @@ print(TestCaseCreate.to_json())
 # convert the object into a dict
 test_case_create_dict = test_case_create_instance.to_dict()
 # create an instance of TestCaseCreate from a dict
-test_case_create_form_dict = test_case_create.from_dict(test_case_create_dict)
+test_case_create_from_dict = TestCaseCreate.from_dict(test_case_create_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

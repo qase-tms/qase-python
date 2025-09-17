@@ -18,8 +18,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -27,7 +28,7 @@ class UuidResponseAllOfResult(BaseModel):
     """
     UuidResponseAllOfResult
     """ # noqa: E501
-    id: Optional[StrictStr] = None
+    id: Optional[UUID] = None
     __properties: ClassVar[List[str]] = ["id"]
 
     model_config = ConfigDict(

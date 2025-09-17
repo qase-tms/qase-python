@@ -31,7 +31,7 @@ print(RequirementQuery.to_json())
 # convert the object into a dict
 requirement_query_dict = requirement_query_instance.to_dict()
 # create an instance of RequirementQuery from a dict
-requirement_query_form_dict = requirement_query.from_dict(requirement_query_dict)
+requirement_query_from_dict = RequirementQuery.from_dict(requirement_query_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

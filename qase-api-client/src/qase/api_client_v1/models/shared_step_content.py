@@ -77,9 +77,9 @@ class SharedStepContent(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of each item in attachments (list)
         _items = []
         if self.attachments:
-            for _item in self.attachments:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_attachments in self.attachments:
+                if _item_attachments:
+                    _items.append(_item_attachments.to_dict())
             _dict['attachments'] = _items
         return _dict
 

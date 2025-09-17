@@ -12,7 +12,9 @@ Method | HTTP request | Description
 
 Search entities by Qase Query Language (QQL)
 
-This method allows to retrieve data sets for various entities using expressions with conditions. 
+This method allows to retrieve data sets for various
+entities using expressions with conditions.
+
 
 ### Example
 

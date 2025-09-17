@@ -29,7 +29,7 @@ print(TestStepResultCreate.to_json())
 # convert the object into a dict
 test_step_result_create_dict = test_step_result_create_instance.to_dict()
 # create an instance of TestStepResultCreate from a dict
-test_step_result_create_form_dict = test_step_result_create.from_dict(test_step_result_create_dict)
+test_step_result_create_from_dict = TestStepResultCreate.from_dict(test_step_result_create_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

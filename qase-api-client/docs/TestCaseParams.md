@@ -22,7 +22,7 @@ print(TestCaseParams.to_json())
 # convert the object into a dict
 test_case_params_dict = test_case_params_instance.to_dict()
 # create an instance of TestCaseParams from a dict
-test_case_params_form_dict = test_case_params.from_dict(test_case_params_dict)
+test_case_params_from_dict = TestCaseParams.from_dict(test_case_params_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
