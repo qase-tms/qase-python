@@ -21,7 +21,7 @@ from typing import Any, List, Optional
 from typing_extensions import Annotated
 from qase.api_client_v1.models.parameter_single import ParameterSingle
 from pydantic import StrictStr, Field
-from typing import Union, List, Optional, Dict
+from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
 SHAREDPARAMETERPARAMETER_ONE_OF_SCHEMAS = ["List[ParameterSingle]"]
@@ -35,7 +35,7 @@ class SharedParameterParameter(BaseModel):
     # data type: List[ParameterSingle]
     oneof_schema_2_validator: Optional[Annotated[List[ParameterSingle], Field(min_length=2)]] = Field(default=None, description="Group parameter")
     actual_instance: Optional[Union[List[ParameterSingle]]] = None
-    one_of_schemas: List[str] = Field(default=Literal["List[ParameterSingle]"])
+    one_of_schemas: Set[str] = { "List[ParameterSingle]" }
 
     model_config = ConfigDict(
         validate_assignment=True,

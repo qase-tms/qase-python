@@ -22,7 +22,7 @@ print(IdResponseAllOfResult.to_json())
 # convert the object into a dict
 id_response_all_of_result_dict = id_response_all_of_result_instance.to_dict()
 # create an instance of IdResponseAllOfResult from a dict
-id_response_all_of_result_form_dict = id_response_all_of_result.from_dict(id_response_all_of_result_dict)
+id_response_all_of_result_from_dict = IdResponseAllOfResult.from_dict(id_response_all_of_result_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

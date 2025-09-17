@@ -23,7 +23,7 @@ print(RunCreateCloudRunConfig.to_json())
 # convert the object into a dict
 run_create_cloud_run_config_dict = run_create_cloud_run_config_instance.to_dict()
 # create an instance of RunCreateCloudRunConfig from a dict
-run_create_cloud_run_config_form_dict = run_create_cloud_run_config.from_dict(run_create_cloud_run_config_dict)
+run_create_cloud_run_config_from_dict = RunCreateCloudRunConfig.from_dict(run_create_cloud_run_config_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

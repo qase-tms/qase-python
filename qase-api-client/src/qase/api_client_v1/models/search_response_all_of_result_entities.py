@@ -25,7 +25,7 @@ from qase.api_client_v1.models.result_query import ResultQuery
 from qase.api_client_v1.models.run_query import RunQuery
 from qase.api_client_v1.models.test_case_query import TestCaseQuery
 from pydantic import StrictStr, Field
-from typing import Union, List, Optional, Dict
+from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
 SEARCHRESPONSEALLOFRESULTENTITIES_ONE_OF_SCHEMAS = ["DefectQuery", "PlanQuery", "RequirementQuery", "ResultQuery", "RunQuery", "TestCaseQuery"]
@@ -47,7 +47,7 @@ class SearchResponseAllOfResultEntities(BaseModel):
     # data type: PlanQuery
     oneof_schema_6_validator: Optional[PlanQuery] = None
     actual_instance: Optional[Union[DefectQuery, PlanQuery, RequirementQuery, ResultQuery, RunQuery, TestCaseQuery]] = None
-    one_of_schemas: List[str] = Field(default=Literal["DefectQuery", "PlanQuery", "RequirementQuery", "ResultQuery", "RunQuery", "TestCaseQuery"])
+    one_of_schemas: Set[str] = { "DefectQuery", "PlanQuery", "RequirementQuery", "ResultQuery", "RunQuery", "TestCaseQuery" }
 
     model_config = ConfigDict(
         validate_assignment=True,

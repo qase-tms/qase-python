@@ -37,7 +37,7 @@ print(DefectQuery.to_json())
 # convert the object into a dict
 defect_query_dict = defect_query_instance.to_dict()
 # create an instance of DefectQuery from a dict
-defect_query_form_dict = defect_query.from_dict(defect_query_dict)
+defect_query_from_dict = DefectQuery.from_dict(defect_query_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

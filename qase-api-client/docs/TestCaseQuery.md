@@ -49,7 +49,7 @@ print(TestCaseQuery.to_json())
 # convert the object into a dict
 test_case_query_dict = test_case_query_instance.to_dict()
 # create an instance of TestCaseQuery from a dict
-test_case_query_form_dict = test_case_query.from_dict(test_case_query_dict)
+test_case_query_from_dict = TestCaseQuery.from_dict(test_case_query_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

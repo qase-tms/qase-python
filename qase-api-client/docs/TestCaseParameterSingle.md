@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **shared_id** | **str** |  | [optional] 
 **type** | **str** |  | 
-**items** | **object** |  | 
+**item** | [**ParameterSingle**](ParameterSingle.md) |  | 
 
 ## Example
 
@@ -24,7 +24,7 @@ print(TestCaseParameterSingle.to_json())
 # convert the object into a dict
 test_case_parameter_single_dict = test_case_parameter_single_instance.to_dict()
 # create an instance of TestCaseParameterSingle from a dict
-test_case_parameter_single_form_dict = test_case_parameter_single.from_dict(test_case_parameter_single_dict)
+test_case_parameter_single_from_dict = TestCaseParameterSingle.from_dict(test_case_parameter_single_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

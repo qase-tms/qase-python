@@ -17,7 +17,8 @@ Method | HTTP request | Description
 
 Create test run result
 
-This method allows to create test run result by Run Id. 
+This method allows to create test run result by Run Id.
+
 
 ### Example
 
@@ -107,7 +108,12 @@ Name | Type | Description  | Notes
 
 Bulk create test run result
 
-This method allows to create a lot of test run result at once.  If you try to send more than 2,000 results in a single bulk request, you will receive an error with code 413 - Payload Too Large.  If there is no free space left in your team account, when attempting to upload an attachment, e.g., through reporters, you will receive an error with code 507 - Insufficient Storage. 
+This method allows to create a lot of test run result at once.
+
+If you try to send more than 2,000 results in a single bulk request, you will receive an error with code 413 - Payload Too Large.
+
+If there is no free space left in your team account, when attempting to upload an attachment, e.g., through reporters, you will receive an error with code 507 - Insufficient Storage.
+
 
 ### Example
 
@@ -198,7 +204,8 @@ Name | Type | Description  | Notes
 
 Delete test run result
 
-This method allows to delete test run result. 
+This method allows to delete test run result.
+
 
 ### Example
 
@@ -286,7 +293,8 @@ Name | Type | Description  | Notes
 
 Get test run result by code
 
-This method allows to retrieve a specific test run result by Hash. 
+This method allows to retrieve a specific test run result by Hash.
+
 
 ### Example
 
@@ -372,7 +380,9 @@ Name | Type | Description  | Notes
 
 Get all test run results
 
-This method allows to retrieve all test run results stored in selected project. 
+This method allows to retrieve all test run
+results stored in selected project.
+
 
 ### Example
 
@@ -474,7 +484,8 @@ Name | Type | Description  | Notes
 
 Update test run result
 
-This method allows to update test run result. 
+This method allows to update test run result.
+
 
 ### Example
 

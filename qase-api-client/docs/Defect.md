@@ -40,7 +40,7 @@ print(Defect.to_json())
 # convert the object into a dict
 defect_dict = defect_instance.to_dict()
 # create an instance of Defect from a dict
-defect_form_dict = defect.from_dict(defect_dict)
+defect_from_dict = Defect.from_dict(defect_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

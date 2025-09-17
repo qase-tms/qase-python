@@ -25,7 +25,7 @@ print(MilestoneCreate.to_json())
 # convert the object into a dict
 milestone_create_dict = milestone_create_instance.to_dict()
 # create an instance of MilestoneCreate from a dict
-milestone_create_form_dict = milestone_create.from_dict(milestone_create_dict)
+milestone_create_from_dict = MilestoneCreate.from_dict(milestone_create_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

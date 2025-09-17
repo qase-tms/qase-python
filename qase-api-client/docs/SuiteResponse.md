@@ -23,7 +23,7 @@ print(SuiteResponse.to_json())
 # convert the object into a dict
 suite_response_dict = suite_response_instance.to_dict()
 # create an instance of SuiteResponse from a dict
-suite_response_form_dict = suite_response.from_dict(suite_response_dict)
+suite_response_from_dict = SuiteResponse.from_dict(suite_response_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -24,7 +24,7 @@ print(MilestoneUpdate.to_json())
 # convert the object into a dict
 milestone_update_dict = milestone_update_instance.to_dict()
 # create an instance of MilestoneUpdate from a dict
-milestone_update_form_dict = milestone_update.from_dict(milestone_update_dict)
+milestone_update_from_dict = MilestoneUpdate.from_dict(milestone_update_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

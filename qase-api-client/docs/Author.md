@@ -28,7 +28,7 @@ print(Author.to_json())
 # convert the object into a dict
 author_dict = author_instance.to_dict()
 # create an instance of Author from a dict
-author_form_dict = author.from_dict(author_dict)
+author_from_dict = Author.from_dict(author_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

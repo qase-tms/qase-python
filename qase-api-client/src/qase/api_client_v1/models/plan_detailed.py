@@ -83,9 +83,9 @@ class PlanDetailed(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of each item in cases (list)
         _items = []
         if self.cases:
-            for _item in self.cases:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_cases in self.cases:
+                if _item_cases:
+                    _items.append(_item_cases.to_dict())
             _dict['cases'] = _items
         # set to None if description (nullable) is None
         # and model_fields_set contains the field

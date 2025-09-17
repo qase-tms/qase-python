@@ -17,7 +17,8 @@ Method | HTTP request | Description
 
 Create new project
 
-This method is used to create a new project through API. 
+This method is used to create a new project through API.
+
 
 ### Example
 
@@ -102,7 +103,8 @@ Name | Type | Description  | Notes
 
 Delete Project by code
 
-This method allows to delete a specific project. 
+This method allows to delete a specific project.
+
 
 ### Example
 
@@ -186,7 +188,8 @@ Name | Type | Description  | Notes
 
 Get Project by code
 
-This method allows to retrieve a specific project. 
+This method allows to retrieve a specific project.
+
 
 ### Example
 
@@ -270,7 +273,10 @@ Name | Type | Description  | Notes
 
 Get All Projects
 
-This method allows to retrieve all projects available for your account. You can limit and offset params to paginate. 
+This method allows to retrieve all projects available
+for your account. You can limit and offset params
+to paginate.
+
 
 ### Example
 
@@ -355,7 +361,8 @@ Name | Type | Description  | Notes
 
 Grant access to project by code
 
-This method allows to grant access to a specific project. 
+This method allows to grant access to a specific project.
+
 
 ### Example
 
@@ -443,7 +450,8 @@ Name | Type | Description  | Notes
 
 Revoke access to project by code
 
-This method allows to revoke access to a specific project. 
+This method allows to revoke access to a specific project.
+
 
 ### Example
 

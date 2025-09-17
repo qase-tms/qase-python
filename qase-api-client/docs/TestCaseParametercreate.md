@@ -25,7 +25,7 @@ print(TestCaseParametercreate.to_json())
 # convert the object into a dict
 test_case_parametercreate_dict = test_case_parametercreate_instance.to_dict()
 # create an instance of TestCaseParametercreate from a dict
-test_case_parametercreate_form_dict = test_case_parametercreate.from_dict(test_case_parametercreate_dict)
+test_case_parametercreate_from_dict = TestCaseParametercreate.from_dict(test_case_parametercreate_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

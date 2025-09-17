@@ -110,23 +110,23 @@ class TestCase(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of each item in custom_fields (list)
         _items = []
         if self.custom_fields:
-            for _item in self.custom_fields:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_custom_fields in self.custom_fields:
+                if _item_custom_fields:
+                    _items.append(_item_custom_fields.to_dict())
             _dict['custom_fields'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in attachments (list)
         _items = []
         if self.attachments:
-            for _item in self.attachments:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_attachments in self.attachments:
+                if _item_attachments:
+                    _items.append(_item_attachments.to_dict())
             _dict['attachments'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in steps (list)
         _items = []
         if self.steps:
-            for _item in self.steps:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_steps in self.steps:
+                if _item_steps:
+                    _items.append(_item_steps.to_dict())
             _dict['steps'] = _items
         # override the default output from pydantic by calling `to_dict()` of params
         if self.params:
@@ -134,23 +134,23 @@ class TestCase(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of each item in parameters (list)
         _items = []
         if self.parameters:
-            for _item in self.parameters:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_parameters in self.parameters:
+                if _item_parameters:
+                    _items.append(_item_parameters.to_dict())
             _dict['parameters'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in tags (list)
         _items = []
         if self.tags:
-            for _item in self.tags:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_tags in self.tags:
+                if _item_tags:
+                    _items.append(_item_tags.to_dict())
             _dict['tags'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in external_issues (list)
         _items = []
         if self.external_issues:
-            for _item in self.external_issues:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_external_issues in self.external_issues:
+                if _item_external_issues:
+                    _items.append(_item_external_issues.to_dict())
             _dict['external_issues'] = _items
         # set to None if description (nullable) is None
         # and model_fields_set contains the field

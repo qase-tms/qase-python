@@ -19,7 +19,8 @@ Method | HTTP request | Description
 
 Complete a specific run
 
-This method allows to complete a specific run. 
+This method allows to complete a specific run.
+
 
 ### Example
 
@@ -106,7 +107,8 @@ Name | Type | Description  | Notes
 
 Create a new run
 
-This method allows to create a run in selected project. 
+This method allows to create a run in selected project.
+
 
 ### Example
 
@@ -194,7 +196,8 @@ Name | Type | Description  | Notes
 
 Delete run
 
-This method completely deletes a run from repository. 
+This method completely deletes a run from repository.
+
 
 ### Example
 
@@ -280,7 +283,8 @@ Name | Type | Description  | Notes
 
 Get a specific run
 
-This method allows to retrieve a specific run. 
+This method allows to retrieve a specific run.
+
 
 ### Example
 
@@ -368,7 +372,8 @@ Name | Type | Description  | Notes
 
 Get all runs
 
-This method allows to retrieve all runs stored in selected project. 
+This method allows to retrieve all runs stored in selected project.
+
 
 ### Example
 
@@ -470,7 +475,17 @@ Name | Type | Description  | Notes
 
 Update external issues for runs
 
-This method allows you to update links between test runs and external issues (such as Jira tickets).  You can use this endpoint to: - Link test runs to external issues by providing the external issue identifier (e.g., \"PROJ-1234\") - Update existing links by providing a new external issue identifier - Remove existing links by setting the external_issue field to null  **Important**: Each test run can have only one link with an external issue. If a test run already has an external issue link, providing a new external_issue value will replace the existing link.  The endpoint supports both Jira Cloud and Jira Server integrations. Each request can update multiple test run links in a single operation. 
+This method allows you to update links between test runs and external issues (such as Jira tickets).
+
+You can use this endpoint to:
+- Link test runs to external issues by providing the external issue identifier (e.g., "PROJ-1234")
+- Update existing links by providing a new external issue identifier
+- Remove existing links by setting the external_issue field to null
+
+**Important**: Each test run can have only one link with an external issue. If a test run already has an external issue link, providing a new external_issue value will replace the existing link.
+
+The endpoint supports both Jira Cloud and Jira Server integrations. Each request can update multiple test run links in a single operation.
+
 
 ### Example
 
@@ -554,7 +569,8 @@ void (empty response body)
 
 Update a specific run
 
-This method allows to update a specific run. 
+This method allows to update a specific run.
+
 
 ### Example
 
@@ -643,7 +659,8 @@ Name | Type | Description  | Notes
 
 Update publicity of a specific run
 
-This method allows to update a publicity of specific run. 
+This method allows to update a publicity of specific run.
+
 
 ### Example
 

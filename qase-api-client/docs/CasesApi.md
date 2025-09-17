@@ -19,7 +19,8 @@ Method | HTTP request | Description
 
 Create test cases in bulk
 
-This method allows to bulk create new test cases in a project. 
+This method allows to bulk create new test cases in a project.
+
 
 ### Example
 
@@ -281,7 +282,8 @@ Name | Type | Description  | Notes
 
 Create a new test case
 
-This method allows to create a new test case in selected project. 
+This method allows to create a new test case in selected project.
+
 
 ### Example
 
@@ -369,7 +371,8 @@ Name | Type | Description  | Notes
 
 Delete test case
 
-This method completely deletes a test case from repository. 
+This method completely deletes a test case from repository.
+
 
 ### Example
 
@@ -456,7 +459,8 @@ Name | Type | Description  | Notes
 
 Get a specific test case
 
-This method allows to retrieve a specific test case. 
+This method allows to retrieve a specific test case.
+
 
 ### Example
 
@@ -545,7 +549,8 @@ Name | Type | Description  | Notes
 
 Get all test cases
 
-This method allows to retrieve all test cases stored in selected project. 
+This method allows to retrieve all test cases stored in selected project.
+
 
 ### Example
 
@@ -658,7 +663,8 @@ Name | Type | Description  | Notes
 
 Update test case
 
-This method updates a test case. 
+This method updates a test case.
+
 
 ### Example
 

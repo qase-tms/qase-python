@@ -23,7 +23,7 @@ print(ParameterGroup.to_json())
 # convert the object into a dict
 parameter_group_dict = parameter_group_instance.to_dict()
 # create an instance of ParameterGroup from a dict
-parameter_group_form_dict = parameter_group.from_dict(parameter_group_dict)
+parameter_group_from_dict = ParameterGroup.from_dict(parameter_group_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
