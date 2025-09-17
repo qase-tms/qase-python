@@ -28,7 +28,7 @@ print(ResultUpdate.to_json())
 # convert the object into a dict
 result_update_dict = result_update_instance.to_dict()
 # create an instance of ResultUpdate from a dict
-result_update_form_dict = result_update.from_dict(result_update_dict)
+result_update_from_dict = ResultUpdate.from_dict(result_update_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

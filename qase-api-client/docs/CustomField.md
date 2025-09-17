@@ -37,7 +37,7 @@ print(CustomField.to_json())
 # convert the object into a dict
 custom_field_dict = custom_field_instance.to_dict()
 # create an instance of CustomField from a dict
-custom_field_form_dict = custom_field.from_dict(custom_field_dict)
+custom_field_from_dict = CustomField.from_dict(custom_field_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

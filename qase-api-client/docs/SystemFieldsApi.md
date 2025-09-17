@@ -12,7 +12,8 @@ Method | HTTP request | Description
 
 Get all System Fields
 
-This method allows to retrieve all system fields. 
+This method allows to retrieve all system fields.
+
 
 ### Example
 

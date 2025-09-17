@@ -23,7 +23,7 @@ print(RunPublicResponse.to_json())
 # convert the object into a dict
 run_public_response_dict = run_public_response_instance.to_dict()
 # create an instance of RunPublicResponse from a dict
-run_public_response_form_dict = run_public_response.from_dict(run_public_response_dict)
+run_public_response_from_dict = RunPublicResponse.from_dict(run_public_response_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

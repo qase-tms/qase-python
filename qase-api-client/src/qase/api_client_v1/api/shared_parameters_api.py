@@ -20,11 +20,13 @@ from typing_extensions import Annotated
 from pydantic import Field, StrictStr, field_validator
 from typing import List, Optional
 from typing_extensions import Annotated
+from uuid import UUID
 from qase.api_client_v1.models.shared_parameter_create import SharedParameterCreate
 from qase.api_client_v1.models.shared_parameter_list_response import SharedParameterListResponse
 from qase.api_client_v1.models.shared_parameter_response import SharedParameterResponse
 from qase.api_client_v1.models.shared_parameter_update import SharedParameterUpdate
 from qase.api_client_v1.models.uuid_response import UuidResponse
+from qase.api_client_v1.models.uuid_response1 import UuidResponse1
 
 from qase.api_client_v1.api_client import ApiClient, RequestSerialized
 from qase.api_client_v1.api_response import ApiResponse
@@ -274,7 +276,9 @@ class SharedParametersApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -287,11 +291,12 @@ class SharedParametersApi:
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
         # set the HTTP header `Content-Type`
         if _content_type:
@@ -333,7 +338,7 @@ class SharedParametersApi:
     @validate_call
     def delete_shared_parameter(
         self,
-        id: Annotated[StrictStr, Field(description="Identifier.")],
+        id: Annotated[UUID, Field(description="Identifier.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -346,7 +351,7 @@ class SharedParametersApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> UuidResponse:
+    ) -> UuidResponse1:
         """Delete shared parameter
 
         Delete shared parameter along with all its usages in test cases and reviews.
@@ -384,7 +389,7 @@ class SharedParametersApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "UuidResponse",
+            '200': "UuidResponse1",
             '400': None,
             '401': None,
             '403': None,
@@ -405,7 +410,7 @@ class SharedParametersApi:
     @validate_call
     def delete_shared_parameter_with_http_info(
         self,
-        id: Annotated[StrictStr, Field(description="Identifier.")],
+        id: Annotated[UUID, Field(description="Identifier.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -418,7 +423,7 @@ class SharedParametersApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[UuidResponse]:
+    ) -> ApiResponse[UuidResponse1]:
         """Delete shared parameter
 
         Delete shared parameter along with all its usages in test cases and reviews.
@@ -456,7 +461,7 @@ class SharedParametersApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "UuidResponse",
+            '200': "UuidResponse1",
             '400': None,
             '401': None,
             '403': None,
@@ -477,7 +482,7 @@ class SharedParametersApi:
     @validate_call
     def delete_shared_parameter_without_preload_content(
         self,
-        id: Annotated[StrictStr, Field(description="Identifier.")],
+        id: Annotated[UUID, Field(description="Identifier.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -528,7 +533,7 @@ class SharedParametersApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "UuidResponse",
+            '200': "UuidResponse1",
             '400': None,
             '401': None,
             '403': None,
@@ -560,7 +565,9 @@ class SharedParametersApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -573,11 +580,12 @@ class SharedParametersApi:
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
 
         # authentication setting
@@ -606,7 +614,7 @@ class SharedParametersApi:
     @validate_call
     def get_shared_parameter(
         self,
-        id: Annotated[StrictStr, Field(description="Identifier.")],
+        id: Annotated[UUID, Field(description="Identifier.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -677,7 +685,7 @@ class SharedParametersApi:
     @validate_call
     def get_shared_parameter_with_http_info(
         self,
-        id: Annotated[StrictStr, Field(description="Identifier.")],
+        id: Annotated[UUID, Field(description="Identifier.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -748,7 +756,7 @@ class SharedParametersApi:
     @validate_call
     def get_shared_parameter_without_preload_content(
         self,
-        id: Annotated[StrictStr, Field(description="Identifier.")],
+        id: Annotated[UUID, Field(description="Identifier.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -830,7 +838,9 @@ class SharedParametersApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -843,11 +853,12 @@ class SharedParametersApi:
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
 
         # authentication setting
@@ -1153,7 +1164,9 @@ class SharedParametersApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -1184,11 +1197,12 @@ class SharedParametersApi:
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
 
         # authentication setting
@@ -1217,7 +1231,7 @@ class SharedParametersApi:
     @validate_call
     def update_shared_parameter(
         self,
-        id: Annotated[StrictStr, Field(description="Identifier.")],
+        id: Annotated[UUID, Field(description="Identifier.")],
         shared_parameter_update: SharedParameterUpdate,
         _request_timeout: Union[
             None,
@@ -1231,7 +1245,7 @@ class SharedParametersApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> UuidResponse:
+    ) -> UuidResponse1:
         """Update shared parameter
 
 
@@ -1271,7 +1285,7 @@ class SharedParametersApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "UuidResponse",
+            '200': "UuidResponse1",
             '400': None,
             '401': None,
             '403': None,
@@ -1292,7 +1306,7 @@ class SharedParametersApi:
     @validate_call
     def update_shared_parameter_with_http_info(
         self,
-        id: Annotated[StrictStr, Field(description="Identifier.")],
+        id: Annotated[UUID, Field(description="Identifier.")],
         shared_parameter_update: SharedParameterUpdate,
         _request_timeout: Union[
             None,
@@ -1306,7 +1320,7 @@ class SharedParametersApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[UuidResponse]:
+    ) -> ApiResponse[UuidResponse1]:
         """Update shared parameter
 
 
@@ -1346,7 +1360,7 @@ class SharedParametersApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "UuidResponse",
+            '200': "UuidResponse1",
             '400': None,
             '401': None,
             '403': None,
@@ -1367,7 +1381,7 @@ class SharedParametersApi:
     @validate_call
     def update_shared_parameter_without_preload_content(
         self,
-        id: Annotated[StrictStr, Field(description="Identifier.")],
+        id: Annotated[UUID, Field(description="Identifier.")],
         shared_parameter_update: SharedParameterUpdate,
         _request_timeout: Union[
             None,
@@ -1421,7 +1435,7 @@ class SharedParametersApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "UuidResponse",
+            '200': "UuidResponse1",
             '400': None,
             '401': None,
             '403': None,
@@ -1454,7 +1468,9 @@ class SharedParametersApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -1469,11 +1485,12 @@ class SharedParametersApi:
 
 
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            [
-                'application/json'
-            ]
-        )
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
         # set the HTTP header `Content-Type`
         if _content_type:

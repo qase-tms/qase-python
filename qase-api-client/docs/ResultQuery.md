@@ -33,7 +33,7 @@ print(ResultQuery.to_json())
 # convert the object into a dict
 result_query_dict = result_query_instance.to_dict()
 # create an instance of ResultQuery from a dict
-result_query_form_dict = result_query.from_dict(result_query_dict)
+result_query_from_dict = ResultQuery.from_dict(result_query_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

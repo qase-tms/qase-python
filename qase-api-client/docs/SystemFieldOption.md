@@ -28,7 +28,7 @@ print(SystemFieldOption.to_json())
 # convert the object into a dict
 system_field_option_dict = system_field_option_instance.to_dict()
 # create an instance of SystemFieldOption from a dict
-system_field_option_form_dict = system_field_option.from_dict(system_field_option_dict)
+system_field_option_from_dict = SystemFieldOption.from_dict(system_field_option_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

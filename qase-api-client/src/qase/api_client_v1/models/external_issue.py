@@ -74,9 +74,9 @@ class ExternalIssue(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of each item in issues (list)
         _items = []
         if self.issues:
-            for _item in self.issues:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_issues in self.issues:
+                if _item_issues:
+                    _items.append(_item_issues.to_dict())
             _dict['issues'] = _items
         return _dict
 

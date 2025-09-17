@@ -16,7 +16,8 @@ Method | HTTP request | Description
 
 Create a new test suite
 
-This method is used to create a new test suite through API. 
+This method is used to create a new test suite through API.
+
 
 ### Example
 
@@ -104,7 +105,8 @@ Name | Type | Description  | Notes
 
 Delete test suite
 
-This method completely deletes a test suite with test cases from repository. 
+This method completely deletes a test suite with test cases from repository.
+
 
 ### Example
 
@@ -193,7 +195,8 @@ Name | Type | Description  | Notes
 
 Get a specific test suite
 
-This method allows to retrieve a specific test suite. 
+This method allows to retrieve a specific test suite.
+
 
 ### Example
 
@@ -279,7 +282,8 @@ Name | Type | Description  | Notes
 
 Get all test suites
 
-This method allows to retrieve all test suites stored in selected project. 
+This method allows to retrieve all test suites stored in selected project.
+
 
 ### Example
 
@@ -369,7 +373,8 @@ Name | Type | Description  | Notes
 
 Update test suite
 
-This method is used to update a test suite through API. 
+This method is used to update a test suite through API.
+
 
 ### Example
 

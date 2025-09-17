@@ -14,7 +14,8 @@ Method | HTTP request | Description
 
 Create a new configuration in a particular group.
 
-This method allows to create a configuration in selected project. 
+This method allows to create a configuration in selected project.
+
 
 ### Example
 
@@ -102,7 +103,8 @@ Name | Type | Description  | Notes
 
 Create a new configuration group.
 
-This method allows to create a configuration group in selected project. 
+This method allows to create a configuration group in selected project.
+
 
 ### Example
 
@@ -190,7 +192,8 @@ Name | Type | Description  | Notes
 
 Get all configuration groups with configurations.
 
-This method allows to retrieve all configurations groups with configurations 
+This method allows to retrieve all configurations groups with configurations
+
 
 ### Example
 

@@ -20,7 +20,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from qase.api_client_v1.models.parameter_single import ParameterSingle
+from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -28,10 +28,9 @@ class TestCaseParameterBase(BaseModel):
     """
     TestCaseParameterBase
     """ # noqa: E501
-    shared_id: Optional[StrictStr] = None
+    shared_id: Optional[UUID] = None
     type: StrictStr
-    items: List[ParameterSingle]
-    __properties: ClassVar[List[str]] = ["shared_id", "type", "items"]
+    __properties: ClassVar[List[str]] = ["shared_id", "type"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -72,13 +71,6 @@ class TestCaseParameterBase(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in items (list)
-        _items = []
-        if self.items:
-            for _item in self.items:
-                if _item:
-                    _items.append(_item.to_dict())
-            _dict['items'] = _items
         # set to None if shared_id (nullable) is None
         # and model_fields_set contains the field
         if self.shared_id is None and "shared_id" in self.model_fields_set:
@@ -97,8 +89,7 @@ class TestCaseParameterBase(BaseModel):
 
         _obj = cls.model_validate({
             "shared_id": obj.get("shared_id"),
-            "type": obj.get("type"),
-            "items": [ParameterSingle.from_dict(_item) for _item in obj["items"]] if obj.get("items") is not None else None
+            "type": obj.get("type")
         })
         return _obj
 

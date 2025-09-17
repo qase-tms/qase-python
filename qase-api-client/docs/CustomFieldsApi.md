@@ -16,7 +16,8 @@ Method | HTTP request | Description
 
 Create new Custom Field
 
-This method allows to create custom field. 
+This method allows to create custom field.
+
 
 ### Example
 
@@ -101,7 +102,8 @@ Name | Type | Description  | Notes
 
 Delete Custom Field by id
 
-This method allows to delete custom field. 
+This method allows to delete custom field.
+
 
 ### Example
 
@@ -185,7 +187,8 @@ Name | Type | Description  | Notes
 
 Get Custom Field by id
 
-This method allows to retrieve custom field. 
+This method allows to retrieve custom field.
+
 
 ### Example
 
@@ -269,7 +272,8 @@ Name | Type | Description  | Notes
 
 Get all Custom Fields
 
-This method allows to retrieve and filter custom fields. 
+This method allows to retrieve and filter custom fields.
+
 
 ### Example
 
@@ -358,7 +362,8 @@ Name | Type | Description  | Notes
 
 Update Custom Field by id
 
-This method allows to update custom field. 
+This method allows to update custom field.
+
 
 ### Example
 

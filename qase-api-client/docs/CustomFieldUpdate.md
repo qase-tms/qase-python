@@ -31,7 +31,7 @@ print(CustomFieldUpdate.to_json())
 # convert the object into a dict
 custom_field_update_dict = custom_field_update_instance.to_dict()
 # create an instance of CustomFieldUpdate from a dict
-custom_field_update_form_dict = custom_field_update.from_dict(custom_field_update_dict)
+custom_field_update_from_dict = CustomFieldUpdate.from_dict(custom_field_update_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

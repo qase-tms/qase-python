@@ -27,7 +27,7 @@ print(SharedParameter.to_json())
 # convert the object into a dict
 shared_parameter_dict = shared_parameter_instance.to_dict()
 # create an instance of SharedParameter from a dict
-shared_parameter_form_dict = shared_parameter.from_dict(shared_parameter_dict)
+shared_parameter_from_dict = SharedParameter.from_dict(shared_parameter_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

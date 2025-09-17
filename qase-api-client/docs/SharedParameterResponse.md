@@ -23,7 +23,7 @@ print(SharedParameterResponse.to_json())
 # convert the object into a dict
 shared_parameter_response_dict = shared_parameter_response_instance.to_dict()
 # create an instance of SharedParameterResponse from a dict
-shared_parameter_response_form_dict = shared_parameter_response.from_dict(shared_parameter_response_dict)
+shared_parameter_response_from_dict = SharedParameterResponse.from_dict(shared_parameter_response_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

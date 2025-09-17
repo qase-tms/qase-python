@@ -21,6 +21,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List
 from typing_extensions import Annotated
+from uuid import UUID
 from qase.api_client_v1.models.shared_parameter_parameter import SharedParameterParameter
 from typing import Optional, Set
 from typing_extensions import Self
@@ -29,7 +30,7 @@ class SharedParameter(BaseModel):
     """
     SharedParameter
     """ # noqa: E501
-    id: StrictStr
+    id: UUID
     title: Annotated[str, Field(strict=True, max_length=255)]
     type: StrictStr
     project_codes: List[StrictStr]

@@ -23,7 +23,7 @@ print(RunexternalIssuesLinksInner.to_json())
 # convert the object into a dict
 runexternal_issues_links_inner_dict = runexternal_issues_links_inner_instance.to_dict()
 # create an instance of RunexternalIssuesLinksInner from a dict
-runexternal_issues_links_inner_form_dict = runexternal_issues_links_inner.from_dict(runexternal_issues_links_inner_dict)
+runexternal_issues_links_inner_from_dict = RunexternalIssuesLinksInner.from_dict(runexternal_issues_links_inner_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

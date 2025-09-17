@@ -22,7 +22,7 @@ print(RunPublic.to_json())
 # convert the object into a dict
 run_public_dict = run_public_instance.to_dict()
 # create an instance of RunPublic from a dict
-run_public_form_dict = run_public.from_dict(run_public_dict)
+run_public_from_dict = RunPublic.from_dict(run_public_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

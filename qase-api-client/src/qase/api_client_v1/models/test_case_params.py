@@ -20,7 +20,7 @@ import pprint
 import re  # noqa: F401
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Any, Dict, List, Optional
-from typing import Union, Any, List, TYPE_CHECKING, Optional, Dict
+from typing import Union, Any, List, Set, TYPE_CHECKING, Optional, Dict
 from typing_extensions import Literal, Self
 from pydantic import Field
 
@@ -39,7 +39,7 @@ class TestCaseParams(BaseModel):
         actual_instance: Optional[Union[List[object], object]] = None
     else:
         actual_instance: Any = None
-    any_of_schemas: List[str] = Field(default=Literal["List[object]", "object"])
+    any_of_schemas: Set[str] = { "List[object]", "object" }
 
     model_config = {
         "validate_assignment": True,

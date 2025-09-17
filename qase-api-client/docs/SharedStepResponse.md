@@ -23,7 +23,7 @@ print(SharedStepResponse.to_json())
 # convert the object into a dict
 shared_step_response_dict = shared_step_response_instance.to_dict()
 # create an instance of SharedStepResponse from a dict
-shared_step_response_form_dict = shared_step_response.from_dict(shared_step_response_dict)
+shared_step_response_from_dict = SharedStepResponse.from_dict(shared_step_response_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

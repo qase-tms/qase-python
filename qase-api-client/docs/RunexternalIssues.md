@@ -23,7 +23,7 @@ print(RunexternalIssues.to_json())
 # convert the object into a dict
 runexternal_issues_dict = runexternal_issues_instance.to_dict()
 # create an instance of RunexternalIssues from a dict
-runexternal_issues_form_dict = runexternal_issues.from_dict(runexternal_issues_dict)
+runexternal_issues_from_dict = RunexternalIssues.from_dict(runexternal_issues_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

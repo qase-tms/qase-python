@@ -26,7 +26,7 @@ print(AttachmentHash.to_json())
 # convert the object into a dict
 attachment_hash_dict = attachment_hash_instance.to_dict()
 # create an instance of AttachmentHash from a dict
-attachment_hash_form_dict = attachment_hash.from_dict(attachment_hash_dict)
+attachment_hash_from_dict = AttachmentHash.from_dict(attachment_hash_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

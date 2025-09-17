@@ -31,7 +31,7 @@ print(RunStats.to_json())
 # convert the object into a dict
 run_stats_dict = run_stats_instance.to_dict()
 # create an instance of RunStats from a dict
-run_stats_form_dict = run_stats.from_dict(run_stats_dict)
+run_stats_from_dict = RunStats.from_dict(run_stats_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

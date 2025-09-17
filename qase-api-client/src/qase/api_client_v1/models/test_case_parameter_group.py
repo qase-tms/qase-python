@@ -18,8 +18,11 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
+from uuid import UUID
+from qase.api_client_v1.models.parameter_single import ParameterSingle
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -27,9 +30,9 @@ class TestCaseParameterGroup(BaseModel):
     """
     TestCaseParameterGroup
     """ # noqa: E501
-    shared_id: Optional[StrictStr] = None
+    shared_id: Optional[UUID] = None
     type: StrictStr
-    items: Dict[str, Any]
+    items: Annotated[List[ParameterSingle], Field(min_length=2)]
     __properties: ClassVar[List[str]] = ["shared_id", "type", "items"]
 
     @field_validator('type')
@@ -78,6 +81,13 @@ class TestCaseParameterGroup(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in items (list)
+        _items = []
+        if self.items:
+            for _item_items in self.items:
+                if _item_items:
+                    _items.append(_item_items.to_dict())
+            _dict['items'] = _items
         # set to None if shared_id (nullable) is None
         # and model_fields_set contains the field
         if self.shared_id is None and "shared_id" in self.model_fields_set:
@@ -97,7 +107,7 @@ class TestCaseParameterGroup(BaseModel):
         _obj = cls.model_validate({
             "shared_id": obj.get("shared_id"),
             "type": obj.get("type"),
-            "items": obj.get("items")
+            "items": [ParameterSingle.from_dict(_item) for _item in obj["items"]] if obj.get("items") is not None else None
         })
         return _obj
 

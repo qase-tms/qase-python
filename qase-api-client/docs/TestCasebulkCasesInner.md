@@ -44,7 +44,7 @@ print(TestCasebulkCasesInner.to_json())
 # convert the object into a dict
 test_casebulk_cases_inner_dict = test_casebulk_cases_inner_instance.to_dict()
 # create an instance of TestCasebulkCasesInner from a dict
-test_casebulk_cases_inner_form_dict = test_casebulk_cases_inner.from_dict(test_casebulk_cases_inner_dict)
+test_casebulk_cases_inner_from_dict = TestCasebulkCasesInner.from_dict(test_casebulk_cases_inner_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

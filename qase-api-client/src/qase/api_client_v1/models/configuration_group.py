@@ -75,9 +75,9 @@ class ConfigurationGroup(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of each item in configurations (list)
         _items = []
         if self.configurations:
-            for _item in self.configurations:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_configurations in self.configurations:
+                if _item_configurations:
+                    _items.append(_item_configurations.to_dict())
             _dict['configurations'] = _items
         return _dict
 

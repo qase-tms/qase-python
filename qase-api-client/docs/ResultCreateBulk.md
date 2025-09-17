@@ -22,7 +22,7 @@ print(ResultcreateBulk.to_json())
 # convert the object into a dict
 resultcreate_bulk_dict = resultcreate_bulk_instance.to_dict()
 # create an instance of ResultcreateBulk from a dict
-resultcreate_bulk_form_dict = resultcreate_bulk.from_dict(resultcreate_bulk_dict)
+resultcreate_bulk_from_dict = ResultcreateBulk.from_dict(resultcreate_bulk_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -22,7 +22,7 @@ from qase.api_client_v1.models.parameter_group import ParameterGroup
 from qase.api_client_v1.models.parameter_shared import ParameterShared
 from qase.api_client_v1.models.parameter_single import ParameterSingle
 from pydantic import StrictStr, Field
-from typing import Union, List, Optional, Dict
+from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
 TESTCASEPARAMETERCREATE_ONE_OF_SCHEMAS = ["ParameterGroup", "ParameterShared", "ParameterSingle"]
@@ -38,7 +38,7 @@ class TestCaseParametercreate(BaseModel):
     # data type: ParameterGroup
     oneof_schema_3_validator: Optional[ParameterGroup] = None
     actual_instance: Optional[Union[ParameterGroup, ParameterShared, ParameterSingle]] = None
-    one_of_schemas: List[str] = Field(default=Literal["ParameterGroup", "ParameterShared", "ParameterSingle"])
+    one_of_schemas: Set[str] = { "ParameterGroup", "ParameterShared", "ParameterSingle" }
 
     model_config = ConfigDict(
         validate_assignment=True,

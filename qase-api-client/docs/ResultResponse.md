@@ -23,7 +23,7 @@ print(ResultResponse.to_json())
 # convert the object into a dict
 result_response_dict = result_response_instance.to_dict()
 # create an instance of ResultResponse from a dict
-result_response_form_dict = result_response.from_dict(result_response_dict)
+result_response_from_dict = ResultResponse.from_dict(result_response_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

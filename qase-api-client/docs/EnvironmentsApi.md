@@ -16,7 +16,8 @@ Method | HTTP request | Description
 
 Create a new environment
 
-This method allows to create an environment in selected project. 
+This method allows to create an environment in selected project.
+
 
 ### Example
 
@@ -104,7 +105,8 @@ Name | Type | Description  | Notes
 
 Delete environment
 
-This method completely deletes an environment from repository. 
+This method completely deletes an environment from repository.
+
 
 ### Example
 
@@ -190,7 +192,8 @@ Name | Type | Description  | Notes
 
 Get a specific environment
 
-This method allows to retrieve a specific environment. 
+This method allows to retrieve a specific environment.
+
 
 ### Example
 
@@ -276,7 +279,8 @@ Name | Type | Description  | Notes
 
 Get all environments
 
-This method allows to retrieve all environments stored in selected project. 
+This method allows to retrieve all environments stored in selected project.
+
 
 ### Example
 
@@ -368,7 +372,8 @@ Name | Type | Description  | Notes
 
 Update environment
 
-This method updates an environment. 
+This method updates an environment.
+
 
 ### Example
 

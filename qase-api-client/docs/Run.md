@@ -41,7 +41,7 @@ print(Run.to_json())
 # convert the object into a dict
 run_dict = run_instance.to_dict()
 # create an instance of Run from a dict
-run_form_dict = run.from_dict(run_dict)
+run_from_dict = Run.from_dict(run_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

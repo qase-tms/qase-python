@@ -18,21 +18,19 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictInt
+from pydantic import BaseModel, ConfigDict, StrictBool
 from typing import Any, ClassVar, Dict, List, Optional
-from qase.api_client_v1.models.result import Result
+from qase.api_client_v1.models.uuid_response_all_of_result import UuidResponseAllOfResult
 from typing import Optional, Set
 from typing_extensions import Self
 
-class ResultListResponseAllOfResult(BaseModel):
+class UuidResponse1(BaseModel):
     """
-    ResultListResponseAllOfResult
+    UuidResponse1
     """ # noqa: E501
-    total: Optional[StrictInt] = None
-    filtered: Optional[StrictInt] = None
-    count: Optional[StrictInt] = None
-    entities: Optional[List[Result]] = None
-    __properties: ClassVar[List[str]] = ["total", "filtered", "count", "entities"]
+    status: Optional[StrictBool] = None
+    result: Optional[UuidResponseAllOfResult] = None
+    __properties: ClassVar[List[str]] = ["status", "result"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -52,7 +50,7 @@ class ResultListResponseAllOfResult(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ResultListResponseAllOfResult from a JSON string"""
+        """Create an instance of UuidResponse1 from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,18 +71,14 @@ class ResultListResponseAllOfResult(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in entities (list)
-        _items = []
-        if self.entities:
-            for _item_entities in self.entities:
-                if _item_entities:
-                    _items.append(_item_entities.to_dict())
-            _dict['entities'] = _items
+        # override the default output from pydantic by calling `to_dict()` of result
+        if self.result:
+            _dict['result'] = self.result.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ResultListResponseAllOfResult from a dict"""
+        """Create an instance of UuidResponse1 from a dict"""
         if obj is None:
             return None
 
@@ -92,10 +86,8 @@ class ResultListResponseAllOfResult(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "total": obj.get("total"),
-            "filtered": obj.get("filtered"),
-            "count": obj.get("count"),
-            "entities": [Result.from_dict(_item) for _item in obj["entities"]] if obj.get("entities") is not None else None
+            "status": obj.get("status"),
+            "result": UuidResponseAllOfResult.from_dict(obj["result"]) if obj.get("result") is not None else None
         })
         return _obj
 

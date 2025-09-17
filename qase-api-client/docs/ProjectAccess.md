@@ -22,7 +22,7 @@ print(ProjectAccess.to_json())
 # convert the object into a dict
 project_access_dict = project_access_instance.to_dict()
 # create an instance of ProjectAccess from a dict
-project_access_form_dict = project_access.from_dict(project_access_dict)
+project_access_from_dict = ProjectAccess.from_dict(project_access_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
