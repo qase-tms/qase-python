@@ -1,3 +1,17 @@
+# qase-python-commons@4.0.0
+
+## What's new
+
+- Unsupport Python 3.7 and 3.8. Support Python 3.9, 3.10, 3.11, 3.12, 3.13.
+- Updated the `qase-api-client` dependency to the latest version.
+- Updated the `qase-api-v2-client` dependency to the latest version.
+
+# qase-python-commons@3.5.8
+
+## What's new
+
+- Updated the `qase-api-client` dependency to the latest version.
+
 # qase-python-commons@3.5.7
 
 ## What's new
