@@ -15,6 +15,7 @@
 
 import unittest
 
+from qase.api_client_v2.models.result_steps_type import ResultStepsType
 
 class TestResultStepsType(unittest.TestCase):
     """ResultStepsType unit test stubs"""

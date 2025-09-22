@@ -28,7 +28,7 @@ class TestRunCreate(unittest.TestCase):
 
     def make_instance(self, include_optional) -> RunCreate:
         """Test RunCreate
-            include_option is a boolean, when False only required
+            include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `RunCreate`
@@ -58,7 +58,10 @@ class TestRunCreate(unittest.TestCase):
                     'key' : ''
                     },
                 start_time = '',
-                end_time = ''
+                end_time = '',
+                is_cloud = True,
+                cloud_run_config = qase.api_client_v1.models.run_create_cloud_run_config.RunCreate_cloud_run_config(
+                    browser = 'chromium', )
             )
         else:
             return RunCreate(

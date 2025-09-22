@@ -28,7 +28,7 @@ class TestCreateResultsRequestV2(unittest.TestCase):
 
     def make_instance(self, include_optional) -> CreateResultsRequestV2:
         """Test CreateResultsRequestV2
-            include_option is a boolean, when False only required
+            include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `CreateResultsRequestV2`
@@ -37,12 +37,15 @@ class TestCreateResultsRequestV2(unittest.TestCase):
         if include_optional:
             return CreateResultsRequestV2(
                 results = [
-                    qase.models.result_create.ResultCreate(
+                    qase.api_client_v2.models.result_create.ResultCreate(
                         id = '', 
                         title = '', 
                         signature = '', 
                         testops_id = 56, 
-                        execution = qase.models.result_execution.ResultExecution(
+                        testops_ids = [
+                            56
+                            ], 
+                        execution = qase.api_client_v2.models.result_execution.ResultExecution(
                             start_time = 1.337, 
                             end_time = 1.337, 
                             status = '', 
@@ -56,8 +59,8 @@ class TestCreateResultsRequestV2(unittest.TestCase):
                             ''
                             ], 
                         steps = [
-                            qase.models.result_step.ResultStep(
-                                data = qase.models.result_step_data.ResultStepData(
+                            qase.api_client_v2.models.result_step.ResultStep(
+                                data = qase.api_client_v2.models.result_step_data.ResultStepData(
                                     action = '', 
                                     expected_result = '', 
                                     input_data = '', ), )
@@ -66,17 +69,20 @@ class TestCreateResultsRequestV2(unittest.TestCase):
                         params = {
                             'key' : ''
                             }, 
-                        author = '', 
-                        relations = qase.models.relation.Relation(
-                            suite = qase.models.relation_suite.RelationSuite(
+                        param_groups = [
+                            [
+                                ''
+                                ]
+                            ], 
+                        relations = qase.api_client_v2.models.relation.Relation(
+                            suite = qase.api_client_v2.models.relation_suite.RelationSuite(
                                 data = [
-                                    qase.models.relation_suite_item.RelationSuiteItem(
+                                    qase.api_client_v2.models.relation_suite_item.RelationSuiteItem(
                                         title = '', 
                                         public_id = 56, )
                                     ], ), ), 
-                        muted = True, 
                         message = '', 
-                        created_at = 1.337, )
+                        defect = True, )
                     ]
             )
         else:

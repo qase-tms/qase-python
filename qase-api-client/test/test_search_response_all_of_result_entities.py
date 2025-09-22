@@ -28,7 +28,7 @@ class TestSearchResponseAllOfResultEntities(unittest.TestCase):
 
     def make_instance(self, include_optional) -> SearchResponseAllOfResultEntities:
         """Test SearchResponseAllOfResultEntities
-            include_option is a boolean, when False only required
+            include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `SearchResponseAllOfResultEntities`
@@ -59,6 +59,7 @@ class TestSearchResponseAllOfResultEntities(unittest.TestCase):
                     in_progress = 56, 
                     invalid = 56, ),
                 time_spent = 56,
+                elapsed_time = 56,
                 environment = qase.api_client_v1.models.run_environment.Run_environment(
                     title = '', 
                     description = '', 
@@ -133,6 +134,7 @@ class TestSearchResponseAllOfResultEntities(unittest.TestCase):
                 steps_type = '',
                 params = None,
                 author_id = 56,
+                updated_by = 56,
                 defect_id = 56,
                 actual_result = '',
                 resolved = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
