@@ -27,7 +27,7 @@ print(ResultExecution.to_json())
 # convert the object into a dict
 result_execution_dict = result_execution_instance.to_dict()
 # create an instance of ResultExecution from a dict
-result_execution_form_dict = result_execution.from_dict(result_execution_dict)
+result_execution_from_dict = ResultExecution.from_dict(result_execution_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

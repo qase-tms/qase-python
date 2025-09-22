@@ -9,11 +9,14 @@ Method | HTTP request | Description
 
 
 # **create_result_v2**
-> create_result_v2(project_code, run_id, result_create)
+> ResultCreateResponse create_result_v2(project_code, run_id, result_create)
 
 Create test run result
 
-This method allows to create single test run result.  If there is no free space left in your team account, when attempting to upload an attachment, e.g., through reporters, you will receive an error with code 507 - Insufficient Storage. 
+This method allows to create single test run result.
+
+If there is no free space left in your team account, when attempting to upload an attachment, e.g., through reporters, you will receive an error with code 507 - Insufficient Storage.
+
 
 ### Example
 
@@ -22,6 +25,7 @@ This method allows to create single test run result.  If there is no free space 
 ```python
 import qase.api_client_v2
 from qase.api_client_v2.models.result_create import ResultCreate
+from qase.api_client_v2.models.result_create_response import ResultCreateResponse
 from qase.api_client_v2.rest import ApiException
 from pprint import pprint
 
@@ -52,7 +56,9 @@ with qase.api_client_v2.ApiClient(configuration) as api_client:
 
     try:
         # Create test run result
-        api_instance.create_result_v2(project_code, run_id, result_create)
+        api_response = api_instance.create_result_v2(project_code, run_id, result_create)
+        print("The response of ResultsApi->create_result_v2:\n")
+        pprint(api_response)
     except Exception as e:
         print("Exception when calling ResultsApi->create_result_v2: %s\n" % e)
 ```
@@ -70,7 +76,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-void (empty response body)
+[**ResultCreateResponse**](ResultCreateResponse.md)
 
 ### Authorization
 
@@ -79,7 +85,7 @@ void (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: application/json
- - **Accept**: Not defined
+ - **Accept**: application/json
 
 ### HTTP response details
 
@@ -95,11 +101,14 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create_results_v2**
-> create_results_v2(project_code, run_id, create_results_request_v2)
+> ResultCreateBulkResponse create_results_v2(project_code, run_id, create_results_request_v2)
 
 Bulk create test run result
 
-This method allows to create several test run results at once.  If there is no free space left in your team account, when attempting to upload an attachment, e.g., through reporters, you will receive an error with code 507 - Insufficient Storage. 
+This method allows to create several test run results at once.
+
+If there is no free space left in your team account, when attempting to upload an attachment, e.g., through reporters, you will receive an error with code 507 - Insufficient Storage.
+
 
 ### Example
 
@@ -108,6 +117,7 @@ This method allows to create several test run results at once.  If there is no f
 ```python
 import qase.api_client_v2
 from qase.api_client_v2.models.create_results_request_v2 import CreateResultsRequestV2
+from qase.api_client_v2.models.result_create_bulk_response import ResultCreateBulkResponse
 from qase.api_client_v2.rest import ApiException
 from pprint import pprint
 
@@ -138,7 +148,9 @@ with qase.api_client_v2.ApiClient(configuration) as api_client:
 
     try:
         # Bulk create test run result
-        api_instance.create_results_v2(project_code, run_id, create_results_request_v2)
+        api_response = api_instance.create_results_v2(project_code, run_id, create_results_request_v2)
+        print("The response of ResultsApi->create_results_v2:\n")
+        pprint(api_response)
     except Exception as e:
         print("Exception when calling ResultsApi->create_results_v2: %s\n" % e)
 ```
@@ -156,7 +168,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-void (empty response body)
+[**ResultCreateBulkResponse**](ResultCreateBulkResponse.md)
 
 ### Authorization
 
@@ -165,7 +177,7 @@ void (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: application/json
- - **Accept**: Not defined
+ - **Accept**: application/json
 
 ### HTTP response details
 

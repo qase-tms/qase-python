@@ -22,7 +22,7 @@ print(CreateResultsRequestV2.to_json())
 # convert the object into a dict
 create_results_request_v2_dict = create_results_request_v2_instance.to_dict()
 # create an instance of CreateResultsRequestV2 from a dict
-create_results_request_v2_form_dict = create_results_request_v2.from_dict(create_results_request_v2_dict)
+create_results_request_v2_from_dict = CreateResultsRequestV2.from_dict(create_results_request_v2_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

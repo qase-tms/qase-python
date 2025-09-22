@@ -14,12 +14,41 @@
 """  # noqa: E501
 
 
-# import models into model package
+if __import__("typing").TYPE_CHECKING:
+    # import models into model package
+    from qase.api_client_v2.models.base_response import BaseResponse
+    from qase.api_client_v2.models.create_results_request_v2 import CreateResultsRequestV2
+    from qase.api_client_v2.models.relation_suite import RelationSuite
+    from qase.api_client_v2.models.relation_suite_item import RelationSuiteItem
+    from qase.api_client_v2.models.result_create import ResultCreate
+    from qase.api_client_v2.models.result_create_bulk_response import ResultCreateBulkResponse
+    from qase.api_client_v2.models.result_create_fields import ResultCreateFields
+    from qase.api_client_v2.models.result_create_response import ResultCreateResponse
+    from qase.api_client_v2.models.result_create_response_all_of_result import ResultCreateResponseAllOfResult
+    from qase.api_client_v2.models.result_execution import ResultExecution
+    from qase.api_client_v2.models.result_relations import ResultRelations
+    from qase.api_client_v2.models.result_step import ResultStep
+    from qase.api_client_v2.models.result_step_data import ResultStepData
+    from qase.api_client_v2.models.result_step_execution import ResultStepExecution
+    from qase.api_client_v2.models.result_step_status import ResultStepStatus
+    from qase.api_client_v2.models.result_steps_type import ResultStepsType
+    
+else:
+    from lazy_imports import LazyModule, as_package, load
+
+    load(
+        LazyModule(
+            *as_package(__file__),
+            """# import models into model package
+from qase.api_client_v2.models.base_response import BaseResponse
 from qase.api_client_v2.models.create_results_request_v2 import CreateResultsRequestV2
 from qase.api_client_v2.models.relation_suite import RelationSuite
 from qase.api_client_v2.models.relation_suite_item import RelationSuiteItem
 from qase.api_client_v2.models.result_create import ResultCreate
+from qase.api_client_v2.models.result_create_bulk_response import ResultCreateBulkResponse
 from qase.api_client_v2.models.result_create_fields import ResultCreateFields
+from qase.api_client_v2.models.result_create_response import ResultCreateResponse
+from qase.api_client_v2.models.result_create_response_all_of_result import ResultCreateResponseAllOfResult
 from qase.api_client_v2.models.result_execution import ResultExecution
 from qase.api_client_v2.models.result_relations import ResultRelations
 from qase.api_client_v2.models.result_step import ResultStep
@@ -27,3 +56,9 @@ from qase.api_client_v2.models.result_step_data import ResultStepData
 from qase.api_client_v2.models.result_step_execution import ResultStepExecution
 from qase.api_client_v2.models.result_step_status import ResultStepStatus
 from qase.api_client_v2.models.result_steps_type import ResultStepsType
+
+""",
+            name=__name__,
+            doc=__doc__,
+        )
+    )

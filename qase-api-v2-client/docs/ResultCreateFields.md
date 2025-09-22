@@ -33,7 +33,7 @@ print(ResultCreateFields.to_json())
 # convert the object into a dict
 result_create_fields_dict = result_create_fields_instance.to_dict()
 # create an instance of ResultCreateFields from a dict
-result_create_fields_form_dict = result_create_fields.from_dict(result_create_fields_dict)
+result_create_fields_from_dict = ResultCreateFields.from_dict(result_create_fields_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

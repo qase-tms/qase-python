@@ -18,18 +18,18 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict
-from typing import Any, ClassVar, Dict, List
-from qase.api_client_v2.models.relation_suite_item import RelationSuiteItem
+from pydantic import BaseModel, ConfigDict, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 
-class RelationSuite(BaseModel):
+class ResultCreateResponseAllOfResult(BaseModel):
     """
-    RelationSuite
+    ResultCreateResponseAllOfResult
     """ # noqa: E501
-    data: List[RelationSuiteItem]
-    __properties: ClassVar[List[str]] = ["data"]
+    case_id: Optional[StrictInt] = None
+    hash: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["case_id", "hash"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -49,7 +49,7 @@ class RelationSuite(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of RelationSuite from a JSON string"""
+        """Create an instance of ResultCreateResponseAllOfResult from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -70,18 +70,16 @@ class RelationSuite(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in data (list)
-        _items = []
-        if self.data:
-            for _item_data in self.data:
-                if _item_data:
-                    _items.append(_item_data.to_dict())
-            _dict['data'] = _items
+        # set to None if case_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.case_id is None and "case_id" in self.model_fields_set:
+            _dict['case_id'] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of RelationSuite from a dict"""
+        """Create an instance of ResultCreateResponseAllOfResult from a dict"""
         if obj is None:
             return None
 
@@ -89,7 +87,8 @@ class RelationSuite(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "data": [RelationSuiteItem.from_dict(_item) for _item in obj["data"]] if obj.get("data") is not None else None
+            "case_id": obj.get("case_id"),
+            "hash": obj.get("hash")
         })
         return _obj
 

@@ -25,7 +25,7 @@ print(ResultStepData.to_json())
 # convert the object into a dict
 result_step_data_dict = result_step_data_instance.to_dict()
 # create an instance of ResultStepData from a dict
-result_step_data_form_dict = result_step_data.from_dict(result_step_data_dict)
+result_step_data_from_dict = ResultStepData.from_dict(result_step_data_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

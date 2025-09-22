@@ -18,18 +18,17 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict
-from typing import Any, ClassVar, Dict, List
-from qase.api_client_v2.models.relation_suite_item import RelationSuiteItem
+from pydantic import BaseModel, ConfigDict, StrictBool
+from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 
-class RelationSuite(BaseModel):
+class ResultCreateBulkResponse(BaseModel):
     """
-    RelationSuite
+    ResultCreateBulkResponse
     """ # noqa: E501
-    data: List[RelationSuiteItem]
-    __properties: ClassVar[List[str]] = ["data"]
+    status: Optional[StrictBool] = None
+    __properties: ClassVar[List[str]] = ["status"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -49,7 +48,7 @@ class RelationSuite(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of RelationSuite from a JSON string"""
+        """Create an instance of ResultCreateBulkResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -70,18 +69,11 @@ class RelationSuite(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in data (list)
-        _items = []
-        if self.data:
-            for _item_data in self.data:
-                if _item_data:
-                    _items.append(_item_data.to_dict())
-            _dict['data'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of RelationSuite from a dict"""
+        """Create an instance of ResultCreateBulkResponse from a dict"""
         if obj is None:
             return None
 
@@ -89,7 +81,7 @@ class RelationSuite(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "data": [RelationSuiteItem.from_dict(_item) for _item in obj["data"]] if obj.get("data") is not None else None
+            "status": obj.get("status")
         })
         return _obj
 

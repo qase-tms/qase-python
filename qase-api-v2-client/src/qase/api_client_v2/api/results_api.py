@@ -20,6 +20,8 @@ from typing_extensions import Annotated
 from pydantic import StrictInt, StrictStr
 from qase.api_client_v2.models.create_results_request_v2 import CreateResultsRequestV2
 from qase.api_client_v2.models.result_create import ResultCreate
+from qase.api_client_v2.models.result_create_bulk_response import ResultCreateBulkResponse
+from qase.api_client_v2.models.result_create_response import ResultCreateResponse
 
 from qase.api_client_v2.api_client import ApiClient, RequestSerialized
 from qase.api_client_v2.api_response import ApiResponse
@@ -57,7 +59,7 @@ class ResultsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> None:
+    ) -> ResultCreateResponse:
         """Create test run result
 
         This method allows to create single test run result.  If there is no free space left in your team account, when attempting to upload an attachment, e.g., through reporters, you will receive an error with code 507 - Insufficient Storage. 
@@ -101,7 +103,7 @@ class ResultsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '202': None,
+            '202': "ResultCreateResponse",
             '400': None,
             '401': None,
             '403': None,
@@ -137,7 +139,7 @@ class ResultsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[None]:
+    ) -> ApiResponse[ResultCreateResponse]:
         """Create test run result
 
         This method allows to create single test run result.  If there is no free space left in your team account, when attempting to upload an attachment, e.g., through reporters, you will receive an error with code 507 - Insufficient Storage. 
@@ -181,7 +183,7 @@ class ResultsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '202': None,
+            '202': "ResultCreateResponse",
             '400': None,
             '401': None,
             '403': None,
@@ -261,7 +263,7 @@ class ResultsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '202': None,
+            '202': "ResultCreateResponse",
             '400': None,
             '401': None,
             '403': None,
@@ -295,7 +297,9 @@ class ResultsApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -311,6 +315,13 @@ class ResultsApi:
             _body_params = result_create
 
 
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
         # set the HTTP header `Content-Type`
         if _content_type:
@@ -367,7 +378,7 @@ class ResultsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> None:
+    ) -> ResultCreateBulkResponse:
         """Bulk create test run result
 
         This method allows to create several test run results at once.  If there is no free space left in your team account, when attempting to upload an attachment, e.g., through reporters, you will receive an error with code 507 - Insufficient Storage. 
@@ -411,7 +422,7 @@ class ResultsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '202': None,
+            '202': "ResultCreateBulkResponse",
             '400': None,
             '401': None,
             '403': None,
@@ -447,7 +458,7 @@ class ResultsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[None]:
+    ) -> ApiResponse[ResultCreateBulkResponse]:
         """Bulk create test run result
 
         This method allows to create several test run results at once.  If there is no free space left in your team account, when attempting to upload an attachment, e.g., through reporters, you will receive an error with code 507 - Insufficient Storage. 
@@ -491,7 +502,7 @@ class ResultsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '202': None,
+            '202': "ResultCreateBulkResponse",
             '400': None,
             '401': None,
             '403': None,
@@ -571,7 +582,7 @@ class ResultsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '202': None,
+            '202': "ResultCreateBulkResponse",
             '400': None,
             '401': None,
             '403': None,
@@ -605,7 +616,9 @@ class ResultsApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -621,6 +634,13 @@ class ResultsApi:
             _body_params = create_results_request_v2
 
 
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
         # set the HTTP header `Content-Type`
         if _content_type:
