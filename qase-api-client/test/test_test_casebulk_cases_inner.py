@@ -28,7 +28,7 @@ class TestTestCasebulkCasesInner(unittest.TestCase):
 
     def make_instance(self, include_optional) -> TestCasebulkCasesInner:
         """Test TestCasebulkCasesInner
-            include_option is a boolean, when False only required
+            include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `TestCasebulkCasesInner`
@@ -46,7 +46,6 @@ class TestTestCasebulkCasesInner(unittest.TestCase):
                 type = 56,
                 layer = 56,
                 is_flaky = 56,
-                author_id = 56,
                 suite_id = 56,
                 milestone_id = 56,
                 automation = 56,
@@ -72,6 +71,9 @@ class TestTestCasebulkCasesInner(unittest.TestCase):
                         ''
                         ]
                     },
+                parameters = [
+                    null
+                    ],
                 custom_field = {
                     'key' : ''
                     },

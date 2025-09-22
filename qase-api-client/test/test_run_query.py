@@ -28,7 +28,7 @@ class TestRunQuery(unittest.TestCase):
 
     def make_instance(self, include_optional) -> RunQuery:
         """Test RunQuery
-            include_option is a boolean, when False only required
+            include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `RunQuery`
@@ -59,6 +59,7 @@ class TestRunQuery(unittest.TestCase):
                     in_progress = 56, 
                     invalid = 56, ),
                 time_spent = 56,
+                elapsed_time = 56,
                 environment = qase.api_client_v1.models.run_environment.Run_environment(
                     title = '', 
                     description = '', 

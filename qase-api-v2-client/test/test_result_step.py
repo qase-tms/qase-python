@@ -28,7 +28,7 @@ class TestResultStep(unittest.TestCase):
 
     def make_instance(self, include_optional) -> ResultStep:
         """Test ResultStep
-            include_option is a boolean, when False only required
+            include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `ResultStep`
@@ -36,14 +36,14 @@ class TestResultStep(unittest.TestCase):
         model = ResultStep()
         if include_optional:
             return ResultStep(
-                data = qase.models.result_step_data.ResultStepData(
+                data = qase.api_client_v2.models.result_step_data.ResultStepData(
                     action = '', 
                     expected_result = '', 
                     input_data = '', 
                     attachments = [
                         ''
                         ], ),
-                execution = qase.models.result_step_execution.ResultStepExecution(
+                execution = qase.api_client_v2.models.result_step_execution.ResultStepExecution(
                     start_time = 1.337, 
                     end_time = 1.337, 
                     status = 'passed', 

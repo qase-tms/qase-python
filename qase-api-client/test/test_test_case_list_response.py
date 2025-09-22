@@ -28,7 +28,7 @@ class TestTestCaseListResponse(unittest.TestCase):
 
     def make_instance(self, include_optional) -> TestCaseListResponse:
         """Test TestCaseListResponse
-            include_option is a boolean, when False only required
+            include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `TestCaseListResponse`
@@ -83,6 +83,9 @@ class TestTestCaseListResponse(unittest.TestCase):
                                     data = '', )
                                 ], 
                             params = null, 
+                            parameters = [
+                                null
+                                ], 
                             tags = [
                                 qase.api_client_v1.models.tag_value.TagValue(
                                     title = '', 

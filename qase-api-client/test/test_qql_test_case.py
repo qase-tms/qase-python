@@ -28,7 +28,7 @@ class TestQqlTestCase(unittest.TestCase):
 
     def make_instance(self, include_optional) -> QqlTestCase:
         """Test QqlTestCase
-            include_option is a boolean, when False only required
+            include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `QqlTestCase`
@@ -95,7 +95,8 @@ class TestQqlTestCase(unittest.TestCase):
                 member_id = 56,
                 author_id = 56,
                 created_at = '2021-12-30T19:23:59Z',
-                updated_at = '2021-12-30T19:23:59Z'
+                updated_at = '2021-12-30T19:23:59Z',
+                updated_by = 56
             )
         else:
             return QqlTestCase(

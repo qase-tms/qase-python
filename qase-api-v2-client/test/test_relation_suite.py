@@ -28,7 +28,7 @@ class TestRelationSuite(unittest.TestCase):
 
     def make_instance(self, include_optional) -> RelationSuite:
         """Test RelationSuite
-            include_option is a boolean, when False only required
+            include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `RelationSuite`
@@ -37,7 +37,7 @@ class TestRelationSuite(unittest.TestCase):
         if include_optional:
             return RelationSuite(
                 data = [
-                    qase.models.relation_suite_item.RelationSuiteItem(
+                    qase.api_client_v2.models.relation_suite_item.RelationSuiteItem(
                         title = '', 
                         public_id = 56, )
                     ]
@@ -45,7 +45,7 @@ class TestRelationSuite(unittest.TestCase):
         else:
             return RelationSuite(
                 data = [
-                    qase.models.relation_suite_item.RelationSuiteItem(
+                    qase.api_client_v2.models.relation_suite_item.RelationSuiteItem(
                         title = '', 
                         public_id = 56, )
                     ],

@@ -28,7 +28,7 @@ class TestTestCaseUpdate(unittest.TestCase):
 
     def make_instance(self, include_optional) -> TestCaseUpdate:
         """Test TestCaseUpdate
-            include_option is a boolean, when False only required
+            include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `TestCaseUpdate`
@@ -74,6 +74,9 @@ class TestTestCaseUpdate(unittest.TestCase):
                         ''
                         ]
                     },
+                parameters = [
+                    null
+                    ],
                 custom_field = {
                     'key' : ''
                     }

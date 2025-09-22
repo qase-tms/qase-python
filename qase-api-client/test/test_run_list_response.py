@@ -28,7 +28,7 @@ class TestRunListResponse(unittest.TestCase):
 
     def make_instance(self, include_optional) -> RunListResponse:
         """Test RunListResponse
-            include_option is a boolean, when False only required
+            include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `RunListResponse`
@@ -66,6 +66,7 @@ class TestRunListResponse(unittest.TestCase):
                                 in_progress = 56, 
                                 invalid = 56, ), 
                             time_spent = 56, 
+                            elapsed_time = 56, 
                             environment = qase.api_client_v1.models.run_environment.Run_environment(
                                 title = '', 
                                 description = '', 
@@ -87,7 +88,14 @@ class TestRunListResponse(unittest.TestCase):
                             cases = [
                                 56
                                 ], 
-                            plan_id = 56, )
+                            plan_id = 56, 
+                            configurations = [
+                                56
+                                ], 
+                            external_issue = qase.api_client_v1.models.run_external_issue.Run_external_issue(
+                                id = '', 
+                                type = '', 
+                                link = '', ), )
                         ], )
             )
         else:

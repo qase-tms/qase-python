@@ -62,6 +62,20 @@ class TestRunsApi(unittest.TestCase):
         """
         pass
 
+    def test_run_update_external_issue(self) -> None:
+        """Test case for run_update_external_issue
+
+        Update external issues for runs
+        """
+        pass
+
+    def test_update_run(self) -> None:
+        """Test case for update_run
+
+        Update a specific run
+        """
+        pass
+
     def test_update_run_publicity(self) -> None:
         """Test case for update_run_publicity
 

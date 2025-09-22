@@ -15,7 +15,7 @@
 
 import unittest
 
-from qase.api_client_v2.api import ResultsApi
+from qase.api_client_v2.api.results_api import ResultsApi
 
 
 class TestResultsApi(unittest.TestCase):
@@ -30,14 +30,14 @@ class TestResultsApi(unittest.TestCase):
     def test_create_result_v2(self) -> None:
         """Test case for create_result_v2
 
-        (Beta) Create test run result
+        Create test run result
         """
         pass
 
     def test_create_results_v2(self) -> None:
         """Test case for create_results_v2
 
-        (Beta) Bulk create test run result
+        Bulk create test run result
         """
         pass
 
