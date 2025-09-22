@@ -27,7 +27,7 @@ print(ResultStepExecution.to_json())
 # convert the object into a dict
 result_step_execution_dict = result_step_execution_instance.to_dict()
 # create an instance of ResultStepExecution from a dict
-result_step_execution_form_dict = result_step_execution.from_dict(result_step_execution_dict)
+result_step_execution_from_dict = ResultStepExecution.from_dict(result_step_execution_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

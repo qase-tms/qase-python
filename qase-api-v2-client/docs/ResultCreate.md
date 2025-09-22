@@ -36,7 +36,7 @@ print(ResultCreate.to_json())
 # convert the object into a dict
 result_create_dict = result_create_instance.to_dict()
 # create an instance of ResultCreate from a dict
-result_create_form_dict = result_create.from_dict(result_create_dict)
+result_create_from_dict = ResultCreate.from_dict(result_create_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

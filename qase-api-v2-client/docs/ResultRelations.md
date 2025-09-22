@@ -22,7 +22,7 @@ print(ResultRelations.to_json())
 # convert the object into a dict
 result_relations_dict = result_relations_instance.to_dict()
 # create an instance of ResultRelations from a dict
-result_relations_form_dict = result_relations.from_dict(result_relations_dict)
+result_relations_from_dict = ResultRelations.from_dict(result_relations_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

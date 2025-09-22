@@ -17,30 +17,111 @@
 
 __version__ = "1.0.0"
 
-# import apis into sdk package
-from qase.api_client_v2.api.results_api import ResultsApi
+# Define package exports
+__all__ = [
+    "ResultsApi",
+    "ApiResponse",
+    "ApiClient",
+    "Configuration",
+    "OpenApiException",
+    "ApiTypeError",
+    "ApiValueError",
+    "ApiKeyError",
+    "ApiAttributeError",
+    "ApiException",
+    "BaseResponse",
+    "CreateResultsRequestV2",
+    "RelationSuite",
+    "RelationSuiteItem",
+    "ResultCreate",
+    "ResultCreateBulkResponse",
+    "ResultCreateFields",
+    "ResultCreateResponse",
+    "ResultCreateResponseAllOfResult",
+    "ResultExecution",
+    "ResultRelations",
+    "ResultStep",
+    "ResultStepData",
+    "ResultStepExecution",
+    "ResultStepStatus",
+    "ResultStepsType",
+]
+
+if __import__("typing").TYPE_CHECKING:
+    # import apis into sdk package
+    from qase.api_client_v2.api.results_api import ResultsApi as ResultsApi
+    
+    # import ApiClient
+    from qase.api_client_v2.api_response import ApiResponse as ApiResponse
+    from qase.api_client_v2.api_client import ApiClient as ApiClient
+    from qase.api_client_v2.configuration import Configuration as Configuration
+    from qase.api_client_v2.exceptions import OpenApiException as OpenApiException
+    from qase.api_client_v2.exceptions import ApiTypeError as ApiTypeError
+    from qase.api_client_v2.exceptions import ApiValueError as ApiValueError
+    from qase.api_client_v2.exceptions import ApiKeyError as ApiKeyError
+    from qase.api_client_v2.exceptions import ApiAttributeError as ApiAttributeError
+    from qase.api_client_v2.exceptions import ApiException as ApiException
+    
+    # import models into sdk package
+    from qase.api_client_v2.models.base_response import BaseResponse as BaseResponse
+    from qase.api_client_v2.models.create_results_request_v2 import CreateResultsRequestV2 as CreateResultsRequestV2
+    from qase.api_client_v2.models.relation_suite import RelationSuite as RelationSuite
+    from qase.api_client_v2.models.relation_suite_item import RelationSuiteItem as RelationSuiteItem
+    from qase.api_client_v2.models.result_create import ResultCreate as ResultCreate
+    from qase.api_client_v2.models.result_create_bulk_response import ResultCreateBulkResponse as ResultCreateBulkResponse
+    from qase.api_client_v2.models.result_create_fields import ResultCreateFields as ResultCreateFields
+    from qase.api_client_v2.models.result_create_response import ResultCreateResponse as ResultCreateResponse
+    from qase.api_client_v2.models.result_create_response_all_of_result import ResultCreateResponseAllOfResult as ResultCreateResponseAllOfResult
+    from qase.api_client_v2.models.result_execution import ResultExecution as ResultExecution
+    from qase.api_client_v2.models.result_relations import ResultRelations as ResultRelations
+    from qase.api_client_v2.models.result_step import ResultStep as ResultStep
+    from qase.api_client_v2.models.result_step_data import ResultStepData as ResultStepData
+    from qase.api_client_v2.models.result_step_execution import ResultStepExecution as ResultStepExecution
+    from qase.api_client_v2.models.result_step_status import ResultStepStatus as ResultStepStatus
+    from qase.api_client_v2.models.result_steps_type import ResultStepsType as ResultStepsType
+    
+else:
+    from lazy_imports import LazyModule, as_package, load
+
+    load(
+        LazyModule(
+            *as_package(__file__),
+            ("__version__", __version__),
+            ("__all__", __all__),
+            """# import apis into sdk package
+from qase.api_client_v2.api.results_api import ResultsApi as ResultsApi
 
 # import ApiClient
-from qase.api_client_v2.api_response import ApiResponse
-from qase.api_client_v2.api_client import ApiClient
-from qase.api_client_v2.configuration import Configuration
-from qase.api_client_v2.exceptions import OpenApiException
-from qase.api_client_v2.exceptions import ApiTypeError
-from qase.api_client_v2.exceptions import ApiValueError
-from qase.api_client_v2.exceptions import ApiKeyError
-from qase.api_client_v2.exceptions import ApiAttributeError
-from qase.api_client_v2.exceptions import ApiException
+from qase.api_client_v2.api_response import ApiResponse as ApiResponse
+from qase.api_client_v2.api_client import ApiClient as ApiClient
+from qase.api_client_v2.configuration import Configuration as Configuration
+from qase.api_client_v2.exceptions import OpenApiException as OpenApiException
+from qase.api_client_v2.exceptions import ApiTypeError as ApiTypeError
+from qase.api_client_v2.exceptions import ApiValueError as ApiValueError
+from qase.api_client_v2.exceptions import ApiKeyError as ApiKeyError
+from qase.api_client_v2.exceptions import ApiAttributeError as ApiAttributeError
+from qase.api_client_v2.exceptions import ApiException as ApiException
 
 # import models into sdk package
-from qase.api_client_v2.models.create_results_request_v2 import CreateResultsRequestV2
-from qase.api_client_v2.models.relation_suite import RelationSuite
-from qase.api_client_v2.models.relation_suite_item import RelationSuiteItem
-from qase.api_client_v2.models.result_create import ResultCreate
-from qase.api_client_v2.models.result_create_fields import ResultCreateFields
-from qase.api_client_v2.models.result_execution import ResultExecution
-from qase.api_client_v2.models.result_relations import ResultRelations
-from qase.api_client_v2.models.result_step import ResultStep
-from qase.api_client_v2.models.result_step_data import ResultStepData
-from qase.api_client_v2.models.result_step_execution import ResultStepExecution
-from qase.api_client_v2.models.result_step_status import ResultStepStatus
-from qase.api_client_v2.models.result_steps_type import ResultStepsType
+from qase.api_client_v2.models.base_response import BaseResponse as BaseResponse
+from qase.api_client_v2.models.create_results_request_v2 import CreateResultsRequestV2 as CreateResultsRequestV2
+from qase.api_client_v2.models.relation_suite import RelationSuite as RelationSuite
+from qase.api_client_v2.models.relation_suite_item import RelationSuiteItem as RelationSuiteItem
+from qase.api_client_v2.models.result_create import ResultCreate as ResultCreate
+from qase.api_client_v2.models.result_create_bulk_response import ResultCreateBulkResponse as ResultCreateBulkResponse
+from qase.api_client_v2.models.result_create_fields import ResultCreateFields as ResultCreateFields
+from qase.api_client_v2.models.result_create_response import ResultCreateResponse as ResultCreateResponse
+from qase.api_client_v2.models.result_create_response_all_of_result import ResultCreateResponseAllOfResult as ResultCreateResponseAllOfResult
+from qase.api_client_v2.models.result_execution import ResultExecution as ResultExecution
+from qase.api_client_v2.models.result_relations import ResultRelations as ResultRelations
+from qase.api_client_v2.models.result_step import ResultStep as ResultStep
+from qase.api_client_v2.models.result_step_data import ResultStepData as ResultStepData
+from qase.api_client_v2.models.result_step_execution import ResultStepExecution as ResultStepExecution
+from qase.api_client_v2.models.result_step_status import ResultStepStatus as ResultStepStatus
+from qase.api_client_v2.models.result_steps_type import ResultStepsType as ResultStepsType
+
+""",
+            name=__name__,
+            doc=__doc__,
+        )
+    )
