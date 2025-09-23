@@ -1,3 +1,10 @@
+# qase-tavern 2.0.0
+
+## What's new
+
+- Unsupport Python 3.7 and 3.8. Support Python 3.9, 3.10, 3.11, 3.12, 3.13.
+- Updated the `qase-python-commons` dependency to the latest version.
+
 # qase-tavern 1.1.5
 
 ## What's new

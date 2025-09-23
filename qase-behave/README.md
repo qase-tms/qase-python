@@ -103,7 +103,7 @@ Configuration options are described in the
 
 We maintain the reporter on [LTS versions of Python](https://devguide.python.org/versions/).
 
-`python >= 3.7`
+`python >= 3.9`
 `behave >= 1.2.6`
 
 <!-- references -->

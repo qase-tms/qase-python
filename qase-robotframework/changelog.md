@@ -1,10 +1,10 @@
-# qase-robotframework 3.4.7
+# qase-robotframework 4.0.0
 
 ## What's new
 
-- Added support for updating external link for a test run.
-- Updated dependency on qase-python-commons to version 3.5.6.
-
+- Unsupport Python 3.7 and 3.8. Support Python 3.9, 3.10, 3.11, 3.12, 3.13.
+- Updated the `qase-python-commons` dependency to the latest version.
+- 
 # qase-robotframework 3.4.6
 
 ## What's new

@@ -1,3 +1,10 @@
+# qase-pytest 7.0.0
+
+## What's new
+
+- Unsupport Python 3.7 and 3.8. Support Python 3.9, 3.10, 3.11, 3.12, 3.13.
+- Updated the `qase-python-commons` dependency to the latest version.
+
 # qase-pytest 6.3.10
 
 ## What's new
