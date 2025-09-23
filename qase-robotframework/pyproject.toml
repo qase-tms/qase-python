@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qase-robotframework"
-version = "3.4.7"
+version = "4.0.0"
 description = "Qase Robot Framework Plugin"
 readme = "README.md"
 authors = [{name = "Qase Team", email = "support@qase.io"}]
@@ -13,11 +13,18 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Framework :: Robot Framework",
     "Programming Language :: Python",
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3 :: Only',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
 ]
 urls = {"Homepage" = "https://github.com/qase-tms/qase-python/tree/main/qase-robotframework"}
-requires-python = ">=3.7"
+requires-python = ">=3.9"
 dependencies = [
-    "qase-python-commons~=3.5.6",
+    "qase-python-commons~=4.0.0",
     "filelock~=3.12.2",
 ]
 
@@ -30,8 +37,8 @@ testing = [
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-minversion = 3.7
-envlist = py{37,38,39,310,311}
+minversion = 3.9
+envlist = py{39,310,311,312,313}
 
 [testenv]
 deps =

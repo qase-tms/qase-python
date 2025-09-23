@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qase-behave"
-version = "1.1.7"
+version = "2.0.0"
 description = "Qase Behave Plugin for Qase TestOps and Qase Report"
 readme = "README.md"
 keywords = ["qase", "behave", "plugin", "testops", "report", "qase reporting", "test observability"]
@@ -20,16 +20,15 @@ classifiers = [
     'Topic :: Software Development :: Testing',
     'Programming Language :: Python :: 3',
     'Programming Language :: Python :: 3 :: Only',
-    'Programming Language :: Python :: 3.7',
-    'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
     'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
 ]
-requires-python = ">=3.7"
+requires-python = ">=3.9"
 dependencies = [
-    "qase-python-commons~=3.5.6",
+    "qase-python-commons~=4.0.0",
     "behave>=1.2.6",
     "more_itertools",
 ]
@@ -49,8 +48,8 @@ testing = [
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-minversion = 3.7
-envlist = py{37,38,39,310,311}
+minversion = 3.9
+envlist = py{39,310,311,312,313}
 
 [testenv]
 deps =
