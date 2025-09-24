@@ -197,10 +197,16 @@ class QasePytestPlugin:
 
     def _handle_failed_test(self, call):
         """Handle failed test case and set appropriate status."""
-        is_assertion_error = call.excinfo.typename == "AssertionError"
+        is_assertion_error = False
+        error_message = "Test failed"
+        
+        if call.excinfo is not None:
+            is_assertion_error = call.excinfo.typename == "AssertionError"
+            error_message = call.excinfo.exconly()
+        
         status = PYTEST_TO_QASE_STATUS['FAILED'] if is_assertion_error else PYTEST_TO_QASE_STATUS['BROKEN']
         self._set_result_status(status)
-        self.runtime.result.add_message(call.excinfo.exconly())
+        self.runtime.result.add_message(error_message)
 
     def _handle_skipped_test(self, report, call):
         """Handle skipped test case and set appropriate status."""

@@ -1,3 +1,9 @@
+# qase-pytest 7.0.1
+
+## What's new
+
+- Fixed an issue with the `pytest.xfail` mark.
+
 # qase-pytest 7.0.0
 
 ## What's new
