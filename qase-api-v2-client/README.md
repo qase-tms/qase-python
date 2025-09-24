@@ -60,12 +60,15 @@ Please follow the [installation procedure](#installation--usage) and then run th
 ```python
 from qase.api_client_v2.rest import ApiException
 from pprint import pprint
+import certifi
 
 # Defining the host is optional and defaults to https://api.qase.io/v2
 # See configuration.py for a list of all supported configuration parameters.
 configuration = qase.api_client_v2.Configuration(
     host="https://api.qase.io/v2"
 )
+
+configuration.ssl_ca_cert = certifi.where()
 
 # The client must configure the authentication and authorization parameters
 # in accordance with the API server security policy.
