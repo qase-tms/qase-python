@@ -1,3 +1,9 @@
+# qase-python-commons@4.0.1
+
+## What's new
+
+- Added support for status mapping. More information about status mapping can be found in the [docs](docs/STATUS_MAPPING.md).
+
 # qase-python-commons@4.0.0
 
 ## What's new
