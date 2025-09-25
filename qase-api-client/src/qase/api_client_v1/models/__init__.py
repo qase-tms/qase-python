@@ -31,7 +31,7 @@ if __import__("typing").TYPE_CHECKING:
     from qase.api_client_v1.models.base_response import BaseResponse
     from qase.api_client_v1.models.bulk200_response import Bulk200Response
     from qase.api_client_v1.models.bulk200_response_all_of_result import Bulk200ResponseAllOfResult
-    from qase.api_client_v1.models.configuration import Configuration
+    from qase.api_client_v1.models.configuration_model import ConfigurationModel
     from qase.api_client_v1.models.configuration_create import ConfigurationCreate
     from qase.api_client_v1.models.configuration_group import ConfigurationGroup
     from qase.api_client_v1.models.configuration_group_create import ConfigurationGroupCreate
@@ -210,7 +210,7 @@ from qase.api_client_v1.models.author_response import AuthorResponse
 from qase.api_client_v1.models.base_response import BaseResponse
 from qase.api_client_v1.models.bulk200_response import Bulk200Response
 from qase.api_client_v1.models.bulk200_response_all_of_result import Bulk200ResponseAllOfResult
-from qase.api_client_v1.models.configuration import Configuration
+from qase.api_client_v1.models.configuration_model import ConfigurationModel
 from qase.api_client_v1.models.configuration_create import ConfigurationCreate
 from qase.api_client_v1.models.configuration_group import ConfigurationGroup
 from qase.api_client_v1.models.configuration_group_create import ConfigurationGroupCreate

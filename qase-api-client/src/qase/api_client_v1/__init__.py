@@ -267,7 +267,7 @@ if __import__("typing").TYPE_CHECKING:
     from qase.api_client_v1.models.base_response import BaseResponse as BaseResponse
     from qase.api_client_v1.models.bulk200_response import Bulk200Response as Bulk200Response
     from qase.api_client_v1.models.bulk200_response_all_of_result import Bulk200ResponseAllOfResult as Bulk200ResponseAllOfResult
-    from qase.api_client_v1.models.configuration import Configuration as Configuration
+    from qase.api_client_v1.models.configuration_model import ConfigurationModel as ConfigurationModel
     from qase.api_client_v1.models.configuration_create import ConfigurationCreate as ConfigurationCreate
     from qase.api_client_v1.models.configuration_group import ConfigurationGroup as ConfigurationGroup
     from qase.api_client_v1.models.configuration_group_create import ConfigurationGroupCreate as ConfigurationGroupCreate
@@ -479,7 +479,7 @@ from qase.api_client_v1.models.author_response import AuthorResponse as AuthorRe
 from qase.api_client_v1.models.base_response import BaseResponse as BaseResponse
 from qase.api_client_v1.models.bulk200_response import Bulk200Response as Bulk200Response
 from qase.api_client_v1.models.bulk200_response_all_of_result import Bulk200ResponseAllOfResult as Bulk200ResponseAllOfResult
-from qase.api_client_v1.models.configuration import Configuration as Configuration
+from qase.api_client_v1.models.configuration_model import ConfigurationModel as ConfigurationModel
 from qase.api_client_v1.models.configuration_create import ConfigurationCreate as ConfigurationCreate
 from qase.api_client_v1.models.configuration_group import ConfigurationGroup as ConfigurationGroup
 from qase.api_client_v1.models.configuration_group_create import ConfigurationGroupCreate as ConfigurationGroupCreate
