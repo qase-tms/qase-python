@@ -11,6 +11,7 @@ from ..models.config.qaseconfig import Mode
 from typing import Union, List
 
 from ..util import get_host_info
+from ..status_mapping.status_mapping import StatusMapping
 
 """
     CoreReporter is a facade for all reporters and it is used to initialize and manage them.
@@ -27,6 +28,11 @@ class QaseCoreReporter:
         self._execution_plan = None
         self.profilers = []
         self.overhead = 0
+
+        # Initialize status mapping
+        self.status_mapping = StatusMapping.from_dict(self.config.status_mapping)
+        if not self.status_mapping.is_empty():
+            self.logger.log_debug(f"Status mapping initialized: {self.status_mapping}")
 
         # self._selective_execution_setup()
         self.fallback = self._fallback_setup()
@@ -86,6 +92,9 @@ class QaseCoreReporter:
             try:
                 ts = time.time()
                 self.logger.log_debug(f"Adding result {result}")
+
+                # Apply status mapping before adding result
+                self._apply_status_mapping(result)
 
                 self.reporter.add_result(result)
 
@@ -208,3 +217,26 @@ class QaseCoreReporter:
         if self.config.fallback == Mode.report:
             return QaseReport(config=self.config, logger=self.logger)
         return None
+
+    def _apply_status_mapping(self, result: Result) -> None:
+        """
+        Apply status mapping to a test result.
+        
+        This method applies the configured status mapping to the result's execution status.
+        The mapping is applied before the result is sent to the reporter.
+        
+        Args:
+            result: Test result to apply status mapping to
+        """
+        if self.status_mapping.is_empty():
+            return
+        
+        original_status = result.get_status()
+        if not original_status:
+            return
+        
+        mapped_status = self.status_mapping.apply_mapping(original_status)
+        
+        if mapped_status != original_status:
+            result.execution.set_status(mapped_status)
+            self.logger.log_debug(f"Status mapped for '{result.get_title()}': {original_status} -> {mapped_status}")

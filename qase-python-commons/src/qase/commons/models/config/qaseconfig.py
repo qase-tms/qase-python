@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List
+from typing import List, Dict
 
 from .framework import Framework
 from .report import ReportConfig
@@ -36,6 +36,7 @@ class QaseConfig(BaseModel):
     profilers: list = None
     framework: Framework = None
     exclude_params: list = None
+    status_mapping: Dict[str, str] = None
 
     def __init__(self):
         self.mode = Mode.off
@@ -47,6 +48,7 @@ class QaseConfig(BaseModel):
         self.framework = Framework()
         self.profilers = []
         self.exclude_params = []
+        self.status_mapping = {}
 
     def set_mode(self, mode: str):
         if any(mode == e.value for e in Mode.__members__.values()):
@@ -70,3 +72,6 @@ class QaseConfig(BaseModel):
 
     def set_exclude_params(self, exclude_params: List[str]):
         self.exclude_params = exclude_params
+
+    def set_status_mapping(self, status_mapping: Dict[str, str]):
+        self.status_mapping = status_mapping

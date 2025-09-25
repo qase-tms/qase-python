@@ -63,6 +63,11 @@ class ConfigManager:
                             config.get("excludeParams")
                         )
 
+                    if config.get("statusMapping"):
+                        self.config.set_status_mapping(
+                            config.get("statusMapping")
+                        )
+
                     if config.get("executionPlan"):
                         execution_plan = config.get("executionPlan")
                         if execution_plan.get("path"):
@@ -223,6 +228,19 @@ class ConfigManager:
                 if key == 'QASE_EXCLUDE_PARAMS':
                     self.config.set_exclude_params(
                         [param.strip() for param in value.split(',')])
+
+                if key == 'QASE_STATUS_MAPPING':
+                    # Parse status mapping from environment variable
+                    # Format: "source1=target1,source2=target2"
+                    if value:
+                        mapping_dict = {}
+                        pairs = value.split(',')
+                        for pair in pairs:
+                            pair = pair.strip()
+                            if pair and '=' in pair:
+                                source_status, target_status = pair.split('=', 1)
+                                mapping_dict[source_status.strip()] = target_status.strip()
+                        self.config.set_status_mapping(mapping_dict)
 
                 if key == 'QASE_EXECUTION_PLAN_PATH':
                     self.config.execution_plan.set_path(value)
