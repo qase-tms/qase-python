@@ -176,6 +176,18 @@ class QaseFormatter(Formatter):
             cfg_mgr.config.testops.set_status_filter(
                 [status.strip() for status in userdata['qase-testops-status-filter'].split(',')])
 
+        if 'qase-status-mapping' in userdata:
+            # Parse status mapping from userdata
+            # Format: "source1=target1,source2=target2"
+            mapping_dict = {}
+            pairs = userdata['qase-status-mapping'].split(',')
+            for pair in pairs:
+                pair = pair.strip()
+                if pair and '=' in pair:
+                    source_status, target_status = pair.split('=', 1)
+                    mapping_dict[source_status.strip()] = target_status.strip()
+            cfg_mgr.config.set_status_mapping(mapping_dict)
+
         if 'qase-report-driver' in userdata:
             cfg_mgr.config.report.set_driver(userdata['qase-report-driver'])
 

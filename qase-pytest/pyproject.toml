@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qase-pytest"
-version = "7.0.1"
+version = "7.0.2"
 description = "Qase Pytest Plugin for Qase TestOps and Qase Report"
 readme = "README.md"
 keywords = ["qase", "pytest", "plugin", "testops", "report", "qase reporting", "test observability"]
@@ -28,7 +28,7 @@ classifiers = [
 ]
 requires-python = ">=3.9"
 dependencies = [
-    "qase-python-commons~=4.0.0",
+    "qase-python-commons~=4.0.1",
     "pytest>=7.4.4",
     "filelock~=3.12.2",
     "more_itertools",

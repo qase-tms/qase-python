@@ -186,6 +186,14 @@ class QasePytestOptions:
         QasePytestOptions.add_option(
             parser,
             group,
+            "--qase-status-mapping",
+            dest="qase_status_mapping",
+            help="Map test result statuses. Format: 'invalid=failed,skipped=passed'"
+        )
+
+        QasePytestOptions.add_option(
+            parser,
+            group,
             "--qase-report-driver",
             dest="qase_report_driver",
             help="Define report driver: `local`. More options coming soon."

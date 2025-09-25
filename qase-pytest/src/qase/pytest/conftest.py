@@ -190,6 +190,18 @@ def setup_config_manager(config):
                 config_manager.config.testops.set_status_filter(
                     [status.strip() for status in config.option.__dict__[option].split(',')])
 
+            if option == "qase_status_mapping" and config.option.__dict__[option] is not None:
+                # Parse status mapping from CLI parameter
+                # Format: "source1=target1,source2=target2"
+                mapping_dict = {}
+                pairs = config.option.__dict__[option].split(',')
+                for pair in pairs:
+                    pair = pair.strip()
+                    if pair and '=' in pair:
+                        source_status, target_status = pair.split('=', 1)
+                        mapping_dict[source_status.strip()] = target_status.strip()
+                config_manager.config.set_status_mapping(mapping_dict)
+
             if option == "qase_testops_run_external_link_type" and config.option.__dict__[option] is not None:
                 if not config_manager.config.testops.run.external_link:
                     from qase.commons.models.external_link import ExternalLinkConfig

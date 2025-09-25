@@ -1,3 +1,9 @@
+# qase-tavern 2.0.1
+
+## What's new
+
+- Added support for status mapping. More information about status mapping can be found in the [docs](../qase-python-commons/docs/STATUS_MAPPING.md).
+
 # qase-tavern 2.0.0
 
 ## What's new
@@ -25,6 +31,7 @@
 ## Migration Guide
 
 The plugin now provides more accurate test result reporting by distinguishing between:
+
 - `failed`: Test failed due to assertion error (test logic issue)
 - `invalid`: Test failed due to non-assertion error (infrastructure/setup issue)
 
