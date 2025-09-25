@@ -31,7 +31,7 @@ You can configure status mapping in your `qase.config.json` file:
 You can also use environment variables:
 
 ```bash
-export STATUS_MAPPING="invalid=failed,skipped=passed"
+export QASE_STATUS_MAPPING="invalid=failed,skipped=passed"
 ```
 
 ### Command Line Options
@@ -53,16 +53,16 @@ You can also use environment variables:
 
 ```bash
 # Pytest
-STATUS_MAPPING="invalid=failed,skipped=passed" pytest
+QASE_STATUS_MAPPING="invalid=failed,skipped=passed" pytest
 
 # Tavern
-STATUS_MAPPING="invalid=failed,skipped=passed" pytest
+QASE_STATUS_MAPPING="invalid=failed,skipped=passed" pytest
 
 # Behave
-STATUS_MAPPING="invalid=failed,skipped=passed" behave
+QASE_STATUS_MAPPING="invalid=failed,skipped=passed" behave
 
 # Robot Framework
-STATUS_MAPPING="invalid=failed,skipped=passed" robot tests/
+QASE_STATUS_MAPPING="invalid=failed,skipped=passed" robot tests/
 ```
 
 ## Supported Statuses
@@ -117,7 +117,7 @@ This configuration applies multiple status mappings.
 ### Environment Variable Example
 
 ```bash
-export STATUS_MAPPING="invalid=failed,skipped=passed"
+export QASE_STATUS_MAPPING="invalid=failed,skipped=passed"
 ```
 
 ## Behavior
