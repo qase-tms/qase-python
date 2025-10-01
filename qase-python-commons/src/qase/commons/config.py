@@ -1,18 +1,28 @@
 import os
 import json
-from .logger import Logger
+from .logger import Logger, LoggingOptions
 from .models.config.qaseconfig import QaseConfig, Mode
+from .utils import QaseUtils
 
 
 class ConfigManager:
 
     def __init__(self, config_file='./qase.config.json'):
-        self.logger = Logger()
         self.__config_file = config_file
         self.config = QaseConfig()
 
+        # Initialize temporary logger for error handling during config loading
+        self.logger = Logger(debug=False)
+        
         self.__load_file_config()
         self.__load_env_config()
+        
+        # Re-initialize logger with proper logging options after config is loaded
+        logging_options = LoggingOptions(
+            console=self.config.logging.console if self.config.logging.console is not None else True,
+            file=self.config.logging.file if self.config.logging.file is not None else self.config.debug
+        )
+        self.logger = Logger(debug=self.config.debug, logging_options=logging_options)
 
     def validate_config(self):
         errors: list[str] = []
@@ -201,6 +211,9 @@ class ConfigManager:
                                         xfail_status.get("xpass")
                                     )
 
+                    if config.get("logging"):
+                        self.config.set_logging(config.get("logging"))
+
         except Exception as e:
             self.logger.log("Failed to load config from file", "error")
 
@@ -326,5 +339,11 @@ class ConfigManager:
                 if key == 'QASE_PYTEST_XFAIL_STATUS_XPASS':
                     self.config.framework.pytest.xfail_status.set_xpass(value)
 
+                if key == 'QASE_LOGGING_CONSOLE':
+                    self.config.logging.set_console(QaseUtils.parse_bool(value))
+
+                if key == 'QASE_LOGGING_FILE':
+                    self.config.logging.set_file(QaseUtils.parse_bool(value))
+
         except Exception as e:
-            self.logger.log("Failed to load config from env vars {e}", "error")
+            self.logger.log(f"Failed to load config from env vars {e}", "error")

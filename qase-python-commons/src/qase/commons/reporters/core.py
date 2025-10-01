@@ -24,7 +24,8 @@ class QaseCoreReporter:
                  reporter_name: Union[str, None] = None):
         config.validate_config()
         self.config = config.config
-        self.logger = Logger(self.config.debug)
+        # Use the logger from ConfigManager instead of creating a new one
+        self.logger = config.logger
         self._execution_plan = None
         self.profilers = []
         self.overhead = 0
