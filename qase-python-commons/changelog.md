@@ -1,3 +1,9 @@
+# qase-python-commons@4.1.0
+
+## What's new
+
+- Added support for logging configuration. More information about logging configuration can be found in the [docs](docs/LOGGING.md).
+
 # qase-python-commons@4.0.1
 
 ## What's new
