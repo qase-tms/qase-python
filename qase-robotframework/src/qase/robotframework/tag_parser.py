@@ -1,15 +1,12 @@
 import json
-import logging
 import re
 
 from .models import TestMetadata
 
 
 class TagParser:
-    __logger = logging.getLogger("qase-robotframework")
-
     @staticmethod
-    def parse_tags(tags: list[str]) -> TestMetadata:
+    def parse_tags(tags: list[str], logger=None) -> TestMetadata:
         metadata = TestMetadata()
         for tag in tags:
             if tag.lower().startswith("q-"):
@@ -21,10 +18,10 @@ class TagParser:
                 metadata.ignore = True
 
             if tag.lower().startswith("qase.fields"):
-                metadata.fields = TagParser.__extract_fields(tag)
+                metadata.fields = TagParser.__extract_fields(tag, logger)
 
             if tag.lower().startswith("qase.params"):
-                metadata.params = TagParser.__extract_params(tag)
+                metadata.params = TagParser.__extract_params(tag, logger)
 
         return metadata
 
@@ -37,16 +34,20 @@ class TagParser:
         return None
 
     @staticmethod
-    def __extract_fields(tag: str) -> dict:
+    def __extract_fields(tag: str, logger=None) -> dict:
         value = tag.split(':', 1)[-1].strip()
         try:
             return json.loads(value)
         except ValueError as e:
-            TagParser.__logger.error(f"Error parsing fields from tag '{tag}': {e}")
+            # Use logger if available, otherwise fallback to print for critical errors
+            if logger:
+                logger.log_error(f"Error parsing fields from tag '{tag}': {e}")
+            else:
+                print(f"CRITICAL: Error parsing fields from tag '{tag}': {e}")
             return {}
 
     @staticmethod
-    def __extract_params(tag: str) -> list[str]:
+    def __extract_params(tag: str, logger=None) -> list[str]:
         value = tag.split(':', 1)[-1].strip()
         try:
             # Remove square brackets and split by comma
@@ -57,5 +58,9 @@ class TagParser:
                 # Handle case without brackets
                 return [item.strip() for item in value.split(",") if item.strip()]
         except (ValueError, IndexError) as e:
-            TagParser.__logger.error(f"Error parsing params from tag '{tag}': {e}")
+            # Use logger if available, otherwise fallback to print for critical errors
+            if logger:
+                logger.log_error(f"Error parsing params from tag '{tag}': {e}")
+            else:
+                print(f"CRITICAL: Error parsing params from tag '{tag}': {e}")
             return []

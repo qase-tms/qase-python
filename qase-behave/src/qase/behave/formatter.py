@@ -199,4 +199,18 @@ class QaseFormatter(Formatter):
             cfg_mgr.config.report.connection.set_format(
                 userdata['qase-report-connection-format'])
 
+        if 'qase-logging-console' in userdata:
+            cfg_mgr.config.logging.set_console(userdata['qase-logging-console'])
+
+        if 'qase-logging-file' in userdata:
+            cfg_mgr.config.logging.set_file(userdata['qase-logging-file'])
+
+        # Update logger with final logging options after all options are processed
+        from qase.commons.logger import LoggingOptions
+        logging_options = LoggingOptions(
+            console=cfg_mgr.config.logging.console if cfg_mgr.config.logging.console is not None else True,
+            file=cfg_mgr.config.logging.file if cfg_mgr.config.logging.file is not None else cfg_mgr.config.debug
+        )
+        cfg_mgr.logger = cfg_mgr.logger.__class__(debug=cfg_mgr.config.debug, logging_options=logging_options)
+
         return cfg_mgr

@@ -240,6 +240,24 @@ class QasePytestOptions:
             help="Capture logs from pytest"
         )
 
+        QasePytestOptions.add_option(
+            parser,
+            group,
+            "--qase-logging-console",
+            dest="qase_logging_console",
+            type="bool",
+            help="Enable/disable console logging output"
+        )
+
+        QasePytestOptions.add_option(
+            parser,
+            group,
+            "--qase-logging-file",
+            dest="qase_logging_file",
+            type="bool",
+            help="Enable/disable file logging output"
+        )
+
     @staticmethod
     def add_option(parser, group, option, dest, default=None, type=None, **kwargs):
         # We are going to add options that were not added before through the manager

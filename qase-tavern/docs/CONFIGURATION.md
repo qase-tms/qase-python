@@ -21,6 +21,9 @@ and command line options override both other values.
 | Root suite                                | `rootSuite`                | `QASE_ROOT_SUITE`               | `--qase-root-suite`               |                                         | No       | Any string                 |
 | Debug logs                                | `debug`                    | `QASE_DEBUG`                    | `--qase-debug`                    | false                                   | No       | `true`, `false`            |
 | Exclude parameters from test results      | `excludeParams`           | `QASE_EXCLUDE_PARAMS`           | `--qase-exclude-params`           | None                                    | No       | Comma-separated list of parameter names |
+| **Logging configuration**                |
+| Enable/disable console logging output     | `logging.console`         | `QASE_LOGGING_CONSOLE`          | `--qase-logging-console`          | `true`                                  | No       | `true`, `false`            |
+| Enable/disable file logging output         | `logging.file`             | `QASE_LOGGING_FILE`             | `--qase-logging-file`             | `false` (true when debug=true)          | No       | `true`, `false`            |
 | **Qase TestOps mode configuration**       |
 | Qase project code                         | `testops.project`          | `QASE_TESTOPS_PROJECT`          | `--qase-testops-project`          |                                         | Yes      | Any string                 |
 | Qase API token                            | `testops.api.token`        | `QASE_TESTOPS_API_TOKEN`        | `--qase-testops-api-token`        |                                         | Yes      | Any string                 |
@@ -52,6 +55,10 @@ and command line options override both other values.
   "fallback": "report",
   "debug": false,
   "environment": "local",
+  "logging": {
+    "console": true,
+    "file": false
+  },
   "report": {
     "driver": "local",
     "connection": {

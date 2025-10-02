@@ -1,3 +1,9 @@
+# qase-tavern 2.0.2
+
+## What's new
+
+- Added support for logging configuration. More information about logging configuration can be found in the [docs](../qase-python-commons/docs/LOGGING.md).
+
 # qase-tavern 2.0.1
 
 ## What's new

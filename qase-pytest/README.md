@@ -63,6 +63,10 @@ Configuration options are described in the
       "captureLogs": true
     }
   },
+  "logging": {
+    "console": true,
+    "file": false
+  },
   "environment": "local"
 }
 ```
