@@ -17,7 +17,11 @@ Environment variables override the values given in the config file.
 | Execution plan path                       | `executionPlan.path`       | `QASE_EXECUTION_PLAN_PATH`      | `./build/qase-execution-plan.json`      | No       | Any string                 |
 | Qase environment                          | `environment`              | `QASE_ENVIRONMENT`              | `local`                                 | No       | Any string                 |
 | Root suite                                | `rootSuite`                | `QASE_ROOT_SUITE`               |                                         | No       | Any string                 |
+| Debug logs                                | `debug`                    | `QASE_DEBUG`                    | `False`                                 | No       | `True`, `False`            |
 | Exclude parameters from test results      | `excludeParams`           | `QASE_EXCLUDE_PARAMS`           | None, don't exclude any parameters      | No       | Comma-separated list of parameter names |
+| **Logging configuration**                |
+| Enable/disable console logging output     | `logging.console`         | `QASE_LOGGING_CONSOLE`          | `true`                                  | No       | `true`, `false`            |
+| Enable/disable file logging output         | `logging.file`             | `QASE_LOGGING_FILE`             | `false` (true when debug=true)          | No       | `true`, `false`            |
 | **Qase TestOps mode configuration**       |
 | Qase project code                         | `testops.project`          | `QASE_TESTOPS_PROJECT`          |                                         | Yes      | Any string                 |
 | Qase API token                            | `testops.api.token`        | `QASE_TESTOPS_API_TOKEN`        |                                         | Yes      | Any string                 |
@@ -48,6 +52,10 @@ Environment variables override the values given in the config file.
   "fallback": "report",
   "debug": false,
   "environment": "local",
+  "logging": {
+    "console": true,
+    "file": false
+  },
   "report": {
     "driver": "local",
     "connection": {

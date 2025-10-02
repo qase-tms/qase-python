@@ -214,6 +214,20 @@ def setup_config_manager(config):
                     config_manager.config.testops.run.external_link = ExternalLinkConfig()
                 config_manager.config.testops.run.external_link.set_link(config.option.__dict__[option])
 
+            if option == "qase_logging_console" and config.option.__dict__[option] is not None:
+                config_manager.config.logging.set_console(config.option.__dict__[option])
+
+            if option == "qase_logging_file" and config.option.__dict__[option] is not None:
+                config_manager.config.logging.set_file(config.option.__dict__[option])
+
+    # Update logger with final logging options after all CLI options are processed
+    from qase.commons.logger import LoggingOptions
+    logging_options = LoggingOptions(
+        console=config_manager.config.logging.console if config_manager.config.logging.console is not None else True,
+        file=config_manager.config.logging.file if config_manager.config.logging.file is not None else config_manager.config.debug
+    )
+    config_manager.logger = config_manager.logger.__class__(debug=config_manager.config.debug, logging_options=logging_options)
+
     return config_manager
 
 

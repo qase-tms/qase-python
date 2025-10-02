@@ -17,8 +17,6 @@ from .tag_parser import TagParser
 from .types import STATUSES
 from .models import *
 
-logger = logging.getLogger("qase-robotframework")
-
 
 def get_pool_id():
     return BuiltIn().get_variable_value('${PABOTQUEUEINDEX}', None)
@@ -41,15 +39,9 @@ class Listener:
         self.tests = {}
         self.pabot_index = None
         self.last_level_flag = None
-
-        if config.config.debug:
-            logger.setLevel(logging.DEBUG)
-            ch = logging.StreamHandler()
-            formatter = logging.Formatter(
-                "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-            )
-            ch.setFormatter(formatter)
-            logger.addHandler(ch)
+        
+        # Use centralized logger from config
+        self.logger = config.logger
 
     def start_suite(self, suite, result):
         self.pabot_index = get_pool_id()
@@ -68,7 +60,7 @@ class Listener:
                             self.__load_run_from_lock()
                             break
             except RuntimeError:
-                logger.error("Failed to create or read lock file")
+                self.logger.log_error("Failed to create or read lock file")
         else:
             self.reporter.start_run()
 
@@ -80,15 +72,15 @@ class Listener:
         self.tests.update(self.__extract_tests_with_suites(suite))
 
     def start_test(self, test, result):
-        logger.debug("Starting test '%s'", test.name)
+        self.logger.log_debug(f"Starting test '{test.name}'")
 
         self.runtime.result = Result(title=test.name, signature=test.name)
         self.runtime.steps = {}
 
     def end_user_keyword(self, data, implementation, result):
-        logger.debug("Ending user keyword '%s'", data.name)
+        self.logger.log_debug(f"Ending user keyword '{data.name}'")
 
-        test_metadata = TagParser.parse_tags(result.tags)
+        test_metadata = TagParser.parse_tags(result.tags, self.logger)
 
         if test_metadata.params:
             # Get argument names from the implementation
@@ -105,12 +97,12 @@ class Listener:
                 self.runtime.result.add_field(Field(key, value))
 
     def end_test(self, test, result):
-        logger.debug("Finishing test '%s'", test.name)
+        self.logger.log_debug(f"Finishing test '{test.name}'")
 
-        test_metadata = TagParser.parse_tags(test.tags)
+        test_metadata = TagParser.parse_tags(test.tags, self.logger)
 
         if test_metadata.ignore:
-            logger.info("Test '%s' is ignored", test.name)
+            self.logger.log_info(f"Test '{test.name}' is ignored")
             return
 
         if test_metadata.qase_ids:
@@ -163,10 +155,8 @@ class Listener:
 
         self.reporter.add_result(self.runtime.result)
 
-        logger.info(
-            "Finished case result: %s, error: %s",
-            result.status,
-            hasattr(result, "message") and result.message or None,
+        self.logger.log_info(
+            f"Finished case result: {result.status}, error: {hasattr(result, 'message') and result.message or None}"
         )
 
     def close(self):
@@ -177,7 +167,7 @@ class Listener:
                 self.reporter.complete_worker()
 
         if not Listener.meta_run_file.exists():
-            logger.info("complete run executing")
+            self.logger.log_info("complete run executing")
             self.reporter.complete_run()
 
     def __extract_tests_with_suites(self, suite, parent_suites=None):

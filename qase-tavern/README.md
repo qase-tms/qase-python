@@ -90,6 +90,10 @@ Configuration options are described in the
       }
     }
   },
+  "logging": {
+    "console": true,
+    "file": false
+  },
   "environment": "local"
 }
 ```
