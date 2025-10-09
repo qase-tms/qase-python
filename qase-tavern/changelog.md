@@ -1,3 +1,9 @@
+# qase-tavern 2.0.3
+
+## Bug fixes
+
+- Fixed filelock dependency compatibility issue with modern tox versions. Changed filelock requirement from `~=3.12.2` to `>=3.12.2` to support newer versions required by tox>=4.26.0 and tox-uv. This resolves dependency conflicts when using modern development tools.
+
 # qase-tavern 2.0.2
 
 ## What's new

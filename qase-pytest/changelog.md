@@ -1,3 +1,9 @@
+# qase-pytest 7.0.4
+
+## Bug fixes
+
+- Fixed filelock dependency compatibility issue with modern tox versions. Changed filelock requirement from `~=3.12.2` to `>=3.12.2` to support newer versions required by tox>=4.26.0 and tox-uv. This resolves dependency conflicts when using modern development tools.
+
 # qase-pytest 7.0.3
 
 ## What's new
