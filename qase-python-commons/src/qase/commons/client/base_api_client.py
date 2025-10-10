@@ -86,3 +86,14 @@ class BaseApiClient(abc.ABC):
         :return: None
         """
         pass
+
+    @abc.abstractmethod
+    def enable_public_report(self, project_code: str, run_id: int) -> str:
+        """
+        Enable public report for a test run and return the public link
+        
+        :param project_code: project code
+        :param run_id: test run id
+        :return: public report link or None if failed
+        """
+        pass

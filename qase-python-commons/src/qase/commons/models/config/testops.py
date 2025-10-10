@@ -49,6 +49,7 @@ class TestopsConfig(BaseModel):
     batch: BatchConfig = None
     configurations: ConfigurationsConfig = None
     status_filter: List[str] = None
+    show_public_report_link: bool = None
 
     def __init__(self):
         self.api = ApiConfig()
@@ -58,6 +59,7 @@ class TestopsConfig(BaseModel):
         self.configurations = ConfigurationsConfig()
         self.defect = False
         self.status_filter = []
+        self.show_public_report_link = False
 
     def set_project(self, project: str):
         self.project = project
@@ -67,3 +69,6 @@ class TestopsConfig(BaseModel):
 
     def set_status_filter(self, status_filter: List[str]):
         self.status_filter = status_filter
+
+    def set_show_public_report_link(self, show_public_report_link):
+        self.show_public_report_link = QaseUtils.parse_bool(show_public_report_link)
