@@ -1,3 +1,9 @@
+# qase-pytest 7.0.5
+
+## What's new
+
+- Added support for automatic public report link generation.
+
 # qase-pytest 7.0.4
 
 ## Bug fixes

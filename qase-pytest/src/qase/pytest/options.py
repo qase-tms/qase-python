@@ -186,6 +186,15 @@ class QasePytestOptions:
         QasePytestOptions.add_option(
             parser,
             group,
+            "--qase-testops-show-public-report-link",
+            dest="qase_testops_show_public_report_link",
+            type="bool",
+            help="Enable automatic generation of public report link after test run completion"
+        )
+
+        QasePytestOptions.add_option(
+            parser,
+            group,
             "--qase-status-mapping",
             dest="qase_status_mapping",
             help="Map test result statuses. Format: 'invalid=failed,skipped=passed'"

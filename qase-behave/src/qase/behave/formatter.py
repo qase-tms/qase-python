@@ -176,6 +176,10 @@ class QaseFormatter(Formatter):
             cfg_mgr.config.testops.set_status_filter(
                 [status.strip() for status in userdata['qase-testops-status-filter'].split(',')])
 
+        if 'qase-testops-show-public-report-link' in userdata:
+            cfg_mgr.config.testops.set_show_public_report_link(
+                userdata['qase-testops-show-public-report-link'])
+
         if 'qase-status-mapping' in userdata:
             # Parse status mapping from userdata
             # Format: "source1=target1,source2=target2"

@@ -1,3 +1,9 @@
+# qase-tavern 2.0.4
+
+## What's new
+
+- Added support for automatic public report link generation.
+
 # qase-tavern 2.0.3
 
 ## Bug fixes
