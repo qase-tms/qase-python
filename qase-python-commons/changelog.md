@@ -1,3 +1,9 @@
+# qase-python-commons@4.2.1
+
+## What's new
+
+- Added support for automatic public report link generation.
+
 # qase-python-commons@4.1.0
 
 ## What's new

@@ -169,6 +169,11 @@ class ConfigManager:
                                 # Parse comma-separated string
                                 self.config.testops.set_status_filter([s.strip() for s in status_filter.split(',')])
 
+                        if testops.get("showPublicReportLink") is not None:
+                            self.config.testops.set_show_public_report_link(
+                                testops.get("showPublicReportLink")
+                            )
+
                     if config.get("report"):
                         report = config.get("report")
 
@@ -320,6 +325,9 @@ class ConfigManager:
                 if key == 'QASE_TESTOPS_STATUS_FILTER':
                     # Parse comma-separated string
                     self.config.testops.set_status_filter([s.strip() for s in value.split(',')])
+
+                if key == 'QASE_TESTOPS_SHOW_PUBLIC_REPORT_LINK':
+                    self.config.testops.set_show_public_report_link(value)
 
                 if key == 'QASE_REPORT_DRIVER':
                     self.config.report.set_driver(value)

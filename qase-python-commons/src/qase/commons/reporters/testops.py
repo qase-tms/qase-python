@@ -144,6 +144,18 @@ class QaseTestOps:
             self.logger.log_debug("Completing run")
             self.client.complete_run(self.project_code, self.run_id)
             self.logger.log_debug("Run completed")
+            
+            # Enable public report if configured
+            if self.config.testops.show_public_report_link:
+                try:
+                    self.logger.log_debug("Enabling public report")
+                    public_url = self.client.enable_public_report(self.project_code, self.run_id)
+                    if public_url:
+                        self.logger.log(f"Public report link: {public_url}", "info")
+                    else:
+                        self.logger.log("Failed to generate public report link", "warning")
+                except Exception as e:
+                    self.logger.log(f"Failed to generate public report link: {e}", "warning")
 
     def complete_worker(self) -> None:
         if len(self.results) > 0:

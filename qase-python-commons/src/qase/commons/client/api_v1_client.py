@@ -3,7 +3,7 @@ from typing import Union
 
 import certifi
 from qase.api_client_v1 import ApiClient, ProjectsApi, Project, EnvironmentsApi, RunsApi, AttachmentsApi, \
-    AttachmentGet, RunCreate, ConfigurationsApi, ConfigurationCreate, ConfigurationGroupCreate
+    AttachmentGet, RunCreate, ConfigurationsApi, ConfigurationCreate, ConfigurationGroupCreate, RunPublic
 from qase.api_client_v1.configuration import Configuration
 from .. import Logger
 from .base_api_client import BaseApiClient
@@ -209,6 +209,37 @@ class ApiV1Client(BaseApiClient):
         if run.result.id:
             return True
         return False
+
+    def enable_public_report(self, project_code: str, run_id: int) -> str:
+        """
+        Enable public report for a test run and return the public link
+        
+        :param project_code: project code
+        :param run_id: test run id
+        :return: public report link or None if failed
+        """
+        try:
+            self.logger.log_debug(f"Enabling public report for run {run_id}")
+            api_runs = RunsApi(self.client)
+            
+            # Create RunPublic object with status=True
+            run_public = RunPublic(status=True)
+            
+            # Call the API to enable public report
+            response = api_runs.update_run_publicity(project_code, run_id, run_public)
+            
+            # Extract the public URL from response
+            if response.result and response.result.url:
+                public_url = response.result.url
+                self.logger.log_debug(f"Public report enabled for run {run_id}: {public_url}")
+                return public_url
+            else:
+                self.logger.log_debug(f"Public report enabled for run {run_id} but no URL returned")
+                return None
+                
+        except Exception as e:
+            self.logger.log(f"Error at enabling public report for run {run_id}: {e}", "error")
+            return None
 
     def update_external_link(self, project_code: str, run_id: int):
         """Update external link for a test run"""
