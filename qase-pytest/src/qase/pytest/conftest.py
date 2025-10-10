@@ -190,6 +190,10 @@ def setup_config_manager(config):
                 config_manager.config.testops.set_status_filter(
                     [status.strip() for status in config.option.__dict__[option].split(',')])
 
+            if option == "qase_testops_show_public_report_link" and config.option.__dict__[option] is not None:
+                config_manager.config.testops.set_show_public_report_link(
+                    config.option.__dict__[option])
+
             if option == "qase_status_mapping" and config.option.__dict__[option] is not None:
                 # Parse status mapping from CLI parameter
                 # Format: "source1=target1,source2=target2"
