@@ -25,7 +25,7 @@ class Execution(BaseModel):
                  stacktrace: Optional[str] = None,
                  thread: Optional[str] = QaseUtils.get_thread_name()
                  ):
-        self.start_time = time.time()
+        self.start_time = QaseUtils.get_real_time()
         self.status = status
         self.end_time = end_time
         self.duration = duration
@@ -48,7 +48,7 @@ class Execution(BaseModel):
         return self.status
 
     def complete(self):
-        self.end_time = time.time()
+        self.end_time = QaseUtils.get_real_time()
         self.duration = (int)((self.end_time - self.start_time) * 1000)
 
 

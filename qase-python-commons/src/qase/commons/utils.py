@@ -6,9 +6,87 @@ from typing import Union, List
 import pip
 import string
 import uuid
+import time
 
 
 class QaseUtils:
+
+    @staticmethod
+    def get_real_time() -> float:
+        """
+        Get real system time, bypassing time mocking libraries like freezegun.
+        
+        This is necessary when reporting test results to external systems that validate
+        timestamps against current time, even when tests are using time mocking.
+        
+        Returns:
+            float: Current Unix timestamp in seconds with microsecond precision
+        """
+        # Try to get the original time function if it was wrapped by freezegun
+        # freezegun stores the original function in __wrapped__ attribute
+        if hasattr(time.time, '__wrapped__'):
+            return time.time.__wrapped__()
+        
+        # Fallback: use direct system call via ctypes
+        # This works on Unix-like systems and Windows
+        try:
+            import ctypes
+            import ctypes.util
+            
+            if sys.platform == 'win32':
+                # Windows: use GetSystemTimeAsFileTime
+                class FILETIME(ctypes.Structure):
+                    _fields_ = [("dwLowDateTime", ctypes.c_uint32),
+                                ("dwHighDateTime", ctypes.c_uint32)]
+                
+                kernel32 = ctypes.windll.kernel32
+                ft = FILETIME()
+                kernel32.GetSystemTimeAsFileTime(ctypes.byref(ft))
+                
+                # Convert FILETIME to Unix timestamp
+                # FILETIME is 100-nanosecond intervals since January 1, 1601
+                timestamp = (ft.dwHighDateTime << 32) + ft.dwLowDateTime
+                # Convert to seconds and adjust epoch (1601 -> 1970)
+                return (timestamp / 10000000.0) - 11644473600.0
+            else:
+                # Unix-like systems: use gettimeofday for microsecond precision
+                # Try multiple approaches to find libc
+                libc = None
+                
+                # Method 1: Use find_library (works on most systems)
+                libc_path = ctypes.util.find_library('c')
+                if libc_path:
+                    try:
+                        libc = ctypes.CDLL(libc_path)
+                    except OSError:
+                        pass
+                
+                # Method 2: Try common library names directly (for Alpine Linux, musl libc, etc.)
+                if libc is None:
+                    for lib_name in ['libc.so.6', 'libc.so', 'libc.dylib']:
+                        try:
+                            libc = ctypes.CDLL(lib_name)
+                            break
+                        except OSError:
+                            continue
+                
+                if libc is None:
+                    raise OSError("Could not load C library")
+                
+                class timeval(ctypes.Structure):
+                    _fields_ = [("tv_sec", ctypes.c_long),
+                                ("tv_usec", ctypes.c_long)]
+                
+                tv = timeval()
+                libc.gettimeofday(ctypes.byref(tv), None)
+                
+                return float(tv.tv_sec) + (float(tv.tv_usec) / 1000000.0)
+        except Exception:
+            # Last resort: return the potentially mocked time
+            # This will still work in normal cases without freezegun
+            # If freezegun is active, the user might see timestamp validation errors
+            # but the core functionality will continue to work
+            return time.time()
 
     @staticmethod
     def build_tree(items):
