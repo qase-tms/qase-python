@@ -31,10 +31,10 @@ class QaseReport:
 
     def start_run(self):
         self._check_report_path()
-        self.start_time = str(time.time())
+        self.start_time = str(QaseUtils.get_real_time())
 
     def complete_run(self):
-        self.end_time = str(time.time())
+        self.end_time = str(QaseUtils.get_real_time())
         self._compile_report()
 
     def complete_worker(self):

@@ -1,4 +1,10 @@
-# qase-python-commons@4.2.1
+# qase-python-commons@4.1.2
+
+## What's new
+
+- Fixed compatibility with time mocking libraries like `freezegun`. When tests use `freezegun` to mock time, Qase reporters now correctly report real timestamps instead of mocked ones. This prevents "Data is invalid" errors from Qase API when execution timestamps are in the past. Resolves [#415](https://github.com/qase-tms/qase-python/issues/415).
+
+# qase-python-commons@4.1.1
 
 ## What's new
 

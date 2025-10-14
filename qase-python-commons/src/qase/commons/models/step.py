@@ -5,6 +5,7 @@ from enum import Enum
 from typing import Optional, Union, Dict, List, Type
 from .attachment import Attachment
 from .basemodel import BaseModel
+from .. import QaseUtils
 
 
 class StepType(Enum):
@@ -95,7 +96,7 @@ class StepSleepData(BaseModel):
 
 class StepExecution(BaseModel):
     def __init__(self, status: Optional[str] = 'untested', end_time: int = 0, duration: int = 0):
-        self.start_time = time.time()
+        self.start_time = QaseUtils.get_real_time()
         self.status = status
         self.end_time = end_time
         self.duration = duration
@@ -108,7 +109,7 @@ class StepExecution(BaseModel):
             raise ValueError('Step status must be one of: passed, failed, skipped, blocked, untested, invalid')
 
     def complete(self):
-        self.end_time = time.time()
+        self.end_time = QaseUtils.get_real_time()
         self.duration = int((self.end_time - self.start_time) * 1000)
 
     def add_attachment(self, attachment: Attachment):
