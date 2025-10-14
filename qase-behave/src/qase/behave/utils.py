@@ -110,7 +110,7 @@ def parse_step(step: Step) -> QaseStep:
         data=StepGherkinData(keyword=step.keyword, name=step.name, line=step.line)
     )
 
-    current_time = time.time()
+    current_time = QaseUtils.get_real_time()
     
     # Map behave status to qase status
     status_mapping = {

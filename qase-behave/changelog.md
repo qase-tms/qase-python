@@ -1,3 +1,10 @@
+# qase-behave 2.0.4
+
+## What's new
+
+- Fixed compatibility with time mocking libraries like `freezegun`. Step timestamps now use real system time instead of mocked time. This prevents "Data is invalid" errors from Qase API. Resolves [#415](https://github.com/qase-tms/qase-python/issues/415).
+- Updated dependency on qase-python-commons to version 4.1.2
+
 # qase-behave 2.0.3
 
 ## What's new
