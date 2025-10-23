@@ -1,5 +1,4 @@
 import os
-import pathlib
 import re
 from typing import Tuple, Union, List
 import mimetypes
@@ -42,7 +41,7 @@ class PluginNotInitializedException(Exception):
 
 class QasePytestPlugin:
     run = None
-    meta_run_file = pathlib.Path("src.run")
+    meta_run_file = "src.run"
 
     def __init__(
             self,
@@ -70,8 +69,8 @@ class QasePytestPlugin:
 
     @staticmethod
     def drop_run_id():
-        if QasePytestPlugin.meta_run_file.exists():
-            QasePytestPlugin.meta_run_file.unlink()
+        if os.path.exists(QasePytestPlugin.meta_run_file):
+            os.remove(QasePytestPlugin.meta_run_file)
 
     def pytest_collection_modifyitems(self, session, config, items):
         """
@@ -124,7 +123,7 @@ class QasePytestPlugin:
         else:
             self.reporter.complete_worker()
 
-        if not QasePytestPlugin.meta_run_file.exists():
+        if not os.path.exists(QasePytestPlugin.meta_run_file):
             self.reporter.complete_run()
 
     @pytest.hookimpl(hookwrapper=True)
@@ -346,7 +345,7 @@ class QasePytestPlugin:
         self.runtime.result.add_param(name, value)
 
     def load_run_from_lock(self):
-        if QasePytestPlugin.meta_run_file.exists():
+        if os.path.exists(QasePytestPlugin.meta_run_file):
             with open(QasePytestPlugin.meta_run_file, "r") as lock_file:
                 try:
                     self.run_id = str(lock_file.read())

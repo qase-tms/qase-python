@@ -1,3 +1,7 @@
+# qase-pytest 7.0.6
+
+- Fixed issue with running tests in AWS Lambda.
+
 # qase-pytest 7.0.5
 
 ## What's new
