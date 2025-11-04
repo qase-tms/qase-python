@@ -85,8 +85,15 @@ class StepRequestData(BaseModel):
 
 
 class StepDbQueryData(BaseModel):
-    def __init__(self, query: str, expected_result: str):
+    def __init__(self, query: str, expected_result: str = None, 
+                 database_type: str = None, execution_time: float = None,
+                 rows_affected: int = None, connection_info: str = None):
         self.query = query
+        self.expected_result = expected_result
+        self.database_type = database_type
+        self.execution_time = execution_time
+        self.rows_affected = rows_affected
+        self.connection_info = connection_info
 
 
 class StepSleepData(BaseModel):

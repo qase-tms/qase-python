@@ -1,6 +1,7 @@
 {
 	"mode": "testops",
 	"fallback": "report",
+	"profilers": ["db"],
 	"report": {
 		"driver": "local",
 		"connection": {

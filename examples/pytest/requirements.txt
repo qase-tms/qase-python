@@ -3,3 +3,7 @@ qase-pytest==6.0.0
 qase-python-commons==3.0.2
 qase-api-client==1.0.1
 qase-api-v2-client==1.0.0
+psycopg2-binary>=2.9.0
+pymysql>=1.0.0
+pymongo>=4.0.0
+redis>=4.0.0

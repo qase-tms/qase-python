@@ -155,6 +155,29 @@ class ApiV2Client(ApiV1Client):
             if step.step_type == StepType.SLEEP:
                 prepared_step['data']['action'] = f"Sleep for {step.data.duration} seconds"
 
+            if step.step_type == StepType.DB_QUERY:
+                # Format database query as action
+                action_parts = []
+                if step.data.database_type:
+                    action_parts.append(f"[{step.data.database_type}]")
+                action_parts.append(step.data.query)
+                prepared_step['data']['action'] = " ".join(action_parts)
+                
+                # Add expected_result if available
+                if step.data.expected_result:
+                    prepared_step['data']['expected_result'] = step.data.expected_result
+                
+                # Add connection info and execution time as input_data
+                info_parts = []
+                if step.data.connection_info:
+                    info_parts.append(f"Connection: {step.data.connection_info}")
+                if step.data.execution_time is not None:
+                    info_parts.append(f"Execution time: {step.data.execution_time:.3f}s")
+                if step.data.rows_affected is not None:
+                    info_parts.append(f"Rows affected: {step.data.rows_affected}")
+                if info_parts:
+                    prepared_step['data']['input_data'] = " | ".join(info_parts)
+
             if step.execution.attachments:
                 uploaded_attachments = []
                 for file in step.execution.attachments:
