@@ -1,10 +1,11 @@
 from .network import NetworkProfiler, NetworkProfilerSingleton
 from .sleep import SleepProfiler
-from .db import DbProfiler
+from .db import DatabaseProfiler, DatabaseProfilerSingleton
 
 __all__ = [
     NetworkProfiler,
     NetworkProfilerSingleton,
     SleepProfiler,
-    DbProfiler
+    DatabaseProfiler,
+    DatabaseProfilerSingleton
 ]

@@ -135,8 +135,9 @@ class QaseCoreReporter:
                 from ..profilers import SleepProfiler
                 self.profilers.append(SleepProfiler(runtime=runtime))
             if profiler == "db":
-                from ..profilers import DbProfiler
-                self.profilers.append(DbProfiler(runtime=runtime))
+                from ..profilers import DatabaseProfilerSingleton
+                DatabaseProfilerSingleton.init(runtime=runtime)
+                self.profilers.append(DatabaseProfilerSingleton.get_instance())
 
     def enable_profilers(self) -> None:
         if self.reporter:

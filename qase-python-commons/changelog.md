@@ -1,3 +1,9 @@
+# qase-python-commons@4.1.3
+
+## What's new
+
+- Added support for database profilers. You can now profile your database operations with Qase. More information about database profilers can be found in the [docs](docs/DATABASE_PROFILERS.md).
+
 # qase-python-commons@4.1.2
 
 ## What's new
