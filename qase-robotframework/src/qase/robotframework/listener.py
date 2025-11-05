@@ -39,7 +39,7 @@ class Listener:
         self.tests = {}
         self.pabot_index = None
         self.last_level_flag = None
-        
+
         # Use centralized logger from config
         self.logger = config.logger
 
@@ -84,14 +84,15 @@ class Listener:
 
         if test_metadata.params:
             # Get argument names from the implementation
-            args_names = implementation.args.argument_names if hasattr(implementation.args, 'argument_names') else []
+            args_names = implementation.args.argument_names if hasattr(
+                implementation.args, 'argument_names') else []
             args_values = result.args if hasattr(result, 'args') else []
             params: dict = {}
             for param in test_metadata.params:
                 if param in args_names:
                     params[param] = args_values[args_names.index(param)]
             self.runtime.result.params = params
-        
+
         if test_metadata.fields:
             for key, value in test_metadata.fields.items():
                 self.runtime.result.add_field(Field(key, value))
@@ -109,15 +110,17 @@ class Listener:
             self.runtime.result.testops_ids = test_metadata.qase_ids
 
         self.runtime.result.execution.complete()
-        
+
         # Determine if it's an assertion error or other error
         status = STATUSES[result.status]
         if status == "failed" and hasattr(result, 'message'):
             # Check if the error message contains assertion-related keywords
-            assertion_keywords = ['assert', 'AssertionError', 'expect', 'should', 'must', 'equal', 'not equal']
-            is_assertion_error = any(keyword in result.message for keyword in assertion_keywords)
+            assertion_keywords = ['assert', 'AssertionError',
+                                  'expect', 'should', 'must', 'equal', 'not equal']
+            is_assertion_error = any(
+                keyword in result.message for keyword in assertion_keywords)
             status = "failed" if is_assertion_error else "invalid"
-        
+
         self.runtime.result.execution.set_status(status)
         if hasattr(result, 'message'):
             self.runtime.result.execution.stacktrace = result.message
@@ -210,10 +213,15 @@ class Listener:
             else:
                 step_name = result.body[i].name
 
+            data = None
+            if hasattr(result.body[i], "args") and result.body[i].args:
+                data = ' '.join(result.body[i].args)
+
             step = Step(
                 step_type=StepType.GHERKIN,
                 id=str(uuid.uuid4()),
-                data=StepGherkinData(keyword=step_name, name=step_name, line=0)
+                data=StepGherkinData(
+                    keyword=step_name, name=step_name, line=0, data=data)
             )
 
             # Determine step status

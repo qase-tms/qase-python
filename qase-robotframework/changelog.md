@@ -1,3 +1,9 @@
+# qase-robotframework 4.0.4
+
+## What's new
+
+- Added support input data for Gherkin steps.
+
 # qase-robotframework 4.0.3
 
 ## Bug fixes
