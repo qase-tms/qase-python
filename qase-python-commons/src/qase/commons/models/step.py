@@ -32,10 +32,11 @@ class StepAssertData(BaseModel):
 
 
 class StepGherkinData(BaseModel):
-    def __init__(self, keyword: str, name: str, line: int):
+    def __init__(self, keyword: str, name: str, line: int, data: Optional[str] = None):
         self.keyword = keyword
         self.name = name
         self.line = line
+        self.data = data
 
 
 class StepRequestData(BaseModel):
