@@ -151,6 +151,8 @@ class ApiV2Client(ApiV1Client):
                 if step.data.keyword != step.data.name:
                     action += " " + step.data.name
                 prepared_step['data']['action'] = action
+                if step.data.data:
+                    prepared_step['data']['input_data'] = step.data.data
 
             if step.step_type == StepType.SLEEP:
                 prepared_step['data']['action'] = f"Sleep for {step.data.duration} seconds"

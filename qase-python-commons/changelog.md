@@ -1,3 +1,9 @@
+# qase-python-commons@4.1.4
+
+## What's new
+
+- Added support input data for Gherkin steps.
+
 # qase-python-commons@4.1.3
 
 ## What's new
