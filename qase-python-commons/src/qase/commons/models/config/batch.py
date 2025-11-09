@@ -19,5 +19,4 @@ class BatchConfig(BaseModel):
             if size_int > 2000 or size_int == 0:
                 self.size = size_int
         except ValueError:
-            raise ValueError("Batch size should be greater than 0 and less than 2000")
-
+            raise ValueError("Batch size should be numeric value")
