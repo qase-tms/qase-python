@@ -276,10 +276,10 @@ class ConfigManager:
                     self.config.testops.set_defect(value)
 
                 if key == 'QASE_TESTOPS_PLAN_ID':
-                    self.config.testops.plan.set_id(value)
+                    self.config.testops.plan.set_id(int(value.strip()))
 
                 if key == 'QASE_TESTOPS_RUN_ID':
-                    self.config.testops.run.set_id(value)
+                    self.config.testops.run.set_id(int(value.strip()))
 
                 if key == 'QASE_TESTOPS_RUN_TITLE':
                     self.config.testops.run.set_title(value)
@@ -307,7 +307,7 @@ class ConfigManager:
                     self.config.testops.run.external_link.set_link(value)
 
                 if key == 'QASE_TESTOPS_BATCH_SIZE':
-                    self.config.testops.batch.set_size(value)
+                    self.config.testops.batch.set_size(int(value.strip()))
 
                 if key == 'QASE_TESTOPS_CONFIGURATIONS_VALUES':
                     # Parse configurations from environment variable

@@ -1,8 +1,9 @@
-# qase-python-commons@4.1.4
+# qase-python-commons@4.1.5
 
 ## What's new
 
-- Added support input data for Gherkin steps.
+- Fixed an issue where the test run ID and plan ID were not being set correctly from Environment Variables.
+- Fixed an issue where the batch size was not being set correctly from Environment Variables.
 
 # qase-python-commons@4.1.3
 
