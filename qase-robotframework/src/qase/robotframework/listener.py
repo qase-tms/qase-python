@@ -215,7 +215,7 @@ class Listener:
 
             data = None
             if hasattr(result.body[i], "args") and result.body[i].args:
-                data = ' '.join(result.body[i].args)
+                data = ' '.join(str(arg) for arg in result.body[i].args)
 
             step = Step(
                 step_type=StepType.GHERKIN,

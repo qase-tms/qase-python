@@ -1,3 +1,9 @@
+# qase-robotframework 4.0.5
+
+## What's new
+
+- Fixed an issue with handling steps which contains arguments.
+
 # qase-robotframework 4.0.4
 
 ## What's new
