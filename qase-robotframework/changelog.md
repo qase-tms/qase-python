@@ -1,3 +1,9 @@
+# qase-robotframework 4.0.6
+
+## What's new
+
+- Using not deprecated `args` attribute for `For` and `ForIteration` objects.
+
 # qase-robotframework 4.0.5
 
 ## What's new
