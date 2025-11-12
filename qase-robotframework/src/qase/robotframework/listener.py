@@ -214,8 +214,27 @@ class Listener:
                 step_name = result.body[i].name
 
             data = None
-            if hasattr(result.body[i], "args") and result.body[i].args:
-                data = ' '.join(str(arg) for arg in result.body[i].args)
+            # Avoid deprecated args attribute for For and ForIteration objects
+            # Check class name to identify For/ForIteration objects and use values instead
+            body_element = result.body[i]
+            class_name = body_element.__class__.__name__
+            
+            # For and ForIteration objects have deprecated args attribute
+            # Use values attribute instead for these types
+            if class_name in ('For', 'ForIteration'):
+                if hasattr(body_element, "values") and body_element.values:
+                    data = ' '.join(str(val) for val in body_element.values)
+            else:
+                # For other types, try to use args if available
+                # Use getattr to avoid triggering deprecation warning on access
+                try:
+                    args_value = getattr(body_element, "args", None)
+                    if args_value:
+                        data = ' '.join(str(arg) for arg in args_value)
+                except (AttributeError, TypeError):
+                    # Fallback to values if args is not available
+                    if hasattr(body_element, "values") and body_element.values:
+                        data = ' '.join(str(val) for val in body_element.values)
 
             step = Step(
                 step_type=StepType.GHERKIN,
