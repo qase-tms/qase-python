@@ -18,6 +18,11 @@ if __import__("typing").TYPE_CHECKING:
     # import models into model package
     from qase.api_client_v2.models.base_response import BaseResponse
     from qase.api_client_v2.models.create_results_request_v2 import CreateResultsRequestV2
+    from qase.api_client_v2.models.custom_field import CustomField
+    from qase.api_client_v2.models.custom_field_list_response import CustomFieldListResponse
+    from qase.api_client_v2.models.custom_field_list_response_all_of_result import CustomFieldListResponseAllOfResult
+    from qase.api_client_v2.models.custom_field_option import CustomFieldOption
+    from qase.api_client_v2.models.custom_field_response import CustomFieldResponse
     from qase.api_client_v2.models.relation_suite import RelationSuite
     from qase.api_client_v2.models.relation_suite_item import RelationSuiteItem
     from qase.api_client_v2.models.result_create import ResultCreate
@@ -42,6 +47,11 @@ else:
             """# import models into model package
 from qase.api_client_v2.models.base_response import BaseResponse
 from qase.api_client_v2.models.create_results_request_v2 import CreateResultsRequestV2
+from qase.api_client_v2.models.custom_field import CustomField
+from qase.api_client_v2.models.custom_field_list_response import CustomFieldListResponse
+from qase.api_client_v2.models.custom_field_list_response_all_of_result import CustomFieldListResponseAllOfResult
+from qase.api_client_v2.models.custom_field_option import CustomFieldOption
+from qase.api_client_v2.models.custom_field_response import CustomFieldResponse
 from qase.api_client_v2.models.relation_suite import RelationSuite
 from qase.api_client_v2.models.relation_suite_item import RelationSuiteItem
 from qase.api_client_v2.models.result_create import ResultCreate
