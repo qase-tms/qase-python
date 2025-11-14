@@ -19,6 +19,7 @@ __version__ = "1.0.0"
 
 # Define package exports
 __all__ = [
+    "CustomFieldsApi",
     "ResultsApi",
     "ApiResponse",
     "ApiClient",
@@ -31,6 +32,11 @@ __all__ = [
     "ApiException",
     "BaseResponse",
     "CreateResultsRequestV2",
+    "CustomField",
+    "CustomFieldListResponse",
+    "CustomFieldListResponseAllOfResult",
+    "CustomFieldOption",
+    "CustomFieldResponse",
     "RelationSuite",
     "RelationSuiteItem",
     "ResultCreate",
@@ -49,6 +55,7 @@ __all__ = [
 
 if __import__("typing").TYPE_CHECKING:
     # import apis into sdk package
+    from qase.api_client_v2.api.custom_fields_api import CustomFieldsApi as CustomFieldsApi
     from qase.api_client_v2.api.results_api import ResultsApi as ResultsApi
     
     # import ApiClient
@@ -65,6 +72,11 @@ if __import__("typing").TYPE_CHECKING:
     # import models into sdk package
     from qase.api_client_v2.models.base_response import BaseResponse as BaseResponse
     from qase.api_client_v2.models.create_results_request_v2 import CreateResultsRequestV2 as CreateResultsRequestV2
+    from qase.api_client_v2.models.custom_field import CustomField as CustomField
+    from qase.api_client_v2.models.custom_field_list_response import CustomFieldListResponse as CustomFieldListResponse
+    from qase.api_client_v2.models.custom_field_list_response_all_of_result import CustomFieldListResponseAllOfResult as CustomFieldListResponseAllOfResult
+    from qase.api_client_v2.models.custom_field_option import CustomFieldOption as CustomFieldOption
+    from qase.api_client_v2.models.custom_field_response import CustomFieldResponse as CustomFieldResponse
     from qase.api_client_v2.models.relation_suite import RelationSuite as RelationSuite
     from qase.api_client_v2.models.relation_suite_item import RelationSuiteItem as RelationSuiteItem
     from qase.api_client_v2.models.result_create import ResultCreate as ResultCreate
@@ -89,6 +101,7 @@ else:
             ("__version__", __version__),
             ("__all__", __all__),
             """# import apis into sdk package
+from qase.api_client_v2.api.custom_fields_api import CustomFieldsApi as CustomFieldsApi
 from qase.api_client_v2.api.results_api import ResultsApi as ResultsApi
 
 # import ApiClient
@@ -105,6 +118,11 @@ from qase.api_client_v2.exceptions import ApiException as ApiException
 # import models into sdk package
 from qase.api_client_v2.models.base_response import BaseResponse as BaseResponse
 from qase.api_client_v2.models.create_results_request_v2 import CreateResultsRequestV2 as CreateResultsRequestV2
+from qase.api_client_v2.models.custom_field import CustomField as CustomField
+from qase.api_client_v2.models.custom_field_list_response import CustomFieldListResponse as CustomFieldListResponse
+from qase.api_client_v2.models.custom_field_list_response_all_of_result import CustomFieldListResponseAllOfResult as CustomFieldListResponseAllOfResult
+from qase.api_client_v2.models.custom_field_option import CustomFieldOption as CustomFieldOption
+from qase.api_client_v2.models.custom_field_response import CustomFieldResponse as CustomFieldResponse
 from qase.api_client_v2.models.relation_suite import RelationSuite as RelationSuite
 from qase.api_client_v2.models.relation_suite_item import RelationSuiteItem as RelationSuiteItem
 from qase.api_client_v2.models.result_create import ResultCreate as ResultCreate
