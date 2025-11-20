@@ -7,6 +7,14 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **int** |  | [optional] 
 **title** | **str** |  | [optional] 
+**slug** | **str** |  | [optional] 
+**color** | **str** |  | [optional] 
+**icon** | **str** |  | [optional] 
+**is_default** | **bool** |  | [optional] 
+**read_only** | **bool** |  | [optional] 
+**is_active** | **bool** |  | [optional] 
+**is_internal** | **bool** |  | [optional] 
+**behaviour** | **int** |  | [optional] 
 
 ## Example
 
