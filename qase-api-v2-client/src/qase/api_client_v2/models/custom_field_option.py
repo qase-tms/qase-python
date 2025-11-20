@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
@@ -29,7 +29,15 @@ class CustomFieldOption(BaseModel):
     """ # noqa: E501
     id: Optional[StrictInt] = None
     title: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["id", "title"]
+    slug: Optional[StrictStr] = None
+    color: Optional[StrictStr] = None
+    icon: Optional[StrictStr] = None
+    is_default: Optional[StrictBool] = None
+    read_only: Optional[StrictBool] = None
+    is_active: Optional[StrictBool] = None
+    is_internal: Optional[StrictBool] = None
+    behaviour: Optional[StrictInt] = None
+    __properties: ClassVar[List[str]] = ["id", "title", "slug", "color", "icon", "is_default", "read_only", "is_active", "is_internal", "behaviour"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -70,6 +78,51 @@ class CustomFieldOption(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if title (nullable) is None
+        # and model_fields_set contains the field
+        if self.title is None and "title" in self.model_fields_set:
+            _dict['title'] = None
+
+        # set to None if slug (nullable) is None
+        # and model_fields_set contains the field
+        if self.slug is None and "slug" in self.model_fields_set:
+            _dict['slug'] = None
+
+        # set to None if color (nullable) is None
+        # and model_fields_set contains the field
+        if self.color is None and "color" in self.model_fields_set:
+            _dict['color'] = None
+
+        # set to None if icon (nullable) is None
+        # and model_fields_set contains the field
+        if self.icon is None and "icon" in self.model_fields_set:
+            _dict['icon'] = None
+
+        # set to None if is_default (nullable) is None
+        # and model_fields_set contains the field
+        if self.is_default is None and "is_default" in self.model_fields_set:
+            _dict['is_default'] = None
+
+        # set to None if read_only (nullable) is None
+        # and model_fields_set contains the field
+        if self.read_only is None and "read_only" in self.model_fields_set:
+            _dict['read_only'] = None
+
+        # set to None if is_active (nullable) is None
+        # and model_fields_set contains the field
+        if self.is_active is None and "is_active" in self.model_fields_set:
+            _dict['is_active'] = None
+
+        # set to None if is_internal (nullable) is None
+        # and model_fields_set contains the field
+        if self.is_internal is None and "is_internal" in self.model_fields_set:
+            _dict['is_internal'] = None
+
+        # set to None if behaviour (nullable) is None
+        # and model_fields_set contains the field
+        if self.behaviour is None and "behaviour" in self.model_fields_set:
+            _dict['behaviour'] = None
+
         return _dict
 
     @classmethod
@@ -83,7 +136,15 @@ class CustomFieldOption(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
-            "title": obj.get("title")
+            "title": obj.get("title"),
+            "slug": obj.get("slug"),
+            "color": obj.get("color"),
+            "icon": obj.get("icon"),
+            "is_default": obj.get("is_default"),
+            "read_only": obj.get("read_only"),
+            "is_active": obj.get("is_active"),
+            "is_internal": obj.get("is_internal"),
+            "behaviour": obj.get("behaviour")
         })
         return _obj
 
