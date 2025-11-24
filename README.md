@@ -30,8 +30,3 @@ Monorepo containing [Qase TestOps](https://qase.io) integration tools for Python
   
 - **[qase-api-v2-client](/qase-api-v2-client)**  
   API client supporting the new Qase TestOps API (v2). Use this client for projects leveraging the latest API features.
-
-### Deprecated
-
-- **[qaseio](/qaseio)**  
-  Legacy client for the Qase TestOps API (v1). Deprecated in favor of `qase-api-client` and should not be used in new projects.
