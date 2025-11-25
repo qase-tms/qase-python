@@ -18,6 +18,10 @@ def pytest_configure(config):
         "qase_parametrize_ignore: mark test to ignore parameters in Qase reports"
     )
 
+    # Skip plugin registration if pytest is running in collect-only mode
+    if config.option.collectonly:
+        return
+
     config_manager = setup_config_manager(config)
 
     QasePytestPluginSingleton.init(reporter=QaseCoreReporter(
