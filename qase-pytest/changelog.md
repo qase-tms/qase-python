@@ -1,3 +1,9 @@
+# qase-pytest 7.0.7
+
+## What's new
+
+- Disable reporter for collect mode.
+
 # qase-pytest 7.0.6
 
 - Fixed issue with running tests in AWS Lambda.
