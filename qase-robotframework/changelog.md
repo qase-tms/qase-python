@@ -1,3 +1,9 @@
+# qase-robotframework 4.0.7
+
+## What's new
+
+- Fixed an issue with handling steps which contains variables.
+
 # qase-robotframework 4.0.6
 
 ## What's new
