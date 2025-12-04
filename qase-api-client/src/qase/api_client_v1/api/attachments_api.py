@@ -1133,7 +1133,7 @@ class AttachmentsApi:
         _host = None
 
         _collection_formats: Dict[str, str] = {
-            'file': 'csv',
+            'file[]': 'csv',
         }
 
         _path_params: Dict[str, str] = {}
@@ -1152,7 +1152,7 @@ class AttachmentsApi:
         # process the header parameters
         # process the form parameters
         if file is not None:
-            _files['file'] = file
+            _files['file[]'] = file
         # process the body parameter
 
 

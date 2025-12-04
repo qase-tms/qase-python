@@ -5,10 +5,10 @@ All URIs are relative to *https://api.qase.io/v1*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**create_custom_field**](CustomFieldsApi.md#create_custom_field) | **POST** /custom_field | Create new Custom Field
-[**delete_custom_field**](CustomFieldsApi.md#delete_custom_field) | **DELETE** /custom_field/{id} | Delete Custom Field by id
-[**get_custom_field**](CustomFieldsApi.md#get_custom_field) | **GET** /custom_field/{id} | Get Custom Field by id
+[**delete_custom_field**](CustomFieldsApi.md#delete_custom_field) | **DELETE** /custom_field/{id} | Delete Custom Field
+[**get_custom_field**](CustomFieldsApi.md#get_custom_field) | **GET** /custom_field/{id} | Get Custom Field
 [**get_custom_fields**](CustomFieldsApi.md#get_custom_fields) | **GET** /custom_field | Get all Custom Fields
-[**update_custom_field**](CustomFieldsApi.md#update_custom_field) | **PATCH** /custom_field/{id} | Update Custom Field by id
+[**update_custom_field**](CustomFieldsApi.md#update_custom_field) | **PATCH** /custom_field/{id} | Update Custom Field
 
 
 # **create_custom_field**
@@ -100,7 +100,7 @@ Name | Type | Description  | Notes
 # **delete_custom_field**
 > BaseResponse delete_custom_field(id)
 
-Delete Custom Field by id
+Delete Custom Field
 
 This method allows to delete custom field.
 
@@ -139,7 +139,7 @@ with qase.api_client_v1.ApiClient(configuration) as api_client:
     id = 56 # int | Identifier.
 
     try:
-        # Delete Custom Field by id
+        # Delete Custom Field
         api_response = api_instance.delete_custom_field(id)
         print("The response of CustomFieldsApi->delete_custom_field:\n")
         pprint(api_response)
@@ -185,7 +185,7 @@ Name | Type | Description  | Notes
 # **get_custom_field**
 > CustomFieldResponse get_custom_field(id)
 
-Get Custom Field by id
+Get Custom Field
 
 This method allows to retrieve custom field.
 
@@ -224,7 +224,7 @@ with qase.api_client_v1.ApiClient(configuration) as api_client:
     id = 56 # int | Identifier.
 
     try:
-        # Get Custom Field by id
+        # Get Custom Field
         api_response = api_instance.get_custom_field(id)
         print("The response of CustomFieldsApi->get_custom_field:\n")
         pprint(api_response)
@@ -360,7 +360,7 @@ Name | Type | Description  | Notes
 # **update_custom_field**
 > BaseResponse update_custom_field(id, custom_field_update)
 
-Update Custom Field by id
+Update Custom Field
 
 This method allows to update custom field.
 
@@ -401,7 +401,7 @@ with qase.api_client_v1.ApiClient(configuration) as api_client:
     custom_field_update = qase.api_client_v1.CustomFieldUpdate() # CustomFieldUpdate | 
 
     try:
-        # Update Custom Field by id
+        # Update Custom Field
         api_response = api_instance.update_custom_field(id, custom_field_update)
         print("The response of CustomFieldsApi->update_custom_field:\n")
         pprint(api_response)
