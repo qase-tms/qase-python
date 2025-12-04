@@ -351,7 +351,7 @@ class CustomFieldsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> BaseResponse:
-        """Delete Custom Field by id
+        """Delete Custom Field
 
         This method allows to delete custom field. 
 
@@ -423,7 +423,7 @@ class CustomFieldsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[BaseResponse]:
-        """Delete Custom Field by id
+        """Delete Custom Field
 
         This method allows to delete custom field. 
 
@@ -495,7 +495,7 @@ class CustomFieldsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Delete Custom Field by id
+        """Delete Custom Field
 
         This method allows to delete custom field. 
 
@@ -627,7 +627,7 @@ class CustomFieldsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> CustomFieldResponse:
-        """Get Custom Field by id
+        """Get Custom Field
 
         This method allows to retrieve custom field. 
 
@@ -699,7 +699,7 @@ class CustomFieldsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[CustomFieldResponse]:
-        """Get Custom Field by id
+        """Get Custom Field
 
         This method allows to retrieve custom field. 
 
@@ -771,7 +771,7 @@ class CustomFieldsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get Custom Field by id
+        """Get Custom Field
 
         This method allows to retrieve custom field. 
 
@@ -1230,7 +1230,7 @@ class CustomFieldsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> BaseResponse:
-        """Update Custom Field by id
+        """Update Custom Field
 
         This method allows to update custom field. 
 
@@ -1307,7 +1307,7 @@ class CustomFieldsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[BaseResponse]:
-        """Update Custom Field by id
+        """Update Custom Field
 
         This method allows to update custom field. 
 
@@ -1384,7 +1384,7 @@ class CustomFieldsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Update Custom Field by id
+        """Update Custom Field
 
         This method allows to update custom field. 
 
