@@ -1,9 +1,10 @@
 from datetime import datetime, timezone
-from typing import Union
+from typing import Union, List
 
 import certifi
 from qase.api_client_v1 import ApiClient, ProjectsApi, Project, EnvironmentsApi, RunsApi, AttachmentsApi, \
     AttachmentGet, RunCreate, ConfigurationsApi, ConfigurationCreate, ConfigurationGroupCreate, RunPublic
+from qase.api_client_v1.models.attachmentupload import Attachmentupload
 from qase.api_client_v1.configuration import Configuration
 from .. import Logger
 from .base_api_client import BaseApiClient
@@ -148,17 +149,119 @@ class ApiV1Client(BaseApiClient):
             self.logger.log(f"Error at completing run {run_id}: {e}", "error")
             raise ReporterException(e)
 
-    def _upload_attachment(self, project_code: str, attachment: Attachment) -> Union[AttachmentGet, None]:
-        try:
-            self.logger.log_debug(f"Uploading attachment {attachment.id} for project {project_code}")
-            attach_api = AttachmentsApi(self.client)
-            response = attach_api.upload_attachment(project_code, file=[attachment.get_for_upload()])
-
-            return response.result
-
-        except Exception as e:
-            self.logger.log(f"Error at uploading attachment: {e}", "error")
-            return None
+    def _upload_attachment(self, project_code: str, attachment: Union[Attachment, List[Attachment]]) -> List[Attachmentupload]:
+        """
+        Upload one or multiple attachments to Qase TestOps with batching support.
+        
+        The method automatically groups attachments into batches respecting the following limits:
+        - Up to 32 MB per file
+        - Up to 128 MB per single request
+        - Up to 20 files per single request
+        
+        :param project_code: project code
+        :param attachment: single attachment or list of attachments
+        :return: list of uploaded attachment data
+        """
+        # Normalize input to list
+        attachments = attachment if isinstance(attachment, list) else [attachment]
+        
+        if not attachments:
+            return []
+        
+        # Constants for upload limits
+        MAX_FILE_SIZE = 32 * 1024 * 1024  # 32 MB in bytes
+        MAX_REQUEST_SIZE = 128 * 1024 * 1024  # 128 MB in bytes
+        MAX_FILES_PER_REQUEST = 20
+        
+        # Prepare attachments with size information
+        attachments_with_size = []
+        for att in attachments:
+            try:
+                # Get file data to check size
+                file_tuple = att.get_for_upload()
+                file_data = file_tuple[1]  # Get file data (second element of tuple)
+                file_size = len(file_data)
+                
+                # Check individual file size limit
+                if file_size > MAX_FILE_SIZE:
+                    self.logger.log(
+                        f"Attachment {att.file_name} ({file_size / 1024 / 1024:.2f} MB) exceeds "
+                        f"maximum file size limit of 32 MB. Skipping.",
+                        "error"
+                    )
+                    continue
+                
+                attachments_with_size.append((att, file_size))
+            except Exception as e:
+                self.logger.log(f"Error preparing attachment {att.file_name}: {e}", "error")
+                continue
+        
+        if not attachments_with_size:
+            return []
+        
+        # Group attachments into batches
+        batches = []
+        current_batch = []
+        current_batch_size = 0
+        
+        for att, file_size in attachments_with_size:
+            # Check if adding this file would exceed limits
+            would_exceed_size = current_batch_size + file_size > MAX_REQUEST_SIZE
+            would_exceed_count = len(current_batch) >= MAX_FILES_PER_REQUEST
+            
+            if would_exceed_size or would_exceed_count:
+                # Start a new batch
+                if current_batch:
+                    batches.append(current_batch)
+                current_batch = [att]
+                current_batch_size = file_size
+            else:
+                # Add to current batch
+                current_batch.append(att)
+                current_batch_size += file_size
+        
+        # Add the last batch if it has items
+        if current_batch:
+            batches.append(current_batch)
+        
+        # Upload batches
+        all_uploaded = []
+        attach_api = AttachmentsApi(self.client)
+        
+        for batch_idx, batch in enumerate(batches, 1):
+            try:
+                self.logger.log_debug(
+                    f"Uploading batch {batch_idx}/{len(batches)} with {len(batch)} file(s) "
+                    f"for project {project_code}"
+                )
+                
+                # Prepare files for upload
+                files_for_upload = [att.get_for_upload() for att in batch]
+                
+                # Upload batch
+                response = attach_api.upload_attachment(project_code, file=files_for_upload)
+                
+                if response.result:
+                    all_uploaded.extend(response.result)
+                    self.logger.log_debug(
+                        f"Successfully uploaded batch {batch_idx}/{len(batches)}: "
+                        f"{len(response.result)} file(s)"
+                    )
+                else:
+                    self.logger.log(
+                        f"Batch {batch_idx}/{len(batches)} upload returned no results",
+                        "error"
+                    )
+                    
+            except Exception as e:
+                self.logger.log(
+                    f"Error uploading batch {batch_idx}/{len(batches)}: {e}",
+                    "error"
+                )
+                # Continue with next batch even if one fails
+                continue
+        
+        return all_uploaded
 
     def create_test_run(self, project_code: str, title: str, description: str, plan_id=None,
                         environment_id=None) -> str:

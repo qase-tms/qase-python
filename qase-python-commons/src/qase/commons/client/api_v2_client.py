@@ -56,10 +56,13 @@ class ApiV2Client(ApiV1Client):
     def _prepare_result(self, project_code: str, result: Result) -> ResultCreate:
         attached = []
         if result.attachments:
-            for attachment in result.attachments:
-                if self.__should_skip_attachment(attachment, result):
-                    continue
-                attach_id = self._upload_attachment(project_code, attachment)
+            # Collect all attachments that should be uploaded
+            attachments_to_upload = [
+                attachment for attachment in result.attachments
+                if not self.__should_skip_attachment(attachment, result)
+            ]
+            if attachments_to_upload:
+                attach_id = self._upload_attachment(project_code, attachments_to_upload)
                 if attach_id:
                     attached.extend(attach_id)
 
@@ -182,10 +185,9 @@ class ApiV2Client(ApiV1Client):
 
             if step.execution.attachments:
                 uploaded_attachments = []
-                for file in step.execution.attachments:
-                    attach_id = self._upload_attachment(project_code, file)
-                    if attach_id:
-                        uploaded_attachments.extend(attach_id)
+                attach_id = self._upload_attachment(project_code, step.execution.attachments)
+                if attach_id:
+                    uploaded_attachments.extend(attach_id)
 
                 prepared_step['execution']['attachments'] = [attach.hash for attach in uploaded_attachments]
 
