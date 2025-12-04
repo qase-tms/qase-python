@@ -1,7 +1,8 @@
 import abc
-from typing import Union
+from typing import Union, List
 
 from qase.api_client_v1 import Project, AttachmentGet
+from qase.api_client_v1.models.attachmentupload import Attachmentupload
 
 from ..models import Attachment
 
@@ -41,13 +42,18 @@ class BaseApiClient(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def _upload_attachment(self, project_code: str, attachment: Attachment) -> Union[AttachmentGet, None]:
+    def _upload_attachment(self, project_code: str, attachment: Union[Attachment, List[Attachment]]) -> List[Attachmentupload]:
         """
-        Upload an attachment to Qase TestOps
+        Upload one or multiple attachments to Qase TestOps with batching support.
+        
+        The method automatically groups attachments into batches respecting the following limits:
+        - Up to 32 MB per file
+        - Up to 128 MB per single request
+        - Up to 20 files per single request
 
         :param project_code: project code
-        :param attachment: attachment model
-        :return: attachment data or None if attachment not uploaded
+        :param attachment: single attachment or list of attachments
+        :return: list of uploaded attachment data
         """
         pass
 

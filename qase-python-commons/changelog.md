@@ -1,3 +1,7 @@
+# qase-python-commons@4.1.6
+
+Improved the upload mechanism for attachments. Now the reporter will upload attachments in batches of 20 files.
+
 # qase-python-commons@4.1.5
 
 ## What's new
