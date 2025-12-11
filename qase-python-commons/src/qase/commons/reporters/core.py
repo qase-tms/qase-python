@@ -43,13 +43,22 @@ class QaseCoreReporter:
         host_data = get_host_info(framework, reporter_name)
         self.logger.log_debug(f"Host data: {host_data}")
 
+        # Store framework and reporter_name for passing to reporters
+        self.framework = framework
+        self.reporter_name = reporter_name
+        self.host_data = host_data
+
         # Reading reporter mode from config file
         mode = self.config.mode
 
         if mode == Mode.testops:
             try:
                 self._load_testops_plan()
-                self.reporter = QaseTestOps(config=self.config, logger=self.logger)
+                # Create API client with host_data for headers
+                from ..client.api_v2_client import ApiV2Client
+                api_client = ApiV2Client(self.config, self.logger, host_data=host_data, 
+                                       framework=framework, reporter_name=reporter_name)
+                self.reporter = QaseTestOps(config=self.config, logger=self.logger, client=api_client)
             except Exception as e:
                 self.logger.log('Failed to initialize TestOps reporter. Using fallback.', 'info')
                 self.logger.log(e, 'error')

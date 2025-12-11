@@ -4,7 +4,6 @@ import urllib.parse
 from datetime import datetime
 from typing import List, Union
 from .. import Logger, ReporterException
-from ..client.api_v2_client import ApiV2Client
 from ..client.base_api_client import BaseApiClient
 from ..models import Result
 from ..models.config.qaseconfig import QaseConfig
@@ -15,12 +14,11 @@ DEFAULT_THREAD_COUNT = 4
 
 class QaseTestOps:
 
-    def __init__(self, config: QaseConfig, logger: Logger) -> None:
+    def __init__(self, config: QaseConfig, logger: Logger, client: BaseApiClient) -> None:
         self.config = config
         self.logger = logger
         self.__baseUrl = self.__get_host(config.testops.api.host)
-
-        self.client = self._prepare_client()
+        self.client = client
 
         run_id = self.config.testops.run.id
         plan_id = self.config.testops.plan.id
@@ -67,9 +65,6 @@ class QaseTestOps:
 
         """Verify that project exists in TestOps"""
         self.client.get_project(self.project_code)
-
-    def _prepare_client(self) -> BaseApiClient:
-        return ApiV2Client(self.config, self.logger)
 
     def _send_results_threaded(self, results):
         try:
