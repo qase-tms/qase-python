@@ -171,13 +171,13 @@ class TestPublicReportLinkApiV2Client:
 class TestPublicReportLinkReporter:
     """Test QaseTestOps reporter integration"""
     
-    @patch('qase.commons.reporters.testops.ApiV2Client')
-    def test_complete_run_with_public_report_enabled(self, mock_client_class):
+    def test_complete_run_with_public_report_enabled(self):
         """Test complete_run method when public report is enabled"""
         # Mock client
         mock_client = Mock()
         mock_client.enable_public_report.return_value = "https://app.qase.io/public/report/abc123"
-        mock_client_class.return_value = mock_client
+        mock_client.get_project.return_value = None
+        mock_client.get_environment.return_value = None
         
         # Mock config
         mock_config = Mock()
@@ -203,8 +203,8 @@ class TestPublicReportLinkReporter:
         # Mock logger
         mock_logger = Mock()
         
-        # Create reporter
-        reporter = QaseTestOps(mock_config, mock_logger)
+        # Create reporter with mock client
+        reporter = QaseTestOps(mock_config, mock_logger, client=mock_client)
         reporter.run_id = 123
         reporter.project_code = "TEST"
         reporter.results = []
@@ -217,12 +217,12 @@ class TestPublicReportLinkReporter:
         mock_client.enable_public_report.assert_called_once_with("TEST", 123)
         mock_logger.log.assert_called_with("Public report link: https://app.qase.io/public/report/abc123", "info")
     
-    @patch('qase.commons.reporters.testops.ApiV2Client')
-    def test_complete_run_with_public_report_disabled(self, mock_client_class):
+    def test_complete_run_with_public_report_disabled(self):
         """Test complete_run method when public report is disabled"""
         # Mock client
         mock_client = Mock()
-        mock_client_class.return_value = mock_client
+        mock_client.get_project.return_value = None
+        mock_client.get_environment.return_value = None
         
         # Mock config
         mock_config = Mock()
@@ -248,8 +248,8 @@ class TestPublicReportLinkReporter:
         # Mock logger
         mock_logger = Mock()
         
-        # Create reporter
-        reporter = QaseTestOps(mock_config, mock_logger)
+        # Create reporter with mock client
+        reporter = QaseTestOps(mock_config, mock_logger, client=mock_client)
         reporter.run_id = 123
         reporter.project_code = "TEST"
         reporter.results = []
@@ -261,13 +261,13 @@ class TestPublicReportLinkReporter:
         mock_client.complete_run.assert_called_once_with("TEST", 123)
         mock_client.enable_public_report.assert_not_called()
     
-    @patch('qase.commons.reporters.testops.ApiV2Client')
-    def test_complete_run_public_report_failure(self, mock_client_class):
+    def test_complete_run_public_report_failure(self):
         """Test complete_run method when public report generation fails"""
         # Mock client
         mock_client = Mock()
         mock_client.enable_public_report.return_value = None
-        mock_client_class.return_value = mock_client
+        mock_client.get_project.return_value = None
+        mock_client.get_environment.return_value = None
         
         # Mock config
         mock_config = Mock()
@@ -293,8 +293,8 @@ class TestPublicReportLinkReporter:
         # Mock logger
         mock_logger = Mock()
         
-        # Create reporter
-        reporter = QaseTestOps(mock_config, mock_logger)
+        # Create reporter with mock client
+        reporter = QaseTestOps(mock_config, mock_logger, client=mock_client)
         reporter.run_id = 123
         reporter.project_code = "TEST"
         reporter.results = []

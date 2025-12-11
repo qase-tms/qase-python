@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Union, Optional
 
 import certifi
 from qase.api_client_v2 import ResultsApi, ResultCreateFields
@@ -20,11 +20,16 @@ from ..models.config.framework import Video, Trace
 from ..models import Attachment, Result
 from ..models.config.qaseconfig import QaseConfig
 from ..models.step import StepType, Step
+from ..util.host_data import HostData
 
 
 class ApiV2Client(ApiV1Client):
-    def __init__(self, config: QaseConfig, logger: Logger):
+    def __init__(self, config: QaseConfig, logger: Logger, host_data: Optional[HostData] = None,
+                 framework: Union[str, None] = None, reporter_name: Union[str, None] = None):
         ApiV1Client.__init__(self, config, logger)
+        self.host_data = host_data or {}
+        self.framework = framework
+        self.reporter_name = reporter_name
 
         try:
             self.logger.log_debug("Preparing API V2 client")
@@ -40,10 +45,84 @@ class ApiV2Client(ApiV1Client):
                 self.web = f'https://{host}'
 
             self.client_v2 = ApiClient(configuration)
+            
+            # Add X-Client and X-Platform headers
+            self._add_client_headers()
+            
             self.logger.log_debug("API V2 client prepared")
         except Exception as e:
             self.logger.log(f"Error at preparing API V2 client: {e}", "error")
             raise ReporterException(e)
+    
+    def _add_client_headers(self):
+        """Add X-Client and X-Platform headers to API client"""
+        try:
+            # Use host_data passed from Core reporter
+            host_data = self.host_data
+            
+            # Use framework and reporter_name for names in X-Client header
+            framework = self.framework
+            reporter_name = self.reporter_name
+            
+            # Build X-Client header
+            # Format: reporter=qase-pytest;reporter_version=v1.0.0;framework=pytest;framework_version=7.0.0;client_version_v1=v1.0.0;client_version_v2=v2.0.0;core_version=v1.5.0
+            x_client_parts = []
+            
+            if reporter_name:
+                x_client_parts.append(f"reporter={reporter_name}")
+                reporter_version = host_data.get('reporter', '')
+                if reporter_version:
+                    x_client_parts.append(f"reporter_version=v{reporter_version}")
+            
+            if framework:
+                x_client_parts.append(f"framework={framework}")
+                framework_version = host_data.get('framework', '')
+                if framework_version:
+                    x_client_parts.append(f"framework_version={framework_version}")
+            
+            client_v1_version = host_data.get('apiClientV1', '')
+            if client_v1_version:
+                x_client_parts.append(f"client_version_v1=v{client_v1_version}")
+            
+            client_v2_version = host_data.get('apiClientV2', '')
+            if client_v2_version:
+                x_client_parts.append(f"client_version_v2=v{client_v2_version}")
+            
+            core_version = host_data.get('commons', '')
+            if core_version:
+                x_client_parts.append(f"core_version=v{core_version}")
+            
+            x_client = ";".join(x_client_parts)
+            
+            # Build X-Platform header
+            # Format: os=Linux;arch=aarch64;python=3.9.0;pip=22.0.0
+            x_platform_parts = []
+            
+            os_name = host_data.get('system', '')
+            if os_name:
+                x_platform_parts.append(f"os={os_name}")
+            
+            arch = host_data.get('arch', '')
+            if arch:
+                x_platform_parts.append(f"arch={arch}")
+            
+            python_version = host_data.get('python', '')
+            if python_version:
+                x_platform_parts.append(f"python={python_version}")
+            
+            pip_version = host_data.get('pip', '')
+            if pip_version:
+                x_platform_parts.append(f"pip={pip_version}")
+            
+            x_platform = ";".join(x_platform_parts)
+            
+            # Add headers to client
+            if x_client:
+                self.client_v2.default_headers['X-Client'] = x_client
+            if x_platform:
+                self.client_v2.default_headers['X-Platform'] = x_platform
+        except Exception as e:
+            self.logger.log(f"Error adding client headers: {e}", "error")
 
     def send_results(self, project_code: str, run_id: str, results: []) -> None:
         api_results = ResultsApi(self.client_v2)
