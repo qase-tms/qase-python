@@ -93,26 +93,33 @@ def find_package_in_requirements(package_name: Optional[str]) -> Optional[str]:
         return ""
 
 
+def remove_version_prefix(version: str) -> str:
+    """Remove 'v' prefix from version string if present."""
+    if version and version.startswith('v'):
+        return version[1:]
+    return version
+
+
 def get_host_info(framework: Optional[str], reporter_name: Optional[str]) -> HostData:
     try:
-        python_version = platform.python_version()
+        python_version = remove_version_prefix(platform.python_version())
         pip_version = exec_command("pip --version")
         if pip_version:
             pip_match = re.search(r'pip\s+(\S+)', pip_version)
-            pip_version = pip_match.group(1) if pip_match else ""
-        framework_version = get_package_version(framework) or find_package_in_requirements(framework) or ""
-        reporter_version = get_package_version(reporter_name) or find_package_in_requirements(reporter_name) or ""
-        commons_version = get_package_version("qase-python-commons") or find_package_in_requirements(
-            "qase-python-commons") or ""
-        api_client_version_1 = get_package_version("qase-api-client") or find_package_in_requirements(
-            "qase-api-client") or ""
-        api_client_version_2 = get_package_version("qase-api-v2-client") or find_package_in_requirements(
-            "qase-api-v2-client") or ""
+            pip_version = remove_version_prefix(pip_match.group(1) if pip_match else "")
+        framework_version = remove_version_prefix(get_package_version(framework) or find_package_in_requirements(framework) or "")
+        reporter_version = remove_version_prefix(get_package_version(reporter_name) or find_package_in_requirements(reporter_name) or "")
+        commons_version = remove_version_prefix(get_package_version("qase-python-commons") or find_package_in_requirements(
+            "qase-python-commons") or "")
+        api_client_version_1 = remove_version_prefix(get_package_version("qase-api-client") or find_package_in_requirements(
+            "qase-api-client") or "")
+        api_client_version_2 = remove_version_prefix(get_package_version("qase-api-v2-client") or find_package_in_requirements(
+            "qase-api-v2-client") or "")
         return {
             "system": platform.system().lower(),
             "machineName": platform.node(),
-            "release": platform.release(),
-            "version": get_detailed_os_info(),
+            "release": remove_version_prefix(platform.release()),
+            "version": remove_version_prefix(get_detailed_os_info()),
             "arch": platform.machine(),
             "python": python_version,
             "pip": pip_version,
@@ -127,7 +134,7 @@ def get_host_info(framework: Optional[str], reporter_name: Optional[str]) -> Hos
         return {
             "system": platform.system().lower(),
             "machineName": platform.node(),
-            "release": platform.release(),
+            "release": remove_version_prefix(platform.release()),
             "version": "",
             "arch": platform.machine(),
             "python": "",
