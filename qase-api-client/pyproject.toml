@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qase-api-client"
-version = "2.0.2"
+version = "2.0.3"
 description = "Qase TestOps API V1 client for Python"
 readme = "README.md"
 authors = [{name = "Qase Team", email = "support@qase.io"}]
@@ -22,7 +22,7 @@ urls = {"Homepage" = "https://github.com/qase-tms/qase-python"}
 keywords = ["OpenAPI", "OpenAPI-Generator", "Qase.io TestOps API"]
 requires-python = ">=3.9"
 dependencies = [
-    "urllib3 >= 2.5.0",
+    "urllib3 >= 2.5.0, < 2.7.0",
     "python-dateutil",
     "pydantic >= 2",
     "typing-extensions >= 4.7.1",
