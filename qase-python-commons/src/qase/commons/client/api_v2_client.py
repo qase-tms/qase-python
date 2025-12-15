@@ -72,7 +72,7 @@ class ApiV2Client(ApiV1Client):
                 x_client_parts.append(f"reporter={reporter_name}")
                 reporter_version = host_data.get('reporter', '')
                 if reporter_version:
-                    x_client_parts.append(f"reporter_version=v{reporter_version}")
+                    x_client_parts.append(f"reporter_version={reporter_version}")
             
             if framework:
                 x_client_parts.append(f"framework={framework}")
@@ -82,15 +82,15 @@ class ApiV2Client(ApiV1Client):
             
             client_v1_version = host_data.get('apiClientV1', '')
             if client_v1_version:
-                x_client_parts.append(f"client_version_v1=v{client_v1_version}")
+                x_client_parts.append(f"client_version_v1={client_v1_version}")
             
             client_v2_version = host_data.get('apiClientV2', '')
             if client_v2_version:
-                x_client_parts.append(f"client_version_v2=v{client_v2_version}")
+                x_client_parts.append(f"client_version_v2={client_v2_version}")
             
             core_version = host_data.get('commons', '')
             if core_version:
-                x_client_parts.append(f"core_version=v{core_version}")
+                x_client_parts.append(f"core_version={core_version}")
             
             x_client = ";".join(x_client_parts)
             
