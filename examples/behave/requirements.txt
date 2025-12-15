@@ -1,2 +1,2 @@
 behave>=1.2.6
-qase-behave>=2.0.4
+qase-behave>=2.0.5

@@ -1,3 +1,9 @@
+# qase-pytest 7.0.8
+
+## What's new
+
+- Updated the `qase-python-commons` dependency to the latest version.
+
 # qase-pytest 7.0.7
 
 ## What's new

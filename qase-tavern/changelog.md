@@ -1,3 +1,9 @@
+# qase-tavern 2.0.5
+
+## What's new
+
+- Updated the `qase-python-commons` dependency to the latest version.
+
 # qase-tavern 2.0.4
 
 ## What's new

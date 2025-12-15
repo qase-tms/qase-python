@@ -1,2 +1,2 @@
 tavern==2.11.0
-qase-tavern~=2.0.4
+qase-tavern~=2.0.5
