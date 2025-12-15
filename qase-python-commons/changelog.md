@@ -1,3 +1,10 @@
+# qase-python-commons@4.1.10
+
+## What's new
+
+- Updated the `qase-api-client` dependency to the latest version.
+- Updated the `qase-api-v2-client` dependency to the latest version.
+
 # qase-python-commons@4.1.6
 
 Improved the upload mechanism for attachments. Now the reporter will upload attachments in batches of 20 files.
