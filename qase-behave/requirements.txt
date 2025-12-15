@@ -1,4 +1,4 @@
 attrs==23.2.0
 behave>=1.2.6
-qase-python-commons~=3.5.1
+qase-python-commons~=4.1.10
 pytest>=7.0.0

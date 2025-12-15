@@ -1,5 +1,5 @@
 pytest==8.1.1
-qase-pytest==7.0.6
+qase-pytest==7.0.8
 psycopg2-binary>=2.9.0
 pymysql>=1.0.0
 pymongo>=4.0.0
