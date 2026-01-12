@@ -30,3 +30,10 @@ Monorepo containing [Qase TestOps](https://qase.io) integration tools for Python
   
 - **[qase-api-v2-client](/qase-api-v2-client)**  
   API client supporting the new Qase TestOps API (v2). Use this client for projects leveraging the latest API features.
+
+### Pre-commit Hooks
+
+- **[pre-commit-hooks](/pre-commit-hooks)**  
+  Pre-commit hooks for ensuring code quality and consistency in Qase Python projects.
+  - [qase-id-check](/pre-commit-hooks/README.md)
+    Validates all pytest test functions have `@qase.id()` or `@qase.ignore()` decorators.

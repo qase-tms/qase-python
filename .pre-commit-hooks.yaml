@@ -1,0 +1,6 @@
+- id: qase-id-check
+  name: Check pytest tests for qase.id() decorator
+  description: Scans pytest test files and ensures all test functions have qase.id() or qase.ignore() decorator
+  entry: pre-commit-hooks/pre_commit_hooks/qase_id_check.py
+  language: script
+  verbose: true
