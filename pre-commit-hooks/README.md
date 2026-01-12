@@ -9,7 +9,7 @@ Add to your `.pre-commit-config.yaml`:
 ```yaml
 repos:
   - repo: https://github.com/qase-tms/qase-python
-    rev: v0.1.0  # Use the tag or branch you want
+    rev: qase-hooks-v0.1.0  # Use the tag or branch you want
     hooks:
       - id: qase-id-check
 ```
@@ -75,7 +75,7 @@ By default, the hook blocks the commit if any test is missing `@qase.id()` or `@
 ```yaml
 repos:
   - repo: https://github.com/qase-tms/qase-python
-    rev: v0.1.0
+    rev: qase-hooks-v0.1.0
     hooks:
       - id: qase-id-check
         # No args - blocks commit by default
@@ -88,7 +88,7 @@ Only warns about missing decorators but allows the commit to proceed:
 ```yaml
 repos:
   - repo: https://github.com/qase-tms/qase-python
-    rev: v0.1.0
+    rev: qase-hooks-v0.1.0
     hooks:
       - id: qase-id-check
         args: [--warn]
@@ -101,7 +101,7 @@ Exclude specific files or patterns from checking:
 ```yaml
 repos:
   - repo: https://github.com/qase-tms/qase-python
-    rev: v0.1.0
+    rev: qase-hooks-v0.1.0
     hooks:
       - id: qase-id-check
         args: [--exclude, "test_legacy", --exclude, "old_tests"]
@@ -112,7 +112,7 @@ Or combine with warning mode:
 ```yaml
 repos:
   - repo: https://github.com/qase-tms/qase-python
-    rev: v0.1.0
+    rev: qase-hooks-v0.1.0
     hooks:
       - id: qase-id-check
         args: [--warn, --exclude, "test_legacy"]
