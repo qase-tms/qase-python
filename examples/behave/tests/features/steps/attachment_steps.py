@@ -22,7 +22,7 @@ def step_impl(context):
 @when('I attach content as text')
 def step_impl(context):
     # Attach text content directly
-    qase.attach(content="This is some text content", file_name="text_content.txt")
+    qase.attach_to_step(content="This is some text content", file_name="text_content.txt")
 
 
 @when('I attach JSON data')

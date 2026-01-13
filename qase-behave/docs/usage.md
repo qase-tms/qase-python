@@ -94,3 +94,98 @@ Feature: Example tests
     When I run it
     Then it should pass
 ```
+
+---
+
+## Adding Attachments to Tests
+
+Qase Behave supports attaching files and content to test results. You can attach files or content either to the test case (scenario level) or to a specific test step.
+
+### Attach to Test Case
+
+Use `qase.attach()` to attach files or content to the test case. This is useful for screenshots, logs, or data files that are relevant to the entire test scenario.
+
+### Example:
+
+```gherkin
+Feature: Example tests
+
+  @qase.id:1
+  Scenario: Example test with attachments
+    Given I have a test with a file
+    When I attach a screenshot
+    Then the attachment should be in the test case
+```
+
+```python
+from behave import *
+from qase.behave import qase
+
+@given('I have a test with a file')
+def step_impl(context):
+    # Attach an existing file to the test case
+    qase.attach(file_path="/path/to/your/file.txt")
+
+@when('I attach a screenshot')
+def step_impl(context):
+    # Attach binary data (e.g., screenshot) to the test case
+    screenshot_data = b"binary_screenshot_data"
+    qase.attach(
+        content=screenshot_data,
+        file_name="screenshot.png",
+        mime_type="image/png"
+    )
+```
+
+### Attach to Test Step
+
+Use `qase.attach_to_step()` to attach files or content directly to a specific test step. This is useful when you want to associate attachments with a particular step execution.
+
+### Example:
+
+```gherkin
+Feature: Example tests
+
+  @qase.id:1
+  Scenario: Example test with step attachments
+    Given I have a test
+    When I attach a screenshot to this step
+    Then the attachment should be in the step
+```
+
+```python
+from behave import *
+from qase.behave import qase
+
+@when('I attach a screenshot to this step')
+def step_impl(context):
+    # Attach binary data to the current step
+    screenshot_data = b"binary_screenshot_data"
+    qase.attach_to_step(
+        content=screenshot_data,
+        file_name="step_screenshot.png",
+        mime_type="image/png"
+    )
+    
+    # Attach text content to the current step
+    qase.attach_to_step(
+        content="Step execution log",
+        file_name="step_log.txt"
+    )
+```
+
+### Method Parameters
+
+Both `qase.attach()` and `qase.attach_to_step()` accept the same parameters:
+
+- `file_path`: Path to the file to attach (mutually exclusive with `content`)
+- `content`: Content to attach as string or bytes (mutually exclusive with `file_path`)
+- `file_name`: Name for the attachment (auto-detected from `file_path` if not provided)
+- `mime_type`: MIME type of the attachment (auto-detected if not provided)
+
+**Notes:**
+
+- Either `file_path` or `content` must be provided, but not both
+- If `file_name` is not provided, it will be derived from `file_path` or default to "attachment.txt"
+- If `mime_type` is not provided, it will be auto-detected from the file extension or default to "text/plain"
+- Attachments are automatically included in the test result when the scenario completes
