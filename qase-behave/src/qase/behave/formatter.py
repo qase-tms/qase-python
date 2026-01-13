@@ -41,10 +41,15 @@ class QaseFormatter(Formatter):
         self.__current_scenario = parse_scenario(scenario)
         # Update global qase object with current scenario
         qase._set_current_scenario(self.__current_scenario)
+        # Clear current step when starting new scenario
+        qase._set_current_step(None)
         pass
 
     def result(self, result: Step):
         step = parse_step(result)
+        # Set current step to allow future attachments and apply pending ones
+        qase._set_current_step(step)
+        
         if step.execution.status != 'passed':
             # Check if it's an assertion error or other error
             is_assertion_error = False
@@ -64,6 +69,8 @@ class QaseFormatter(Formatter):
             if result.error_message:
                 self.__current_scenario.execution.stacktrace = result.error_message
         self.__current_scenario.steps.append(step)
+        # Clear current step after adding to scenario
+        qase._set_current_step(None)
         pass
 
     def eof(self):

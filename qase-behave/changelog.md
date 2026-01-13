@@ -1,3 +1,9 @@
+# qase-behave 2.0.6
+
+## What's new
+
+- Supported attachments in step level.
+
 # qase-behave 2.0.5
 
 ## What's new
