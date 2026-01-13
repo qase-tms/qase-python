@@ -50,6 +50,8 @@ jobs:
           tox
   build-n-publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     needs: test
     strategy:
       max-parallel: 1
