@@ -89,12 +89,14 @@ class EndKeywordModel(TypedDict):
 
 class TestMetadata:
     qase_ids: Union[List[int], None]
+    qase_multi_ids: dict
     ignore: bool
     fields: dict
     params: list[str]
 
     def __init__(self) -> None:
         self.qase_ids = []
+        self.qase_multi_ids = {}
         self.ignore = False
         self.fields = {}
         self.params = []

@@ -411,8 +411,18 @@ class QasePytestPlugin:
 
     def _set_testops_ids(self, item) -> None:
         try:
-            self.runtime.result.testops_ids = QasePytestPlugin._get_qase_ids(
-                item)
+            # First check for project_id markers (multi-project mode)
+            project_id_markers = list(item.iter_markers("qase_project_id"))
+            if project_id_markers:
+                # Multi-project mode: set project mapping
+                for marker in project_id_markers:
+                    project_code = marker.kwargs.get("project_code")
+                    testops_ids = marker.kwargs.get("testops_ids")
+                    if project_code and testops_ids:
+                        self.runtime.result.set_testops_project_mapping(project_code, testops_ids)
+            else:
+                # Single project mode: use old testops_ids
+                self.runtime.result.testops_ids = QasePytestPlugin._get_qase_ids(item)
         except:
             pass
 
@@ -525,7 +535,10 @@ class QasePytestPlugin:
 
     @staticmethod
     def _get_qase_ids(item) -> Union[None, List[int]]:
-        ids = item.get_closest_marker("qase_id").kwargs.get("id")
+        marker = item.get_closest_marker("qase_id")
+        if marker is None:
+            return None
+        ids = marker.kwargs.get("id")
         if ids is None:
             return None
         if isinstance(ids, int):

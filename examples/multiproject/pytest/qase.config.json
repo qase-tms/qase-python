@@ -1,0 +1,46 @@
+{
+	"mode": "testops_multi",
+	"fallback": "report",
+	"profilers": [],
+	"report": {
+		"driver": "local",
+		"connection": {
+			"local": {
+				"path": "./build/qase-report",
+				"format": "json"
+			}
+		}
+	},
+	"testops": {
+		"api": {
+			"token": "<token>",
+			"host": "qase.io"
+		},
+		"batch": {
+			"size": 100
+		}
+	},
+	"testops_multi": {
+		"default_project": "DEMO1",
+		"projects": [
+			{
+				"code": "DEMO1",
+				"run": {
+					"title": "DEMO1 Multi-Project Run",
+					"description": "Test run for DEMO1 project",
+					"complete": true
+				},
+				"environment": "staging"
+			},
+			{
+				"code": "DEMO2",
+				"run": {
+					"title": "DEMO2 Multi-Project Run",
+					"description": "Test run for DEMO2 project",
+					"complete": true
+				},
+				"environment": "production"
+			}
+		]
+	}
+}

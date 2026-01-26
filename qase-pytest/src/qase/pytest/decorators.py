@@ -35,6 +35,33 @@ class qase:
         return pytest.mark.qase_id(id=id)
 
     @staticmethod
+    def project_id(project_code: str, testops_ids: Union[int, List[int]]):
+        """
+        Define a persistent connection to Qase TestOps test cases in a specific project.
+
+        >>> @qase.project_id("PROJ1", [123, 124])
+        >>> def test_example():
+        >>>     pass
+
+        >>> @qase.project_id("PROJ1", 123)
+        >>> @qase.project_id("PROJ2", 456)
+        >>> def test_example():
+        >>>     pass
+
+        :param project_code: Code of the project
+        :param testops_ids: int or list of int IDs of test cases for this project
+        :return: pytest.mark instance
+        """
+        if isinstance(testops_ids, int):
+            ids_list = [testops_ids]
+        elif isinstance(testops_ids, list) and all(isinstance(item, int) for item in testops_ids):
+            ids_list = testops_ids
+        else:
+            raise ValueError("testops_ids must be int or list of int")
+
+        return pytest.mark.qase_project_id(project_code=project_code, testops_ids=ids_list)
+
+    @staticmethod
     def title(title):
         """
         >>> @qase.title("Sign up")

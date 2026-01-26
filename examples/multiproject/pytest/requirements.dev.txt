@@ -1,0 +1,11 @@
+# Requirements for development mode (editable install)
+# Use these when working with local source code
+
+# Install in editable mode from parent directories
+-e ../../qase-python-commons
+-e ../../qase-pytest
+
+# Other dependencies
+pytest>=8.1.1
+filelock>=3.12.2
+more_itertools

@@ -15,6 +15,7 @@ SUITE = "suite"
 IGNORE = "ignore"
 FIELDS = "fields"
 TESTOPS_ID = "testops_ids"
+TESTOPS_PROJECT_ID = "testops_project_id"
 
 
 def filter_scenarios(case_ids: List[int], scenarios: List[Scenario]) -> List[Scenario]:
@@ -36,7 +37,16 @@ def parse_scenario(scenario: Scenario) -> Result:
 
     result = Result(scenario.name, scenario.name)
 
-    result.testops_ids = tags.get(TESTOPS_ID, None)
+    # Check for project_id tags first (multi-project mode)
+    project_ids = tags.get(TESTOPS_PROJECT_ID, None)
+    if project_ids:
+        # Multi-project mode: set project mapping
+        for project_code, testops_ids in project_ids.items():
+            result.set_testops_project_mapping(project_code, testops_ids)
+    else:
+        # Single project mode: use old testops_ids
+        result.testops_ids = tags.get(TESTOPS_ID, None)
+    
     result.fields = tags.get(FIELDS, {})
     result.ignore = tags.get(IGNORE, False)
 
@@ -74,18 +84,35 @@ def __parse_tags(tags) -> dict:
     meta_data = {}
 
     for tag in tags:
-        if tag.lower().startswith("qase.id"):
+        tag_lower = tag.lower()
+        
+        if tag_lower.startswith("qase.project_id."):
+            # Format: @qase.project_id.PROJ1:123,124
+            parts = tag.split(":", 1)
+            if len(parts) == 2:
+                project_part = parts[0].split(".", 2)  # ["qase", "project_id", "PROJ1"]
+                if len(project_part) == 3:
+                    project_code = project_part[2]
+                    ids_str = parts[1]
+                    testops_ids = [int(x.strip()) for x in ids_str.split(',') if x.strip()]
+                    if project_code and testops_ids:
+                        if TESTOPS_PROJECT_ID not in meta_data:
+                            meta_data[TESTOPS_PROJECT_ID] = {}
+                        meta_data[TESTOPS_PROJECT_ID][project_code] = testops_ids
+            continue
+
+        if tag_lower.startswith("qase.id"):
             meta_data[TESTOPS_ID] = [int(x) for x in (tag.split(":")[1]).split(',')]
             continue
 
-        if tag.lower().startswith("qase.fields"):
+        if tag_lower.startswith("qase.fields"):
             meta_data[FIELDS] = __extract_fields(tag)
             continue
 
-        if tag.lower() == "qase.ignore":
+        if tag_lower == "qase.ignore":
             meta_data[IGNORE] = True
 
-        if tag.lower().startswith("qase.suite"):
+        if tag_lower.startswith("qase.suite"):
             meta_data[SUITE] = tag.split(":")[1].split('||')
 
     return meta_data

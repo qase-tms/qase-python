@@ -21,6 +21,36 @@ Test with multiple QaseIDs
     Passed step
 ```
 
+### Multi-Project Support
+
+To send test results to multiple projects with different test case IDs, use the `Q-PROJECT.PROJECT_CODE-IDS` tag format:
+
+```robotframework
+*** Test Cases ***
+# Single project with multiple IDs
+Test with project IDs
+    [Tags]    Q-PROJECT.PROJ1-123,124
+    Step 01
+    Step 02
+    Passed step
+
+# Multiple projects with different IDs
+Test for multiple projects
+    [Tags]    Q-PROJECT.PROJ1-123    Q-PROJECT.PROJ2-456
+    Step 01
+    Step 02
+    Passed step
+
+# Multiple projects with multiple IDs each
+Complex multi-project test
+    [Tags]    Q-PROJECT.PROJ1-123,124    Q-PROJECT.PROJ2-456,457
+    Step 01
+    Step 02
+    Passed step
+```
+
+**Note:** When using `Q-PROJECT`, the test results will be sent to all specified projects. Make sure to configure `testops_multi` mode in your `qase.config.json` file.
+
 ---
 
 ## Adding Fields to a Test

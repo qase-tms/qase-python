@@ -36,6 +36,8 @@ def pytest_configure(config):
 def _add_markers(config):
     config.addinivalue_line(
         "markers", "qase_id: mark test to be associate with Qase TestOps test case")
+    config.addinivalue_line(
+        "markers", "qase_project_id: mark test to be associated with Qase TestOps test cases in a specific project")
     config.addinivalue_line("markers", "qase_title: mark test with title")
     config.addinivalue_line(
         "markers", "qase_ignore: skip test from Qase TestOps and Qase Report")

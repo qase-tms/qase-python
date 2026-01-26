@@ -19,7 +19,7 @@ Ensure that the following tools are installed on your machine:
 1. Clone this repository by running the following commands:
    ```bash
    git clone https://github.com/qase-tms/qase-python.git
-   cd qase-python/examples/behave
+   cd qase-python/examples/single/behave
    ```
 
 2. Install the project dependencies:

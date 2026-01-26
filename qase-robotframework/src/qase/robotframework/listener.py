@@ -107,7 +107,12 @@ class Listener:
             self.logger.log_info(f"Test '{test.name}' is ignored")
             return
 
-        if test_metadata.qase_ids:
+        if test_metadata.qase_multi_ids:
+            # Multi-project mode: set project mapping
+            for project_code, testops_ids in test_metadata.qase_multi_ids.items():
+                self.runtime.result.set_testops_project_mapping(project_code, testops_ids)
+        elif test_metadata.qase_ids:
+            # Single project mode: use old testops_ids
             self.runtime.result.testops_ids = test_metadata.qase_ids
 
         self.runtime.result.execution.complete()

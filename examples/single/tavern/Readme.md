@@ -9,7 +9,7 @@
 2. Move to the directory with the examples
 
     ```bash
-    cd qase-python/examples/tavern
+    cd qase-python/examples/single/tavern
     ```
 
 3. Install the required packages
