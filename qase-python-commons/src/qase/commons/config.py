@@ -33,6 +33,17 @@ class ConfigManager:
             if self.config.testops.project is None:
                 errors.append("Testops project is not set")
 
+        if self.config.mode is Mode.testops_multi or self.config.fallback is Mode.testops_multi:
+            if self.config.testops.api.token is None:
+                errors.append("Testops token is not set")
+
+            if not self.config.testops_multi.projects or len(self.config.testops_multi.projects) == 0:
+                errors.append("Testops multi: at least one project must be configured")
+
+            for project in self.config.testops_multi.projects:
+                if not project.code:
+                    errors.append(f"Testops multi: project code is required for all projects")
+
         if len(errors) > 0:
             self.logger.log("Config validation failed", "error")
             for error in errors:
@@ -173,6 +184,9 @@ class ConfigManager:
                             self.config.testops.set_show_public_report_link(
                                 testops.get("showPublicReportLink")
                             )
+
+                    if config.get("testops_multi"):
+                        self.config.set_testops_multi(config.get("testops_multi"))
 
                     if config.get("report"):
                         report = config.get("report")

@@ -76,6 +76,7 @@ class Result(BaseModel):
         self.title: str = title
         self.signature: str = signature
         self.testops_ids: Optional[List[int]] = None
+        self.testops_project_mapping: Optional[Dict[str, List[int]]] = None
         self.execution: Type[Execution] = Execution()
         self.fields: Dict[Type[Field]] = {}
         self.attachments: List[Attachment] = []
@@ -123,6 +124,46 @@ class Result(BaseModel):
 
     def get_testops_ids(self) -> Optional[List[int]]:
         return self.testops_ids
+
+    def set_testops_project_mapping(self, project_code: str, testops_ids: List[int]) -> None:
+        """
+        Set testops IDs for a specific project.
+        
+        :param project_code: Code of the project
+        :param testops_ids: List of test case IDs for this project
+        """
+        if self.testops_project_mapping is None:
+            self.testops_project_mapping = {}
+        self.testops_project_mapping[project_code] = testops_ids
+
+    def get_testops_project_mapping(self) -> Optional[Dict[str, List[int]]]:
+        """
+        Get the complete project mapping.
+        
+        :return: Dictionary mapping project codes to lists of test case IDs
+        """
+        return self.testops_project_mapping
+
+    def get_testops_ids_for_project(self, project_code: str) -> Optional[List[int]]:
+        """
+        Get testops IDs for a specific project.
+        
+        :param project_code: Code of the project
+        :return: List of test case IDs for the project, or None if not found
+        """
+        if self.testops_project_mapping is None:
+            return None
+        return self.testops_project_mapping.get(project_code)
+
+    def get_projects(self) -> List[str]:
+        """
+        Get list of all project codes from the mapping.
+        
+        :return: List of project codes
+        """
+        if self.testops_project_mapping is None:
+            return []
+        return list(self.testops_project_mapping.keys())
 
     def get_duration(self) -> int:
         return self.execution.duration

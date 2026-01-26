@@ -127,10 +127,12 @@ class ApiV2Client(ApiV1Client):
     def send_results(self, project_code: str, run_id: str, results: []) -> None:
         api_results = ResultsApi(self.client_v2)
         results_to_send = [self._prepare_result(project_code, result) for result in results]
-        self.logger.log_debug(f"Sending results for run {run_id}: {results_to_send}")
-        api_results.create_results_v2(project_code, run_id,
+        # Convert run_id to int as API expects StrictInt
+        run_id_int = int(run_id) if isinstance(run_id, str) else run_id
+        self.logger.log_debug(f"Sending results for run {run_id_int}: {results_to_send}")
+        api_results.create_results_v2(project_code, run_id_int,
                                       create_results_request_v2=CreateResultsRequestV2(results=results_to_send))
-        self.logger.log_debug(f"Results for run {run_id} sent successfully")
+        self.logger.log_debug(f"Results for run {run_id_int} sent successfully")
 
     def _prepare_result(self, project_code: str, result: Result) -> ResultCreate:
         attached = []

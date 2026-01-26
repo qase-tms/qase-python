@@ -5,10 +5,11 @@ from ..logger import Logger
 
 from .report import QaseReport
 from .testops import QaseTestOps
+from .testops_multi import QaseTestOpsMulti
 
 from ..models import Result, Attachment, Runtime
 from ..models.config.qaseconfig import Mode
-from typing import Union, List
+from typing import Union, List, Dict
 
 from ..util import get_host_info
 from ..status_mapping.status_mapping import StatusMapping
@@ -63,18 +64,34 @@ class QaseCoreReporter:
                 self.logger.log('Failed to initialize TestOps reporter. Using fallback.', 'info')
                 self.logger.log(e, 'error')
                 self.reporter = self.fallback
+        elif mode == Mode.testops_multi:
+            try:
+                # Create API client with host_data for headers
+                from ..client.api_v2_client import ApiV2Client
+                api_client = ApiV2Client(self.config, self.logger, host_data=host_data, 
+                                       framework=framework, reporter_name=reporter_name)
+                self.reporter = QaseTestOpsMulti(config=self.config, logger=self.logger, client=api_client)
+            except Exception as e:
+                self.logger.log('Failed to initialize TestOps Multi reporter. Using fallback.', 'info')
+                self.logger.log(e, 'error')
+                self.reporter = self.fallback
         elif mode == Mode.report:
             self.reporter = QaseReport(config=self.config, logger=self.logger)
         else:
             self.reporter = None
 
-    def start_run(self) -> Union[str, None]:
+    def start_run(self) -> Union[str, Dict[str, str], None]:
         if self.reporter:
             try:
                 ts = time.time()
                 self.logger.log_debug("Starting run")
                 run_id = self.reporter.start_run()
-                self.logger.log_debug(f"Run ID: {run_id}")
+                if isinstance(run_id, dict):
+                    # Multi-project mode returns dict of project -> run_id
+                    self.logger.log_debug(f"Run IDs: {run_id}")
+                else:
+                    # Single project mode returns single run_id
+                    self.logger.log_debug(f"Run ID: {run_id}")
                 self.overhead += time.time() - ts
                 return run_id
             except Exception as e:
@@ -188,7 +205,14 @@ class QaseCoreReporter:
 
                 self.fallback.start_run()
                 self.reporter = self.fallback
-                self.reporter.set_results(results)
+                # Handle both single project (list) and multi-project (dict) results
+                if isinstance(results, dict):
+                    # Multi-project mode: results is dict of project -> list of results
+                    for project_code, project_results in results.items():
+                        self.reporter.set_results({project_code: project_results})
+                else:
+                    # Single project mode: results is list
+                    self.reporter.set_results(results)
                 self.fallback = None
             except Exception as e:
                 # Log error, disable reporting and continue

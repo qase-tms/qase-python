@@ -3,13 +3,14 @@ from typing import List, Dict, Optional
 
 from .framework import Framework
 from .report import ReportConfig
-from .testops import TestopsConfig
+from .testops import TestopsConfig, TestopsMultiConfig
 from ..basemodel import BaseModel
 from ... import QaseUtils
 
 
 class Mode(Enum):
     testops = "testops"
+    testops_multi = "testops_multi"
     report = "report"
     off = "off"
 
@@ -47,6 +48,7 @@ class QaseConfig(BaseModel):
     debug: bool = None
     execution_plan: ExecutionPlan = None
     testops: TestopsConfig = None
+    testops_multi: TestopsMultiConfig = None
     report: ReportConfig = None
     profilers: list = None
     framework: Framework = None
@@ -59,6 +61,7 @@ class QaseConfig(BaseModel):
         self.fallback = Mode.off
         self.debug = False
         self.testops = TestopsConfig()
+        self.testops_multi = TestopsMultiConfig()
         self.report = ReportConfig()
         self.execution_plan = ExecutionPlan()
         self.framework = Framework()
@@ -98,3 +101,24 @@ class QaseConfig(BaseModel):
             self.logging.set_console(QaseUtils.parse_bool(logging_config.get("console")))
         if logging_config.get("file") is not None:
             self.logging.set_file(QaseUtils.parse_bool(logging_config.get("file")))
+
+    def set_testops_multi(self, testops_multi_config: dict):
+        """Set testops multi configuration from dictionary"""
+        if testops_multi_config:
+            if 'default_project' in testops_multi_config:
+                self.testops_multi.set_default_project(testops_multi_config['default_project'])
+            if 'projects' in testops_multi_config:
+                from .testops import ProjectConfig
+                projects = []
+                for project_data in testops_multi_config['projects']:
+                    project = ProjectConfig()
+                    if 'code' in project_data:
+                        project.set_code(project_data['code'])
+                    if 'run' in project_data:
+                        project.set_run(project_data['run'])
+                    if 'plan' in project_data:
+                        project.set_plan(project_data['plan'])
+                    if 'environment' in project_data:
+                        project.set_environment(project_data['environment'])
+                    projects.append(project)
+                self.testops_multi.set_projects(projects)
