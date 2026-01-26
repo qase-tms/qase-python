@@ -11,8 +11,8 @@ The multi-project feature allows you to send test results to multiple Qase proje
 
 ## Projects Used in Examples
 
-- **DEVX**: Development/Staging project
-- **DEMO**: Demo/Production project
+- **DEMO1**: Development/Staging project
+- **DEMO2**: Demo/Production project
 
 ## Configuration
 
