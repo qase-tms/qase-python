@@ -2,6 +2,8 @@
 
 This guide demonstrates how to integrate Qase with Robot Framework, providing instructions on how to add Qase IDs, fields, and other metadata to your test cases.
 
+> **Configuration:** For complete configuration reference including all available options, environment variables, and examples, see the [qase-python-commons README](../../qase-python-commons/README.md).
+
 ## Adding QaseID to a Test
 
 To associate a QaseID with a test in Robot Framework, use the `Q-{ID}` tag format.
@@ -23,33 +25,9 @@ Test with multiple QaseIDs
 
 ### Multi-Project Support
 
-To send test results to multiple projects with different test case IDs, use the `Q-PROJECT.PROJECT_CODE-IDS` tag format:
+Qase Robot Framework Reporter supports sending test results to multiple Qase projects simultaneously with different test case IDs for each project.
 
-```robotframework
-*** Test Cases ***
-# Single project with multiple IDs
-Test with project IDs
-    [Tags]    Q-PROJECT.PROJ1-123,124
-    Step 01
-    Step 02
-    Passed step
-
-# Multiple projects with different IDs
-Test for multiple projects
-    [Tags]    Q-PROJECT.PROJ1-123    Q-PROJECT.PROJ2-456
-    Step 01
-    Step 02
-    Passed step
-
-# Multiple projects with multiple IDs each
-Complex multi-project test
-    [Tags]    Q-PROJECT.PROJ1-123,124    Q-PROJECT.PROJ2-456,457
-    Step 01
-    Step 02
-    Passed step
-```
-
-**Note:** When using `Q-PROJECT`, the test results will be sent to all specified projects. Make sure to configure `testops_multi` mode in your `qase.config.json` file.
+For detailed information, configuration, examples, and troubleshooting, see the [Multi-Project Support Guide](MULTI_PROJECT.md).
 
 ---
 
@@ -179,6 +157,8 @@ User Login Test
 ---
 
 ## Advanced Configuration
+
+For complete configuration options including parallel execution, environment variables, and all other settings, see the [qase-python-commons README](../../qase-python-commons/README.md) and [Robot Framework Configuration Reference](CONFIGURATION.md).
 
 ### Parallel Execution
 

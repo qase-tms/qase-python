@@ -2,6 +2,8 @@
 
 This guide demonstrates how to integrate Qase with Tavern, providing instructions on how to add Qase IDs and other metadata to your API test cases.
 
+> **Configuration:** For complete configuration reference including all available options, environment variables, and examples, see the [qase-python-commons README](../../qase-python-commons/README.md).
+
 ---
 
 ## Adding QaseID to a Test
@@ -48,47 +50,9 @@ stages:
 
 ### Multi-Project Support
 
-To send test results to multiple projects with different test case IDs, use the `QaseProjectID.PROJECT_CODE=IDS` format in the test name:
+Qase Tavern Reporter supports sending test results to multiple Qase projects simultaneously with different test case IDs for each project.
 
-```yaml
----
-# Single project with multiple IDs
-test_name: QaseProjectID.PROJ1=123,124 Get user by ID
-
-stages:
-  - name: Get user
-    request:
-      url: https://api.example.com/users/1
-      method: GET
-    response:
-      status_code: 200
-
----
-# Multiple projects with different IDs
-test_name: QaseProjectID.PROJ1=123 QaseProjectID.PROJ2=456 Get user by ID
-
-stages:
-  - name: Get user
-    request:
-      url: https://api.example.com/users/1
-      method: GET
-    response:
-      status_code: 200
-
----
-# Multiple projects with multiple IDs each
-test_name: QaseProjectID.PROJ1=123,124 QaseProjectID.PROJ2=456,457 Get user by ID
-
-stages:
-  - name: Get user
-    request:
-      url: https://api.example.com/users/1
-      method: GET
-    response:
-      status_code: 200
-```
-
-**Note:** When using `QaseProjectID`, the test results will be sent to all specified projects. Make sure to configure `testops_multi` mode in your `qase.config.json` file.
+For detailed information, configuration, examples, and troubleshooting, see the [Multi-Project Support Guide](MULTI_PROJECT.md).
 
 ---
 

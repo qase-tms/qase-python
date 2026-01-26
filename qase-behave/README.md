@@ -38,7 +38,7 @@ For information about attaching files and content or adding comments to test res
 Qase Behave Reporter supports sending test results to multiple Qase projects simultaneously. 
 You can specify different test case IDs for each project using the `@qase.project_id.PROJECT_CODE:IDS` tag format.
 
-For detailed information and examples, see the [Multi-Project Support](docs/usage.md#multi-project-support) section in the usage documentation.
+For detailed information, configuration, and examples, see the [Multi-Project Support Guide](docs/MULTI_PROJECT.md).
 
 For example:
 
@@ -71,8 +71,7 @@ Qase Behave Reporter is configured in multiple ways:
 Environment variables override the values given in the config file,
 and command line options override both other values.
 
-Configuration options are described in the
-[configuration reference](docs/CONFIGURATION.md).
+For complete configuration reference, see the [qase-python-commons README](../qase-python-commons/README.md) which contains all available configuration options.
 
 ### Example: qase.config.json
 

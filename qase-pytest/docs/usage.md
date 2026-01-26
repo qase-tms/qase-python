@@ -2,6 +2,8 @@
 
 This guide demonstrates how to integrate Qase with Pytest, providing instructions on how to add Qase IDs, fields, suites, and other metadata to your test cases.
 
+> **Configuration:** For complete configuration reference including all available options, environment variables, and examples, see the [qase-python-commons README](../../qase-python-commons/README.md).
+
 ---
 
 ## Adding QaseID to a Test
@@ -22,30 +24,9 @@ def test_multiple_ids():
 
 ### Multi-Project Support
 
-To send test results to multiple projects with different test case IDs, use the `@qase.project_id` decorator:
+Qase Pytest Reporter supports sending test results to multiple Qase projects simultaneously with different test case IDs for each project.
 
-```python
-from qase.pytest import qase
-
-# Single project with multiple IDs
-@qase.project_id("PROJ1", [123, 124])
-def test_example():
-    assert True
-
-# Multiple projects with different IDs
-@qase.project_id("PROJ1", 123)
-@qase.project_id("PROJ2", 456)
-def test_multiple_projects():
-    assert True
-
-# Multiple projects with multiple IDs each
-@qase.project_id("PROJ1", [123, 124])
-@qase.project_id("PROJ2", [456, 457])
-def test_complex_multi_project():
-    assert True
-```
-
-**Note:** When using `@qase.project_id`, the test results will be sent to all specified projects. Make sure to configure `testops_multi` mode in your `qase.config.json` file.
+For detailed information, configuration, examples, and troubleshooting, see the [Multi-Project Support Guide](MULTI_PROJECT.md).
 
 ---
 
@@ -225,75 +206,14 @@ def test_combined(browser, test_data):
 
 ## Advanced Configuration
 
-### Profilers
+For complete configuration options including profilers, log capture, xfail status, execution plans, and all other settings, see the [qase-python-commons README](../../qase-python-commons/README.md) and [Pytest Configuration Reference](CONFIGURATION.md).
 
-Enable profilers to collect additional data:
+### Quick Reference
 
-#### Sleep Profiler
-
-Sleep profiler is a special profiler that allows you to measure the time taken by the test. Each sleep will be reported as a separate step with the duration of the sleep.
-
-```bash
-pytest --qase-profilers=sleep
-```
-
-```python
-from qase.pytest import qase
-
-def test_example():
-    time.sleep(1)
-    assert True
-```
-
-#### Network Profiler
-
-Network profiler is a special profiler that allows you to measure the time taken by the network requests. Each network request will be reported as a separate step with the request details.
-
-```bash
-pytest --qase-profilers=network
-```
-
-```python
-import requests
-
-def test_example():
-    requests.get("https://api.qase.io/v1/projects")
-    assert True
-```
-
----
-
-### Log Capture
-
-Capture pytest logs. All logs will be reported as a attachment to the test case.
-
-```bash
-pytest --qase-pytest-capture-logs=true
-```
-
-### XFail Status
-
-Configure xfail status mapping:
-
-```bash
-pytest --qase-pytest-xfail-status-xfail=skipped
-```
-
----
-
-## Execution Plans
-
-You can use execution plans to run only specific tests:
-
-```bash
-pytest --qase-execution-plan-path=plan.json
-```
-
-The execution plan file should contain a list of Qase IDs:
-
-```json
-[1, 2, 3, 4, 5]
-```
+* **Profilers**: Use `--qase-profilers=sleep,network` to enable profilers
+* **Log Capture**: Use `--qase-pytest-capture-logs=true` to capture pytest logs
+* **XFail Status**: Use `--qase-pytest-xfail-status-xfail=skipped` to configure xfail status
+* **Execution Plans**: Use `--qase-execution-plan-path=plan.json` to run specific tests
 
 ---
 
