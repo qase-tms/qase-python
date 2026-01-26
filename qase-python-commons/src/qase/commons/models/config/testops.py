@@ -4,7 +4,7 @@ from .plan import PlanConfig
 from .run import RunConfig
 from ..basemodel import BaseModel
 from ... import QaseUtils
-from typing import List
+from typing import List, Optional
 
 
 class ConfigurationValue(BaseModel):
@@ -72,3 +72,60 @@ class TestopsConfig(BaseModel):
 
     def set_show_public_report_link(self, show_public_report_link):
         self.show_public_report_link = QaseUtils.parse_bool(show_public_report_link)
+
+
+class ProjectConfig(BaseModel):
+    code: str = None
+    run: RunConfig = None
+    plan: PlanConfig = None
+    environment: Optional[str] = None
+
+    def __init__(self):
+        self.run = RunConfig()
+        self.plan = PlanConfig()
+        self.environment = None
+
+    def set_code(self, code: str):
+        self.code = code
+
+    def set_environment(self, environment: str):
+        self.environment = environment
+
+    def set_run(self, run_config: dict):
+        """Set run configuration from dictionary"""
+        if run_config:
+            if 'title' in run_config:
+                self.run.set_title(run_config['title'])
+            if 'description' in run_config:
+                self.run.set_description(run_config['description'])
+            if 'complete' in run_config:
+                self.run.set_complete(run_config['complete'])
+            if 'id' in run_config:
+                self.run.set_id(run_config['id'])
+            if 'tags' in run_config:
+                self.run.set_tags(run_config['tags'])
+            if 'externalLink' in run_config:
+                self.run.set_external_link(run_config['externalLink'])
+
+    def set_plan(self, plan_config: dict):
+        """Set plan configuration from dictionary"""
+        if plan_config and 'id' in plan_config:
+            self.plan.set_id(plan_config['id'])
+
+
+class TestopsMultiConfig(BaseModel):
+    default_project: Optional[str] = None
+    projects: List[ProjectConfig] = None
+
+    def __init__(self):
+        self.projects = []
+        self.default_project = None
+
+    def set_default_project(self, default_project: str):
+        self.default_project = default_project
+
+    def set_projects(self, projects: List[ProjectConfig]):
+        self.projects = projects
+
+    def add_project(self, project: ProjectConfig):
+        self.projects.append(project)

@@ -1,3 +1,9 @@
+# qase-python-commons@5.0.0
+
+## What's new
+
+- Added support for multi-project reporting. You can now send test results to multiple Qase projects simultaneously.
+
 # qase-python-commons@4.1.10
 
 ## What's new
