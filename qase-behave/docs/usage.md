@@ -3,6 +3,8 @@
 This guide demonstrates how to integrate Qase with Behave, providing instructions on how to add Qase IDs,
 fields and suites to your test cases.
 
+> **Configuration:** For complete configuration reference including all available options, environment variables, and examples, see the [qase-python-commons README](../../qase-python-commons/README.md).
+
 ---
 
 ## Adding QaseID to a Test
@@ -24,36 +26,9 @@ Feature: Example tests
 
 ### Multi-Project Support
 
-To send test results to multiple projects with different test case IDs, use the `@qase.project_id.PROJECT_CODE:IDS` tag:
+Qase Behave Reporter supports sending test results to multiple Qase projects simultaneously with different test case IDs for each project.
 
-```gherkin
-Feature: Example tests
-
-  # Single project with multiple IDs
-  @qase.project_id.PROJ1:123,124
-  Scenario: Example test with multiple IDs
-    Given I have a simple test
-    When I run it
-    Then it should pass
-
-  # Multiple projects with different IDs
-  @qase.project_id.PROJ1:123
-  @qase.project_id.PROJ2:456
-  Scenario: Example test for multiple projects
-    Given I have a simple test
-    When I run it
-    Then it should pass
-
-  # Multiple projects with multiple IDs each
-  @qase.project_id.PROJ1:123,124
-  @qase.project_id.PROJ2:456,457
-  Scenario: Complex multi-project test
-    Given I have a simple test
-    When I run it
-    Then it should pass
-```
-
-**Note:** When using `@qase.project_id`, the test results will be sent to all specified projects. Make sure to configure `testops_multi` mode in your `qase.config.json` file.
+For detailed information, configuration, examples, and troubleshooting, see the [Multi-Project Support Guide](MULTI_PROJECT.md).
 
 ---
 
