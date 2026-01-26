@@ -20,6 +20,33 @@ def test_multiple_ids():
     assert True
 ```
 
+### Multi-Project Support
+
+To send test results to multiple projects with different test case IDs, use the `@qase.project_id` decorator:
+
+```python
+from qase.pytest import qase
+
+# Single project with multiple IDs
+@qase.project_id("PROJ1", [123, 124])
+def test_example():
+    assert True
+
+# Multiple projects with different IDs
+@qase.project_id("PROJ1", 123)
+@qase.project_id("PROJ2", 456)
+def test_multiple_projects():
+    assert True
+
+# Multiple projects with multiple IDs each
+@qase.project_id("PROJ1", [123, 124])
+@qase.project_id("PROJ2", [456, 457])
+def test_complex_multi_project():
+    assert True
+```
+
+**Note:** When using `@qase.project_id`, the test results will be sent to all specified projects. Make sure to configure `testops_multi` mode in your `qase.config.json` file.
+
 ---
 
 ## Adding Title to a Test

@@ -75,6 +75,13 @@ Configuration options are described in the
 
 For detailed instructions on using annotations and methods, refer to [Usage](docs/usage.md).
 
+### Multi-Project Support
+
+Qase Pytest Reporter supports sending test results to multiple Qase projects simultaneously. 
+You can specify different test case IDs for each project using the `@qase.project_id()` decorator.
+
+For detailed information and examples, see the [Multi-Project Support](docs/usage.md#multi-project-support) section in the usage documentation.
+
 ### Link tests with test cases in Qase TestOps
 
 To link the automated tests with the test cases in Qase TestOps, use the `@qase.id()` decorator.

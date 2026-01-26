@@ -1,0 +1,69 @@
+---
+test_name: QaseProjectID.DEVX=1 Simple test for DEVX project
+stages:
+  - name: Simple GET request
+    request:
+      url: https://jsonplaceholder.typicode.com/posts/1
+      method: GET
+    response:
+      status_code: 200
+
+---
+test_name: QaseProjectID.DEVX=2,3 Multiple IDs for DEVX project
+stages:
+  - name: GET request with multiple IDs
+    request:
+      url: https://jsonplaceholder.typicode.com/posts/1
+      method: GET
+    response:
+      status_code: 200
+
+---
+test_name: QaseProjectID.DEVX=4 QaseProjectID.DEMO=10 Multiple projects test
+stages:
+  - name: GET request for multiple projects
+    request:
+      url: https://jsonplaceholder.typicode.com/posts/1
+      method: GET
+    response:
+      status_code: 200
+
+---
+test_name: QaseProjectID.DEVX=5,6 QaseProjectID.DEMO=11,12 Complex multi-project test
+stages:
+  - name: GET request for complex multi-project scenario
+    request:
+      url: https://jsonplaceholder.typicode.com/posts/1
+      method: GET
+    response:
+      status_code: 200
+
+---
+test_name: QaseProjectID.DEVX=7 Failed test for DEVX
+stages:
+  - name: GET request that will fail
+    request:
+      url: https://jsonplaceholder.typicode.com/posts/1
+      method: GET
+    response:
+      status_code: 404  # This will cause the test to fail
+
+---
+test_name: QaseProjectID.DEMO=13 Passed test for DEMO
+stages:
+  - name: GET request that will pass
+    request:
+      url: https://jsonplaceholder.typicode.com/posts/1
+      method: GET
+    response:
+      status_code: 200
+
+---
+test_name: Test without any ID
+stages:
+  - name: GET request without ID
+    request:
+      url: https://jsonplaceholder.typicode.com/posts/1
+      method: GET
+    response:
+      status_code: 200

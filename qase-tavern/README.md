@@ -24,6 +24,13 @@ parameterize your tests.
 
 For detailed instructions on using annotations and methods, refer to [Usage](docs/usage.md).
 
+### Multi-Project Support
+
+Qase Tavern Reporter supports sending test results to multiple Qase projects simultaneously. 
+You can specify different test case IDs for each project using the `QaseProjectID.PROJECT_CODE=IDS` format in test names.
+
+For detailed information and examples, see the [Multi-Project Support](docs/usage.md#multi-project-support) section in the usage documentation.
+
 For example:
 
 ```yaml

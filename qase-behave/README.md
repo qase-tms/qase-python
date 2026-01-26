@@ -33,6 +33,13 @@ For detailed instructions on using annotations and methods, refer to [Usage](doc
 
 For information about attaching files and content or adding comments to test results, see [Attachments](docs/ATTACHMENTS.md).
 
+### Multi-Project Support
+
+Qase Behave Reporter supports sending test results to multiple Qase projects simultaneously. 
+You can specify different test case IDs for each project using the `@qase.project_id.PROJECT_CODE:IDS` tag format.
+
+For detailed information and examples, see the [Multi-Project Support](docs/usage.md#multi-project-support) section in the usage documentation.
+
 For example:
 
 ```gherkin

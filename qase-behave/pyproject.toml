@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qase-behave"
-version = "2.0.6"
+version = "3.0.0"
 description = "Qase Behave Plugin for Qase TestOps and Qase Report"
 readme = "README.md"
 keywords = ["qase", "behave", "plugin", "testops", "report", "qase reporting", "test observability"]
@@ -28,7 +28,7 @@ classifiers = [
 ]
 requires-python = ">=3.9"
 dependencies = [
-    "qase-python-commons~=4.1.10",
+    "qase-python-commons~=5.0.0",
     "behave>=1.2.6",
     "more_itertools",
 ]

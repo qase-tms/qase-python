@@ -46,6 +46,50 @@ stages:
         email: "john@example.com"
 ```
 
+### Multi-Project Support
+
+To send test results to multiple projects with different test case IDs, use the `QaseProjectID.PROJECT_CODE=IDS` format in the test name:
+
+```yaml
+---
+# Single project with multiple IDs
+test_name: QaseProjectID.PROJ1=123,124 Get user by ID
+
+stages:
+  - name: Get user
+    request:
+      url: https://api.example.com/users/1
+      method: GET
+    response:
+      status_code: 200
+
+---
+# Multiple projects with different IDs
+test_name: QaseProjectID.PROJ1=123 QaseProjectID.PROJ2=456 Get user by ID
+
+stages:
+  - name: Get user
+    request:
+      url: https://api.example.com/users/1
+      method: GET
+    response:
+      status_code: 200
+
+---
+# Multiple projects with multiple IDs each
+test_name: QaseProjectID.PROJ1=123,124 QaseProjectID.PROJ2=456,457 Get user by ID
+
+stages:
+  - name: Get user
+    request:
+      url: https://api.example.com/users/1
+      method: GET
+    response:
+      status_code: 200
+```
+
+**Note:** When using `QaseProjectID`, the test results will be sent to all specified projects. Make sure to configure `testops_multi` mode in your `qase.config.json` file.
+
 ---
 
 ## Examples

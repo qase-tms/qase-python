@@ -1,3 +1,9 @@
+# qase-tavern 3.0.0
+
+## What's new
+
+- Added support for multi-project reporting. You can now send test results to multiple Qase projects simultaneously. More information about multi-project reporting can be found in the [docs](docs/usage.md#multi-project-support).
+
 # qase-tavern 2.0.5
 
 ## What's new
