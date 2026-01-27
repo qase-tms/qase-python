@@ -177,7 +177,7 @@ class QaseTestOps:
         self.logger.log(f"See why this test failed: {link}", "info")
 
     def __prepare_link(self, ids: Union[None, List[int]], title: str):
-        link = f"{self.__baseUrl}/run/{self.project_code}/dashboard/{self.run_id}?source=logs&status=%5B2%5D&search="
+        link = f"{self.__baseUrl}/run/{self.project_code}/dashboard/{self.run_id}?source=logs&search="
         if ids is not None and len(ids) > 0:
             return f"{link}{self.project_code}-{ids[0]}"
         return f"{link}{urllib.parse.quote_plus(title)}"
