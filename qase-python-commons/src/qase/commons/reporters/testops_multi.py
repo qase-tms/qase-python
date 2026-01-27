@@ -322,7 +322,7 @@ class QaseTestOpsMulti:
         run_id = self.project_runs.get(project_code, '')
         # Ensure run_id is converted to string for URL
         run_id_str = str(run_id) if run_id else ''
-        link = f"{self.__baseUrl}/run/{project_code}/dashboard/{run_id_str}?source=logs&status=%5B2%5D&search="
+        link = f"{self.__baseUrl}/run/{project_code}/dashboard/{run_id_str}?source=logs&search="
         if ids is not None and len(ids) > 0:
             return f"{link}{project_code}-{ids[0]}"
         return f"{link}{urllib.parse.quote_plus(title)}"
