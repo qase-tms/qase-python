@@ -1,44 +1,127 @@
-### Behave Example
+# Behave Examples
 
-This is a sample project demonstrating how to write and execute tests using the Behave framework with integration to
-Qase Test Management.
+Examples demonstrating Qase Behave Reporter features.
 
----
+## Setup
 
-## Prerequisites
-
-Ensure that the following tools are installed on your machine:
-
-1. [Python](https://www.python.org/) (version 3.7 or higher is recommended)
-2. [pip](https://pip.pypa.io/en/stable/)
-
----
-
-## Setup Instructions
-
-1. Clone this repository by running the following commands:
-   ```bash
-   git clone https://github.com/qase-tms/qase-python.git
-   cd qase-python/examples/single/behave
-   ```
-
-2. Install the project dependencies:
+1. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-3. Create a `qase.config.json` file in the root of the project. Follow the instructions on  
-   [how to configure the file](https://github.com/qase-tms/qase-python/blob/main/qase-behave/docs/CONFIGURATION.md).
+2. Configure credentials in `qase.config.json`:
+   - Replace `<token>` with your [API token](https://app.qase.io/user/api/token)
+   - Replace `<project_code>` with your project code
 
-4. To run tests and upload the results to Qase Test Management, use the following command:
+   Or use environment variables:
    ```bash
-   behave --format=qase.behave.formatter:QaseFormatter
+   export QASE_TESTOPS_API_TOKEN=your_token
+   export QASE_TESTOPS_PROJECT=your_project_code
    ```
-   This will execute the tests and display the results in the terminal.
 
----
+## Run Tests
 
-## Additional Resources
+```bash
+# Run all tests
+behave --format=qase.behave.formatter:QaseFormatter
 
-For more details on how to use this integration with Qase Test Management, visit  
-the [Qase Behave documentation](https://github.com/qase-tms/qase-python/tree/main/qase-behave).
+# Run specific feature
+behave --format=qase.behave.formatter:QaseFormatter tests/features/simple.feature
+
+# Run with console output
+behave --format=qase.behave.formatter:QaseFormatter --format=pretty
+```
+
+## Examples
+
+| File | Description |
+|------|-------------|
+| `simple.feature` | Basic tests with `@qase.id` and `@qase.fields` tags |
+| `attachments.feature` | File attachments in BDD scenarios |
+| `suites.feature` | Test suite organization with `@qase.suite` |
+| `parametrized.feature` | Scenario Outlines with Examples tables |
+
+## Code Examples
+
+### Link to Test Case
+
+```gherkin
+@qase.id:1
+Scenario: Test linked to case 1
+  Given some precondition
+  When action is performed
+  Then expected result occurs
+```
+
+### Add Metadata
+
+```gherkin
+@qase.id:1 @qase.fields:{"severity":"critical","priority":"high"}
+Scenario: Test with metadata
+  Given some precondition
+  When action is performed
+  Then expected result occurs
+```
+
+### Test Suites
+
+```gherkin
+@qase.suite:Authentication
+Feature: Login functionality
+
+  @qase.id:1
+  Scenario: Valid login
+    Given user is on login page
+    When user enters valid credentials
+    Then user is logged in
+```
+
+### Parametrized Tests
+
+```gherkin
+@qase.id:10
+Scenario Outline: Login with different users
+  Given user "<username>" exists
+  When user logs in with password "<password>"
+  Then login result is "<result>"
+
+  Examples:
+    | username | password | result  |
+    | admin    | admin123 | success |
+    | user     | wrong    | failure |
+```
+
+### Ignore Test
+
+```gherkin
+@qase.ignore
+Scenario: This test will not be reported to Qase
+  Given some condition
+  When action happens
+  Then result is ignored
+```
+
+### Attachments
+
+```gherkin
+Scenario: Test with attachment
+  Given I have a file to attach
+  When I attach the file "screenshot.png"
+  Then the attachment is added to the test result
+```
+
+Step implementation:
+```python
+from behave import when
+from qase.behave import qase
+
+@when('I attach the file "{filename}"')
+def attach_file(context, filename):
+    qase.attach(f"/path/to/{filename}")
+```
+
+## Documentation
+
+- [Behave Reporter README](../../../qase-behave/README.md)
+- [Usage Guide](../../../qase-behave/docs/usage.md)
+- [Configuration Reference](../../../qase-python-commons/README.md)
