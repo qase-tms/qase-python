@@ -57,6 +57,12 @@ target/
 .venv*/
 
 qaseio.lock
+qase.lock
+
+# Robot Framework outputs
+output.xml
+log.html
+report.html
 
 #Ipython Notebook
 .ipynb_checkpoints

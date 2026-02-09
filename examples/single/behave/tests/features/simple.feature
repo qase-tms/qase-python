@@ -42,7 +42,7 @@ Feature: Basic Qase Integration
     Then the order should be created
     And confirmation email should be sent
 
-  @qase.fields:{"description":"Verifies password reset flow works correctly","preconditions":"User must have registered email"}
+  @qase.fields:{"description":"Verifies_password_reset_flow_works_correctly","preconditions":"User_must_have_registered_email"}
   Scenario: Password reset email is sent
     Given user exists with email "forgot@example.com"
     When user requests password reset
@@ -53,9 +53,9 @@ Feature: Basic Qase Integration
   # Combined annotations
   # ============================================================================
 
-  @qase.id:10 @qase.fields:{"severity":"blocker","description":"Critical checkout validation"}
+  @qase.id:6 @qase.fields:{"severity":"blocker","description":"Critical_checkout_validation"}
   Scenario: Cart total is calculated correctly
-    Given the following items in cart:
+    Given the following items in cart
       | name     | price  | quantity |
       | Laptop   | 999.99 | 1        |
       | Mouse    | 29.99  | 2        |
