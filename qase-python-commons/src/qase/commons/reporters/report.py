@@ -4,9 +4,61 @@ import shutil
 import json
 import re
 from ..models import Result, Run, Attachment
+from ..models.step import Step, StepType, StepTextData
 from .. import QaseUtils, Logger
 from ..models.config.connection import Format
 from ..models.config.qaseconfig import QaseConfig
+
+
+def _convert_step_data_to_text(step: Step) -> None:
+    """Convert step data to TEXT format for report serialization."""
+    if step.data is None:
+        return
+
+    step_type = step.step_type
+    data = step.data
+
+    if step_type == StepType.TEXT:
+        # Already in TEXT format, no conversion needed
+        pass
+    elif step_type == StepType.ASSERT:
+        step.data = StepTextData(
+            action=f"Assert: {data.message}",
+            expected_result=str(data.expected)
+        )
+        step.data.input_data = str(data.actual)
+    elif step_type == StepType.GHERKIN:
+        step.data = StepTextData(
+            action=f"{data.keyword} {data.name}",
+            expected_result=None
+        )
+        step.data.input_data = data.data
+    elif step_type == StepType.REQUEST:
+        step.data = StepTextData(
+            action=f"{data.request_method} {data.request_url}",
+            expected_result=f"Status: {data.status_code}" if data.status_code else None
+        )
+        step.data.input_data = data.request_body
+    elif step_type == StepType.DB_QUERY:
+        step.data = StepTextData(
+            action=f"SQL: {data.query}",
+            expected_result=data.expected_result
+        )
+        step.data.input_data = data.connection_info
+    elif step_type == StepType.SLEEP:
+        step.data = StepTextData(
+            action=f"Sleep {data.duration}ms",
+            expected_result=None
+        )
+        step.data.input_data = None
+
+    # Set step_type to TEXT after conversion
+    step.step_type = StepType.TEXT
+
+    # Recursively convert nested steps
+    if step.steps:
+        for nested_step in step.steps:
+            _convert_step_data_to_text(nested_step)
 
 
 class QaseReport:
@@ -91,6 +143,10 @@ class QaseReport:
 
     # Method saves result to a file
     def _store_result(self, result: Result):
+        # Convert all step data to TEXT format for report
+        if result.steps:
+            for step in result.steps:
+                _convert_step_data_to_text(step)
         self._store_object(result, self.report_path + "/results/", result.id)
 
     def _check_report_path(self):
@@ -121,7 +177,7 @@ class QaseReport:
 
         run.add_host_data(QaseUtils.get_host_data())
 
-        self._store_object(run, self.report_path, "report")
+        self._store_object(run, self.report_path, "run")
 
     # Saves a model to a file
     def _store_object(self, object, path, filename):

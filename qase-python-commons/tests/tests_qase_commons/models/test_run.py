@@ -23,7 +23,8 @@ def test_run_stats():
     assert stats.passed == 0
     assert stats.failed == 0
     assert stats.skipped == 0
-    assert stats.broken == 0
+    assert stats.blocked == 0
+    assert stats.invalid == 0
     assert stats.muted == 0
     assert stats.total == 0
 
