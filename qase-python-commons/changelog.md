@@ -1,3 +1,12 @@
+# qase-python-commons@5.0.2
+
+## What's new
+
+- Aligned report mode with specification schema:
+  - Renamed output file from `report.json` to `run.json`
+  - Replaced `broken` status with `blocked` in run statistics
+  - Added automatic conversion of all step data types to TEXT format for report serialization
+
 # qase-python-commons@5.0.1
 
 ## What's new
