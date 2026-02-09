@@ -1,80 +1,141 @@
----
-test_name: Simple test success
-
-stages:
-  - name: Step 1
-    request:
-      url: https://jsonplaceholder.typicode.com/posts/1
-      method: GET
-    response:
-      status_code: 200
-      json:
-        id: 1
-        userId: 1
-        title: "sunt aut facere repellat provident occaecati excepturi optio reprehenderit"
-        body: "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
-
-  - name: Step 2
-    request:
-      url: https://jsonplaceholder.typicode.com/posts/1
-      method: GET
-    response:
-      status_code: 200
-      json:
-        id: 1
-        userId: 1
-        title: "sunt aut facere repellat provident occaecati excepturi optio reprehenderit"
-        body: "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
-
-  - name: Step 3
-    request:
-      url: https://jsonplaceholder.typicode.com/posts/1
-      method: GET
-    response:
-      status_code: 200
-      json:
-        id: 1
-        userId: 1
-        title: "sunt aut facere repellat provident occaecati excepturi optio reprehenderit"
-        body: "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
-
+# ==============================================================================
+# Basic API Tests (auto-created test cases in Qase)
+# ==============================================================================
+# Tests without QaseID in the name will automatically create new test cases in Qase
 
 ---
-test_name: Simple test failed
+test_name: Get list of users from API
 
 stages:
-  - name: Step 1
+  - name: Fetch all users
     request:
-      url: https://jsonplaceholder.typicode.com/posts/1
+      url: https://jsonplaceholder.typicode.com/users
+      method: GET
+    response:
+      status_code: 200
+      headers:
+        content-type: application/json; charset=utf-8
+      json:
+        # Verify response is an array with expected structure
+        - id: 1
+          name: Leanne Graham
+          username: Bret
+          email: Sincere@april.biz
+
+---
+test_name: Get single user by ID
+
+stages:
+  - name: Fetch user with ID 1
+    request:
+      url: https://jsonplaceholder.typicode.com/users/1
       method: GET
     response:
       status_code: 200
       json:
         id: 1
-        userId: 1
-        title: "sunt aut facere repellat provident occaecati excepturi optio reprehenderit"
-        body: "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+        name: Leanne Graham
+        username: Bret
+        email: Sincere@april.biz
+        address:
+          street: Kulas Light
+          city: Gwenborough
 
-  - name: Step 2
+---
+test_name: Get posts for specific user
+
+stages:
+  - name: Fetch posts by user ID
+    request:
+      url: https://jsonplaceholder.typicode.com/posts
+      method: GET
+      params:
+        userId: 1
+    response:
+      status_code: 200
+      # Verify response contains posts from the user
+      json:
+        - userId: 1
+
+---
+test_name: Create new post via API
+
+stages:
+  - name: Submit new post
+    request:
+      url: https://jsonplaceholder.typicode.com/posts
+      method: POST
+      headers:
+        Content-Type: application/json
+      json:
+        title: Test Post Title
+        body: This is the test post body content.
+        userId: 1
+    response:
+      status_code: 201
+      json:
+        id: 101
+        title: Test Post Title
+        body: This is the test post body content.
+        userId: 1
+
+---
+test_name: Update existing post
+
+stages:
+  - name: Update post with PUT
     request:
       url: https://jsonplaceholder.typicode.com/posts/1
-      method: GET
-    response:
-      status_code: 300
+      method: PUT
+      headers:
+        Content-Type: application/json
       json:
         id: 1
+        title: Updated Post Title
+        body: Updated post body content.
         userId: 1
-        title: "sunt aut facere repellat provident occaecati excepturi optio reprehenderit"
-        body: "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
-
-  - name: Step 3
-    request:
-      url: https://jsonplaceholder.typicode.com/posts/1
-      method: GET
     response:
       status_code: 200
       json:
         id: 1
-        userId: 1
-        title: "sunt aut facere repellat provident occaecati excepturi optio reprehenderit"
-        body: "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+        title: Updated Post Title
+
+---
+test_name: Partial update with PATCH
+
+stages:
+  - name: Patch post title only
+    request:
+      url: https://jsonplaceholder.typicode.com/posts/1
+      method: PATCH
+      headers:
+        Content-Type: application/json
+      json:
+        title: Patched Title
+    response:
+      status_code: 200
+      json:
+        id: 1
+        title: Patched Title
+
+---
+test_name: Delete post from API
+
+stages:
+  - name: Delete post by ID
+    request:
+      url: https://jsonplaceholder.typicode.com/posts/1
+      method: DELETE
+    response:
+      status_code: 200
+
+---
+test_name: Handle non-existent resource
+
+stages:
+  - name: Request non-existent user
+    request:
+      url: https://jsonplaceholder.typicode.com/users/9999
+      method: GET
+    response:
+      status_code: 404

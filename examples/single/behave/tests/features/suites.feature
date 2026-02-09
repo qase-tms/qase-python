@@ -1,25 +1,81 @@
-Feature: Simple1 tests
+@qase.suite:Authentication
+Feature: User Authentication
+  Demonstrates test suite organization using @qase.suite tag.
+  All scenarios in this feature are organized under "Authentication" suite.
 
-  @qase.suite:MySuite
-  Scenario: Test with single suite success
-    Given I have a simple test
-    When I run it
-    Then it should pass
+  # ============================================================================
+  # Single-level suite organization
+  # ============================================================================
 
-  @qase.suite:MySuite
-  Scenario: Test with single suite failed
-    Given I have a simple test
-    When I run it
-    Then it should fail
+  @qase.id:20
+  Scenario: Login with email and password
+    Given the login page is displayed
+    When user enters email "user@example.com"
+    And user enters password "SecurePass123"
+    And clicks submit button
+    Then user should be authenticated
+    And redirected to dashboard
 
-  @qase.suite:MySuite||SubSuite
-  Scenario: Test with multiple suite success
-    Given I have a simple test
-    When I run it
-    Then it should pass
+  @qase.id:21
+  Scenario: Login with remember me option
+    Given the login page is displayed
+    When user enters valid credentials
+    And checks "remember me" checkbox
+    And clicks submit button
+    Then user should be authenticated
+    And session should persist for 30 days
 
-  @qase.suite:MySuite||SubSuite
-  Scenario: Test with multiple suite failed
-    Given I have a simple test
-    When I run it
-    Then it should fail
+  # ============================================================================
+  # Nested suite organization
+  # ============================================================================
+
+  @qase.id:22 @qase.suite:Authentication||OAuth
+  Scenario: Login with Google OAuth
+    Given the login page is displayed
+    When user clicks "Sign in with Google"
+    And completes Google authentication
+    Then user should be authenticated
+    And profile should be synced from Google
+
+  @qase.id:23 @qase.suite:Authentication||OAuth
+  Scenario: Login with GitHub OAuth
+    Given the login page is displayed
+    When user clicks "Sign in with GitHub"
+    And completes GitHub authentication
+    Then user should be authenticated
+    And profile should be synced from GitHub
+
+  @qase.id:24 @qase.suite:Authentication||OAuth||Error_Handling
+  Scenario: OAuth provider returns error
+    Given the login page is displayed
+    When user clicks "Sign in with Google"
+    And Google returns authentication error
+    Then error message should be displayed
+    And user should remain on login page
+
+  # ============================================================================
+  # Security suite
+  # ============================================================================
+
+  @qase.id:30 @qase.suite:Authentication||Security
+  Scenario: Account lockout after failed attempts
+    Given user has account with email "user@example.com"
+    When user enters wrong password 5 times
+    Then account should be locked
+    And lockout notification email should be sent
+
+  @qase.id:31 @qase.suite:Authentication||Security
+  Scenario: Two-factor authentication
+    Given user has 2FA enabled
+    And user enters valid credentials
+    When 2FA code is requested
+    And user enters valid 2FA code
+    Then user should be authenticated
+
+  @qase.id:32 @qase.suite:Authentication||Security||Session
+  Scenario: Session timeout after inactivity
+    Given user is logged in
+    And user is inactive for 30 minutes
+    When user performs an action
+    Then session should be expired
+    And user should be redirected to login

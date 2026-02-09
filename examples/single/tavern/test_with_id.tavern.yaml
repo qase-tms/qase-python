@@ -1,80 +1,253 @@
----
-test_name: QaseID=1 Test with QaseID success
-
-stages:
-  - name: Step 1
-    request:
-      url: https://jsonplaceholder.typicode.com/posts/1
-      method: GET
-    response:
-      status_code: 200
-      json:
-        id: 1
-        userId: 1
-        title: "sunt aut facere repellat provident occaecati excepturi optio reprehenderit"
-        body: "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
-
-  - name: Step 2
-    request:
-      url: https://jsonplaceholder.typicode.com/posts/1
-      method: GET
-    response:
-      status_code: 200
-      json:
-        id: 1
-        userId: 1
-        title: "sunt aut facere repellat provident occaecati excepturi optio reprehenderit"
-        body: "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
-
-  - name: Step 3
-    request:
-      url: https://jsonplaceholder.typicode.com/posts/1
-      method: GET
-    response:
-      status_code: 200
-      json:
-        id: 1
-        userId: 1
-        title: "sunt aut facere repellat provident occaecati excepturi optio reprehenderit"
-        body: "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
-
+# ==============================================================================
+# API Tests Linked to Qase Test Cases
+# ==============================================================================
+# Use QaseID=N in test_name to link tests to existing Qase test cases.
+# Each stage is automatically reported as a step in Qase.
 
 ---
-test_name: QaseID=2 Test with QaseID failed
+# Single Qase test case ID
+test_name: QaseID=1 User authentication flow
 
 stages:
-  - name: Step 1
+  - name: Step 1 - Get user credentials
     request:
-      url: https://jsonplaceholder.typicode.com/posts/1
+      url: https://jsonplaceholder.typicode.com/users/1
       method: GET
     response:
       status_code: 200
       json:
         id: 1
-        userId: 1
-        title: "sunt aut facere repellat provident occaecati excepturi optio reprehenderit"
-        body: "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+        email: Sincere@april.biz
+      save:
+        json:
+          user_id: id
+          user_email: email
 
-  - name: Step 2
+  - name: Step 2 - Verify user exists in system
     request:
-      url: https://jsonplaceholder.typicode.com/posts/1
+      url: https://jsonplaceholder.typicode.com/users/{user_id}
       method: GET
     response:
-      status_code: 300
+      status_code: 200
       json:
-        id: 1
-        userId: 1
-        title: "sunt aut facere repellat provident occaecati excepturi optio reprehenderit"
-        body: "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+        id: !int "{user_id}"
+        email: "{user_email}"
 
-  - name: Step 3
+---
+# Multiple Qase test case IDs
+test_name: QaseID=2,3 User posts CRUD operations
+
+stages:
+  - name: Step 1 - Get user posts
     request:
-      url: https://jsonplaceholder.typicode.com/posts/1
+      url: https://jsonplaceholder.typicode.com/posts
+      method: GET
+      params:
+        userId: 1
+    response:
+      status_code: 200
+      json:
+        - userId: 1
+      save:
+        json:
+          first_post_id: "[0].id"
+
+  - name: Step 2 - Verify specific post
+    request:
+      url: https://jsonplaceholder.typicode.com/posts/{first_post_id}
+      method: GET
+    response:
+      status_code: 200
+      json:
+        id: !int "{first_post_id}"
+        userId: 1
+
+  - name: Step 3 - Get post comments
+    request:
+      url: https://jsonplaceholder.typicode.com/posts/{first_post_id}/comments
+      method: GET
+    response:
+      status_code: 200
+
+---
+test_name: QaseID=10 Complete resource lifecycle
+
+stages:
+  - name: Step 1 - Create new resource
+    request:
+      url: https://jsonplaceholder.typicode.com/posts
+      method: POST
+      headers:
+        Content-Type: application/json
+      json:
+        title: New Resource Title
+        body: Resource description and content.
+        userId: 1
+    response:
+      status_code: 201
+      json:
+        title: New Resource Title
+      save:
+        json:
+          created_id: id
+
+  - name: Step 2 - Read created resource
+    request:
+      url: https://jsonplaceholder.typicode.com/posts/{created_id}
+      method: GET
+    response:
+      status_code: 200
+
+  - name: Step 3 - Update resource
+    request:
+      url: https://jsonplaceholder.typicode.com/posts/{created_id}
+      method: PUT
+      headers:
+        Content-Type: application/json
+      json:
+        id: !int "{created_id}"
+        title: Updated Resource Title
+        body: Updated description.
+        userId: 1
+    response:
+      status_code: 200
+      json:
+        title: Updated Resource Title
+
+  - name: Step 4 - Delete resource
+    request:
+      url: https://jsonplaceholder.typicode.com/posts/{created_id}
+      method: DELETE
+    response:
+      status_code: 200
+
+---
+test_name: QaseID=20 Nested resource retrieval
+
+stages:
+  - name: Step 1 - Get user details
+    request:
+      url: https://jsonplaceholder.typicode.com/users/1
       method: GET
     response:
       status_code: 200
       json:
         id: 1
+        company:
+          name: Romaguera-Crona
+      save:
+        json:
+          user_company: company.name
+
+  - name: Step 2 - Get user albums
+    request:
+      url: https://jsonplaceholder.typicode.com/users/1/albums
+      method: GET
+    response:
+      status_code: 200
+      save:
+        json:
+          album_id: "[0].id"
+
+  - name: Step 3 - Get album photos
+    request:
+      url: https://jsonplaceholder.typicode.com/albums/{album_id}/photos
+      method: GET
+    response:
+      status_code: 200
+
+---
+test_name: QaseID=30 Data validation test
+
+stages:
+  - name: Step 1 - Get all todos
+    request:
+      url: https://jsonplaceholder.typicode.com/todos
+      method: GET
+      params:
+        _limit: 5
+    response:
+      status_code: 200
+      # Verify response structure
+      json:
+        - id: 1
+          userId: 1
+          completed: !anybool
+
+  - name: Step 2 - Filter completed todos
+    request:
+      url: https://jsonplaceholder.typicode.com/todos
+      method: GET
+      params:
+        completed: true
+        _limit: 3
+    response:
+      status_code: 200
+      json:
+        - completed: true
+
+  - name: Step 3 - Filter by user
+    request:
+      url: https://jsonplaceholder.typicode.com/todos
+      method: GET
+      params:
         userId: 1
-        title: "sunt aut facere repellat provident occaecati excepturi optio reprehenderit"
-        body: "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+        _limit: 3
+    response:
+      status_code: 200
+      json:
+        - userId: 1
+
+---
+test_name: QaseID=40 Error handling scenarios
+
+stages:
+  - name: Step 1 - Request non-existent resource
+    request:
+      url: https://jsonplaceholder.typicode.com/posts/99999
+      method: GET
+    response:
+      status_code: 404
+
+  - name: Step 2 - Verify empty object response
+    request:
+      url: https://jsonplaceholder.typicode.com/posts/99999
+      method: GET
+    response:
+      status_code: 404
+      json: {}
+
+---
+test_name: QaseID=50 Pagination and sorting
+
+stages:
+  - name: Step 1 - Get first page
+    request:
+      url: https://jsonplaceholder.typicode.com/posts
+      method: GET
+      params:
+        _page: 1
+        _limit: 5
+    response:
+      status_code: 200
+
+  - name: Step 2 - Get second page
+    request:
+      url: https://jsonplaceholder.typicode.com/posts
+      method: GET
+      params:
+        _page: 2
+        _limit: 5
+    response:
+      status_code: 200
+
+  - name: Step 3 - Sort by title descending
+    request:
+      url: https://jsonplaceholder.typicode.com/posts
+      method: GET
+      params:
+        _sort: title
+        _order: desc
+        _limit: 5
+    response:
+      status_code: 200
