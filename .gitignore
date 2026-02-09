@@ -60,3 +60,6 @@ qaseio.lock
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+.planning/
+CLAUDE.md

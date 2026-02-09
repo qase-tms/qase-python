@@ -1,36 +1,80 @@
 # [Qase TestOps](https://qase.io) Pytest Reporter
 
-[![License](https://lxgaming.github.io/badges/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![PyPI version](https://img.shields.io/pypi/v/qase-pytest?style=flat-square)](https://pypi.org/project/qase-pytest/)
+[![PyPI downloads](https://img.shields.io/pypi/dm/qase-pytest?style=flat-square)](https://pypi.org/project/qase-pytest/)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://www.apache.org/licenses/LICENSE-2.0)
+
+Qase Pytest Reporter enables seamless integration between your Pytest tests and [Qase TestOps](https://qase.io), providing automatic test result reporting, test case management, and comprehensive test analytics.
+
+## Features
+
+- Link automated tests to Qase test cases by ID
+- Auto-create test cases from your test code
+- Report test results with rich metadata (fields, attachments, steps)
+- Support for parameterized tests
+- Multi-project reporting support
+- Flexible configuration (file, environment variables, CLI)
+- Built-in support for Playwright-based tests
 
 ## Installation
 
-To install the latest version, run:
-
 ```sh
-pip install pre qase-pytest
+pip install qase-pytest
 ```
 
-## Upgrade from 4.x to 5.x and to 6.x
+## Quick Start
 
-The new version 6.x of the Pytest reporter has breaking changes.
-To migrate from versions 4.x or 5.x, follow the [upgrade guide](docs/UPGRADE.md).
+**1. Create `qase.config.json` in your project root:**
+
+```json
+{
+  "mode": "testops",
+  "testops": {
+    "project": "YOUR_PROJECT_CODE",
+    "api": {
+      "token": "YOUR_API_TOKEN"
+    }
+  }
+}
+```
+
+**2. Add Qase ID to your test:**
+
+```python
+from qase.pytest import qase
+
+@qase.id(1)
+def test_example():
+    assert True
+```
+
+**3. Run your tests:**
+
+```sh
+pytest
+```
+
+## Upgrading
+
+For migration guides between major versions, see [Upgrade Guide](docs/UPGRADE.md).
 
 ## Configuration
 
-Qase Pytest Reporter is configured in multiple ways:
+The reporter is configured via (in order of priority):
 
-- using a config file `qase.config.json`
-- using environment variables
-- using command line options
+1. **CLI options** (`--qase-*`, highest priority)
+2. **Environment variables** (`QASE_*`)
+3. **Config file** (`qase.config.json`)
 
-Environment variables override the values given in the config file, 
-and command line options override both other values.
+### Minimal Configuration
 
-For complete configuration reference, see the [qase-python-commons README](../qase-python-commons/README.md) which contains all available configuration options.
+| Option | Environment Variable | CLI Option | Description |
+|--------|---------------------|------------|-------------|
+| `mode` | `QASE_MODE` | `--qase-mode` | Set to `testops` to enable reporting |
+| `testops.project` | `QASE_TESTOPS_PROJECT` | `--qase-testops-project` | Your Qase project code |
+| `testops.api.token` | `QASE_TESTOPS_API_TOKEN` | `--qase-testops-api-token` | Your Qase API token |
 
-
-
-### Example: qase.config.json
+### Example `qase.config.json`
 
 ```json
 {
@@ -39,11 +83,10 @@ For complete configuration reference, see the [qase-python-commons README](../qa
   "testops": {
     "project": "YOUR_PROJECT_CODE",
     "api": {
-      "token": "YOUR_API_TOKEN",
-      "host": "qase.io"
+      "token": "YOUR_API_TOKEN"
     },
     "run": {
-      "title": "Test run title"
+      "title": "Pytest Automated Run"
     },
     "batch": {
       "size": 100
@@ -62,187 +105,178 @@ For complete configuration reference, see the [qase-python-commons README](../qa
     "pytest": {
       "captureLogs": true
     }
-  },
-  "logging": {
-    "console": true,
-    "file": false
-  },
-  "environment": "local"
+  }
 }
 ```
 
+> **Full configuration reference:** See [qase-python-commons](../qase-python-commons/README.md) for all available options including logging, status mapping, execution plans, and more.
+
 ## Usage
 
-For detailed instructions on using annotations and methods, refer to [Usage](docs/usage.md).
+### Link Tests with Test Cases
 
-### Multi-Project Support
-
-Qase Pytest Reporter supports sending test results to multiple Qase projects simultaneously. 
-You can specify different test case IDs for each project using the `@qase.project_id()` decorator.
-
-For detailed information, configuration, and examples, see the [Multi-Project Support Guide](docs/MULTI_PROJECT.md).
-
-### Link tests with test cases in Qase TestOps
-
-To link the automated tests with the test cases in Qase TestOps, use the `@qase.id()` decorator.
-Other test data, such as case title, system and custom fields,
-can be added with `@qase.title()` and `@qase.fields()`:
+Associate your tests with Qase test cases using test case IDs:
 
 ```python
 from qase.pytest import qase
 
-@qase.id(13)
-@qase.title("My first test")
+# Single ID
+@qase.id(1)
+def test_single_id():
+    assert True
+
+# Multiple IDs
+@qase.id([2, 3])
+def test_multiple_ids():
+    assert True
+```
+
+### Add Metadata
+
+Enhance your tests with additional information:
+
+```python
+from qase.pytest import qase
+
+@qase.id(1)
+@qase.title("User Login Test")
+@qase.suite("Authentication")
 @qase.fields(
     ("severity", "critical"),
     ("priority", "high"),
-    ("layer", "unit"),
-    ("description", "Try to login to Qase TestOps using login and password"),
-    ("preconditions", "*Precondition 1*. Markdown is supported."),
+    ("layer", "e2e"),
+    ("description", "Verify user can log in with valid credentials"),
+    ("preconditions", "User account exists in the system"),
 )
-def test_example_1():
-    pass
-
-@qase.id([14, 15])
-def test_example_2():
-    pass
+def test_user_login():
+    assert True
 ```
 
-Each unique number can only be assigned once to the class or function being used.
+### Ignore Tests
 
-### Ignore a particular test
-
-To exclude a particular test from the report, use the `@qase.ignore` decorator:
+Exclude specific tests from Qase reporting (test still runs, but results are not sent):
 
 ```python
 from qase.pytest import qase
 
-@qase.ignore
-def test_example_1():
+@qase.ignore()
+def test_not_reported():
+    assert True
+```
+
+### Test Result Statuses
+
+| Pytest Result | Qase Status |
+|---------------|-------------|
+| Passed | `passed` |
+| Failed (AssertionError) | `failed` |
+| Failed (other exception) | `invalid` |
+| Skipped | `skipped` |
+
+### Attachments
+
+Attach files, screenshots, and logs to test results:
+
+```python
+from qase.pytest import qase
+
+def test_with_attachments():
+    # Attach file from path
+    qase.attach("/path/to/file.txt")
+
+    # Attach with custom MIME type
+    qase.attach(("/path/to/file.json", "application/json"))
+
+    # Attach content from memory
+    qase.attach((b"screenshot data", "image/png", "screenshot.png"))
+
+    assert True
+```
+
+### Test Steps
+
+Define test steps for detailed reporting:
+
+```python
+from qase.pytest import qase
+
+@qase.step("Open login page")
+def open_login():
     pass
+
+@qase.step("Enter credentials")
+def enter_credentials(username, password):
+    pass
+
+def test_login():
+    open_login()
+    enter_credentials("user", "pass")
+
+    # Inline step with context manager
+    with qase.step("Click login button"):
+        pass
 ```
 
-### Possible test result statuses
+> For detailed usage examples, see the [Usage Guide](docs/usage.md).
 
-- PASSED - when test passed
-- FAILED - when test failed with `AssertionError`
-- BLOCKED - when test failed with any other exception
-- SKIPPED - when test has been skipped
+## Running Tests
 
-### Capture network logs
+### Basic Execution
 
-To capture the network logs, enable the `http` option in the `framework.capture` section
-of the configuration file.
-
-The Qase Pytest reporter will capture all HTTP requests and responses
-and save them as a test steps automatically.
-
-### Add attachments to test results
-
-To upload screenshots, logs, and other information to Qase.io,
-use `qase.attach()`.
-It works both with files in the filesystem and with data available in the code.
-There is no limit on the amount of attachments from a single test.
-
-```python
-import pytest
-from qase.pytest import qase
-
-@qase.title("File attachments")
-def test_example_1():
-    # attach files from the filesystem:
-    qase.attach("/path/to/file", "/path/to/file/2")
-    # to add multiple attachments, pass them in tuples:
-    qase.attach(
-        ("/path/to/file/1", "application/json"),
-        ("/path/to/file/3", "application/xml"),
-    )
-
-@pytest.fixture(scope="session")
-def driver():
-    driver = webdriver.Chrome()
-    yield driver
-    logs = "\n".join(str(row) for row in driver.get_log('browser')).encode('utf-8')
-    # attach logs from a code variable as a text file:
-    qase.attach((logs, "text/plain", "browser.log"))
-    driver.quit()
-
-@qase.id(12)
-def test_example_2(driver):
-    # attach the output of driver.get_screenshot_as_png() as a png image
-    qase.attach((driver.get_screenshot_as_png(), "image/png", "result.png"))
+```sh
+pytest
 ```
 
-### Linking code with steps
+### With CLI Options
 
-To mark a test step, either annotate a function with `@qase.step()`,
-or use the `with qase.step()` context:
-
-```python
-from qase.pytest import qase
-
-@qase.step("First step") # test step name
-def some_step():
-    sleep(5)
-
-@qase.step("Second step")  # test step name
-def another_step():
-    sleep(3)
-
-# ...
-
-def test_example():
-    some_step()
-    another_step()
-    # test step hash
-    with qase.step("Third step"):
-        sleep(1)
-```
-
-### Creating new testrun according to current pytest run
-
-By default, qase-pytest will create a new test run in Qase TestOps
-and report results to this test run.
-To provide a custom name for this run, add
-the option `--qase-testops-run-title`.
-
-```bash
+```sh
 pytest \
     --qase-mode=testops \
-    --qase-testops-api-token=<your api token here> \
-    --qase-testops-project=PRJCODE \ # project, where your testrun would be created
-    --qase-testops-run-title=My\ First\ Automated\ Run
+    --qase-testops-project=PROJ \
+    --qase-testops-api-token=your_token
 ```
 
-### Sending tests to existing testrun
+### With Environment Variables
 
-Test results can be reported to an existing test run in Qase using its ID.
-This is useful when a test run combines tests from multiple sources:
-
-* manual and automated
-* autotests from different frameworks
-* tests running in multiple shards on different machines
-
-For example, if the test run has ID=3, the following command will
-run tests and report results to this test run:
-
-```bash
-pytest \
-    --qase-mode=testops \
-    --qase-testops-api-token=<your api token here> \
-    --qase-testops-project=PRJCODE \ # project, where the test run is created
-    --qase-testops-run-id=3 # testrun id
+```sh
+export QASE_MODE=testops
+export QASE_TESTOPS_PROJECT=PROJ
+export QASE_TESTOPS_API_TOKEN=your_token
+pytest
 ```
 
-### Creating test run based on test plan (selective launch)
+### With Existing Test Run
 
-Create a new testrun base on a testplan. Testrun in Qase TestOps will contain only those
-test results. `qase-pytest` supports selective execution.
-
-```bash
-pytest \
-    --qase-mode=testops \
-    --qase-testops-api-token=<your api token here> \
-    --qase-testops-project=PRJCODE \ # project, where your testrun exists in
-    --qase-testops-plan-id=3 # testplan id
+```sh
+pytest --qase-testops-run-id=123
 ```
+
+### With Test Plan
+
+```sh
+pytest --qase-testops-plan-id=456
+```
+
+## Requirements
+
+- Python >= 3.9
+- pytest >= 7.0.0
+
+## Documentation
+
+| Guide | Description |
+|-------|-------------|
+| [Usage Guide](docs/usage.md) | Complete usage reference with all decorators and options |
+| [Attachments](docs/ATTACHMENTS.md) | Adding screenshots, logs, and files to test results |
+| [Steps](docs/STEPS.md) | Defining test steps for detailed reporting |
+| [Parameters](docs/PARAMETERS.md) | Working with parameterized tests |
+| [Multi-Project Support](docs/MULTI_PROJECT.md) | Reporting to multiple Qase projects |
+| [Upgrade Guide](docs/UPGRADE.md) | Migration guide for breaking changes |
+
+## Examples
+
+See the [examples directory](../examples/) for complete working examples.
+
+## License
+
+Apache License 2.0. See [LICENSE](../LICENSE) for details.

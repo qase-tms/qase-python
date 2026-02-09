@@ -1,6 +1,20 @@
 # [Qase TestOps](https://qase.io) Robot Framework Reporter
 
-[![License](https://lxgaming.github.io/badges/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![PyPI version](https://img.shields.io/pypi/v/qase-robotframework?style=flat-square)](https://pypi.org/project/qase-robotframework/)
+[![PyPI downloads](https://img.shields.io/pypi/dm/qase-robotframework?style=flat-square)](https://pypi.org/project/qase-robotframework/)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://www.apache.org/licenses/LICENSE-2.0)
+
+Qase Robot Framework Reporter enables seamless integration between your Robot Framework tests and [Qase TestOps](https://qase.io), providing automatic test result reporting, test case management, and comprehensive test analytics.
+
+## Features
+
+- Link automated tests to Qase test cases by ID
+- Auto-create test cases from your test suites
+- Report test results with rich metadata (fields, parameters)
+- Automatic step reporting from keywords
+- Multi-project reporting support
+- Support for parallel execution with pabot
+- Flexible configuration (file, environment variables)
 
 ## Installation
 
@@ -8,38 +22,71 @@
 pip install qase-robotframework
 ```
 
-## Upgrade from 2.x to 3.x
+## Quick Start
 
-The new version 3.x of the Robot Framework reporter has breaking changes.
-To migrate from versions 2.x, follow the [upgrade guide](docs/UPGRADE.md).
+**1. Create `qase.config.json` in your project root:**
+
+```json
+{
+  "mode": "testops",
+  "testops": {
+    "project": "YOUR_PROJECT_CODE",
+    "api": {
+      "token": "YOUR_API_TOKEN"
+    }
+  }
+}
+```
+
+**2. Add Qase ID to your test:**
+
+```robotframework
+*** Test Cases ***
+User can log in with valid credentials
+    [Tags]    Q-1
+    Open Login Page
+    Enter Valid Credentials
+    Verify Dashboard Is Visible
+```
+
+**3. Run your tests:**
+
+```sh
+robot --listener qase.robotframework.Listener tests/
+```
+
+## Upgrading
+
+For migration guides between major versions, see [Upgrade Guide](docs/UPGRADE.md).
 
 ## Configuration
 
-Qase Robot Framework Reporter is configured in multiple ways:
+The reporter is configured via (in order of priority):
 
-- using a config file `qase.config.json`
-- using environment variables
+1. **Environment variables** (`QASE_*`, highest priority)
+2. **Config file** (`qase.config.json`)
 
-Environment variables override the values given in the config file.
+### Minimal Configuration
 
-For complete configuration reference, see the [qase-python-commons README](../qase-python-commons/README.md) which contains all available configuration options.
+| Option | Environment Variable | Description |
+|--------|---------------------|-------------|
+| `mode` | `QASE_MODE` | Set to `testops` to enable reporting |
+| `testops.project` | `QASE_TESTOPS_PROJECT` | Your Qase project code |
+| `testops.api.token` | `QASE_TESTOPS_API_TOKEN` | Your Qase API token |
 
-
-### Example: qase.config.json
+### Example `qase.config.json`
 
 ```json
 {
   "mode": "testops",
   "fallback": "report",
-  "debug": true,
   "testops": {
     "project": "YOUR_PROJECT_CODE",
     "api": {
-      "token": "YOUR_API_TOKEN",
-      "host": "qase.io"
+      "token": "YOUR_API_TOKEN"
     },
     "run": {
-      "title": "Test run title"
+      "title": "Robot Framework Automated Run"
     },
     "batch": {
       "size": 100
@@ -53,98 +100,135 @@ For complete configuration reference, see the [qase-python-commons README](../qa
         "format": "json"
       }
     }
-  },
-  "logging": {
-    "console": true,
-    "file": false
-  },
-  "environment": "local"
+  }
 }
 ```
 
+> **Full configuration reference:** See [qase-python-commons](../qase-python-commons/README.md) for all available options including logging, status mapping, execution plans, and more.
+
 ## Usage
 
-For detailed instructions on using annotations and methods, refer to [Usage](docs/usage.md).
+### Link Tests with Test Cases
 
-### Multi-Project Support
-
-Qase Robot Framework Reporter supports sending test results to multiple Qase projects simultaneously. 
-You can specify different test case IDs for each project using the `Q-PROJECT.PROJECT_CODE-IDS` tag format.
-
-For detailed information, configuration, and examples, see the [Multi-Project Support Guide](docs/MULTI_PROJECT.md).
-
-### Link tests with test cases in Qase TestOps
-
-To link the automated tests with the test cases in Qase TestOps, use the tags in form like
-`Q-<case id without project code>`.
-Example:
+Associate your tests with Qase test cases using the `Q-{ID}` tag:
 
 ```robotframework
 *** Test Cases ***
-Push button
-    [Tags]  q-2
-    Push button    1
-    Result should be    1
+User Registration
+    [Tags]    Q-1
+    Open Registration Page
+    Fill Registration Form
+    Submit Form
+    Verify Registration Success
 
-Push multiple buttons
-    [Tags]  Q-3
-    Push button    1
-    Push button    2
-    Result should be    12
+User Login
+    [Tags]    Q-2    Q-3
+    Open Login Page
+    Enter Credentials
+    Click Login Button
 ```
+
+### Add Metadata
+
+Enhance your tests with fields using the `qase.fields` tag:
 
 ```robotframework
-*** Test Cases ***    Expression    Expected
-Addition              12 + 2 + 2    16
-                      2 + -3        -1
-    [Tags]   Q-7
-
-Subtraction           12 - 2 - 2    8
-                      2 - -3        5
-    [Tags]   Q-8
+*** Test Cases ***
+Critical Purchase Flow
+    [Tags]    Q-1    qase.fields:{"severity":"critical","priority":"high","layer":"e2e"}
+    [Documentation]    Verify user can complete a purchase
+    Add Item To Cart
+    Proceed To Checkout
+    Complete Payment
 ```
 
-### Working with steps
+### Add Parameters
 
-Listener supports reporting steps results:
-
-Example:
-
-```robotframework
-Quick Get A JSON Body Test                                                  ## Test case: "Quick Get A JSON Body Test"
-    [Tags]  Q-3
-    ${response}=    GET  https://jsonplaceholder.typicode.com/posts/1       ## 1-st step - "GET"
-    Should Be Equal As Strings    1  ${response.json()}[id]                 ## 2-nd step - "Should Be Equal As Strings"
-
-Initializing the test case                                                  ## Test case: "Initializing the test case"
-    [Tags]  q-4
-    Set To Dictionary    ${info}   field1=A sample string                   ## 1-st step - "Set To Dictionary"
-```
-
-### Working with parameters
-
-Listener supports reporting parameters:
-
-Example:
+Report specific variables as parameters using the `qase.params` tag:
 
 ```robotframework
 *** Variables ***
-${var1}            1
-${var2}            1
-${var3}            2
+${USERNAME}    testuser
+${PASSWORD}    testpass
 
 *** Test Cases ***
-Simple test
-    [Arguments]    ${var1}    ${var2}   ${var3}
-    [Tags]     qase.params:[var1, var2]
-    Should Be Equal As Numbers    ${var1}    ${var2}
-    Should Be Equal As Numbers    ${var3}    ${var3} 
+Login Test
+    [Tags]    Q-1    qase.params:[USERNAME, PASSWORD]
+    Login With Credentials    ${USERNAME}    ${PASSWORD}
+    Verify Login Success
 ```
 
-Only `var1` and `var2` will be sent to Qase.
+### Ignore Tests
 
-### Execution:
+Exclude specific tests from Qase reporting:
 
+```robotframework
+*** Test Cases ***
+Work In Progress
+    [Tags]    qase.ignore
+    Log    This test is not reported to Qase
 ```
-robot --listener qase.robotframework.Listener someTest.robot
+
+### Test Result Statuses
+
+| Robot Framework Result | Qase Status |
+|------------------------|-------------|
+| PASS | `passed` |
+| FAIL (AssertionError) | `failed` |
+| FAIL (other exception) | `invalid` |
+| SKIP | `skipped` |
+
+> For detailed usage examples, see the [Usage Guide](docs/usage.md).
+
+## Running Tests
+
+### Basic Execution
+
+```sh
+robot --listener qase.robotframework.Listener tests/
 ```
+
+### With Environment Variables
+
+```sh
+export QASE_MODE=testops
+export QASE_TESTOPS_PROJECT=PROJ
+export QASE_TESTOPS_API_TOKEN=your_token
+robot --listener qase.robotframework.Listener tests/
+```
+
+### With Robot Variables
+
+```sh
+robot --listener qase.robotframework.Listener \
+    --variable QASE_TESTOPS_PROJECT:PROJ \
+    --variable QASE_TESTOPS_API_TOKEN:your_token \
+    tests/
+```
+
+### Parallel Execution with Pabot
+
+```sh
+pabot --listener qase.robotframework.Listener tests/
+```
+
+## Requirements
+
+- Python >= 3.9
+- robotframework >= 5.0.0
+
+## Documentation
+
+| Guide | Description |
+|-------|-------------|
+| [Usage Guide](docs/usage.md) | Complete usage reference with all tags and options |
+| [Multi-Project Support](docs/MULTI_PROJECT.md) | Reporting to multiple Qase projects |
+| [Upgrade Guide](docs/UPGRADE.md) | Migration guide for breaking changes |
+
+## Examples
+
+See the [examples directory](../examples/) for complete working examples.
+
+## License
+
+Apache License 2.0. See [LICENSE](../LICENSE) for details.

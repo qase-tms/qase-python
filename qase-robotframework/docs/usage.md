@@ -1,259 +1,449 @@
 # Qase Integration in Robot Framework
 
-This guide demonstrates how to integrate Qase with Robot Framework, providing instructions on how to add Qase IDs, fields, and other metadata to your test cases.
+This guide provides comprehensive instructions for integrating Qase with Robot Framework.
 
 > **Configuration:** For complete configuration reference including all available options, environment variables, and examples, see the [qase-python-commons README](../../qase-python-commons/README.md).
 
-## Adding QaseID to a Test
+---
 
-To associate a QaseID with a test in Robot Framework, use the `Q-{ID}` tag format.
+## Table of Contents
+
+- [Adding QaseID](#adding-qaseid)
+- [Adding Fields](#adding-fields)
+- [Adding Parameters](#adding-parameters)
+- [Ignoring Tests](#ignoring-tests)
+- [Working with Steps](#working-with-steps)
+- [Multi-Project Support](#multi-project-support)
+- [Running Tests](#running-tests)
+- [Complete Examples](#complete-examples)
+
+---
+
+## Adding QaseID
+
+Link your tests to existing test cases in Qase using the `Q-{ID}` tag format.
+
+### Single ID
 
 ```robotframework
 *** Test Cases ***
-Test with QaseID
-    [Tags]    Q-10
-    Step 01
-    Step 02
-    Passed step
+User Can Log In
+    [Tags]    Q-1
+    Open Login Page
+    Enter Valid Credentials
+    Verify Dashboard Is Visible
+```
 
-Test with multiple QaseIDs
-    [Tags]    Q-11    Q-12
-    Step 01
-    Step 02
-    Passed step
+### Multiple IDs
+
+Link one test to multiple test cases:
+
+```robotframework
+*** Test Cases ***
+Complete Purchase Flow
+    [Tags]    Q-1    Q-2    Q-3
+    Add Item To Cart
+    Proceed To Checkout
+    Complete Payment
+```
+
+### Case Insensitive
+
+Both `Q-1` and `q-1` are valid:
+
+```robotframework
+*** Test Cases ***
+Test With Lowercase Tag
+    [Tags]    q-1
+    Log    This works too
 ```
 
 ### Multi-Project Support
 
-Qase Robot Framework Reporter supports sending test results to multiple Qase projects simultaneously with different test case IDs for each project.
-
-For detailed information, configuration, examples, and troubleshooting, see the [Multi-Project Support Guide](MULTI_PROJECT.md).
+To send test results to multiple Qase projects simultaneously, see the [Multi-Project Support Guide](MULTI_PROJECT.md).
 
 ---
 
-## Adding Fields to a Test
+## Adding Fields
 
-The `qase.fields` tag allows you to add additional metadata to a test case using JSON format.
+Add metadata to your tests using the `qase.fields` tag with JSON format.
+
+### System Fields
+
+| Field | Description | Example Values |
+|-------|-------------|----------------|
+| `description` | Test case description | Any text |
+| `preconditions` | Test preconditions | Any text |
+| `postconditions` | Test postconditions | Any text |
+| `severity` | Test severity | `blocker`, `critical`, `major`, `normal`, `minor`, `trivial` |
+| `priority` | Test priority | `high`, `medium`, `low` |
+| `layer` | Test layer | `e2e`, `api`, `unit` |
+
+### Example
 
 ```robotframework
 *** Test Cases ***
-Test with fields
-    [Tags]    qase.fields:{"priority": "high", "severity": "critical", "layer": "UI"}
-    Step 01
-    Step 02
-    Passed step
-
-Test with description and preconditions
-    [Tags]    qase.fields:{"description": "User login test", "preconditions": "User is not logged in"}
-    Step 01
-    Step 02
-    Passed step
+Critical Purchase Flow
+    [Tags]    Q-1    qase.fields:{"severity":"critical","priority":"high","layer":"e2e"}
+    Add Item To Cart
+    Complete Checkout
 ```
 
-### Available Fields
+### With Documentation
 
-You can add any custom fields, but some common ones include:
+Robot Framework's `[Documentation]` is automatically used as the test description:
 
-- `description` - Description of the test case
-- `preconditions` - Preconditions for the test case
-- `postconditions` - Postconditions for the test case
-- `severity` - Severity of the test case (e.g., `critical`, `major`)
-- `priority` - Priority of the test case (e.g., `high`, `low`)
-- `layer` - Test layer (e.g., `UI`, `API`)
+```robotframework
+*** Test Cases ***
+User Registration
+    [Documentation]    Verify new user can register with valid email
+    [Tags]    Q-1    qase.fields:{"severity":"major","preconditions":"User not registered"}
+    Open Registration Page
+    Fill Registration Form
+    Submit Form
+    Verify Success Message
+```
+
+### Fields in Keywords
+
+Fields can also be added to user keywords:
+
+```robotframework
+*** Keywords ***
+Verify Critical Feature
+    [Tags]    qase.fields:{"severity":"critical"}
+    Log    Verifying critical feature
+```
 
 ---
 
-## Adding Parameters to a Test
+## Adding Parameters
 
-The `qase.params` tag allows you to specify which Robot Framework variables should be reported as parameters.
+Report specific variables as test parameters using the `qase.params` tag.
+
+### Basic Usage
 
 ```robotframework
 *** Variables ***
-${username}    testuser
-${password}    testpass
-${browser}     chrome
+${USERNAME}    testuser
+${PASSWORD}    testpass
+${BROWSER}     chrome
 
 *** Test Cases ***
 Login Test
-    [Tags]    qase.params:[username, password]
-    Login with credentials    ${username}    ${password}
-    Verify login successful
-
-Browser Test
-    [Tags]    qase.params:[browser]
-    Open browser    ${browser}
-    Navigate to page
-    Close browser
+    [Tags]    Q-1    qase.params:[USERNAME, PASSWORD]
+    Login With Credentials    ${USERNAME}    ${PASSWORD}
 ```
 
-### Adding Parameters and Fields to a User Keyword
+Only `USERNAME` and `PASSWORD` will be reported to Qase.
 
-The `qase.params` tag can also be used in user keywords to specify which Robot Framework variables should be reported as parameters.
+### Multiple Parameters
 
 ```robotframework
-*** Settings ***
-Test Template    Check Status
+*** Variables ***
+${ENV}         staging
+${BROWSER}     chrome
+${USER_TYPE}   admin
 
+*** Test Cases ***
+Cross-Browser Test
+    [Tags]    Q-1    qase.params:[ENV, USER_TYPE]
+    Set Environment    ${ENV}
+    Login As    ${USER_TYPE}
+    Run Test In Browser    ${BROWSER}
+```
+
+### Parameters in Keywords
+
+```robotframework
 *** Keywords ***
-Check Status
-    [Arguments]    ${module}     
-    [Tags]    qase.params:[module]    qase.fields:{ "severity": "critical" }
+Check Module Status
+    [Arguments]    ${module}
+    [Tags]    qase.params:[module]    qase.fields:{"severity":"critical"}
     Log    Checking status of module: ${module}
 
 *** Test Cases ***
-Check Status of BMS
-    [Tags]   Q-20     qase.fields:{ "preconditions": "Module BMS is connected", "description": "Flash firmware to BMS module and check status" }
-    [Template]    Check Status
-    BMS 
-
-```
-
----
-
-## Ignoring a Test in Qase
-
-To exclude a test from being reported to Qase (while still executing the test), use the `qase.ignore` tag.
-
-```robotframework
-*** Test Cases ***
-Ignored test
-    [Tags]    qase.ignore
-    Step 01
-    Step 02
-    Passed step
-```
-
----
-
-## Combining Multiple Tags
-
-You can combine multiple Qase tags in a single test:
-
-```robotframework
-*** Test Cases ***
-Complete test with all metadata
-    [Tags]    Q-15    qase.fields:{"priority": "high", "severity": "critical"}    qase.params:[username, password]
-    Step 01
-    Step 02
-    Passed step
-```
-
----
-
-## Test Documentation
-
-Robot Framework automatically uses the test documentation as the test description in Qase:
-
-```robotframework
-*** Test Cases ***
-User Login Test
-    [Documentation]    Test user login functionality with valid credentials
+Check BMS Status
     [Tags]    Q-20
-    Step 01
-    Step 02
-    Passed step
+    Check Module Status    BMS
 ```
 
 ---
 
-## Advanced Configuration
+## Ignoring Tests
 
-For complete configuration options including parallel execution, environment variables, and all other settings, see the [qase-python-commons README](../../qase-python-commons/README.md) and [Robot Framework Configuration Reference](CONFIGURATION.md).
+Exclude tests from Qase reporting while still executing them:
 
-### Parallel Execution
-
-For parallel execution with pabot, the plugin automatically handles worker coordination:
-
-```bash
-pabot --listener qase.robotframework.Listener --variable QASE_TESTOPS_PROJECT:PROJECT_CODE --variable QASE_TESTOPS_API_TOKEN:YOUR_TOKEN tests/
+```robotframework
+*** Test Cases ***
+Work In Progress
+    [Tags]    qase.ignore
+    Log    This test runs but is not reported
 ```
 
 ---
 
-## Examples
+## Working with Steps
 
-### Complete Test Suite Example
+Robot Framework keywords are automatically reported as test steps.
+
+### Basic Keywords as Steps
+
+```robotframework
+*** Test Cases ***
+Login Flow
+    [Tags]    Q-1
+    Open Login Page           # Step 1
+    Enter Username            # Step 2
+    Enter Password            # Step 3
+    Click Login Button        # Step 4
+    Verify Dashboard          # Step 5
+```
+
+### Nested Keywords
+
+```robotframework
+*** Keywords ***
+Complete Login
+    Open Login Page
+    Enter Credentials    ${USERNAME}    ${PASSWORD}
+    Click Login Button
+
+Enter Credentials
+    [Arguments]    ${user}    ${pass}
+    Input Text    id=username    ${user}
+    Input Text    id=password    ${pass}
+
+*** Test Cases ***
+User Login
+    [Tags]    Q-1
+    Complete Login            # Parent step
+    Verify Dashboard
+```
+
+### Custom Step Names
+
+Use meaningful keyword names for better step reporting:
+
+```robotframework
+*** Keywords ***
+User Navigates To Product Page
+    Go To    ${BASE_URL}/products
+
+User Adds Item To Cart
+    Click Button    id=add-to-cart
+
+User Proceeds To Checkout
+    Click Button    id=checkout
+
+*** Test Cases ***
+Purchase Flow
+    [Tags]    Q-1
+    User Navigates To Product Page
+    User Adds Item To Cart
+    User Proceeds To Checkout
+```
+
+---
+
+## Multi-Project Support
+
+Send test results to multiple Qase projects using the `Q-PROJECT.CODE-IDS` tag format:
+
+```robotframework
+*** Test Cases ***
+Shared Test
+    [Tags]    Q-PROJECT.PROJ1-1,2    Q-PROJECT.PROJ2-10
+    Log    This test is reported to both projects
+```
+
+For detailed configuration, examples, and troubleshooting, see the [Multi-Project Support Guide](MULTI_PROJECT.md).
+
+---
+
+## Running Tests
+
+### Basic Execution
+
+```sh
+robot --listener qase.robotframework.Listener tests/
+```
+
+### With Environment Variables
+
+```sh
+export QASE_MODE=testops
+export QASE_TESTOPS_PROJECT=PROJ
+export QASE_TESTOPS_API_TOKEN=your_token
+robot --listener qase.robotframework.Listener tests/
+```
+
+### With Robot Variables
+
+```sh
+robot --listener qase.robotframework.Listener \
+    --variable QASE_MODE:testops \
+    --variable QASE_TESTOPS_PROJECT:PROJ \
+    --variable QASE_TESTOPS_API_TOKEN:your_token \
+    tests/
+```
+
+### Run Specific Suite
+
+```sh
+robot --listener qase.robotframework.Listener tests/login.robot
+```
+
+### Run With Tags
+
+```sh
+robot --listener qase.robotframework.Listener --include smoke tests/
+```
+
+### Parallel Execution with Pabot
+
+```sh
+pabot --listener qase.robotframework.Listener tests/
+```
+
+### With Existing Test Run
+
+```sh
+robot --listener qase.robotframework.Listener \
+    --variable QASE_TESTOPS_RUN_ID:123 \
+    tests/
+```
+
+---
+
+## Complete Examples
+
+### Full Test Suite
 
 ```robotframework
 *** Settings ***
 Library    SeleniumLibrary
-Library    steps.py
+Library    Collections
 
 *** Variables ***
-${base_url}    https://example.com
-${username}    testuser
-${password}    testpass
+${BASE_URL}     https://example.com
+${BROWSER}      chrome
+${USERNAME}     testuser
+${PASSWORD}     testpass
 
 *** Test Cases ***
-User Registration Test
-    [Documentation]    Test user registration with valid data
-    [Tags]    Q-1    qase.fields:{"priority": "high", "severity": "critical", "layer": "UI"}
-    [Setup]    Open browser    ${base_url}    chrome
-    Navigate to registration page
-    Fill registration form    ${username}    ${password}
-    Submit registration form
-    Verify registration successful
-    [Teardown]    Close browser
+User Registration
+    [Documentation]    Verify new user can register successfully
+    [Tags]    Q-1    qase.fields:{"severity":"critical","priority":"high","layer":"e2e"}
+    [Setup]    Open Browser    ${BASE_URL}    ${BROWSER}
+    Navigate To Registration Page
+    Fill Registration Form    ${USERNAME}    ${PASSWORD}
+    Submit Form
+    Verify Registration Success
+    [Teardown]    Close Browser
 
-User Login Test
-    [Documentation]    Test user login with valid credentials
-    [Tags]    Q-2    qase.params:[username, password]
-    [Setup]    Open browser    ${base_url}    chrome
-    Navigate to login page
-    Fill login form    ${username}    ${password}
-    Submit login form
-    Verify login successful
-    [Teardown]    Close browser
+User Login With Valid Credentials
+    [Documentation]    Verify registered user can login
+    [Tags]    Q-2    qase.params:[USERNAME, PASSWORD]
+    [Setup]    Open Browser    ${BASE_URL}    ${BROWSER}
+    Navigate To Login Page
+    Enter Credentials    ${USERNAME}    ${PASSWORD}
+    Click Login Button
+    Verify Dashboard Is Visible
+    [Teardown]    Close Browser
+
+User Login With Invalid Password
+    [Documentation]    Verify error message for invalid password
+    [Tags]    Q-3    qase.fields:{"severity":"major"}
+    [Setup]    Open Browser    ${BASE_URL}    ${BROWSER}
+    Navigate To Login Page
+    Enter Credentials    ${USERNAME}    wrongpassword
+    Click Login Button
+    Verify Error Message Is Shown
+    [Teardown]    Close Browser
 
 Ignored Test
-    [Documentation]    This test is ignored in Qase
     [Tags]    qase.ignore
-    Step 01
-    Step 02
-    Passed step
+    Log    This test is not reported to Qase
 
 *** Keywords ***
-Navigate to registration page
-    Go to    ${base_url}/register
+Navigate To Registration Page
+    Go To    ${BASE_URL}/register
 
-Fill registration form
-    [Arguments]    ${username}    ${password}
-    Input text    id=username    ${username}
-    Input text    id=password    ${password}
+Navigate To Login Page
+    Go To    ${BASE_URL}/login
 
-Submit registration form
-    Click button    id=submit
+Fill Registration Form
+    [Arguments]    ${user}    ${pass}
+    Input Text    id=username    ${user}
+    Input Text    id=email       ${user}@example.com
+    Input Text    id=password    ${pass}
+    Input Text    id=confirm     ${pass}
 
-Verify registration successful
-    Page should contain    Registration successful
+Enter Credentials
+    [Arguments]    ${user}    ${pass}
+    Input Text    id=username    ${user}
+    Input Text    id=password    ${pass}
 
-Navigate to login page
-    Go to    ${base_url}/login
+Submit Form
+    Click Button    id=submit
 
-Fill login form
-    [Arguments]    ${username}    ${password}
-    Input text    id=username    ${username}
-    Input text    id=password    ${password}
+Click Login Button
+    Click Button    id=login
 
-Submit login form
-    Click button    id=submit
+Verify Registration Success
+    Page Should Contain    Registration successful
 
-Verify login successful
-    Page should contain    Welcome
+Verify Dashboard Is Visible
+    Page Should Contain Element    id=dashboard
+
+Verify Error Message Is Shown
+    Page Should Contain    Invalid credentials
 ```
 
-### Running Tests
+### Example Project Structure
 
-```bash
-# Basic run
-robot --listener qase.robotframework.Listener --variable QASE_TESTOPS_PROJECT:MYPROJECT --variable QASE_TESTOPS_API_TOKEN:YOUR_TOKEN tests/
-
-# With environment and plan
-robot --listener qase.robotframework.Listener --variable QASE_TESTOPS_PROJECT:MYPROJECT --variable QASE_TESTOPS_API_TOKEN:YOUR_TOKEN --variable QASE_ENVIRONMENT:staging --variable QASE_TESTOPS_PLAN_ID:123 tests/
-
-# With execution plan
-robot --listener qase.robotframework.Listener --variable QASE_TESTOPS_PROJECT:MYPROJECT --variable QASE_TESTOPS_API_TOKEN:YOUR_TOKEN --variable QASE_EXECUTION_PLAN_PATH:plan.json tests/
-
-# Parallel execution
-pabot --listener qase.robotframework.Listener --variable QASE_TESTOPS_PROJECT:MYPROJECT --variable QASE_TESTOPS_API_TOKEN:YOUR_TOKEN tests/
 ```
+my-project/
+├── qase.config.json
+├── tests/
+│   ├── login.robot
+│   ├── checkout.robot
+│   └── api/
+│       └── users.robot
+├── resources/
+│   ├── keywords.robot
+│   └── variables.robot
+└── requirements.txt
+```
+
+---
+
+## Troubleshooting
+
+### Tests Not Appearing in Qase
+
+1. Verify `mode` is set to `testops`
+2. Check API token has write permissions
+3. Verify project code is correct
+4. Ensure listener is specified: `--listener qase.robotframework.Listener`
+
+### Parameters Not Reporting
+
+1. Verify variable names match exactly (case-sensitive)
+2. Check `qase.params` syntax: `qase.params:[VAR1, VAR2]`
+3. Ensure variables are defined
+
+### Parallel Execution Issues
+
+1. Use pabot instead of robot for parallel runs
+2. Ensure each worker has access to configuration
+3. Check for race conditions in shared resources
+
+---
+
+## See Also
+
+- [Configuration Reference](../../qase-python-commons/README.md)
+- [Multi-Project Support](MULTI_PROJECT.md)
+- [Upgrade Guide](UPGRADE.md)
