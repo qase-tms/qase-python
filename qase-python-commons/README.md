@@ -1,20 +1,46 @@
 # Qase Python Commons
 
-## Description
+[![PyPI version](https://img.shields.io/pypi/v/qase-python-commons?style=flat-square)](https://pypi.org/project/qase-python-commons/)
+[![PyPI downloads](https://img.shields.io/pypi/dm/qase-python-commons?style=flat-square)](https://pypi.org/project/qase-python-commons/)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://www.apache.org/licenses/LICENSE-2.0)
 
-This module is an SDK for developing test reporters for Qase TMS.
-It's using `qase-api-client` as an API client, and all Qase Python reporters are, in turn,
-using this package.
-You should use it if you're developing your own test reporter for a special-purpose framework.
+Core library for all Qase Python reporters. Contains the complete configuration reference.
 
-To report results from tests using a popular framework or test runner,
-don't install this module directly and
-use the corresponding reporter module instead:
+## Table of Contents
 
-* [Pytest](https://github.com/qase-tms/qase-python/tree/main/qase-pytest#readme)
-* [Behave](https://github.com/qase-tms/qase-python/tree/main/qase-behave#readme)
-* [Robot Framework](https://github.com/qase-tms/qase-python/tree/main/qase-robotframework#readme)
-* [Tavern](https://github.com/qase-tms/qase-python/tree/main/qase-tavern#readme)
+- [About](#about)
+- [Installation](#installation)
+- [Reporters](#reporters)
+- [Configuration](#configuration)
+  - [Configuration Priority](#configuration-priority)
+  - [Reporter Modes](#reporter-modes)
+  - [Common Options](#common-options)
+  - [TestOps Options (Single Project)](#testops-options-single-project)
+  - [TestOps Multi Options (Multiple Projects)](#testops-multi-options-multiple-projects)
+  - [Local Report Options](#local-report-options)
+  - [Logging Options](#logging-options)
+  - [Framework-Specific Options](#framework-specific-options)
+- [Configuration Examples](#configuration-examples)
+  - [Single Project (testops)](#single-project-testops)
+  - [Multiple Projects (testops_multi)](#multiple-projects-testops_multi)
+  - [Environment Variables](#environment-variables)
+- [Additional Features](#additional-features)
+  - [Status Mapping](#status-mapping)
+  - [Status Filtering](#status-filtering)
+  - [External Links](#external-links)
+  - [Test Run Configurations](#test-run-configurations)
+
+---
+
+## About
+
+This module is an SDK for developing test reporters for Qase TMS. It uses `qase-api-client` as an API client, and all Qase Python reporters depend on this package.
+
+**Use this library if:**
+- You're developing a custom reporter for a specialized framework
+- You need a complete configuration reference
+
+**For testing, use the ready-made reporters** — see [Reporters](#reporters) section.
 
 ## Installation
 
@@ -22,99 +48,139 @@ use the corresponding reporter module instead:
 pip install qase-python-commons
 ```
 
+## Reporters
+
+For popular frameworks, use the ready-made reporters:
+
+| Framework | Package | Documentation |
+|-----------|---------|---------------|
+| Pytest | `qase-pytest` | [README](https://github.com/qase-tms/qase-python/tree/main/qase-pytest#readme) |
+| Behave | `qase-behave` | [README](https://github.com/qase-tms/qase-python/tree/main/qase-behave#readme) |
+| Robot Framework | `qase-robotframework` | [README](https://github.com/qase-tms/qase-python/tree/main/qase-robotframework#readme) |
+| Tavern | `qase-tavern` | [README](https://github.com/qase-tms/qase-python/tree/main/qase-tavern#readme) |
+
+---
+
 ## Configuration
 
-Qase Python Reporters can be configured in multiple ways:
+### Configuration Priority
 
-* using a config file `qase.config.json`
-* using environment variables
-* using command line options (for frameworks that support it, like pytest and tavern)
+Qase Python reporters support three configuration methods (in order of priority):
 
-Environment variables override the values given in the config file,
-and command line options override both other values.
+1. **CLI options** (pytest and tavern only) — highest priority
+2. **Environment variables** (`QASE_*`)
+3. **Config file** (`qase.config.json`) — lowest priority
 
-All configuration options are listed in the tables below:
+### Reporter Modes
 
-### Common Configuration
+The reporter mode is set via the `mode` option:
 
-| Description                                                                                                           | Config file                | Environment variable            | Default value                           | Required | Possible values            |
-|-----------------------------------------------------------------------------------------------------------------------|----------------------------|---------------------------------|-----------------------------------------|----------|----------------------------|
-| **Common**                                                                                                            |                            |                                 |                                         |          |                            |
-| Mode of reporter                                                                                                      | `mode`                     | `QASE_MODE`                     | `off`                                  | No       | `testops`, `testops_multi`, `report`, `off` |
-| Fallback mode of reporter                                                                                             | `fallback`                 | `QASE_FALLBACK`                 | `off`                                   | No       | `testops`, `testops_multi`, `report`, `off` |
-| Environment                                                                                                           | `environment`              | `QASE_ENVIRONMENT`              | undefined                              | No       | Any string                 |
-| Root suite                                                                                                            | `rootSuite`                | `QASE_ROOT_SUITE`               | undefined                               | No       | Any string                 |
-| Enable debug logs                                                                                                     | `debug`                    | `QASE_DEBUG`                    | `False`                                 | No       | `True`, `False`            |
-| Execution plan path                                                                                                   | `executionPlan.path`       | `QASE_EXECUTION_PLAN_PATH`      | `./build/qase-execution-plan.json`      | No       | Any string                 |
-| Exclude parameters from test results                                                                                  | `excludeParams`            | `QASE_EXCLUDE_PARAMS`           | undefined                               | No       | Comma-separated list of parameter names |
-| Map test result statuses to different values (format: `fromStatus=toStatus`)                                          | `statusMapping`            | `QASE_STATUS_MAPPING`           | undefined                               | No       | Object mapping statuses (e.g., `{"invalid": "failed", "skipped": "passed"}`) |
-| **Logging configuration**                                                                                             |                            |                                 |                                         |          |                            |
-| Enable/disable console output for reporter logs                                                                       | `logging.console`          | `QASE_LOGGING_CONSOLE`          | `True`                                  | No       | `True`, `False`            |
-| Enable/disable file output for reporter logs                                                                          | `logging.file`             | `QASE_LOGGING_FILE`             | Same as `debug` setting                 | No       | `True`, `False`            |
-| **Qase Report configuration**                                                                                         |                            |                                 |                                         |          |                            |
-| Driver used for report mode                                                                                           | `report.driver`            | `QASE_REPORT_DRIVER`            | `local`                                 | No       | `local`                    |
-| Path to save the report                                                                                               | `report.connection.path`   | `QASE_REPORT_CONNECTION_PATH`   | `./build/qase-report`                   | No       | Any string                 |
-| Local report format                                                                                                   | `report.connection.format` | `QASE_REPORT_CONNECTION_FORMAT` | `json`                                  | No       | `json`, `jsonp`            |
-| **Qase TestOps configuration (single project)**                                                                       |                            |                                 |                                         |          |                            |
-| Token for [API access](https://developers.qase.io/#authentication)                                                    | `testops.api.token`        | `QASE_TESTOPS_API_TOKEN`        |  undefined                              | Yes*     | Any string                 |
-| Qase API host. For enterprise users, specify address: `example.qase.io`                                           | `testops.api.host`         | `QASE_TESTOPS_API_HOST`         | `qase.io`                               | No       | Any string                 |
-| Code of your project, which you can take from the URL: `https://app.qase.io/project/DEMOTR` - `DEMOTR` is the project code | `testops.project`          | `QASE_TESTOPS_PROJECT`          |  undefined                              | Yes*     | Any string                 |
-| Qase test run ID                                                                                                      | `testops.run.id`           | `QASE_TESTOPS_RUN_ID`           |  undefined                              | No       | Any integer                |
-| Qase test run title                                                                                                   | `testops.run.title`        | `QASE_TESTOPS_RUN_TITLE`        | `Automated run <Current date and time>` | No       | Any string                 |
-| Qase test run description                                                                                             | `testops.run.description`  | `QASE_TESTOPS_RUN_DESCRIPTION`  | `<Framework name> automated run`        | No       | Any string                 |
-| Qase test run complete                                                                                                | `testops.run.complete`     | `QASE_TESTOPS_RUN_COMPLETE`     | `True`                                  | No       | `True`, `False`            |
-| Array of tags to be added to the test run                                                                             | `testops.run.tags`         | `QASE_TESTOPS_RUN_TAGS`         | `[]`                                    | No       | Array of strings           |
-| External link to associate with test run (e.g., Jira ticket)                                                          | `testops.run.externalLink` | `QASE_TESTOPS_RUN_EXTERNAL_LINK` | undefined                              | No       | JSON object with `type` (`jiraCloud` or `jiraServer`) and `link` (e.g., `PROJ-123`) |
-| Qase test plan ID                                                                                                     | `testops.plan.id`          | `QASE_TESTOPS_PLAN_ID`          |  undefined                              | No       | Any integer                |
-| Size of batch for sending test results                                                                                | `testops.batch.size`       | `QASE_TESTOPS_BATCH_SIZE`       | `200`                                   | No       | Any integer (1 to 2000)    |
-| Enable defects for failed test cases                                                                                  | `testops.defect`           | `QASE_TESTOPS_DEFECT`           | `False`                                 | No       | `True`, `False`            |
-| Filter test results by status (comma-separated list of statuses to exclude from reporting)                           | `testops.statusFilter`              | `QASE_TESTOPS_STATUS_FILTER`             | undefined                               | No       | Array of strings (`passed`, `failed`, `skipped`, `invalid`) |
-| Configuration values to create/find in groups (format: `group1=value1,group2=value2`)                                | `testops.configurations.values`     | `QASE_TESTOPS_CONFIGURATIONS_VALUES`     | undefined                               | No       | Array of objects with `name` and `value` fields |
-| Create configuration groups if they don't exist                                                                       | `testops.configurations.createIfNotExists` | `QASE_TESTOPS_CONFIGURATIONS_CREATE_IF_NOT_EXISTS` | `false`                          | No       | `True`, `False`            |
-| Enable public report link generation and display after test run completion                                            | `testops.showPublicReportLink`      | `QASE_TESTOPS_SHOW_PUBLIC_REPORT_LINK`   | `False`                                 | No       | `True`, `False`            |
-| **Qase TestOps Multi-Project configuration**                                                                          |                            |                                 |                                         |          |                            |
-| Default project code for tests without explicit project mapping                                                        | `testops_multi.default_project`     | `QASE_TESTOPS_MULTI_DEFAULT_PROJECT` | undefined                              | No       | Any string (must match one of the project codes in `projects`) |
-| Array of project configurations                                                                                       | `testops_multi.projects`   | N/A (use config file)           | `[]`                                    | Yes**    | Array of project configuration objects |
-| Project code                                                                                                           | `testops_multi.projects[].code`     | N/A                              | undefined                              | Yes**    | Any string                 |
-| Project-specific test run title                                                                                        | `testops_multi.projects[].run.title` | N/A                            | `Automated Run <project_code> <Current date and time>` | No       | Any string                 |
-| Project-specific test run description                                                                                  | `testops_multi.projects[].run.description` | N/A                        | `Automated Run <project_code> <Current date and time>` | No       | Any string                 |
-| Project-specific test run complete                                                                                     | `testops_multi.projects[].run.complete` | N/A                          | `True`                                  | No       | `True`, `False`            |
-| Project-specific test run ID                                                                                          | `testops_multi.projects[].run.id`   | N/A                              | undefined                              | No       | Any integer                |
-| Project-specific test run tags                                                                                         | `testops_multi.projects[].run.tags` | N/A                             | `[]`                                    | No       | Array of strings           |
-| Project-specific external link                                                                                         | `testops_multi.projects[].run.externalLink` | N/A                        | undefined                              | No       | JSON object with `type` and `link` |
-| Project-specific test plan ID                                                                                          | `testops_multi.projects[].plan.id` | N/A                              | undefined                              | No       | Any integer                |
-| Project-specific environment                                                                                           | `testops_multi.projects[].environment` | N/A                          | Uses global `environment` if not set    | No       | Any string or integer (environment ID) |
+| Mode | Description |
+|------|-------------|
+| `testops` | Send results to a single Qase project |
+| `testops_multi` | Send results to multiple projects |
+| `report` | Generate a local JSON report |
+| `off` | Reporter disabled (default) |
 
-\* Required when using `testops` mode  
+### Common Options
+
+| Description | Config file | Environment variable | Default | Required |
+|-------------|-------------|---------------------|---------|----------|
+| Reporter mode | `mode` | `QASE_MODE` | `off` | No |
+| Fallback mode | `fallback` | `QASE_FALLBACK` | `off` | No |
+| Environment | `environment` | `QASE_ENVIRONMENT` | — | No |
+| Root suite | `rootSuite` | `QASE_ROOT_SUITE` | — | No |
+| Debug mode | `debug` | `QASE_DEBUG` | `False` | No |
+| Execution plan path | `executionPlan.path` | `QASE_EXECUTION_PLAN_PATH` | `./build/qase-execution-plan.json` | No |
+| Exclude parameters | `excludeParams` | `QASE_EXCLUDE_PARAMS` | — | No |
+| Status mapping | `statusMapping` | `QASE_STATUS_MAPPING` | — | No |
+
+### TestOps Options (Single Project)
+
+| Description | Config file | Environment variable | Default | Required |
+|-------------|-------------|---------------------|---------|----------|
+| API token | `testops.api.token` | `QASE_TESTOPS_API_TOKEN` | — | Yes* |
+| API host | `testops.api.host` | `QASE_TESTOPS_API_HOST` | `qase.io` | No |
+| Project code | `testops.project` | `QASE_TESTOPS_PROJECT` | — | Yes* |
+| Test run ID | `testops.run.id` | `QASE_TESTOPS_RUN_ID` | — | No |
+| Test run title | `testops.run.title` | `QASE_TESTOPS_RUN_TITLE` | `Automated run <date>` | No |
+| Test run description | `testops.run.description` | `QASE_TESTOPS_RUN_DESCRIPTION` | `<Framework> automated run` | No |
+| Complete test run | `testops.run.complete` | `QASE_TESTOPS_RUN_COMPLETE` | `True` | No |
+| Test run tags | `testops.run.tags` | `QASE_TESTOPS_RUN_TAGS` | `[]` | No |
+| External link | `testops.run.externalLink` | `QASE_TESTOPS_RUN_EXTERNAL_LINK` | — | No |
+| Test plan ID | `testops.plan.id` | `QASE_TESTOPS_PLAN_ID` | — | No |
+| Batch size | `testops.batch.size` | `QASE_TESTOPS_BATCH_SIZE` | `200` | No |
+| Create defects | `testops.defect` | `QASE_TESTOPS_DEFECT` | `False` | No |
+| Status filter | `testops.statusFilter` | `QASE_TESTOPS_STATUS_FILTER` | — | No |
+| Configuration values | `testops.configurations.values` | `QASE_TESTOPS_CONFIGURATIONS_VALUES` | — | No |
+| Create configurations | `testops.configurations.createIfNotExists` | `QASE_TESTOPS_CONFIGURATIONS_CREATE_IF_NOT_EXISTS` | `false` | No |
+| Show public report link | `testops.showPublicReportLink` | `QASE_TESTOPS_SHOW_PUBLIC_REPORT_LINK` | `False` | No |
+
+\* Required when using `testops` mode
+
+### TestOps Multi Options (Multiple Projects)
+
+| Description | Config file | Environment variable | Default | Required |
+|-------------|-------------|---------------------|---------|----------|
+| Default project | `testops_multi.default_project` | `QASE_TESTOPS_MULTI_DEFAULT_PROJECT` | — | No |
+| Projects array | `testops_multi.projects` | — | `[]` | Yes** |
+| Project code | `testops_multi.projects[].code` | — | — | Yes** |
+| Test run title | `testops_multi.projects[].run.title` | — | `Automated Run <code> <date>` | No |
+| Test run description | `testops_multi.projects[].run.description` | — | `Automated Run <code> <date>` | No |
+| Complete test run | `testops_multi.projects[].run.complete` | — | `True` | No |
+| Test run ID | `testops_multi.projects[].run.id` | — | — | No |
+| Test run tags | `testops_multi.projects[].run.tags` | — | `[]` | No |
+| External link | `testops_multi.projects[].run.externalLink` | — | — | No |
+| Test plan ID | `testops_multi.projects[].plan.id` | — | — | No |
+| Environment | `testops_multi.projects[].environment` | — | Global | No |
+
 \** Required when using `testops_multi` mode
 
-### Framework-Specific Configuration
+**Multi-project annotations:**
+
+| Framework | Syntax |
+|-----------|--------|
+| Pytest | `@qase.project_id("CODE", 1, 2, 3)` |
+| Behave | `@qase.project_id.CODE:1,2,3` |
+| Robot Framework | `Q-PROJECT.CODE-1,2,3` |
+| Tavern | `QaseProjectID.CODE=1,2,3` in test name |
+
+See details: [Pytest](../qase-pytest/docs/MULTI_PROJECT.md) | [Behave](../qase-behave/docs/MULTI_PROJECT.md) | [Robot Framework](../qase-robotframework/docs/MULTI_PROJECT.md) | [Tavern](../qase-tavern/docs/MULTI_PROJECT.md)
+
+### Local Report Options
+
+| Description | Config file | Environment variable | Default |
+|-------------|-------------|---------------------|---------|
+| Driver | `report.driver` | `QASE_REPORT_DRIVER` | `local` |
+| Report path | `report.connection.path` | `QASE_REPORT_CONNECTION_PATH` | `./build/qase-report` |
+| Report format | `report.connection.format` | `QASE_REPORT_CONNECTION_FORMAT` | `json` |
+
+### Logging Options
+
+| Description | Config file | Environment variable | Default |
+|-------------|-------------|---------------------|---------|
+| Console output | `logging.console` | `QASE_LOGGING_CONSOLE` | `True` |
+| File output | `logging.file` | `QASE_LOGGING_FILE` | Same as `debug` |
+
+### Framework-Specific Options
 
 #### Pytest
 
-| Description                                    | Config file                          | Environment variable             | CLI option                         | Default value                           | Required | Possible values            |
-|------------------------------------------------|--------------------------------------|----------------------------------|------------------------------------|-----------------------------------------|----------|----------------------------|
-| Capture logs                                   | `framework.pytest.captureLogs`       | `QASE_PYTEST_CAPTURE_LOGS`       | `--qase-pytest-capture-logs`       | `False`                                 | No       | `true`, `false`            |
-| XFail status for failed tests                  | `framework.pytest.xfailStatus.xfail` | `QASE_PYTEST_XFAIL_STATUS_XFAIL` | `--qase-pytest-xfail-status-xfail` | `Skipped`                               | No       | Any string                 |
-| XFail status for passed tests                  | `framework.pytest.xfailStatus.xpass` | `QASE_PYTEST_XFAIL_STATUS_XPASS` | `--qase-pytest-xfail-status-xpass` | `Passed`                                | No       | Any string                 |
+| Description | Config file | Environment variable | CLI | Default |
+|-------------|-------------|---------------------|-----|---------|
+| Capture logs | `framework.pytest.captureLogs` | `QASE_PYTEST_CAPTURE_LOGS` | `--qase-pytest-capture-logs` | `False` |
+| XFail status (failed) | `framework.pytest.xfailStatus.xfail` | `QASE_PYTEST_XFAIL_STATUS_XFAIL` | `--qase-pytest-xfail-status-xfail` | `Skipped` |
+| XFail status (passed) | `framework.pytest.xfailStatus.xpass` | `QASE_PYTEST_XFAIL_STATUS_XPASS` | `--qase-pytest-xfail-status-xpass` | `Passed` |
 
-#### Behave
+#### Behave, Robot Framework, Tavern
 
-Behave reporter uses the same common configuration options. There are no framework-specific options for Behave.
+These frameworks use only the common configuration options.
 
-#### Robot Framework
-
-Robot Framework reporter uses the same common configuration options. There are no framework-specific options for Robot Framework.
-
-#### Tavern
-
-Tavern reporter uses the same common configuration options. There are no framework-specific options for Tavern.
+---
 
 ## Configuration Examples
 
-### Single Project Configuration (`testops` mode)
-
-Example `qase.config.json` config:
+### Single Project (testops)
 
 ```json
 {
@@ -122,95 +188,31 @@ Example `qase.config.json` config:
   "fallback": "report",
   "debug": false,
   "environment": "local",
-  "excludeParams": ["password", "token"],
-  "statusMapping": {
-    "invalid": "failed",
-    "skipped": "passed"
-  },
-  "logging": {
-    "console": true,
-    "file": true
-  },
-  "report": {
-    "driver": "local",
-    "connection": {
-      "local": {
-        "path": "./build/qase-report",
-        "format": "json"
-      }
-    }
-  },
   "testops": {
     "api": {
       "token": "<token>",
       "host": "qase.io"
     },
-    "project": "<project_code>",
+    "project": "DEMO",
     "run": {
       "title": "Regress run",
-      "description": "Regress run description",
+      "description": "Automated regression tests",
       "complete": true,
-      "tags": ["tag1", "tag2"],
-      "externalLink": {
-        "type": "jiraCloud",
-        "link": "PROJ-123"
-      }
+      "tags": ["regression", "automated"]
     },
-    "defect": false,
     "batch": {
       "size": 100
-    },
-    "statusFilter": ["passed", "skipped"],
-    "showPublicReportLink": true,
-    "configurations": {
-      "values": [
-        {
-          "name": "group1",
-          "value": "value1"
-        },
-        {
-          "name": "group2", 
-          "value": "value2"
-        }
-      ],
-      "createIfNotExists": true
-    }
-  },
-  "framework": {
-    "pytest": {
-      "captureLogs": true,
-      "xfailStatus": {
-        "xfail": "Skipped",
-        "xpass": "Passed"
-      }
     }
   }
 }
 ```
 
-### Multi-Project Configuration (`testops_multi` mode)
-
-Example `qase.config.json` config for multi-project reporting:
+### Multiple Projects (testops_multi)
 
 ```json
 {
   "mode": "testops_multi",
   "fallback": "report",
-  "debug": false,
-  "environment": "local",
-  "logging": {
-    "console": true,
-    "file": false
-  },
-  "report": {
-    "driver": "local",
-    "connection": {
-      "local": {
-        "path": "./build/qase-report",
-        "format": "json"
-      }
-    }
-  },
   "testops": {
     "api": {
       "token": "<token>",
@@ -218,9 +220,7 @@ Example `qase.config.json` config for multi-project reporting:
     },
     "batch": {
       "size": 100
-    },
-    "statusFilter": ["passed"],
-    "showPublicReportLink": true
+    }
   },
   "testops_multi": {
     "default_project": "DEMO1",
@@ -228,27 +228,16 @@ Example `qase.config.json` config for multi-project reporting:
       {
         "code": "DEMO1",
         "run": {
-          "title": "DEMO1 Multi-Project Run",
-          "description": "Test run for DEMO1 project",
-          "complete": true,
-          "tags": ["staging", "regression"],
-          "externalLink": {
-            "type": "jiraCloud",
-            "link": "PROJ-123"
-          }
-        },
-        "plan": {
-          "id": 1
+          "title": "DEMO1 Test Run",
+          "tags": ["staging"]
         },
         "environment": "staging"
       },
       {
         "code": "DEMO2",
         "run": {
-          "title": "DEMO2 Multi-Project Run",
-          "description": "Test run for DEMO2 project",
-          "complete": true,
-          "tags": ["production", "regression"]
+          "title": "DEMO2 Test Run",
+          "tags": ["production"]
         },
         "environment": "production"
       }
@@ -257,92 +246,32 @@ Example `qase.config.json` config for multi-project reporting:
 }
 ```
 
-### Environment Variables Example
+### Environment Variables
 
 ```bash
 # Common settings
 export QASE_MODE="testops"
 export QASE_FALLBACK="report"
 export QASE_ENVIRONMENT="local"
-export QASE_DEBUG="true"
-export QASE_ROOT_SUITE="MyTestSuite"
-export QASE_EXCLUDE_PARAMS="password,token"
-export QASE_STATUS_MAPPING="invalid=failed,skipped=passed"
+export QASE_DEBUG="false"
 
-# Logging configuration
-export QASE_LOGGING_CONSOLE="true"
-export QASE_LOGGING_FILE="false"
-
-# Report mode configuration
-export QASE_REPORT_DRIVER="local"
-export QASE_REPORT_CONNECTION_PATH="./build/qase-report"
-export QASE_REPORT_CONNECTION_FORMAT="json"
-
-# TestOps configuration (single project)
+# TestOps
 export QASE_TESTOPS_API_TOKEN="<token>"
-export QASE_TESTOPS_API_HOST="qase.io"
 export QASE_TESTOPS_PROJECT="DEMO"
-export QASE_TESTOPS_RUN_TITLE="My Test Run"
-export QASE_TESTOPS_RUN_DESCRIPTION="Test run description"
+export QASE_TESTOPS_RUN_TITLE="Automated Run"
 export QASE_TESTOPS_RUN_COMPLETE="true"
-export QASE_TESTOPS_RUN_TAGS="tag1,tag2"
-export QASE_TESTOPS_RUN_EXTERNAL_LINK='{"type":"jiraCloud","link":"PROJ-123"}'
-export QASE_TESTOPS_PLAN_ID="1"
-export QASE_TESTOPS_BATCH_SIZE="100"
-export QASE_TESTOPS_DEFECT="false"
-export QASE_TESTOPS_STATUS_FILTER="passed,skipped"
-export QASE_TESTOPS_SHOW_PUBLIC_REPORT_LINK="true"
 
-# TestOps configurations
-export QASE_TESTOPS_CONFIGURATIONS_VALUES='[{"name":"browser","value":"chrome"},{"name":"os","value":"linux"}]'
-export QASE_TESTOPS_CONFIGURATIONS_CREATE_IF_NOT_EXISTS="true"
-
-# Pytest-specific
+# Pytest
 export QASE_PYTEST_CAPTURE_LOGS="true"
-export QASE_PYTEST_XFAIL_STATUS_XFAIL="Skipped"
-export QASE_PYTEST_XFAIL_STATUS_XPASS="Passed"
-
-# Multi-project configuration (default project only)
-export QASE_TESTOPS_MULTI_DEFAULT_PROJECT="DEMO1"
 ```
 
-## Multi-Project Support
+---
 
-The multi-project feature allows you to send test results to multiple Qase projects simultaneously, with different test case IDs for each project. This is useful when:
+## Additional Features
 
-* You need to report the same test to different projects
-* Different projects track the same functionality with different test case IDs
-* You want to maintain separate test runs for different environments or teams
+### Status Mapping
 
-### How It Works
-
-1. Configure multiple projects in `testops_multi.projects` array
-2. Each project can have its own run configuration (title, description, tags, plan, environment)
-3. Use framework-specific annotations to map test cases to projects:
-   * **Pytest**: Use `@qase.project_id()` decorator
-   * **Behave**: Use `@qase.project_id.PROJECT_CODE:IDS` tag format
-   * **Robot Framework**: Use `Q-PROJECT.PROJECT_CODE-IDS` tag format
-   * **Tavern**: Use `QaseProjectID.PROJECT_CODE=IDS` format in test names
-4. Tests without explicit project mapping will be sent to the `default_project`
-
-### Framework-Specific Documentation
-
-For detailed framework-specific documentation on multi-project support, see:
-
-* **[Pytest Multi-Project Guide](../qase-pytest/docs/MULTI_PROJECT.md)** - Detailed guide for using multi-project support with Pytest, including decorator usage, parametrized tests, and test classes
-* **[Behave Multi-Project Guide](../qase-behave/docs/MULTI_PROJECT.md)** - Detailed guide for using multi-project support with Behave, including tag formats, feature-level tags, and scenario mapping
-* **[Robot Framework Multi-Project Guide](../qase-robotframework/docs/MULTI_PROJECT.md)** - Detailed guide for using multi-project support with Robot Framework, including tag formats, suite-level tags, and parameter handling
-* **[Tavern Multi-Project Guide](../qase-tavern/docs/MULTI_PROJECT.md)** - Detailed guide for using multi-project support with Tavern, including test name formats, extraction rules, and troubleshooting
-
-### Example Usage
-
-For detailed examples, see the [multi-project examples directory](../examples/multiproject/).
-
-## Status Mapping
-
-You can map test result statuses to different values using the `statusMapping` configuration option. This is useful when you want to change how certain statuses are reported to Qase.
-
-Example:
+Allows changing test result status before sending to Qase:
 
 ```json
 {
@@ -353,16 +282,11 @@ Example:
 }
 ```
 
-This will map:
+**Available statuses:** `passed`, `failed`, `skipped`, `invalid`
 
-* `invalid` status → `failed` in Qase
-* `skipped` status → `passed` in Qase
+### Status Filtering
 
-## Status Filtering
-
-You can filter out test results by status using the `testops.statusFilter` configuration option. Results with statuses in the filter list will not be sent to Qase.
-
-Example:
+Excludes results with specified statuses from being sent:
 
 ```json
 {
@@ -372,13 +296,9 @@ Example:
 }
 ```
 
-This will exclude all `passed` and `skipped` results from being reported to Qase.
+### External Links
 
-## External Links
-
-You can associate external links (e.g., Jira tickets) with test runs using the `testops.run.externalLink` configuration.
-
-Example:
+Associates the test run with external resources (e.g., Jira):
 
 ```json
 {
@@ -393,30 +313,19 @@ Example:
 }
 ```
 
-Supported types:
+**Types:** `jiraCloud`, `jiraServer`
 
-* `jiraCloud` - For Jira Cloud
-* `jiraServer` - For Jira Server
+### Test Run Configurations
 
-## Configurations
-
-You can specify test run configurations that will be created or found in Qase TestOps.
-
-Example:
+Creates or finds configurations in Qase TestOps:
 
 ```json
 {
   "testops": {
     "configurations": {
       "values": [
-        {
-          "name": "browser",
-          "value": "chrome"
-        },
-        {
-          "name": "os",
-          "value": "linux"
-        }
+        { "name": "browser", "value": "chrome" },
+        { "name": "os", "value": "linux" }
       ],
       "createIfNotExists": true
     }
@@ -424,4 +333,13 @@ Example:
 }
 ```
 
-If `createIfNotExists` is `true`, configuration groups and values will be created automatically if they don't exist.
+---
+
+## Requirements
+
+- Python 3.9+
+- qase-api-client
+
+## License
+
+Apache 2.0 — see [LICENSE](../LICENSE)
