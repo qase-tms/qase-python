@@ -21,6 +21,16 @@ def step_user_logged_in(context):
     context.session = {"active": True, "user_id": 1}
 
 
+@given('user is logged in')
+def step_user_is_logged_in(context):
+    context.session = {"active": True, "user_id": 1}
+
+
+@given('user enters valid credentials')
+def step_user_enters_valid_creds_given(context):
+    context.login_attempt = {"valid": True}
+
+
 @given('the login page is displayed')
 def step_login_page(context):
     context.current_page = "login"
@@ -83,6 +93,11 @@ def step_error_displayed(context):
 
 @then('the user should remain on login page')
 def step_remain_login(context):
+    pass
+
+
+@then('user should remain on login page')
+def step_user_remain_login(context):
     pass
 
 
@@ -196,6 +211,11 @@ def step_enter_2fa(context):
     context.two_factor["verified"] = True
 
 
+@then('user enters valid 2FA code')
+def step_enter_2fa_then(context):
+    context.two_factor["verified"] = True
+
+
 @given('user is inactive for 30 minutes')
 def step_inactive(context):
     context.session["inactive_minutes"] = 30
@@ -231,7 +251,7 @@ def step_payment_configured(context):
     context.payment = {"method": "credit_card", "valid": True}
 
 
-@given('the following items in cart:')
+@given('the following items in cart')
 def step_items_table(context):
     context.cart = {"items": [], "total": 0}
     for row in context.table:

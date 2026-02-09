@@ -6,7 +6,7 @@ Feature: Parametrized Scenarios
   # Basic parametrization - Login with different user roles
   # ============================================================================
 
-  @qase.id:40
+  @qase.id:200
   Scenario Outline: User login with different roles
     Given user with role "<role>" exists
     When user logs in with email "<email>"
@@ -26,7 +26,7 @@ Feature: Parametrized Scenarios
   # Validation scenarios - Input validation testing
   # ============================================================================
 
-  @qase.id:41 @qase.fields:{"severity":"normal","layer":"unit"}
+  @qase.id:201 @qase.fields:{"severity":"normal","layer":"unit"}
   Scenario Outline: Email validation
     When email "<email>" is validated
     Then validation result should be "<result>"
@@ -49,7 +49,7 @@ Feature: Parametrized Scenarios
   # API testing - HTTP status codes
   # ============================================================================
 
-  @qase.id:42 @qase.fields:{"layer":"api"}
+  @qase.id:202 @qase.fields:{"layer":"api"}
   Scenario Outline: API endpoint returns correct status
     Given API endpoint "<endpoint>" exists
     When "<method>" request is sent
@@ -71,7 +71,7 @@ Feature: Parametrized Scenarios
   # Business logic - Pricing calculations
   # ============================================================================
 
-  @qase.id:43 @qase.fields:{"severity":"critical"}
+  @qase.id:203 @qase.fields:{"severity":"critical"}
   Scenario Outline: Discount calculation
     Given base price is <base_price>
     And discount type is "<discount_type>"
@@ -95,7 +95,7 @@ Feature: Parametrized Scenarios
   # Edge cases - Boundary value testing
   # ============================================================================
 
-  @qase.id:44
+  @qase.id:204
   Scenario Outline: Password length validation
     When password "<password>" is checked
     Then password should be "<validity>"

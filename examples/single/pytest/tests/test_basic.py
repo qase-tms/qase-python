@@ -306,7 +306,7 @@ def test_complete_checkout_flow():
 # @qase.ignore - Exclude test from Qase reporting
 # ============================================================================
 
-@qase.ignore
+@qase.ignore()
 def test_local_development_only():
     """This test is excluded from Qase reporting.
 
@@ -332,7 +332,7 @@ def test_login_with_remember_me():
     assert session_duration == 30, "Remember me should extend session"
 
 
-@qase.suite("Authentication", "OAuth")
+@qase.suite("Authentication.OAuth")
 def test_google_oauth_login():
     """Test organized under 'Authentication > OAuth' nested suite."""
     oauth_provider = "google"
@@ -342,7 +342,7 @@ def test_google_oauth_login():
     assert oauth_token is not None
 
 
-@qase.suite("Authentication", "OAuth", "Error Handling")
+@qase.suite("Authentication.OAuth.Error Handling")
 def test_oauth_token_expiration():
     """Test organized under deeply nested suite structure."""
     token_expired = True
