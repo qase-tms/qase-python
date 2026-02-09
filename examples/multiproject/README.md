@@ -1,26 +1,37 @@
 # Multi-Project Examples
 
-This directory contains examples demonstrating how to use Qase TestOps with multiple projects.
+Examples for reporting test results to multiple Qase projects simultaneously using `mode: testops_multi`.
 
 ## Overview
 
-The multi-project feature allows you to send test results to multiple Qase projects simultaneously, with different test case IDs for each project. This is useful when:
+The multi-project feature allows you to send test results to multiple Qase projects with different test case IDs for each project. This is useful when:
+
 - You need to report the same test to different projects
 - Different projects track the same functionality with different test case IDs
 - You want to maintain separate test runs for different environments or teams
 
-## Projects Used in Examples
+## Frameworks
 
-- **DEMO1**: Development/Staging project
-- **DEMO2**: Demo/Production project
+| Framework | Directory | Annotation Syntax |
+|-----------|-----------|-------------------|
+| Pytest | [pytest/](./pytest/) | `@qase.project_id("CODE", 1)` |
+| Behave | [behave/](./behave/) | `@qase.project_id.CODE:1` |
+| Robot Framework | [robot/](./robot/) | `Q-PROJECT.CODE-1` |
+| Tavern | [tavern/](./tavern/) | `QaseProjectID.CODE=1` |
 
 ## Configuration
 
-All examples use a `qase.config.json` configuration file with the following structure:
+All examples use `qase.config.json` with `mode: testops_multi`:
 
 ```json
-{  
+{
   "mode": "testops_multi",
+  "testops": {
+    "api": {
+      "token": "<token>",
+      "host": "qase.io"
+    }
+  },
   "testops_multi": {
     "default_project": "DEMO1",
     "projects": [
@@ -47,194 +58,145 @@ All examples use a `qase.config.json` configuration file with the following stru
 }
 ```
 
-## Running Examples
+## Quick Start
 
-### Pytest
-
-1. **Install packages in development mode** (required for local changes):
+1. Install the reporter package:
    ```bash
-   cd qase-python
-   pip install -e qase-python-commons
-   pip install -e qase-pytest
+   pip install qase-pytest  # or qase-behave, qase-robotframework, qase-tavern
    ```
 
-   Or use the development requirements:
+2. Navigate to the example directory:
    ```bash
    cd examples/multiproject/pytest
-   pip install -r requirements.dev.txt
    ```
 
-2. Update the API token in `qase.config.json`
+3. Update `qase.config.json`:
+   - Replace `<token>` with your API token
+   - Update project codes to match your Qase projects
 
-3. Run the tests:
+4. Run the tests:
    ```bash
-   cd examples/multiproject/pytest
-   pytest tests/test_multi_project.py --qase-mode=testops_multi
+   # Pytest
+   pytest tests/
+
+   # Behave
+   cd ../behave
+   behave --format=qase.behave.formatter:QaseFormatter
+
+   # Robot Framework
+   cd ../robot
+   robot --listener qase.robotframework.Listener tests/
+
+   # Tavern
+   cd ../tavern
+   pytest
    ```
 
-### Behave
-
-1. **Install packages in development mode**:
-   ```bash
-   cd qase-python
-   pip install -e qase-python-commons
-   pip install -e qase-behave
-   ```
-
-2. Update the API token in `qase.config.json`
-
-3. Run the tests:
-   ```bash
-   cd examples/multiproject/behave
-   behave tests/features/multi_project.feature --define qase-mode=testops_multi
-   ```
-
-### Tavern
-
-1. **Install packages in development mode**:
-   ```bash
-   cd qase-python
-   pip install -e qase-python-commons
-   pip install -e qase-tavern
-   ```
-
-2. Update the API token in `qase.config.json`
-
-3. Run the tests:
-   ```bash
-   cd examples/multiproject/tavern
-   pytest test_multi_project.tavern.yaml --qase-mode=testops_multi
-   ```
-
-### Robot Framework
-
-1. **Install packages in development mode**:
-   ```bash
-   cd qase-python
-   pip install -e qase-python-commons
-   pip install -e qase-robotframework
-   ```
-
-2. Update the API token in `qase.config.json`
-
-3. Run the tests:
-   ```bash
-   cd examples/multiproject/robot
-   robot --listener qase.robotframework.Listener tests/multi_project.robot
-   ```
-
-## Test Examples
+## Annotation Examples
 
 ### Single Project with Single ID
 
 **Pytest:**
 ```python
-@qase.project_id("DEVX", 1)
+@qase.project_id("DEMO1", 1)
 def test_example():
     assert True
 ```
 
 **Behave:**
 ```gherkin
-@qase.project_id.DEVX:1
+@qase.project_id.DEMO1:1
 Scenario: Example test
-```
-
-**Tavern:**
-```yaml
-test_name: QaseProjectID.DEVX=1 Example test
 ```
 
 **Robot Framework:**
 ```robotframework
-[Tags]    Q-PROJECT.DEVX-1
+Test Case
+    [Tags]    Q-PROJECT.DEMO1-1
+```
+
+**Tavern:**
+```yaml
+test_name: QaseProjectID.DEMO1=1 Example test
 ```
 
 ### Single Project with Multiple IDs
 
 **Pytest:**
 ```python
-@qase.project_id("DEVX", [2, 3])
+@qase.project_id("DEMO1", [1, 2, 3])
 def test_example():
     assert True
 ```
 
 **Behave:**
 ```gherkin
-@qase.project_id.DEVX:2,3
+@qase.project_id.DEMO1:1,2,3
 Scenario: Example test
-```
-
-**Tavern:**
-```yaml
-test_name: QaseProjectID.DEVX=2,3 Example test
 ```
 
 **Robot Framework:**
 ```robotframework
-[Tags]    Q-PROJECT.DEVX-2,3
+Test Case
+    [Tags]    Q-PROJECT.DEMO1-1,2,3
+```
+
+**Tavern:**
+```yaml
+test_name: QaseProjectID.DEMO1=1,2,3 Example test
 ```
 
 ### Multiple Projects
 
 **Pytest:**
 ```python
-@qase.project_id("DEVX", 4)
-@qase.project_id("DEMO", 10)
+@qase.project_id("DEMO1", 1)
+@qase.project_id("DEMO2", 10)
 def test_example():
     assert True
 ```
 
 **Behave:**
 ```gherkin
-@qase.project_id.DEVX:4
-@qase.project_id.DEMO:10
+@qase.project_id.DEMO1:1 @qase.project_id.DEMO2:10
 Scenario: Example test
-```
-
-**Tavern:**
-```yaml
-test_name: QaseProjectID.DEVX=4 QaseProjectID.DEMO=10 Example test
 ```
 
 **Robot Framework:**
 ```robotframework
-[Tags]    Q-PROJECT.DEVX-4    Q-PROJECT.DEMO-10
+Test Case
+    [Tags]    Q-PROJECT.DEMO1-1    Q-PROJECT.DEMO2-10
+```
+
+**Tavern:**
+```yaml
+test_name: QaseProjectID.DEMO1=1 QaseProjectID.DEMO2=10 Example test
+```
+
+## Default Project
+
+Tests without explicit project mapping are sent to `default_project`:
+
+```python
+# No @qase.project_id decorator
+# This test goes to DEMO1 (default_project)
+def test_without_project():
+    assert True
 ```
 
 ## What to Expect
 
 When you run the examples:
 
-1. **Test runs will be created** in both DEVX and DEMO projects
-2. **Test results will be sent** to the appropriate projects based on the test case IDs specified
-3. **Each project will have its own test run** with the configured title and description
-4. **Results will appear** in both projects' dashboards
+1. **Separate test runs** are created in each configured project
+2. **Test results** are routed to the appropriate project based on annotations
+3. **Tests without annotations** go to the `default_project`
+4. **Each project** gets its own run with configured title and description
 
-## Installation Notes
+## Documentation
 
-**Important:** Since multi-project support is a new feature, you need to install the packages in **development mode** (editable install) to use the local source code with new changes:
-
-```bash
-# From the root of qase-python repository
-cd qase-python
-
-# Install commons (required by all reporters)
-pip install -e qase-python-commons
-
-# Install the specific reporter you want to use
-pip install -e qase-pytest      # For pytest
-pip install -e qase-behave      # For behave
-pip install -e qase-tavern      # For tavern
-pip install -e qase-robotframework  # For robotframework
-```
-
-The `-e` flag installs packages in "editable" mode, which means changes to the source code will be immediately available without reinstalling.
-
-## Notes
-
-- Make sure the projects DEVX and DEMO exist in your Qase instance
-- Update the API token in the configuration files before running
-- Test case IDs used in examples (1, 2, 3, etc.) should exist in your projects or be created
-- The `default_project` setting is used when a test doesn't specify a project mapping
-- **You must install packages in development mode** to use the new multi-project features
+- [Multi-Project Guide (Pytest)](../../qase-pytest/docs/MULTI_PROJECT.md)
+- [Multi-Project Guide (Behave)](../../qase-behave/docs/MULTI_PROJECT.md)
+- [Multi-Project Guide (Robot Framework)](../../qase-robotframework/docs/MULTI_PROJECT.md)
+- [Multi-Project Guide (Tavern)](../../qase-tavern/docs/MULTI_PROJECT.md)
+- [Configuration Reference](../../qase-python-commons/README.md)

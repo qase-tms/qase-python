@@ -1,31 +1,65 @@
-# Examples
+# Qase Python Examples
 
-This directory contains examples of how to use the Qase Python reporters.
+This directory contains working examples for all Qase Python reporters.
 
 ## Directory Structure
 
-- **[single](./single/)** - Examples for single-project reporting mode
-  - [pytest](./single/pytest/) - Pytest examples for single project
-  - [behave](./single/behave/) - Behave examples for single project
-  - [robot](./single/robot/) - Robot Framework examples for single project
-  - [tavern](./single/tavern/) - Tavern examples for single project
-
-- **[multiproject](./multiproject/)** - Examples for multi-project reporting mode
-  - [pytest](./multiproject/pytest/) - Pytest examples for multiple projects
-  - [behave](./multiproject/behave/) - Behave examples for multiple projects
-  - [robot](./multiproject/robot/) - Robot Framework examples for multiple projects
-  - [tavern](./multiproject/tavern/) - Tavern examples for multiple projects
+| Directory | Mode | Description |
+|-----------|------|-------------|
+| [single/](./single/) | `testops` | Report results to a single Qase project |
+| [multiproject/](./multiproject/) | `testops_multi` | Report results to multiple Qase projects |
 
 ## Quick Start
 
-### Single Project Examples
+1. Choose your framework and mode
+2. Navigate to the example directory
+3. Install dependencies: `pip install -r requirements.txt`
+4. Configure `qase.config.json` with your API token and project code
+5. Run the tests
 
-For single-project examples, see the README files in each framework directory:
-- [pytest](./single/pytest/Readme.md)
-- [behave](./single/behave/README.md)
-- [robot](./single/robot/Readme.md)
-- [tavern](./single/tavern/Readme.md)
+## Single Project Examples
 
-### Multi-Project Examples
+Report all test results to one Qase project using `mode: testops`.
 
-For multi-project examples, see the [multiproject README](./multiproject/README.md).
+```
+single/
+├── pytest/          # Pytest examples (basic, attachments, steps, profilers)
+├── behave/          # Behave BDD examples
+├── robot/           # Robot Framework examples
+└── tavern/          # Tavern API testing examples
+```
+
+See [single/README.md](./single/README.md) for details.
+
+## Multi-Project Examples
+
+Report test results to multiple Qase projects simultaneously using `mode: testops_multi`.
+
+```
+multiproject/
+├── pytest/          # @qase.project_id() decorator
+├── behave/          # @qase.project_id.CODE:ID tags
+├── robot/           # Q-PROJECT.CODE-ID tags
+└── tavern/          # QaseProjectID.CODE=ID in test names
+```
+
+See [multiproject/README.md](./multiproject/README.md) for details.
+
+## Configuration
+
+All examples use `qase.config.json` for configuration. Before running:
+
+1. Copy the example config or edit existing one
+2. Replace `<token>` with your [Qase API token](https://app.qase.io/user/api/token)
+3. Replace `<project_code>` with your project code (from URL: `app.qase.io/project/CODE`)
+
+For complete configuration reference, see [qase-python-commons](../qase-python-commons/README.md).
+
+## Framework Documentation
+
+| Framework | Package | Documentation |
+|-----------|---------|---------------|
+| Pytest | `qase-pytest` | [README](../qase-pytest/README.md) \| [Usage Guide](../qase-pytest/docs/usage.md) |
+| Behave | `qase-behave` | [README](../qase-behave/README.md) \| [Usage Guide](../qase-behave/docs/usage.md) |
+| Robot Framework | `qase-robotframework` | [README](../qase-robotframework/README.md) \| [Usage Guide](../qase-robotframework/docs/usage.md) |
+| Tavern | `qase-tavern` | [README](../qase-tavern/README.md) \| [Usage Guide](../qase-tavern/docs/usage.md) |
