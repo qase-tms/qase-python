@@ -24,6 +24,7 @@ Core library for all Qase Python reporters. Contains the complete configuration 
   - [Single Project (testops)](#single-project-testops)
   - [Multiple Projects (testops_multi)](#multiple-projects-testops_multi)
   - [Environment Variables](#environment-variables)
+- [Profilers](#profilers)
 - [Additional Features](#additional-features)
   - [Status Mapping](#status-mapping)
   - [Status Filtering](#status-filtering)
@@ -263,6 +264,46 @@ export QASE_TESTOPS_RUN_COMPLETE="true"
 
 # Pytest
 export QASE_PYTEST_CAPTURE_LOGS="true"
+```
+
+---
+
+## Profilers
+
+Profilers automatically track operations during test execution and send them as steps to Qase TestOps.
+
+| Profiler | Description | Documentation |
+|----------|-------------|---------------|
+| `network` | Tracks HTTP requests (requests, urllib3) | [Network Profiler](docs/NETWORK_PROFILER.md) |
+| `db` | Tracks database operations | [Database Profiler](docs/DATABASE_PROFILERS.md) |
+| `sleep` | Tracks sleep calls | — |
+
+Enable profilers in `qase.config.json`:
+
+```json
+{
+  "profilers": ["network", "db"]
+}
+```
+
+Or via environment variable:
+
+```bash
+export QASE_PROFILERS="network,db"
+```
+
+The `profilers` array supports both string and object formats. Use the object format to configure profiler-specific options:
+
+```json
+{
+  "profilers": [
+    {
+      "name": "network",
+      "excludeHosts": ["telemetry.local", "monitoring.internal"]
+    },
+    "db"
+  ]
+}
 ```
 
 ---
