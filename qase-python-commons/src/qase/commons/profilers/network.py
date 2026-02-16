@@ -2,6 +2,7 @@ import sys
 import threading
 import uuid
 from functools import wraps
+from typing import List
 from ..models.runtime import Runtime
 from ..models.step import Step, StepRequestData, StepType
 
@@ -9,12 +10,15 @@ from ..models.step import Step, StepRequestData, StepType
 class NetworkProfiler:
     _instance = None
 
-    def __init__(self, runtime: Runtime, skip_domain: str, track_on_fail: bool = True):
+    def __init__(self, runtime: Runtime, skip_domains: List[str] = None, track_on_fail: bool = True):
         self._original_functions = {}
         self.runtime = runtime
-        self.skip_domain = skip_domain
+        self.skip_domains = skip_domains or []
         self.track_on_fail = track_on_fail
         self.step = None
+
+    def _should_skip(self, url: str) -> bool:
+        return any(domain in url for domain in self.skip_domains)
 
     def enable(self):
         if 'requests' in sys.modules:
@@ -39,29 +43,31 @@ class NetworkProfiler:
     def _requests_send_wrapper(self, func):
         @wraps(func)
         def wrapper(self, request, *args, **kwargs):
-            NetworkProfilerSingleton.get_instance()._log_request(request)
+            profiler = NetworkProfilerSingleton.get_instance()
+            if profiler._should_skip(request.url):
+                return func(self, request, *args, **kwargs)
+
+            profiler._log_request(request)
             response = func(self, request, *args, **kwargs)
-            NetworkProfilerSingleton.get_instance()._log_response(response)
+            profiler._log_response(response)
             return response
 
         return wrapper
 
     def _urllib3_request_wrapper(self, func):
-        skip_domain = self.skip_domain
-
         @wraps(func)
         def wrapper(self, method, url, *args, **kwargs):
-            if skip_domain in url:
+            profiler = NetworkProfilerSingleton.get_instance()
+            if profiler._should_skip(url):
                 return func(self, method, url, *args, **kwargs)
 
-            interceptor = NetworkProfilerSingleton.get_instance()
             request = lambda: None
             request.method = method
             request.url = url
 
-            interceptor._log_request(request)
+            profiler._log_request(request)
             response = func(self, method, url, *args, **kwargs)
-            interceptor._log_response(response, url=url)
+            profiler._log_response(response, url=url)
             return response
 
         return wrapper

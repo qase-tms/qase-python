@@ -254,6 +254,11 @@ class ConfigManager:
                 if key == 'QASE_PROFILERS':
                     self.config.set_profilers(value.split(','))
 
+                if key == 'QASE_PROFILER_NETWORK_EXCLUDE_HOSTS':
+                    self.config.network_profiler.set_exclude_hosts(
+                        [h.strip() for h in value.split(',')]
+                    )
+
                 if key == 'QASE_DEBUG':
                     self.config.set_debug(value)
 

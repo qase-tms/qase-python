@@ -154,8 +154,10 @@ class QaseCoreReporter:
             if profiler == "network":
                 # Lazy import
                 from ..profilers import NetworkProfilerSingleton
+                skip_domains = [self.config.testops.api.host]
+                skip_domains.extend(self.config.network_profiler.exclude_hosts)
                 NetworkProfilerSingleton.init(runtime=runtime,
-                                              skip_domain=self.config.testops.api.host)
+                                              skip_domains=skip_domains)
                 self.profilers.append(NetworkProfilerSingleton.get_instance())
             if profiler == "sleep":
                 from ..profilers import SleepProfiler
