@@ -1,3 +1,10 @@
+# qase-python-commons@5.0.3
+
+## What's new
+
+- Added support for excluding hosts from the network profiler. You can now specify a list of hosts to exclude using the `excludeHosts` option in the profilers config or the `QASE_PROFILER_NETWORK_EXCLUDE_HOSTS` environment variable. The Qase API host is always excluded automatically. Resolves [#455](https://github.com/qase-tms/qase-python/issues/455).
+- Fixed a bug where the `requests` library wrapper in the network profiler did not filter excluded domains (only the `urllib3` wrapper did).
+
 # qase-python-commons@5.0.2
 
 ## What's new
