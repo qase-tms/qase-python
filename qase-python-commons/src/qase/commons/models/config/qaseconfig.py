@@ -40,6 +40,16 @@ class ExecutionPlan(BaseModel):
         self.path = path
 
 
+class NetworkProfilerConfig(BaseModel):
+    exclude_hosts: List[str] = None
+
+    def __init__(self):
+        self.exclude_hosts = []
+
+    def set_exclude_hosts(self, hosts: List[str]):
+        self.exclude_hosts = hosts
+
+
 class QaseConfig(BaseModel):
     mode: Mode = None
     fallback: Mode = None
@@ -51,6 +61,7 @@ class QaseConfig(BaseModel):
     testops_multi: TestopsMultiConfig = None
     report: ReportConfig = None
     profilers: list = None
+    network_profiler: NetworkProfilerConfig = None
     framework: Framework = None
     exclude_params: list = None
     status_mapping: Dict[str, str] = None
@@ -66,6 +77,7 @@ class QaseConfig(BaseModel):
         self.execution_plan = ExecutionPlan()
         self.framework = Framework()
         self.profilers = []
+        self.network_profiler = NetworkProfilerConfig()
         self.exclude_params = []
         self.status_mapping = {}
         self.logging = LoggingConfig()
@@ -82,7 +94,16 @@ class QaseConfig(BaseModel):
         self.environment = environment
 
     def set_profilers(self, profilers: list):
-        self.profilers = profilers
+        self.profilers = []
+        for item in profilers:
+            if isinstance(item, str):
+                self.profilers.append(item)
+            elif isinstance(item, dict):
+                name = item.get("name")
+                if name:
+                    self.profilers.append(name)
+                    if name == "network" and "excludeHosts" in item:
+                        self.network_profiler.set_exclude_hosts(item["excludeHosts"])
 
     def set_root_suite(self, root_suite: str):
         self.root_suite = root_suite
