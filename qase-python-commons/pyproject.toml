@@ -60,8 +60,7 @@ passenv =
 commands =
     pytest --cov-config=pyproject.toml {posargs}
 extras =
-    all
-    testing 
+    testing
 """
 
 [tool.setuptools.packages.find]
