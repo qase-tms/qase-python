@@ -448,27 +448,19 @@ class Listener:
                 step_name = result.body[i].name
 
             data = None
-            # Avoid deprecated args attribute for For and ForIteration objects
-            # Check class name to identify For/ForIteration objects and use values instead
             body_element = result.body[i]
             class_name = body_element.__class__.__name__
-            
-            # For and ForIteration objects have deprecated args attribute
-            # Use values attribute instead for these types
-            if class_name in ('For', 'ForIteration'):
-                if hasattr(body_element, "values") and body_element.values:
-                    data = ' '.join(str(val) for val in body_element.values)
-            else:
-                # For other types, try to use args if available
-                # Use getattr to avoid triggering deprecation warning on access
-                try:
-                    args_value = getattr(body_element, "args", None)
-                    if args_value:
-                        data = ' '.join(str(arg) for arg in args_value)
-                except (AttributeError, TypeError):
-                    # Fallback to values if args is not available
-                    if hasattr(body_element, "values") and body_element.values:
-                        data = ' '.join(str(val) for val in body_element.values)
+
+            # Only Keyword objects have a non-deprecated 'args' attribute.
+            # All other body element types (Return, For, ForIteration, While,
+            # Group, IfBranch, Try, TryBranch, Var, Continue, Break, Error)
+            # inherit deprecated 'args' from DeprecatedAttributesMixin
+            # which will be removed in Robot Framework 8.0.
+            if class_name == 'Keyword':
+                if body_element.args:
+                    data = ' '.join(str(arg) for arg in body_element.args)
+            elif hasattr(body_element, "values") and body_element.values:
+                data = ' '.join(str(val) for val in body_element.values)
 
             # Extract resolved variable values from log messages in this step
             # This will also accumulate variables from nested messages
