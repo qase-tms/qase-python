@@ -1,3 +1,10 @@
+# qase-robotframework 5.0.1
+
+## What's new
+
+- Fixed deprecation warning `'robot.result.Return.args' is deprecated and will be removed in Robot Framework 8.0` by accessing `args` only on `Keyword` result objects and using `values` for all other body element types (`Return`, `For`, `ForIteration`, `While`, `Group`, `IfBranch`, `Try`, `TryBranch`, `Var`, `Continue`, `Break`, `Error`).
+- Updated `qase-python-commons` dependency to version `~=5.0.3`.
+
 # qase-robotframework 5.0.0
 
 ## What's new
