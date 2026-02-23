@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**shared_id** | **str** |  | 
+**shared_id** | **UUID** |  | 
 **title** | **str** |  | 
 **values** | **List[str]** |  | 
 **items** | [**List[ParameterSingle]**](ParameterSingle.md) |  | 

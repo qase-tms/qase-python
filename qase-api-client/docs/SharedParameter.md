@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**id** | **str** |  | 
+**id** | **UUID** |  | 
 **title** | **str** |  | 
 **type** | **str** |  | 
 **project_codes** | **List[str]** |  | 

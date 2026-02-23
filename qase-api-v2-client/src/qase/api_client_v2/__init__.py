@@ -53,54 +53,7 @@ __all__ = [
     "ResultStepsType",
 ]
 
-if __import__("typing").TYPE_CHECKING:
-    # import apis into sdk package
-    from qase.api_client_v2.api.custom_fields_api import CustomFieldsApi as CustomFieldsApi
-    from qase.api_client_v2.api.results_api import ResultsApi as ResultsApi
-    
-    # import ApiClient
-    from qase.api_client_v2.api_response import ApiResponse as ApiResponse
-    from qase.api_client_v2.api_client import ApiClient as ApiClient
-    from qase.api_client_v2.configuration import Configuration as Configuration
-    from qase.api_client_v2.exceptions import OpenApiException as OpenApiException
-    from qase.api_client_v2.exceptions import ApiTypeError as ApiTypeError
-    from qase.api_client_v2.exceptions import ApiValueError as ApiValueError
-    from qase.api_client_v2.exceptions import ApiKeyError as ApiKeyError
-    from qase.api_client_v2.exceptions import ApiAttributeError as ApiAttributeError
-    from qase.api_client_v2.exceptions import ApiException as ApiException
-    
-    # import models into sdk package
-    from qase.api_client_v2.models.base_response import BaseResponse as BaseResponse
-    from qase.api_client_v2.models.create_results_request_v2 import CreateResultsRequestV2 as CreateResultsRequestV2
-    from qase.api_client_v2.models.custom_field import CustomField as CustomField
-    from qase.api_client_v2.models.custom_field_list_response import CustomFieldListResponse as CustomFieldListResponse
-    from qase.api_client_v2.models.custom_field_list_response_all_of_result import CustomFieldListResponseAllOfResult as CustomFieldListResponseAllOfResult
-    from qase.api_client_v2.models.custom_field_option import CustomFieldOption as CustomFieldOption
-    from qase.api_client_v2.models.custom_field_response import CustomFieldResponse as CustomFieldResponse
-    from qase.api_client_v2.models.relation_suite import RelationSuite as RelationSuite
-    from qase.api_client_v2.models.relation_suite_item import RelationSuiteItem as RelationSuiteItem
-    from qase.api_client_v2.models.result_create import ResultCreate as ResultCreate
-    from qase.api_client_v2.models.result_create_bulk_response import ResultCreateBulkResponse as ResultCreateBulkResponse
-    from qase.api_client_v2.models.result_create_fields import ResultCreateFields as ResultCreateFields
-    from qase.api_client_v2.models.result_create_response import ResultCreateResponse as ResultCreateResponse
-    from qase.api_client_v2.models.result_create_response_all_of_result import ResultCreateResponseAllOfResult as ResultCreateResponseAllOfResult
-    from qase.api_client_v2.models.result_execution import ResultExecution as ResultExecution
-    from qase.api_client_v2.models.result_relations import ResultRelations as ResultRelations
-    from qase.api_client_v2.models.result_step import ResultStep as ResultStep
-    from qase.api_client_v2.models.result_step_data import ResultStepData as ResultStepData
-    from qase.api_client_v2.models.result_step_execution import ResultStepExecution as ResultStepExecution
-    from qase.api_client_v2.models.result_step_status import ResultStepStatus as ResultStepStatus
-    from qase.api_client_v2.models.result_steps_type import ResultStepsType as ResultStepsType
-    
-else:
-    from lazy_imports import LazyModule, as_package, load
-
-    load(
-        LazyModule(
-            *as_package(__file__),
-            ("__version__", __version__),
-            ("__all__", __all__),
-            """# import apis into sdk package
+# import apis into sdk package
 from qase.api_client_v2.api.custom_fields_api import CustomFieldsApi as CustomFieldsApi
 from qase.api_client_v2.api.results_api import ResultsApi as ResultsApi
 
@@ -138,8 +91,3 @@ from qase.api_client_v2.models.result_step_execution import ResultStepExecution 
 from qase.api_client_v2.models.result_step_status import ResultStepStatus as ResultStepStatus
 from qase.api_client_v2.models.result_steps_type import ResultStepsType as ResultStepsType
 
-""",
-            name=__name__,
-            doc=__doc__,
-        )
-    )

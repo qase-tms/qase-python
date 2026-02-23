@@ -133,7 +133,7 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.SharedParametersApi(api_client)
-    id = 'id_example' # str | Identifier.
+    id = UUID('38400000-8cf0-11bd-b23e-10b96e4ef00d') # UUID | Identifier.
 
     try:
         # Delete shared parameter
@@ -151,7 +151,7 @@ with qase.api_client_v1.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **str**| Identifier. | 
+ **id** | **UUID**| Identifier. | 
 
 ### Return type
 
@@ -215,7 +215,7 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.SharedParametersApi(api_client)
-    id = 'id_example' # str | Identifier.
+    id = UUID('38400000-8cf0-11bd-b23e-10b96e4ef00d') # UUID | Identifier.
 
     try:
         # Get a specific shared parameter
@@ -233,7 +233,7 @@ with qase.api_client_v1.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **str**| Identifier. | 
+ **id** | **UUID**| Identifier. | 
 
 ### Return type
 
@@ -388,7 +388,7 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.SharedParametersApi(api_client)
-    id = 'id_example' # str | Identifier.
+    id = UUID('38400000-8cf0-11bd-b23e-10b96e4ef00d') # UUID | Identifier.
     shared_parameter_update = qase.api_client_v1.SharedParameterUpdate() # SharedParameterUpdate | 
 
     try:
@@ -407,7 +407,7 @@ with qase.api_client_v1.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **str**| Identifier. | 
+ **id** | **UUID**| Identifier. | 
  **shared_parameter_update** | [**SharedParameterUpdate**](SharedParameterUpdate.md)|  | 
 
 ### Return type

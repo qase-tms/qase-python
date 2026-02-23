@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 **expected_result** | **str** |  | [optional] 
 **data** | **str** |  | [optional] 
 **attachments** | **List[str]** | A list of Attachment hashes. | [optional] 
+**steps** | **List[object]** | Nested steps will be here. The same structure is used for them. | [optional] 
 
 ## Example
 
