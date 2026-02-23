@@ -1,5 +1,3 @@
-# coding: utf-8
-
 """
     Qase.io TestOps API v1
 
@@ -11,6 +9,7 @@
 
     Do not edit the class manually.
 """  # noqa: E501
+
 
 import warnings
 from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
@@ -357,7 +356,7 @@ class SharedParametersApi:
         Delete shared parameter along with all its usages in test cases and reviews.
 
         :param id: Identifier. (required)
-        :type id: str
+        :type id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -429,7 +428,7 @@ class SharedParametersApi:
         Delete shared parameter along with all its usages in test cases and reviews.
 
         :param id: Identifier. (required)
-        :type id: str
+        :type id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -501,7 +500,7 @@ class SharedParametersApi:
         Delete shared parameter along with all its usages in test cases and reviews.
 
         :param id: Identifier. (required)
-        :type id: str
+        :type id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -632,7 +631,7 @@ class SharedParametersApi:
 
 
         :param id: Identifier. (required)
-        :type id: str
+        :type id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -703,7 +702,7 @@ class SharedParametersApi:
 
 
         :param id: Identifier. (required)
-        :type id: str
+        :type id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -774,7 +773,7 @@ class SharedParametersApi:
 
 
         :param id: Identifier. (required)
-        :type id: str
+        :type id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1250,7 +1249,7 @@ class SharedParametersApi:
 
 
         :param id: Identifier. (required)
-        :type id: str
+        :type id: UUID
         :param shared_parameter_update: (required)
         :type shared_parameter_update: SharedParameterUpdate
         :param _request_timeout: timeout setting for this request. If one
@@ -1325,7 +1324,7 @@ class SharedParametersApi:
 
 
         :param id: Identifier. (required)
-        :type id: str
+        :type id: UUID
         :param shared_parameter_update: (required)
         :type shared_parameter_update: SharedParameterUpdate
         :param _request_timeout: timeout setting for this request. If one
@@ -1400,7 +1399,7 @@ class SharedParametersApi:
 
 
         :param id: Identifier. (required)
-        :type id: str
+        :type id: UUID
         :param shared_parameter_update: (required)
         :type shared_parameter_update: SharedParameterUpdate
         :param _request_timeout: timeout setting for this request. If one

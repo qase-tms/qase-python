@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 **action** | **str** |  | [optional] 
 **expected_result** | **str** |  | [optional] 
 **attachments** | [**List[AttachmentHash]**](AttachmentHash.md) |  | [optional] 
+**steps** | **List[object]** | Nested steps will be here. The same structure is used for them. | [optional] 
 
 ## Example
 

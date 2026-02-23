@@ -32,7 +32,8 @@ class SharedStepContentCreate(BaseModel):
     expected_result: Optional[StrictStr] = None
     data: Optional[StrictStr] = None
     attachments: Optional[List[StrictStr]] = Field(default=None, description="A list of Attachment hashes.")
-    __properties: ClassVar[List[str]] = ["hash", "action", "expected_result", "data", "attachments"]
+    steps: Optional[List[Dict[str, Any]]] = Field(default=None, description="Nested steps will be here. The same structure is used for them.")
+    __properties: ClassVar[List[str]] = ["hash", "action", "expected_result", "data", "attachments", "steps"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -89,7 +90,8 @@ class SharedStepContentCreate(BaseModel):
             "action": obj.get("action"),
             "expected_result": obj.get("expected_result"),
             "data": obj.get("data"),
-            "attachments": obj.get("attachments")
+            "attachments": obj.get("attachments"),
+            "steps": obj.get("steps")
         })
         return _obj
 

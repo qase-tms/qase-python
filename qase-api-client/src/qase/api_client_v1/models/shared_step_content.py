@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from qase.api_client_v1.models.attachment_hash import AttachmentHash
 from typing import Optional, Set
@@ -33,7 +33,8 @@ class SharedStepContent(BaseModel):
     action: Optional[StrictStr] = None
     expected_result: Optional[StrictStr] = None
     attachments: Optional[List[AttachmentHash]] = None
-    __properties: ClassVar[List[str]] = ["data", "hash", "action", "expected_result", "attachments"]
+    steps: Optional[List[Dict[str, Any]]] = Field(default=None, description="Nested steps will be here. The same structure is used for them.")
+    __properties: ClassVar[List[str]] = ["data", "hash", "action", "expected_result", "attachments", "steps"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -97,7 +98,8 @@ class SharedStepContent(BaseModel):
             "hash": obj.get("hash"),
             "action": obj.get("action"),
             "expected_result": obj.get("expected_result"),
-            "attachments": [AttachmentHash.from_dict(_item) for _item in obj["attachments"]] if obj.get("attachments") is not None else None
+            "attachments": [AttachmentHash.from_dict(_item) for _item in obj["attachments"]] if obj.get("attachments") is not None else None,
+            "steps": obj.get("steps")
         })
         return _obj
 

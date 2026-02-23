@@ -6,7 +6,7 @@ Shared parameter
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**shared_id** | **str** |  | 
+**shared_id** | **UUID** |  | 
 
 ## Example
 
