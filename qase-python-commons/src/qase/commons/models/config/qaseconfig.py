@@ -31,6 +31,13 @@ class LoggingConfig(BaseModel):
 
 
 class ExecutionPlan(BaseModel):
+    """Configuration for execution plan file path.
+
+    Note: Loading execution plan from a local file path is not yet implemented.
+    Execution plans are currently loaded from Qase TestOps API via testops.plan.id.
+    This configuration is reserved for future use.
+    """
+
     path: str = None
 
     def __init__(self):
