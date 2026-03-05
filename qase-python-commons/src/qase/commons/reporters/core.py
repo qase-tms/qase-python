@@ -36,7 +36,6 @@ class QaseCoreReporter:
         if not self.status_mapping.is_empty():
             self.logger.log_debug(f"Status mapping initialized: {self.status_mapping}")
 
-        # self._selective_execution_setup()
         self.fallback = self._fallback_setup()
 
         self.logger.log_debug(f"Config: {self.config}")
@@ -237,18 +236,6 @@ class QaseCoreReporter:
         except Exception as e:
             self.logger.log('Failed to load test plan from Qase TestOps', 'info')
             self.logger.log(e, 'error')
-
-    # TODO: won't work, need to fix
-    # def _selective_execution_setup(self) -> list:
-    #     # Load execution plan from file
-    #     path = self.config.execution_plan.path
-    #     if not self.config.execution_plan.path and path and os.path.isfile(self.config.execution_plan.path):
-    #         with open(self.config.execution_plan.path) as f:
-    #             return json.load(f)
-    #
-    #     # Load execution plan from command line or env variable
-    #     if self.config.self.config.execution_plan.path:
-    #         return [int(n) for n in str(self.config.self.config.execution_plan.path.split(","))]
 
     def _fallback_setup(self) -> Union[QaseReport, None]:
         if self.config.fallback == Mode.report:
