@@ -358,7 +358,7 @@ class QasePytestPlugin:
         title = None
         try:
             title = item.get_closest_marker("qase_title").kwargs.get("title")
-        except:
+        except (AttributeError, TypeError):
             pass
 
         if not title:
@@ -376,7 +376,7 @@ class QasePytestPlugin:
             try:
                 self.runtime.result.add_field(
                     Field(name, item.get_closest_marker("qase_" + name).kwargs.get(name)))
-            except:
+            except (AttributeError, TypeError):
                 pass
 
         try:
@@ -384,7 +384,7 @@ class QasePytestPlugin:
                 "qase_fields").kwargs.get("fields")
             for name, field in fields:
                 self.runtime.result.add_field(Field(name, field))
-        except:
+        except (AttributeError, TypeError):
             pass
 
     def _set_author(self, item) -> None:
@@ -393,7 +393,7 @@ class QasePytestPlugin:
                 "qase_author").kwargs.get("author"))
             if author != "None":
                 self.runtime.result.add_field(Field("author", author))
-        except:
+        except (AttributeError, TypeError):
             pass
 
     def _set_muted(self, item) -> None:
@@ -401,7 +401,7 @@ class QasePytestPlugin:
             muted = True if item.get_closest_marker("qase_muted") else False
             if muted:
                 self.runtime.result.add_field(Field("muted", "true"))
-        except:
+        except (AttributeError, TypeError):
             pass
 
     def _set_testops_ids(self, item) -> None:
@@ -418,7 +418,7 @@ class QasePytestPlugin:
             else:
                 # Single project mode: use old testops_ids
                 self.runtime.result.testops_ids = QasePytestPlugin._get_qase_ids(item)
-        except:
+        except (AttributeError, TypeError, ValueError):
             pass
 
     def _set_params(self, item) -> None:
