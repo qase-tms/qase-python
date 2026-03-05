@@ -302,7 +302,6 @@ class QasePytestPlugin:
         self._set_testops_ids(item)
         self._set_params(item)
         self._set_suite(item)
-        self._set_relations(item)
         self._get_signature(item)
 
     def finish_pytest_item(self):
@@ -370,10 +369,6 @@ class QasePytestPlugin:
     def _get_signature(self, item):
         self.runtime.result.signature = QaseUtils.get_signature(
             self.runtime.result.testops_ids, item.nodeid.split("/"), self.runtime.result.params)
-
-    def _set_relations(self, item) -> None:
-        # TODO: Add support for relations
-        pass
 
     def _set_fields(self, item) -> None:
         # Legacy fields support
