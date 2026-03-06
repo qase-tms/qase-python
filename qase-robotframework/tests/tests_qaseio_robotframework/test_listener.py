@@ -10,7 +10,7 @@ import pytest
 
 # Patch BuiltIn at import time so Listener module can be loaded
 # without a running Robot Framework instance.
-with patch("qase.robotframework.listener.BuiltIn"):
+with patch("robot.libraries.BuiltIn.BuiltIn"):
     from qase.robotframework.listener import Listener
 
 
