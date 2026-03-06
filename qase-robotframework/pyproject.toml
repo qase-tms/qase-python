@@ -32,6 +32,7 @@ dependencies = [
 testing = [
     "pytest",
     "pytest-cov",
+    "robotframework>=5.0",
 ]
 
 [tool.tox]
