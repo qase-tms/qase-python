@@ -33,6 +33,8 @@ class QasePytestPlugin:
         self.start_pytest_item(item)
 
     def pytest_runtest_makereport(self, item, call):
+        if self.runtime.result is None:
+            return
         if call.when == "call":
             if call.excinfo:
                 # Determine if it's an assertion error or other error
@@ -40,7 +42,7 @@ class QasePytestPlugin:
                 status = "failed" if is_assertion_error else "invalid"
                 self.runtime.result.execution.status = status
                 if hasattr(call.excinfo, "value"):
-                    self.runtime.result.execution.stacktrace = '\n'.join(call.excinfo.value.args)
+                    self.runtime.result.execution.stacktrace = '\n'.join(str(a) for a in call.excinfo.value.args)
                     if hasattr(call.excinfo.value, "failures"):
                         self.runtime.result.message = '\n'.join(call.excinfo.value.failures)
 
@@ -74,6 +76,8 @@ class QasePytestPlugin:
                 step.execution.set_status("passed")
 
     def pytest_runtest_logfinish(self):
+        if self.runtime.result is None:
+            return
         self.runtime.result.execution.complete()
         self.runtime.result.steps = [step for key, step in self.runtime.steps.items()]
         self.reporter.add_result(self.runtime.result)
