@@ -1,4 +1,5 @@
 import threading
+import time
 import urllib.parse
 
 from datetime import datetime
@@ -10,6 +11,7 @@ from ..models.config.qaseconfig import QaseConfig
 
 DEFAULT_BATCH_SIZE = 200
 DEFAULT_THREAD_COUNT = 4
+DEFAULT_THREAD_POLL_INTERVAL = 0.05
 
 
 class QaseTestOps:
@@ -133,7 +135,7 @@ class QaseTestOps:
             self._send_results()
 
         while self.count_running_threads > 0:
-                pass    
+            time.sleep(DEFAULT_THREAD_POLL_INTERVAL)
         
         if self.complete_after_run:
             self.logger.log_debug("Completing run")
