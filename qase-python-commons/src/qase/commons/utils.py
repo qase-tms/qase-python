@@ -3,7 +3,11 @@ import platform
 import threading
 import sys
 from typing import Union, List
-import pip
+try:
+    import pip
+    pip_version = pip.__version__
+except ModuleNotFoundError:
+    pip_version = "unknown"
 import string
 import uuid
 import time
@@ -134,7 +138,7 @@ class QaseUtils:
                 "version": platform.uname().version,
                 "machine": platform.uname().machine,
                 'python': '.'.join(map(str, sys.version_info)),
-                'pip': pip.__version__
+                'pip': pip_version
             }
         except Exception as e:
             return {}
