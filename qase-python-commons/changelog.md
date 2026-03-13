@@ -1,3 +1,9 @@
+# qase-python-commons@5.0.6
+
+## What's new
+
+- Fixed `ModuleNotFoundError: No module named 'pip'` in environments managed by `uv`, which does not install `pip` by default. The `pip` import is now optional with a fallback to `"unknown"` for telemetry version reporting. Resolves [#466](https://github.com/qase-tms/qase-python/issues/466).
+
 # qase-python-commons@5.0.3
 
 ## What's new
