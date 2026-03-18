@@ -106,11 +106,11 @@ class ApiV2Client(ApiV1Client):
             if arch:
                 x_platform_parts.append(f"arch={arch}")
             
-            python_version = host_data.get('python', '')
+            python_version = host_data.get('language', '')
             if python_version:
                 x_platform_parts.append(f"python={python_version}")
-            
-            pip_version = host_data.get('pip', '')
+
+            pip_version = host_data.get('packageManager', '')
             if pip_version:
                 x_platform_parts.append(f"pip={pip_version}")
             

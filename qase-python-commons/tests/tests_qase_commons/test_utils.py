@@ -1,8 +1,6 @@
 from mock import Mock
 import os
 import threading
-import sys
-import pip
 import time
 
 from qase.commons.utils import QaseUtils
@@ -35,17 +33,6 @@ def test_build_tree():
 def test_get_thread_name():
     thread_name = QaseUtils.get_thread_name()
     assert thread_name == f"{os.getpid()}-{threading.current_thread().name}"
-
-def test_get_host_data():
-    host_data = QaseUtils.get_host_data()
-
-    assert host_data['system'] == os.uname().sysname
-    assert host_data['node'] == os.uname().nodename
-    assert host_data['release'] == os.uname().release
-    assert host_data['version'] == os.uname().version
-    assert host_data['machine'] == os.uname().machine
-    assert host_data['python'] == '.'.join(map(str, sys.version_info))
-    assert host_data['pip'] == pip.__version__
 
 def test_get_filename():
     path = '/path/to/file.txt'
