@@ -1,13 +1,7 @@
 import os
-import platform
 import threading
 import sys
 from typing import Union, List
-try:
-    import pip
-    pip_version = pip.__version__
-except ModuleNotFoundError:
-    pip_version = "unknown"
 import string
 import uuid
 import time
@@ -127,21 +121,6 @@ class QaseUtils:
     @staticmethod
     def uuid() -> str:
         return str(uuid.uuid4())
-
-    @staticmethod
-    def get_host_data() -> dict:
-        try:
-            return {
-                "system": platform.uname().system,
-                "node": platform.uname().node,
-                "release": platform.uname().release,
-                "version": platform.uname().version,
-                "machine": platform.uname().machine,
-                'python': '.'.join(map(str, sys.version_info)),
-                'pip': pip_version
-            }
-        except Exception as e:
-            return {}
 
     @staticmethod
     def get_filename(path) -> str:

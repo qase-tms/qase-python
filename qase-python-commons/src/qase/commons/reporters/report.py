@@ -6,6 +6,7 @@ import re
 from ..models import Result, Run, Attachment
 from ..models.step import Step, StepType, StepTextData
 from .. import QaseUtils, Logger
+from ..util.host_data import get_host_info
 from ..models.config.connection import Format
 from ..models.config.qaseconfig import QaseConfig
 
@@ -175,7 +176,7 @@ class QaseReport:
                 result = self._read_object(source)
                 run.add_result(result)
 
-        run.add_host_data(QaseUtils.get_host_data())
+        run.add_host_data(get_host_info(None, None))
 
         self._store_object(run, self.report_path, "run")
 

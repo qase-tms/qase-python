@@ -1,3 +1,14 @@
+# qase-python-commons@5.0.7
+
+## What's new
+
+Unified HostData model to align field names across all Qase reporter languages:
+
+- Renamed `python` -> `language` and `pip` -> `packageManager` in host data dictionary.
+- Normalized `system` field to lowercase (`windows`, `darwin`, `linux`).
+- Removed legacy `QaseUtils.get_host_data()` in favor of `get_host_info()` from `host_data.py`.
+- X-Platform headers retain language-specific keys (`python=`, `pip=`).
+
 # qase-python-commons@5.0.6
 
 ## What's new
