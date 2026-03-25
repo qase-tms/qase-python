@@ -19,6 +19,7 @@ Name | Type | Description | Notes
 **milestone_id** | **int** |  | [optional] 
 **automation** | **int** |  | [optional] 
 **status** | **int** |  | [optional] 
+**steps_type** | **str** | Determines the format of the steps field. When \&quot;classic\&quot;, steps use the standard action/expected_result/data format. When \&quot;gherkin\&quot;, steps use the {value: \&quot;Given...\\nWhen...\\nThen...\&quot;} format. | [optional] [default to 'classic']
 **attachments** | **List[str]** | A list of Attachment hashes. | [optional] 
 **steps** | [**List[TestStepCreate]**](TestStepCreate.md) |  | [optional] 
 **tags** | **List[str]** |  | [optional] 

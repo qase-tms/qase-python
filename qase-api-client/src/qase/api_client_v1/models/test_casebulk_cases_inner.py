@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from qase.api_client_v1.models.test_case_parameter_create import TestCaseParameterCreate
@@ -44,6 +44,7 @@ class TestCasebulkCasesInner(BaseModel):
     milestone_id: Optional[StrictInt] = None
     automation: Optional[StrictInt] = None
     status: Optional[StrictInt] = None
+    steps_type: Optional[StrictStr] = Field(default='classic', description="Determines the format of the steps field. When \"classic\", steps use the standard action/expected_result/data format. When \"gherkin\", steps use the {value: \"Given...\\nWhen...\\nThen...\"} format.")
     attachments: Optional[List[StrictStr]] = Field(default=None, description="A list of Attachment hashes.")
     steps: Optional[List[TestStepCreate]] = None
     tags: Optional[List[StrictStr]] = None
@@ -53,7 +54,17 @@ class TestCasebulkCasesInner(BaseModel):
     created_at: Optional[StrictStr] = None
     updated_at: Optional[StrictStr] = None
     id: Optional[StrictInt] = None
-    __properties: ClassVar[List[str]] = ["description", "preconditions", "postconditions", "title", "severity", "priority", "behavior", "type", "layer", "is_flaky", "suite_id", "milestone_id", "automation", "status", "attachments", "steps", "tags", "params", "parameters", "custom_field", "created_at", "updated_at", "id"]
+    __properties: ClassVar[List[str]] = ["description", "preconditions", "postconditions", "title", "severity", "priority", "behavior", "type", "layer", "is_flaky", "suite_id", "milestone_id", "automation", "status", "steps_type", "attachments", "steps", "tags", "params", "parameters", "custom_field", "created_at", "updated_at", "id"]
+
+    @field_validator('steps_type')
+    def steps_type_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['classic', 'gherkin']):
+            raise ValueError("must be one of enum values ('classic', 'gherkin')")
+        return value
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -149,6 +160,7 @@ class TestCasebulkCasesInner(BaseModel):
             "milestone_id": obj.get("milestone_id"),
             "automation": obj.get("automation"),
             "status": obj.get("status"),
+            "steps_type": obj.get("steps_type") if obj.get("steps_type") is not None else 'classic',
             "attachments": obj.get("attachments"),
             "steps": [TestStepCreate.from_dict(_item) for _item in obj["steps"]] if obj.get("steps") is not None else None,
             "tags": obj.get("tags"),
