@@ -19,7 +19,7 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from qase.api_client_v1.models.attachment import Attachment
 from qase.api_client_v1.models.custom_field_value import CustomFieldValue
@@ -67,6 +67,16 @@ class TestCase(BaseModel):
     updated: Optional[StrictStr] = Field(default=None, description="Deprecated, use the `updated_at` property instead.")
     external_issues: Optional[List[ExternalIssue]] = None
     __properties: ClassVar[List[str]] = ["id", "position", "title", "description", "preconditions", "postconditions", "severity", "priority", "type", "layer", "is_flaky", "behavior", "automation", "status", "milestone_id", "suite_id", "custom_fields", "attachments", "steps_type", "steps", "params", "parameters", "tags", "member_id", "author_id", "created_at", "updated_at", "deleted", "created", "updated", "external_issues"]
+
+    @field_validator('steps_type')
+    def steps_type_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['classic', 'gherkin']):
+            raise ValueError("must be one of enum values ('classic', 'gherkin')")
+        return value
 
     model_config = ConfigDict(
         populate_by_name=True,

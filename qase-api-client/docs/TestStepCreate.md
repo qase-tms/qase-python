@@ -5,9 +5,10 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**action** | **str** |  | [optional] 
+**action** | **str** | Step action text. Used for classic steps. For gherkin steps, use the \&quot;value\&quot; property instead. | [optional] 
 **expected_result** | **str** |  | [optional] 
 **data** | **str** |  | [optional] 
+**value** | **str** | Gherkin scenario text. Used when steps_type is \&quot;gherkin\&quot;. Example: \&quot;Given a user exists\\nWhen they log in\\nThen they see the dashboard\&quot; | [optional] 
 **position** | **int** |  | [optional] 
 **attachments** | **List[str]** | A list of Attachment hashes. | [optional] 
 **steps** | **List[object]** | Nested steps may be passed here. Use same structure for them. | [optional] 

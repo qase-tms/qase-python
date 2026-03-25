@@ -27,13 +27,14 @@ class TestStepCreate(BaseModel):
     """
     TestStepCreate
     """ # noqa: E501
-    action: Optional[StrictStr] = None
+    action: Optional[StrictStr] = Field(default=None, description="Step action text. Used for classic steps. For gherkin steps, use the \"value\" property instead.")
     expected_result: Optional[StrictStr] = None
     data: Optional[StrictStr] = None
+    value: Optional[StrictStr] = Field(default=None, description="Gherkin scenario text. Used when steps_type is \"gherkin\". Example: \"Given a user exists\\nWhen they log in\\nThen they see the dashboard\"")
     position: Optional[StrictInt] = None
     attachments: Optional[List[StrictStr]] = Field(default=None, description="A list of Attachment hashes.")
     steps: Optional[List[Dict[str, Any]]] = Field(default=None, description="Nested steps may be passed here. Use same structure for them.")
-    __properties: ClassVar[List[str]] = ["action", "expected_result", "data", "position", "attachments", "steps"]
+    __properties: ClassVar[List[str]] = ["action", "expected_result", "data", "value", "position", "attachments", "steps"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -89,6 +90,7 @@ class TestStepCreate(BaseModel):
             "action": obj.get("action"),
             "expected_result": obj.get("expected_result"),
             "data": obj.get("data"),
+            "value": obj.get("value"),
             "position": obj.get("position"),
             "attachments": obj.get("attachments"),
             "steps": obj.get("steps")
