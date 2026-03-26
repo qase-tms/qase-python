@@ -7,7 +7,7 @@ singleton lifecycle.
 """
 
 import pytest
-from unittest.mock import MagicMock, PropertyMock
+from unittest.mock import MagicMock, PropertyMock, patch, call
 
 from qase.pytest.plugin import (
     QasePytestPlugin,
@@ -221,3 +221,125 @@ class TestQasePytestPluginSingleton:
         second = QasePytestPluginSingleton.get_instance()
 
         assert first is second
+
+
+def make_report(failed=False, caplog="", capstdout="", capstderr="",
+                longrepr=None, longreprtext="", skipped=False):
+    """Create a mock pytest report."""
+    report = MagicMock()
+    report.failed = failed
+    report.skipped = skipped
+    report.passed = not failed and not skipped
+    report.caplog = caplog
+    report.capstdout = capstdout
+    report.capstderr = capstderr
+    report.longrepr = longrepr
+    report.longreprtext = longreprtext
+    return report
+
+
+def make_call(when="call", excinfo=None):
+    """Create a mock pytest CallInfo."""
+    call_obj = MagicMock()
+    call_obj.when = when
+    call_obj.excinfo = excinfo
+    return call_obj
+
+
+def make_plugin_with_capture_logs(capture_logs=True):
+    """Create a QasePytestPlugin with capture_logs configured."""
+    plugin = make_plugin()
+    plugin.reporter.config.framework.pytest.capture_logs = capture_logs
+    plugin.ignore = False
+    plugin.runtime.result = MagicMock()
+    plugin.runtime.result.execution = MagicMock()
+    plugin.runtime.result.execution.status = None
+    return plugin
+
+
+def run_makereport(plugin, item, call_obj, report):
+    """Drive the pytest_runtest_makereport hookwrapper generator.
+
+    pytest hookwrappers are generators that yield once.
+    The yield expression returns a _Result wrapper whose .get_result()
+    gives the actual report.  We simulate that here.
+    """
+    result_wrapper = MagicMock()
+    result_wrapper.get_result.return_value = report
+
+    gen = plugin.pytest_runtest_makereport(item, call_obj)
+    next(gen)  # advance to yield
+    try:
+        gen.send(result_wrapper)  # send _Result back
+    except StopIteration:
+        pass
+
+
+class TestAttachLogsOnSetupFailure:
+    """Test that logs are attached when fixture setup fails."""
+
+    def test_logs_attached_on_setup_failure(self):
+        """When setup phase fails, logs must be attached."""
+        plugin = make_plugin_with_capture_logs()
+        excinfo = MagicMock()
+        excinfo.typename = "RuntimeError"
+        excinfo.exconly.return_value = "RuntimeError: fixture broke"
+        report = make_report(
+            failed=True,
+            caplog="fixture log output",
+            capstdout="fixture stdout",
+            capstderr="fixture stderr",
+        )
+        call_obj = make_call(when="setup", excinfo=excinfo)
+        item = make_mock_item()
+
+        with patch.object(plugin, '_attach_logs') as mock_attach:
+            run_makereport(plugin, item, call_obj, report)
+            mock_attach.assert_called_once_with(report)
+
+    def test_logs_not_attached_on_setup_success(self):
+        """When setup passes, logs must NOT be attached (avoids duplication with call phase)."""
+        plugin = make_plugin_with_capture_logs()
+        report = make_report(
+            failed=False,
+            caplog="some setup log",
+            capstdout="some stdout",
+        )
+        call_obj = make_call(when="setup")
+        item = make_mock_item()
+
+        with patch.object(plugin, '_attach_logs') as mock_attach:
+            run_makereport(plugin, item, call_obj, report)
+            mock_attach.assert_not_called()
+
+    def test_logs_still_attached_on_call_phase(self):
+        """Normal call phase log attachment must be preserved."""
+        plugin = make_plugin_with_capture_logs()
+        report = make_report(
+            failed=True,
+            caplog="test log",
+            capstdout="test stdout",
+        )
+        excinfo = MagicMock()
+        excinfo.typename = "AssertionError"
+        excinfo.exconly.return_value = "AssertionError: expected X"
+        call_obj = make_call(when="call", excinfo=excinfo)
+        item = make_mock_item()
+
+        with patch.object(plugin, '_attach_logs') as mock_attach:
+            run_makereport(plugin, item, call_obj, report)
+            mock_attach.assert_called_once_with(report)
+
+    def test_logs_not_attached_when_capture_logs_disabled(self):
+        """When capture_logs is off, no logs attached regardless of phase."""
+        plugin = make_plugin_with_capture_logs(capture_logs=False)
+        excinfo = MagicMock()
+        excinfo.typename = "RuntimeError"
+        excinfo.exconly.return_value = "RuntimeError: fixture broke"
+        report = make_report(failed=True, caplog="some log")
+        call_obj = make_call(when="setup", excinfo=excinfo)
+        item = make_mock_item()
+
+        with patch.object(plugin, '_attach_logs') as mock_attach:
+            run_makereport(plugin, item, call_obj, report)
+            mock_attach.assert_not_called()

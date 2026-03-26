@@ -161,8 +161,12 @@ class QasePytestPlugin:
         # Process test result and update status
         self._process_test_result(report, call, item)
 
-        # Add logs if configured and in call phase
-        if self.reporter.config.framework.pytest.capture_logs and call.when == "call":
+        # Add logs if configured: always in call phase,
+        # and in setup phase only when setup failed (fixture errors)
+        if self.reporter.config.framework.pytest.capture_logs and (
+            call.when == "call"
+            or (call.when == "setup" and report.failed)
+        ):
             self._attach_logs(report)
 
         # Handle xfail message in call phase
