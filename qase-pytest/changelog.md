@@ -1,3 +1,15 @@
+# qase-pytest 8.0.2
+
+## Bug fixes
+
+- Fixed missing log attachments (`log.txt`, `stdout.txt`, `stderr.txt`) for tests that fail during fixture setup. Previously, logs were only captured during the `call` phase, so pytest `ERROR` results from broken fixtures had no log attachments in Qase.
+
+# qase-pytest 8.0.1
+
+## What's new
+
+- Minor internal improvements.
+
 # qase-pytest 8.0.0
 
 ## What's new
