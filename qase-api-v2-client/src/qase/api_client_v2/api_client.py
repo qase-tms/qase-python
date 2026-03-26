@@ -91,7 +91,7 @@ class ApiClient:
             self.default_headers[header_name] = header_value
         self.cookie = cookie
         # Set default User-Agent.
-        self.user_agent = 'OpenAPI-Generator/1.0.0/python'
+        self.user_agent = f'qase-api-client-python/{self._get_package_version()}'
         self.client_side_validation = configuration.client_side_validation
 
     def __enter__(self):
@@ -111,6 +111,15 @@ class ApiClient:
 
     def set_default_header(self, header_name, header_value):
         self.default_headers[header_name] = header_value
+
+    @staticmethod
+    def _get_package_version() -> str:
+        """Get package version dynamically from installed metadata."""
+        try:
+            from importlib.metadata import version
+            return version('qase-api-v2-client')
+        except Exception:
+            return 'unknown'
 
 
     _default = None
