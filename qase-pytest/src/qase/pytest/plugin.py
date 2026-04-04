@@ -376,7 +376,7 @@ class QasePytestPlugin:
 
     def _set_fields(self, item) -> None:
         # Legacy fields support
-        for name in ["description", "preconditions", "postconditions", "layer", "severity", "priority", "suite"]:
+        for name in ["description", "preconditions", "postconditions", "layer", "severity", "priority"]:
             try:
                 self.runtime.result.add_field(
                     Field(name, item.get_closest_marker("qase_" + name).kwargs.get(name)))
