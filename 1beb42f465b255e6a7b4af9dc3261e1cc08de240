@@ -1,0 +1,43 @@
+integration/pytest/attachments/sample.txt
+  e7e69e879a026ae1 1
+integration/pytest/tests/test_basic.py
+  e7e69e879a026ae1 1-22
+integration/pytest/tests/test_steps.py
+  e7e69e879a026ae1 1-64
+integration/pytest/tests/test_params.py
+  e7e69e879a026ae1 1-20
+.github/workflows/pythonpackage.yml
+  e7e69e879a026ae1 51-82
+integration/pytest/.gitignore
+  e7e69e879a026ae1 1
+integration/pytest/tests/test_multiple_ids.py
+  e7e69e879a026ae1 1-8
+scripts/clean_expected.py
+  e7e69e879a026ae1 1-156
+integration/pytest/tests/test_suites.py
+  e7e69e879a026ae1 1-23
+integration/pytest/tests/test_attachments.py
+  e7e69e879a026ae1 1-30
+integration/pytest/tests/test_fields.py
+  e7e69e879a026ae1 1-63
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "1beb42f465b255e6a7b4af9dc3261e1cc08de240",
+  "prompts": {
+    "e7e69e879a026ae1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0ad6c067-69ff-4bed-b8aa-0777fd56e842",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dmitrii Gridnev",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 420,
+      "overriden_lines": 0
+    }
+  }
+}
