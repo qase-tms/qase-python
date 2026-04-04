@@ -1,0 +1,377 @@
+run:
+  stats:
+    blocked: 0
+    failed: 2
+    invalid: 0
+    muted: 0
+    passed: 24
+    skipped: 1
+    total: 27
+results:
+- title: Muted test
+  signature: 208::integration::pytest::tests::test_fields.py::test_muted
+  testops_ids:
+  - 208
+  status: passed
+  fields:
+    muted: 'true'
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_fields
+- title: Test in deeply nested suite
+  signature: 303::integration::pytest::tests::test_suites.py::test_deep_nested_suite
+  testops_ids:
+  - 303
+  status: passed
+  relations:
+    suite:
+      data:
+      - title: Authentication
+      - title: OAuth
+      - title: Google
+- title: Test with failing step
+  signature: 504::integration::pytest::tests::test_steps.py::test_failing_step
+  testops_ids:
+  - 504
+  status: failed
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_steps
+  steps:
+  - data:
+      action: Passing step
+    execution:
+      status: passed
+  - data:
+      action: Failing step
+    execution:
+      status: failed
+- title: Parametrized test with multiple params
+  signature: 402::integration::pytest::tests::test_params.py::test_multiple_params[4-5-9]::{a:4}::{b:5}::{expected:9}
+  testops_ids:
+  - 402
+  status: passed
+  params:
+    a: '4'
+    b: '5'
+    expected: '9'
+  param_groups:
+  - - a
+    - b
+    - expected
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_params
+- title: Test with preconditions and postconditions
+  signature: 205::integration::pytest::tests::test_fields.py::test_conditions
+  testops_ids:
+  - 205
+  status: passed
+  fields:
+    postconditions: Session is active
+    preconditions: User is logged in
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_fields
+- title: Test in Authentication suite
+  signature: 301::integration::pytest::tests::test_suites.py::test_auth_suite
+  testops_ids:
+  - 301
+  status: passed
+  relations:
+    suite:
+      data:
+      - title: Authentication
+- title: Test with layer e2e
+  signature: 203::integration::pytest::tests::test_fields.py::test_layer_e2e
+  testops_ids:
+  - 203
+  status: passed
+  fields:
+    layer: e2e
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_fields
+- title: Test with bytes attachment
+  signature: 602::integration::pytest::tests::test_attachments.py::test_bytes_attachment
+  testops_ids:
+  - 602
+  status: passed
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_attachments
+  attachments:
+  - file_name: data.json
+    mime_type: application/json
+- title: Test with multiple fields via @qase.fields
+  signature: 206::integration::pytest::tests::test_fields.py::test_multiple_fields
+  testops_ids:
+  - 206
+  status: passed
+  fields:
+    layer: api
+    priority: high
+    severity: critical
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_fields
+- title: Parametrized test with multiple params
+  signature: 402::integration::pytest::tests::test_params.py::test_multiple_params[1-2-3]::{a:1}::{b:2}::{expected:3}
+  testops_ids:
+  - 402
+  status: passed
+  params:
+    a: '1'
+    b: '2'
+    expected: '3'
+  param_groups:
+  - - a
+    - b
+    - expected
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_params
+- title: Test with context manager steps
+  signature: 502::integration::pytest::tests::test_steps.py::test_context_manager_steps
+  testops_ids:
+  - 502
+  status: passed
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_steps
+  steps:
+  - data:
+      action: First inline step
+    execution:
+      status: passed
+  - data:
+      action: Second inline step
+    execution:
+      status: passed
+- title: Test with description
+  signature: 204::integration::pytest::tests::test_fields.py::test_description
+  testops_ids:
+  - 204
+  status: passed
+  fields:
+    description: This test verifies that description field is reported correctly.
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_fields
+- title: Parametrized test with single param
+  signature: 401::integration::pytest::tests::test_params.py::test_single_param[1]::{value:1}
+  testops_ids:
+  - 401
+  status: passed
+  params:
+    value: '1'
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_params
+- title: Simple passing test
+  signature: 101::integration::pytest::tests::test_basic.py::test_pass
+  testops_ids:
+  - 101
+  status: passed
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_basic
+- title: Test with file attachment
+  signature: 601::integration::pytest::tests::test_attachments.py::test_file_attachment
+  testops_ids:
+  - 601
+  status: passed
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_attachments
+  attachments:
+  - file_name: sample.txt
+    mime_type: text/plain
+- title: Test with priority high
+  signature: 202::integration::pytest::tests::test_fields.py::test_priority_high
+  testops_ids:
+  - 202
+  status: passed
+  fields:
+    priority: high
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_fields
+- title: Test with author
+  signature: 207::integration::pytest::tests::test_fields.py::test_author
+  testops_ids:
+  - 207
+  status: passed
+  fields:
+    author: integration-bot
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_fields
+- title: Test with nested steps
+  signature: 503::integration::pytest::tests::test_steps.py::test_nested_steps
+  testops_ids:
+  - 503
+  status: passed
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_steps
+  steps:
+  - data:
+      action: Parent step
+    execution:
+      status: passed
+    steps:
+    - data:
+        action: Child step A
+      execution:
+        status: passed
+    - data:
+        action: Child step B
+      execution:
+        status: passed
+- title: Test with attachment in step
+  signature: 603::integration::pytest::tests::test_attachments.py::test_attachment_in_step
+  testops_ids:
+  - 603
+  status: passed
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_attachments
+  steps:
+  - data:
+      action: Step with attachment
+    execution:
+      status: passed
+      attachments:
+      - file_name: step.log
+        mime_type: text/plain
+- title: Test in nested Authentication.OAuth suite
+  signature: 302::integration::pytest::tests::test_suites.py::test_nested_suite
+  testops_ids:
+  - 302
+  status: passed
+  relations:
+    suite:
+      data:
+      - title: Authentication
+      - title: OAuth
+- title: Test with step decorators
+  signature: 501::integration::pytest::tests::test_steps.py::test_step_decorators
+  testops_ids:
+  - 501
+  status: passed
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_steps
+  steps:
+  - data:
+      action: Step one
+    execution:
+      status: passed
+  - data:
+      action: Step two
+    execution:
+      status: passed
+- title: Parametrized test with single param
+  signature: 401::integration::pytest::tests::test_params.py::test_single_param[3]::{value:3}
+  testops_ids:
+  - 401
+  status: passed
+  params:
+    value: '3'
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_params
+- title: Parametrized test with single param
+  signature: 401::integration::pytest::tests::test_params.py::test_single_param[2]::{value:2}
+  testops_ids:
+  - 401
+  status: passed
+  params:
+    value: '2'
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_params
+- title: Test linked to multiple Qase test cases
+  signature: 701-702::integration::pytest::tests::test_multiple_ids.py::test_multiple_ids
+  testops_ids:
+  - 701
+  - 702
+  status: passed
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_multiple_ids
+- title: Skipped test
+  signature: 103::integration::pytest::tests::test_basic.py::test_skip
+  testops_ids:
+  - 103
+  status: skipped
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_basic
+- title: Test with severity blocker
+  signature: 201::integration::pytest::tests::test_fields.py::test_severity_blocker
+  testops_ids:
+  - 201
+  status: passed
+  fields:
+    severity: blocker
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_fields
+- title: Simple failing test
+  signature: 102::integration::pytest::tests::test_basic.py::test_fail
+  testops_ids:
+  - 102
+  status: failed
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_basic
