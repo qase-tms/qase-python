@@ -1,0 +1,59 @@
+integration/behave/features/suites.feature
+  e7e69e879a026ae1 1-13
+integration/behave/features/fields.feature
+  e7e69e879a026ae1 1-25
+integration/behave/features/steps/steps.py
+  e7e69e879a026ae1 1-73
+integration/behave/features/steps_feature.feature
+  e7e69e879a026ae1 1-13
+integration/behave/features/basic.feature
+  e7e69e879a026ae1 1-13
+.github/workflows/pythonpackage.yml
+  e7e69e879a026ae1 64-66,77,81,85-119
+integration/robot/tests/fields.robot
+  e7e69e879a026ae1 1-23
+integration/robot/attachments/sample.txt
+  e7e69e879a026ae1 1
+integration/tavern/.gitignore
+  e7e69e879a026ae1 1
+integration/robot/tests/steps.robot
+  e7e69e879a026ae1 1-27
+integration/robot/.gitignore
+  e7e69e879a026ae1 1-4
+integration/robot/tests/params.robot
+  e7e69e879a026ae1 1-17
+integration/behave/.gitignore
+  e7e69e879a026ae1 1
+integration/robot/tests/basic.robot
+  e7e69e879a026ae1 1-15
+integration/behave/features/attachments.feature
+  e7e69e879a026ae1 1-13
+integration/behave/attachments/sample.txt
+  e7e69e879a026ae1 1
+integration/robot/tests/multiple_ids.robot
+  e7e69e879a026ae1 1-7
+integration/behave/features/parametrized.feature
+  e7e69e879a026ae1 1-12
+integration/tavern/tests/test_api.tavern.yaml
+  e7e69e879a026ae1 1-70
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "7d23d21fb25c4e62b11f5d8952ad1dde2299249f",
+  "prompts": {
+    "e7e69e879a026ae1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0ad6c067-69ff-4bed-b8aa-0777fd56e842",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dmitrii Gridnev",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 371,
+      "overriden_lines": 0
+    }
+  }
+}
