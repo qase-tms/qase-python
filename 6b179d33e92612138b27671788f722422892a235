@@ -1,0 +1,23 @@
+qase-tavern/src/qase/tavern/plugin.py
+  e7e69e879a026ae1 133,136
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "6b179d33e92612138b27671788f722422892a235",
+  "prompts": {
+    "e7e69e879a026ae1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0ad6c067-69ff-4bed-b8aa-0777fd56e842",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dmitrii Gridnev",
+      "messages": [],
+      "total_additions": 392,
+      "total_deletions": 24,
+      "accepted_lines": 373,
+      "overriden_lines": 0
+    }
+  }
+}
