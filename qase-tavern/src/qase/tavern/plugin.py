@@ -130,10 +130,10 @@ class QasePytestPlugin:
         data = StepTextData(stage['name'])
         step = Step(StepType.TEXT, str(uuid.uuid4()), data)
 
-        step.attachments.append(
+        step.add_attachment(
             Attachment(file_name='request.json', content=json.dumps(stage['request']), mime_type='application/json',
                        temporary=True))
-        step.attachments.append(
+        step.add_attachment(
             Attachment(file_name='response.json', content=json.dumps(stage['response']), mime_type='application/json',
                        temporary=True))
 
