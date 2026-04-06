@@ -61,7 +61,9 @@ jobs:
       - name: Install packages
         run: |
           python -m pip install --upgrade pip
-          pip install ./qase-api-client ./qase-api-v2-client ./qase-python-commons ./qase-pytest
+          pip install ./qase-api-client ./qase-api-v2-client ./qase-python-commons \
+            ./qase-pytest ./qase-behave ./qase-robotframework ./qase-tavern \
+            robotframework tavern
 
       - name: Install reporters-validator
         run: pip install git+https://github.com/qase-tms/reporters-validator.git
@@ -72,12 +74,49 @@ jobs:
       - name: Validate Pytest reporter
         run: |
           QASE_MODE=report \
-          QASE_REPORT_CONNECTION_PATH=${{ github.workspace }}/build/report \
+          QASE_REPORT_CONNECTION_PATH=${{ github.workspace }}/build/pytest-report \
           python -m pytest integration/pytest/tests/ -v || true
 
           reporters-validator validate \
-            --report-dir ${{ github.workspace }}/build/report \
+            --report-dir ${{ github.workspace }}/build/pytest-report \
             --expected integration/pytest/expected/pytest-examples.yaml \
+            --schema-dir /tmp/specs/report/schemas
+
+      - name: Validate Behave reporter
+        run: |
+          cd integration/behave
+
+          QASE_MODE=report \
+          QASE_REPORT_CONNECTION_PATH=${{ github.workspace }}/build/behave-report \
+          behave --format=qase.behave.formatter:QaseFormatter --no-capture features/ || true
+
+          reporters-validator validate \
+            --report-dir ${{ github.workspace }}/build/behave-report \
+            --expected expected/behave-examples.yaml \
+            --schema-dir /tmp/specs/report/schemas
+
+      - name: Validate Robot Framework reporter
+        run: |
+          QASE_MODE=report \
+          QASE_REPORT_CONNECTION_PATH=${{ github.workspace }}/build/robot-report \
+          robot --listener qase.robotframework.Listener \
+            --outputdir /tmp/robot-output \
+            integration/robot/tests/ || true
+
+          reporters-validator validate \
+            --report-dir ${{ github.workspace }}/build/robot-report \
+            --expected integration/robot/expected/robot-examples.yaml \
+            --schema-dir /tmp/specs/report/schemas
+
+      - name: Validate Tavern reporter
+        run: |
+          QASE_MODE=report \
+          QASE_REPORT_CONNECTION_PATH=${{ github.workspace }}/build/tavern-report \
+          python -m pytest integration/tavern/tests/ -v || true
+
+          reporters-validator validate \
+            --report-dir ${{ github.workspace }}/build/tavern-report \
+            --expected integration/tavern/expected/tavern-examples.yaml \
             --schema-dir /tmp/specs/report/schemas
 
   build-n-publish:

@@ -1,0 +1,70 @@
+---
+test_name: QaseID=101 Get list of users
+stages:
+  - name: Fetch users list
+    request:
+      url: https://jsonplaceholder.typicode.com/users
+      method: GET
+    response:
+      status_code: 200
+
+---
+test_name: QaseID=102 Get single user by ID
+stages:
+  - name: Fetch user with ID 1
+    request:
+      url: https://jsonplaceholder.typicode.com/users/1
+      method: GET
+    response:
+      status_code: 200
+
+---
+test_name: QaseID=103 Create a new post
+stages:
+  - name: Create post via API
+    request:
+      url: https://jsonplaceholder.typicode.com/posts
+      method: POST
+      json:
+        title: Integration Test Post
+        body: This is a test post body
+        userId: 1
+    response:
+      status_code: 201
+
+---
+test_name: QaseID=104 Intentionally failing test
+stages:
+  - name: Request that expects wrong status
+    request:
+      url: https://jsonplaceholder.typicode.com/users/1
+      method: GET
+    response:
+      status_code: 404
+
+---
+test_name: QaseID=105 Multi-stage passing test
+stages:
+  - name: Get first post
+    request:
+      url: https://jsonplaceholder.typicode.com/posts/1
+      method: GET
+    response:
+      status_code: 200
+
+  - name: Get first user
+    request:
+      url: https://jsonplaceholder.typicode.com/users/1
+      method: GET
+    response:
+      status_code: 200
+
+---
+test_name: QaseID=201,202 Test linked to multiple IDs
+stages:
+  - name: Simple GET request
+    request:
+      url: https://jsonplaceholder.typicode.com/posts/1
+      method: GET
+    response:
+      status_code: 200

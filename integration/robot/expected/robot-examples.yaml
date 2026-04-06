@@ -1,0 +1,79 @@
+run:
+  stats:
+    blocked: 0
+    failed: 0
+    invalid: 1
+    muted: 0
+    passed: 1
+    skipped: 0
+    total: 2
+results:
+- title: Test With Failing Step
+  signature: 302::steps::test_with_failing_step
+  testops_ids:
+  - 302
+  status: invalid
+  fields:
+    description: ''
+  relations:
+    suite:
+      data:
+      - title: Steps
+  steps:
+  - data:
+      action: Open Application Open Application
+    execution:
+      status: passed
+    steps:
+    - data:
+        action: Log Log
+      execution:
+        status: passed
+  - data:
+      action: Trigger Failure Trigger Failure
+    execution:
+      status: failed
+    steps:
+    - data:
+        action: Should Be True Should Be True
+      execution:
+        status: failed
+- title: Test With Multiple Steps
+  signature: 301::steps::test_with_multiple_steps
+  testops_ids:
+  - 301
+  status: passed
+  fields:
+    description: ''
+  relations:
+    suite:
+      data:
+      - title: Steps
+  steps:
+  - data:
+      action: Open Application Open Application
+    execution:
+      status: passed
+    steps:
+    - data:
+        action: Log Log
+      execution:
+        status: passed
+  - data:
+      action: Perform Action Perform Action
+    execution:
+      status: passed
+    steps:
+    - data:
+        action: Log Log
+      execution:
+        status: passed
+  - data:
+      action: Verify Result Verify Result
+    execution:
+      status: passed
+    steps:
+    - data:
+        action: Should Be True Should Be True
+      execution:
+        status: passed
