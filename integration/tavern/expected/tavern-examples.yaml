@@ -1,0 +1,134 @@
+run:
+  stats:
+    blocked: 0
+    failed: 0
+    invalid: 1
+    muted: 0
+    passed: 5
+    skipped: 0
+    total: 6
+results:
+- title: Get list of users
+  signature: 101::test_api.tavern.yaml::qaseid=101_get_list_of_users
+  testops_ids:
+  - 101
+  status: passed
+  relations:
+    suite:
+      data:
+      - title: test_api.tavern.yaml
+  steps:
+  - data:
+      action: Fetch users list
+    execution:
+      status: passed
+      attachments:
+      - file_name: request.json
+        mime_type: application/json
+      - file_name: response.json
+        mime_type: application/json
+- title: Multi-stage passing test
+  signature: 105::test_api.tavern.yaml::qaseid=105_multi-stage_passing_test
+  testops_ids:
+  - 105
+  status: passed
+  relations:
+    suite:
+      data:
+      - title: test_api.tavern.yaml
+  steps:
+  - data:
+      action: Get first post
+    execution:
+      status: passed
+      attachments:
+      - file_name: request.json
+        mime_type: application/json
+      - file_name: response.json
+        mime_type: application/json
+  - data:
+      action: Get first user
+    execution:
+      status: passed
+      attachments:
+      - file_name: request.json
+        mime_type: application/json
+      - file_name: response.json
+        mime_type: application/json
+- title: Intentionally failing test
+  signature: 104::test_api.tavern.yaml::qaseid=104_intentionally_failing_test
+  testops_ids:
+  - 104
+  status: invalid
+  relations:
+    suite:
+      data:
+      - title: test_api.tavern.yaml
+  steps:
+  - data:
+      action: Request that expects wrong status
+    execution:
+      status: failed
+      attachments:
+      - file_name: request.json
+        mime_type: application/json
+      - file_name: response.json
+        mime_type: application/json
+- title: Get single user by ID
+  signature: 102::test_api.tavern.yaml::qaseid=102_get_single_user_by_id
+  testops_ids:
+  - 102
+  status: passed
+  relations:
+    suite:
+      data:
+      - title: test_api.tavern.yaml
+  steps:
+  - data:
+      action: Fetch user with ID 1
+    execution:
+      status: passed
+      attachments:
+      - file_name: request.json
+        mime_type: application/json
+      - file_name: response.json
+        mime_type: application/json
+- title: Create a new post
+  signature: 103::test_api.tavern.yaml::qaseid=103_create_a_new_post
+  testops_ids:
+  - 103
+  status: passed
+  relations:
+    suite:
+      data:
+      - title: test_api.tavern.yaml
+  steps:
+  - data:
+      action: Create post via API
+    execution:
+      status: passed
+      attachments:
+      - file_name: request.json
+        mime_type: application/json
+      - file_name: response.json
+        mime_type: application/json
+- title: Test linked to multiple IDs
+  signature: 201-202::test_api.tavern.yaml::qaseid=201,202_test_linked_to_multiple_ids
+  testops_ids:
+  - 201
+  - 202
+  status: passed
+  relations:
+    suite:
+      data:
+      - title: test_api.tavern.yaml
+  steps:
+  - data:
+      action: Simple GET request
+    execution:
+      status: passed
+      attachments:
+      - file_name: request.json
+        mime_type: application/json
+      - file_name: response.json
+        mime_type: application/json

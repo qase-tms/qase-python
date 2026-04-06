@@ -1,0 +1,353 @@
+run:
+  stats:
+    blocked: 0
+    failed: 0
+    invalid: 2
+    muted: 0
+    passed: 16
+    skipped: 1
+    total: 19
+results:
+- title: Test in Authentication suite
+  signature: 301::authentication::test_in_authentication_suite
+  testops_ids:
+  - 301
+  status: passed
+  relations:
+    suite:
+      data:
+      - title: Authentication
+  steps:
+  - data:
+      action: Given a passing condition
+    execution:
+      status: passed
+- title: Test with severity blocker
+  signature: 201::features::fields.feature::test_with_severity_blocker
+  testops_ids:
+  - 201
+  status: passed
+  fields:
+    severity: blocker
+  relations:
+    suite:
+      data:
+      - title: features
+      - title: fields.feature
+  steps:
+  - data:
+      action: Given a passing condition
+    execution:
+      status: passed
+- title: Simple passing test
+  signature: 101::features::basic.feature::simple_passing_test
+  testops_ids:
+  - 101
+  status: passed
+  relations:
+    suite:
+      data:
+      - title: features
+      - title: basic.feature
+  steps:
+  - data:
+      action: Given a passing condition
+    execution:
+      status: passed
+- title: Test in nested suite
+  signature: 302::authentication::oauth::test_in_nested_suite
+  testops_ids:
+  - 302
+  status: passed
+  relations:
+    suite:
+      data:
+      - title: Authentication
+      - title: OAuth
+  steps:
+  - data:
+      action: Given a passing condition
+    execution:
+      status: passed
+- title: Test with failing step
+  signature: 402::features::steps_feature.feature::test_with_failing_step
+  testops_ids:
+  - 402
+  status: invalid
+  relations:
+    suite:
+      data:
+      - title: features
+      - title: steps_feature.feature
+  steps:
+  - data:
+      action: Given a user opens the app
+    execution:
+      status: passed
+  - data:
+      action: When the user triggers a failure
+    execution:
+      status: invalid
+- title: Test in deeply nested suite
+  signature: 303::authentication::oauth::google::test_in_deeply_nested_suite
+  testops_ids:
+  - 303
+  status: passed
+  relations:
+    suite:
+      data:
+      - title: Authentication
+      - title: OAuth
+      - title: Google
+  steps:
+  - data:
+      action: Given a passing condition
+    execution:
+      status: passed
+- title: 'Parametrized addition test -- @1.2 '
+  signature: 501::features::parametrized.feature::parametrized_addition_test_--_@1.2_::{a:4}::{b:5}::{result:9}
+  testops_ids:
+  - 501
+  status: passed
+  params:
+    a: '4'
+    b: '5'
+    result: '9'
+  relations:
+    suite:
+      data:
+      - title: features
+      - title: parametrized.feature
+  steps:
+  - data:
+      action: Given the first number is 4
+    execution:
+      status: passed
+  - data:
+      action: And the second number is 5
+    execution:
+      status: passed
+  - data:
+      action: Then the sum is 9
+    execution:
+      status: passed
+- title: Test with layer e2e
+  signature: 203::features::fields.feature::test_with_layer_e2e
+  testops_ids:
+  - 203
+  status: passed
+  fields:
+    layer: e2e
+  relations:
+    suite:
+      data:
+      - title: features
+      - title: fields.feature
+  steps:
+  - data:
+      action: Given a passing condition
+    execution:
+      status: passed
+- title: Test with multiple fields
+  signature: 206::features::fields.feature::test_with_multiple_fields
+  testops_ids:
+  - 206
+  status: passed
+  fields:
+    layer: api
+    priority: high
+    severity: critical
+  relations:
+    suite:
+      data:
+      - title: features
+      - title: fields.feature
+  steps:
+  - data:
+      action: Given a passing condition
+    execution:
+      status: passed
+- title: Test with priority high
+  signature: 202::features::fields.feature::test_with_priority_high
+  testops_ids:
+  - 202
+  status: passed
+  fields:
+    priority: high
+  relations:
+    suite:
+      data:
+      - title: features
+      - title: fields.feature
+  steps:
+  - data:
+      action: Given a passing condition
+    execution:
+      status: passed
+- title: Simple failing test
+  signature: 102::features::basic.feature::simple_failing_test
+  testops_ids:
+  - 102
+  status: invalid
+  relations:
+    suite:
+      data:
+      - title: features
+      - title: basic.feature
+  steps:
+  - data:
+      action: Given a failing condition
+    execution:
+      status: invalid
+- title: Test with file attachment
+  signature: 601::features::attachments.feature::test_with_file_attachment
+  testops_ids:
+  - 601
+  status: passed
+  relations:
+    suite:
+      data:
+      - title: features
+      - title: attachments.feature
+  steps:
+  - data:
+      action: Given I attach a sample file
+    execution:
+      status: passed
+  attachments:
+  - file_name: sample.txt
+    mime_type: text/plain
+- title: Test with multiple steps
+  signature: 401::features::steps_feature.feature::test_with_multiple_steps
+  testops_ids:
+  - 401
+  status: passed
+  relations:
+    suite:
+      data:
+      - title: features
+      - title: steps_feature.feature
+  steps:
+  - data:
+      action: Given a user opens the app
+    execution:
+      status: passed
+  - data:
+      action: When the user performs an action
+    execution:
+      status: passed
+  - data:
+      action: Then the result is verified
+    execution:
+      status: passed
+- title: Test with preconditions and postconditions
+  signature: 205::features::fields.feature::test_with_preconditions_and_postconditions
+  testops_ids:
+  - 205
+  status: passed
+  fields:
+    postconditions: Session is active
+    preconditions: User is logged in
+  relations:
+    suite:
+      data:
+      - title: features
+      - title: fields.feature
+  steps:
+  - data:
+      action: Given a passing condition
+    execution:
+      status: passed
+- title: Test with description
+  signature: 204::features::fields.feature::test_with_description
+  testops_ids:
+  - 204
+  status: passed
+  fields:
+    description: Verifies description field
+  relations:
+    suite:
+      data:
+      - title: features
+      - title: fields.feature
+  steps:
+  - data:
+      action: Given a passing condition
+    execution:
+      status: passed
+- title: Test with content attachment
+  signature: 602::features::attachments.feature::test_with_content_attachment
+  testops_ids:
+  - 602
+  status: passed
+  relations:
+    suite:
+      data:
+      - title: features
+      - title: attachments.feature
+  steps:
+  - data:
+      action: Given I attach content as json
+    execution:
+      status: passed
+  attachments:
+  - file_name: data.json
+    mime_type: application/json
+- title: Test linked to multiple Qase test cases
+  signature: 701-702::features::attachments.feature::test_linked_to_multiple_qase_test_cases
+  testops_ids:
+  - 701
+  - 702
+  status: passed
+  relations:
+    suite:
+      data:
+      - title: features
+      - title: attachments.feature
+  steps:
+  - data:
+      action: Given a passing condition
+    execution:
+      status: passed
+- title: Skipped test
+  signature: 103::features::basic.feature::skipped_test
+  testops_ids:
+  - 103
+  status: skipped
+  relations:
+    suite:
+      data:
+      - title: features
+      - title: basic.feature
+  steps:
+  - data:
+      action: Given a skipped condition
+    execution:
+      status: skipped
+- title: 'Parametrized addition test -- @1.1 '
+  signature: 501::features::parametrized.feature::parametrized_addition_test_--_@1.1_::{a:1}::{b:2}::{result:3}
+  testops_ids:
+  - 501
+  status: passed
+  params:
+    a: '1'
+    b: '2'
+    result: '3'
+  relations:
+    suite:
+      data:
+      - title: features
+      - title: parametrized.feature
+  steps:
+  - data:
+      action: Given the first number is 1
+    execution:
+      status: passed
+  - data:
+      action: And the second number is 2
+    execution:
+      status: passed
+  - data:
+      action: Then the sum is 3
+    execution:
+      status: passed
