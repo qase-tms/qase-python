@@ -1,0 +1,23 @@
+.github/workflows/pythonpackage.yml
+  e7e69e879a026ae1 61,64,71-74,77,86-89,94,103-107,110,121-125,128
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "f7cae781ed0610a4ca4ab5f6f60429b14d7ff93b",
+  "prompts": {
+    "e7e69e879a026ae1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0ad6c067-69ff-4bed-b8aa-0777fd56e842",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dmitrii Gridnev",
+      "messages": [],
+      "total_additions": 24,
+      "total_deletions": 11,
+      "accepted_lines": 24,
+      "overriden_lines": 0
+    }
+  }
+}
