@@ -1,0 +1,35 @@
+# TestStepCreate
+
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**action** | **str** | Step action text. Used for classic steps. For gherkin steps, use the \&quot;value\&quot; property instead. | [optional] 
+**expected_result** | **str** |  | [optional] 
+**data** | **str** |  | [optional] 
+**value** | **str** | Gherkin scenario text. Used when steps_type is \&quot;gherkin\&quot;. Example: \&quot;Given a user exists\\nWhen they log in\\nThen they see the dashboard\&quot; | [optional] 
+**position** | **int** |  | [optional] 
+**attachments** | **List[str]** | A list of Attachment hashes. | [optional] 
+**steps** | **List[object]** | Nested steps may be passed here. Use same structure for them. | [optional] 
+
+## Example
+
+```python
+from qase.api_client_v1.models.test_step_create import TestStepCreate
+
+# TODO update the JSON string below
+json = "{}"
+# create an instance of TestStepCreate from a JSON string
+test_step_create_instance = TestStepCreate.from_json(json)
+# print the JSON string representation of the object
+print(TestStepCreate.to_json())
+
+# convert the object into a dict
+test_step_create_dict = test_step_create_instance.to_dict()
+# create an instance of TestStepCreate from a dict
+test_step_create_from_dict = TestStepCreate.from_dict(test_step_create_dict)
+```
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+
