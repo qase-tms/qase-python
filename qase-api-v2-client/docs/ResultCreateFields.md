@@ -16,6 +16,7 @@ Name | Type | Description | Notes
 **type** | **str** |  | [optional] 
 **muted** | **str** |  | [optional] 
 **is_flaky** | **str** |  | [optional] 
+**tags** | **str** | Comma-separated list of tag titles to assign to the test case | [optional] 
 **executed_by** | **str** | User who executed the test (member id, name or email) | [optional] 
 
 ## Example
