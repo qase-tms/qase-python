@@ -1,0 +1,81 @@
+qase-pytest/src/qase/pytest/plugin.py
+  e7e69e879a026ae1 379
+integration/behave/features/attachments.feature
+  e7e69e879a026ae1 1-13
+integration/robot/attachments/sample.txt
+  e7e69e879a026ae1 1
+integration/behave/features/fields.feature
+  e7e69e879a026ae1 1-25
+integration/pytest/tests/test_params.py
+  e7e69e879a026ae1 1-20
+integration/behave/features/basic.feature
+  e7e69e879a026ae1 1-13
+integration/pytest/.gitignore
+  e7e69e879a026ae1 1
+integration/behave/.gitignore
+  e7e69e879a026ae1 1
+integration/robot/tests/steps.robot
+  e7e69e879a026ae1 1-27
+integration/pytest/tests/test_basic.py
+  e7e69e879a026ae1 1-22
+integration/robot/tests/params.robot
+  e7e69e879a026ae1 1-17
+integration/robot/.gitignore
+  e7e69e879a026ae1 1-4
+integration/robot/tests/fields.robot
+  e7e69e879a026ae1 1-23
+integration/pytest/attachments/sample.txt
+  e7e69e879a026ae1 1
+integration/pytest/tests/test_attachments.py
+  e7e69e879a026ae1 1-30
+integration/pytest/tests/test_suites.py
+  e7e69e879a026ae1 1-23
+integration/behave/features/steps_feature.feature
+  e7e69e879a026ae1 1-13
+integration/behave/attachments/sample.txt
+  e7e69e879a026ae1 1
+integration/tavern/tests/test_api.tavern.yaml
+  e7e69e879a026ae1 1-70
+integration/robot/tests/multiple_ids.robot
+  e7e69e879a026ae1 1-7
+integration/tavern/.gitignore
+  e7e69e879a026ae1 1
+integration/behave/features/suites.feature
+  e7e69e879a026ae1 1-13
+integration/pytest/tests/test_multiple_ids.py
+  e7e69e879a026ae1 1-8
+integration/behave/features/steps/steps.py
+  e7e69e879a026ae1 1-73
+qase-tavern/src/qase/tavern/plugin.py
+  e7e69e879a026ae1 133,136
+integration/robot/tests/basic.robot
+  e7e69e879a026ae1 1-15
+integration/pytest/tests/test_steps.py
+  e7e69e879a026ae1 1-64
+integration/behave/features/parametrized.feature
+  e7e69e879a026ae1 1-12
+scripts/clean_expected.py
+  e7e69e879a026ae1 1-156
+integration/pytest/tests/test_fields.py
+  e7e69e879a026ae1 1-63
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "35e33bb0f4ba26c12f2c92a965bef9cce8cabf61",
+  "prompts": {
+    "e7e69e879a026ae1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0ad6c067-69ff-4bed-b8aa-0777fd56e842",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dmitrii Gridnev",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 720,
+      "overriden_lines": 0
+    }
+  }
+}
