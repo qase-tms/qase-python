@@ -1,0 +1,25 @@
+qase-python-commons/tests/tests_qase_commons/models/test_result.py
+  a1fc826a56802a97 122,125-180
+qase-python-commons/src/qase/commons/models/result.py
+  a1fc826a56802a97 89,94-104
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "7d42d4263d3ae862a66250f818d5474f2b98fe5b",
+  "prompts": {
+    "a1fc826a56802a97": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a320464a-1bab-4d75-9b2a-e9353f0f80b9",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dmitrii Gridnev",
+      "messages": [],
+      "total_additions": 2016,
+      "total_deletions": 9,
+      "accepted_lines": 2008,
+      "overriden_lines": 0
+    }
+  }
+}
