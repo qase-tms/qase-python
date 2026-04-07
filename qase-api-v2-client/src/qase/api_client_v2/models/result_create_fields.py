@@ -38,9 +38,10 @@ class ResultCreateFields(BaseModel):
     type: Optional[StrictStr] = None
     muted: Optional[StrictStr] = None
     is_flaky: Optional[StrictStr] = None
+    tags: Optional[StrictStr] = Field(default=None, description="Comma-separated list of tag titles to assign to the test case")
     executed_by: Optional[StrictStr] = Field(default=None, description="User who executed the test (member id, name or email)")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["author", "description", "preconditions", "postconditions", "layer", "severity", "priority", "behavior", "type", "muted", "is_flaky", "executed_by"]
+    __properties: ClassVar[List[str]] = ["author", "description", "preconditions", "postconditions", "layer", "severity", "priority", "behavior", "type", "muted", "is_flaky", "tags", "executed_by"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -111,6 +112,7 @@ class ResultCreateFields(BaseModel):
             "type": obj.get("type"),
             "muted": obj.get("muted"),
             "is_flaky": obj.get("is_flaky"),
+            "tags": obj.get("tags"),
             "executed_by": obj.get("executed_by")
         })
         # store additional fields in additional_properties
