@@ -1,3 +1,9 @@
+# qase-python-commons@5.1.1
+
+## What's new
+
+- Fixed tags not appearing in local report mode. Tags are now synced to `fields["tags"]` immediately when `add_tags()` is called, instead of only during API result preparation.
+
 # qase-python-commons@5.1.0
 
 ## What's new

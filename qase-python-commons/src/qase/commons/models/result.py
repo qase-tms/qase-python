@@ -98,6 +98,14 @@ class Result(BaseModel):
     def add_tags(self, tags: List[str]) -> None:
         for tag in tags:
             self.add_tag(tag)
+        self._sync_tags_to_fields()
+
+    def _sync_tags_to_fields(self) -> None:
+        if self.tags:
+            existing_str = self.fields.get("tags", "")
+            existing = [t.strip() for t in existing_str.split(",") if t.strip()] if existing_str else []
+            all_tags = list(dict.fromkeys(existing + self.tags))
+            self.fields["tags"] = ",".join(all_tags)
 
     def get_tags(self) -> List[str]:
         return self.tags

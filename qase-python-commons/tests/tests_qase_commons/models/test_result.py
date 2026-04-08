@@ -181,36 +181,23 @@ class TestResultTags:
 
 
 class TestResultTagsFieldsMerge:
-    """Test tags merge into fields for API mapping."""
+    """Test that add_tags automatically syncs to fields['tags']."""
 
     def test_tags_written_to_fields(self):
         result = Result("Test", "sig")
         result.add_tags(["smoke", "regression"])
-        # Simulate merge logic
-        existing_str = result.fields.get("tags", "")
-        existing = [t.strip() for t in existing_str.split(",") if t.strip()] if existing_str else []
-        all_tags = list(dict.fromkeys(existing + result.tags))
-        result.fields["tags"] = ",".join(all_tags)
         assert result.fields["tags"] == "smoke,regression"
 
     def test_tags_merge_with_existing_fields_tags(self):
         result = Result("Test", "sig")
         result.fields["tags"] = "fromfield"
         result.add_tags(["smoke", "api"])
-        existing_str = result.fields.get("tags", "")
-        existing = [t.strip() for t in existing_str.split(",") if t.strip()] if existing_str else []
-        all_tags = list(dict.fromkeys(existing + result.tags))
-        result.fields["tags"] = ",".join(all_tags)
         assert result.fields["tags"] == "fromfield,smoke,api"
 
     def test_tags_merge_deduplication(self):
         result = Result("Test", "sig")
         result.fields["tags"] = "smoke,regression"
         result.add_tags(["smoke", "api"])
-        existing_str = result.fields.get("tags", "")
-        existing = [t.strip() for t in existing_str.split(",") if t.strip()] if existing_str else []
-        all_tags = list(dict.fromkeys(existing + result.tags))
-        result.fields["tags"] = ",".join(all_tags)
         assert result.fields["tags"] == "smoke,regression,api"
 
     def test_empty_tags_no_field_written(self):
