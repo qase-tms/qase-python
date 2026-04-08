@@ -1,0 +1,37 @@
+integration/pytest/tests/test_tags.py
+  a1fc826a56802a97 1-31
+integration/tavern/expected/tavern-examples.yaml
+  a1fc826a56802a97 7,9,135-176
+integration/pytest/expected/pytest-examples.yaml
+  a1fc826a56802a97 7,9,378-425
+integration/robot/tests/tags.robot
+  a1fc826a56802a97 1-13
+integration/behave/expected/behave-examples.yaml
+  a1fc826a56802a97 7,9,354-387
+integration/robot/expected/robot-examples.yaml
+  a1fc826a56802a97 7,9,80-103
+integration/behave/features/tags.feature
+  a1fc826a56802a97 1-9
+integration/tavern/tests/test_api.tavern.yaml
+  a1fc826a56802a97 71-90
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "16a4f1c506cd0d7dbf7b73e325c721702713ee13",
+  "prompts": {
+    "a1fc826a56802a97": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a320464a-1bab-4d75-9b2a-e9353f0f80b9",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dmitrii Gridnev",
+      "messages": [],
+      "total_additions": 229,
+      "total_deletions": 8,
+      "accepted_lines": 229,
+      "overriden_lines": 0
+    }
+  }
+}

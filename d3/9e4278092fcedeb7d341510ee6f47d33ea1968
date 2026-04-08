@@ -1,0 +1,27 @@
+qase-tavern/tests/test_extractor.py
+  a1fc826a56802a97 6,10,14,18,22,26,31,35,40,44,49,53,58,62,67,71,76,80,85,89
+qase-tavern/tests/test_plugin.py
+  a1fc826a56802a97 63,67,71,75,88,91,96,99,103,106,205-247
+qase-tavern/src/qase/tavern/plugin.py
+  a1fc826a56802a97 87,100-101,153,180-186,189
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "d39e4278092fcedeb7d341510ee6f47d33ea1968",
+  "prompts": {
+    "a1fc826a56802a97": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a320464a-1bab-4d75-9b2a-e9353f0f80b9",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dmitrii Gridnev",
+      "messages": [],
+      "total_additions": 86,
+      "total_deletions": 18,
+      "accepted_lines": 86,
+      "overriden_lines": 0
+    }
+  }
+}
