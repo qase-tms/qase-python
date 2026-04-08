@@ -1,3 +1,9 @@
+# qase-robotframework 5.1.0
+
+## What's new
+
+- Added support for test-level tags using the `qase.tags:tag1,tag2` tag. Multiple tag entries are accumulated.
+
 # qase-robotframework 5.0.1
 
 ## What's new

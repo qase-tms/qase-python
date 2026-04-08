@@ -4,9 +4,9 @@ run:
     failed: 2
     invalid: 0
     muted: 0
-    passed: 24
+    passed: 28
     skipped: 1
-    total: 27
+    total: 31
 results:
 - title: Muted test
   signature: 208::integration::pytest::tests::test_fields.py::test_muted
@@ -375,3 +375,51 @@ results:
       data:
       - title: integration/pytest/tests
       - title: test_basic
+- title: Test with single tag
+  signature: 901::integration::pytest::tests::test_tags.py::test_single_tag
+  testops_ids:
+  - 901
+  status: passed
+  fields:
+    tags: smoke
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_tags
+- title: Test with multiple tags
+  signature: 902::integration::pytest::tests::test_tags.py::test_multiple_tags
+  testops_ids:
+  - 902
+  status: passed
+  fields:
+    tags: smoke,regression,api
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_tags
+- title: Test with tags via fields
+  signature: 903::integration::pytest::tests::test_tags.py::test_tags_via_fields
+  testops_ids:
+  - 903
+  status: passed
+  fields:
+    tags: fromfield
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_tags
+- title: Test with merged tags
+  signature: 904::integration::pytest::tests::test_tags.py::test_tags_merged
+  testops_ids:
+  - 904
+  status: passed
+  fields:
+    tags: fromfield,api
+  relations:
+    suite:
+      data:
+      - title: integration/pytest/tests
+      - title: test_tags

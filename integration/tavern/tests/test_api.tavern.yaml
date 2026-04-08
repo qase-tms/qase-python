@@ -68,3 +68,23 @@ stages:
       method: GET
     response:
       status_code: 200
+
+---
+test_name: QaseID=901 QaseTags.smoke Get tagged users
+stages:
+  - name: Fetch users with tag
+    request:
+      url: https://jsonplaceholder.typicode.com/users
+      method: GET
+    response:
+      status_code: 200
+
+---
+test_name: QaseID=902 QaseTags.smoke,regression,api Get tagged posts
+stages:
+  - name: Fetch posts with tags
+    request:
+      url: https://jsonplaceholder.typicode.com/posts/1
+      method: GET
+    response:
+      status_code: 200

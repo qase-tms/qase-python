@@ -148,6 +148,9 @@ class Listener:
             for key, value in test_metadata.fields.items():
                 self.runtime.result.add_field(Field(key, value))
 
+        if test_metadata.tags:
+            self.runtime.result.add_tags(test_metadata.tags)
+
         suites = self.tests.get(f"{test.name}:{test.lineno}")
         if suites:
             relations = Relation()

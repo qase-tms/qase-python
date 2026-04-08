@@ -4,9 +4,9 @@ run:
     failed: 0
     invalid: 2
     muted: 0
-    passed: 16
+    passed: 18
     skipped: 1
-    total: 19
+    total: 21
 results:
 - title: Test in Authentication suite
   signature: 301::authentication::test_in_authentication_suite
@@ -349,5 +349,39 @@ results:
       status: passed
   - data:
       action: Then the sum is 3
+    execution:
+      status: passed
+- title: Test with single tag
+  signature: 901::features::tags.feature::test_with_single_tag
+  testops_ids:
+  - 901
+  status: passed
+  fields:
+    tags: smoke
+  relations:
+    suite:
+      data:
+      - title: features
+      - title: tags.feature
+  steps:
+  - data:
+      action: Given a passing condition
+    execution:
+      status: passed
+- title: Test with multiple tags
+  signature: 902::features::tags.feature::test_with_multiple_tags
+  testops_ids:
+  - 902
+  status: passed
+  fields:
+    tags: smoke,regression,api
+  relations:
+    suite:
+      data:
+      - title: features
+      - title: tags.feature
+  steps:
+  - data:
+      action: Given a passing condition
     execution:
       status: passed

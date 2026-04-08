@@ -83,3 +83,34 @@ def test_extract_fields_invalid_json():
     tag = 'qase.fields:invalid-json'
     fields = __extract_fields(tag)
     assert fields == {}
+
+
+def test_parse_scenario_with_qase_tags(mock_scenario):
+    scenario = mock_scenario(tags=["qase.id:801", "qase.tags:smoke,regression"])
+    result = parse_scenario(scenario)
+    assert result.tags == ["smoke", "regression"]
+
+
+def test_parse_scenario_with_tags_trimmed(mock_scenario):
+    scenario = mock_scenario(tags=["qase.tags: smoke , regression "])
+    result = parse_scenario(scenario)
+    assert result.tags == ["smoke", "regression"]
+
+
+def test_parse_scenario_with_tags_case_insensitive(mock_scenario):
+    scenario = mock_scenario(tags=["QASE.TAGS:Smoke"])
+    result = parse_scenario(scenario)
+    assert result.tags == ["Smoke"]
+
+
+def test_parse_scenario_with_multiple_tags_accumulated(mock_scenario):
+    scenario = mock_scenario(tags=["qase.tags:smoke", "qase.tags:regression"])
+    result = parse_scenario(scenario)
+    assert "smoke" in result.tags
+    assert "regression" in result.tags
+
+
+def test_parse_scenario_without_tags_has_empty_list(mock_scenario):
+    scenario = mock_scenario(tags=["qase.id:100"])
+    result = parse_scenario(scenario)
+    assert result.tags == []

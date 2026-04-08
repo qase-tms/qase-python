@@ -9,6 +9,7 @@ This guide provides comprehensive instructions for integrating Qase with Tavern 
 ## Table of Contents
 
 - [Adding QaseID](#adding-qaseid)
+- [Adding Tags](#adding-tags)
 - [Test Stages as Steps](#test-stages-as-steps)
 - [Multi-Project Support](#multi-project-support)
 - [Running Tests](#running-tests)
@@ -81,6 +82,42 @@ stages:
 ### Multi-Project Support
 
 To send test results to multiple Qase projects simultaneously, see the [Multi-Project Support Guide](MULTI_PROJECT.md).
+
+---
+
+## Adding Tags
+
+Use the `QaseTags.` prefix in the test name to assign tags to test cases. Tags are sent as a comma-separated string to the Qase API.
+
+### Basic Usage
+
+```yaml
+---
+test_name: QaseID=1 QaseTags.smoke,regression Login test
+stages:
+  - name: Login request
+    request:
+      url: https://api.example.com/login
+      method: POST
+    response:
+      status_code: 200
+```
+
+### Tags Without QaseID
+
+Tags can be used without a QaseID:
+
+```yaml
+---
+test_name: QaseTags.smoke Simple test
+stages:
+  - name: Health check
+    request:
+      url: https://api.example.com/health
+      method: GET
+    response:
+      status_code: 200
+```
 
 ---
 
