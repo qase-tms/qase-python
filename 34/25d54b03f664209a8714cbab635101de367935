@@ -1,0 +1,27 @@
+integration/robot/tests/steps.robot
+  a1fc826a56802a97 16-25
+qase-python-commons/src/qase/commons/models/result.py
+  a1fc826a56802a97 101-108
+qase-python-commons/tests/tests_qase_commons/models/test_result.py
+  a1fc826a56802a97 184
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "3425d54b03f664209a8714cbab635101de367935",
+  "prompts": {
+    "a1fc826a56802a97": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a320464a-1bab-4d75-9b2a-e9353f0f80b9",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dmitrii Gridnev",
+      "messages": [],
+      "total_additions": 9,
+      "total_deletions": 21,
+      "accepted_lines": 19,
+      "overriden_lines": 0
+    }
+  }
+}
