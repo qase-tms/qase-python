@@ -1,0 +1,27 @@
+qase-pytest/src/qase/pytest/plugin.py
+  a1fc826a56802a97 304,412-419
+qase-pytest/tests/tests_qase_pytest/test_plugin.py
+  a1fc826a56802a97 346-379
+qase-pytest/src/qase/pytest/decorators.py
+  a1fc826a56802a97 213-223
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "fc4e0a696569bfdbecc0901616485fd7e2aef554",
+  "prompts": {
+    "a1fc826a56802a97": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a320464a-1bab-4d75-9b2a-e9353f0f80b9",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dmitrii Gridnev",
+      "messages": [],
+      "total_additions": 55,
+      "total_deletions": 0,
+      "accepted_lines": 55,
+      "overriden_lines": 0
+    }
+  }
+}
