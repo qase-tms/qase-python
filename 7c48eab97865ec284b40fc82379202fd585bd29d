@@ -1,0 +1,25 @@
+qase-behave/src/qase/behave/utils.py
+  a1fc826a56802a97 19,54-57,117-124
+qase-behave/tests/test_utils.py
+  a1fc826a56802a97 86-116
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "7c48eab97865ec284b40fc82379202fd585bd29d",
+  "prompts": {
+    "a1fc826a56802a97": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a320464a-1bab-4d75-9b2a-e9353f0f80b9",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dmitrii Gridnev",
+      "messages": [],
+      "total_additions": 45,
+      "total_deletions": 1,
+      "accepted_lines": 44,
+      "overriden_lines": 0
+    }
+  }
+}
