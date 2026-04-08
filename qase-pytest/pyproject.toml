@@ -28,7 +28,7 @@ classifiers = [
 ]
 requires-python = ">=3.9"
 dependencies = [
-    "qase-python-commons~=5.0.0",
+    "qase-python-commons~=5.0",
     "pytest>=7.4.4",
     "filelock>=3.12.2",
     "more_itertools",
