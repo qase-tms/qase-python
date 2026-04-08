@@ -86,9 +86,21 @@ class Result(BaseModel):
         self.relations: Type[Relation] = None
         self.muted: bool = False
         self.message: Optional[str] = None
+        self.tags: List[str] = []
 
     def add_message(self, message: str) -> None:
         self.message = message
+
+    def add_tag(self, tag: str) -> None:
+        if tag and tag not in self.tags:
+            self.tags.append(tag)
+
+    def add_tags(self, tags: List[str]) -> None:
+        for tag in tags:
+            self.add_tag(tag)
+
+    def get_tags(self) -> List[str]:
+        return self.tags
 
     def add_field(self, field: Type[Field]) -> None:
         self.fields[field.name] = field.value

@@ -1,3 +1,10 @@
+# qase-python-commons@5.1.0
+
+## What's new
+
+- Added support for test-level tags. You can now assign tags to individual test results using the `@qase.tags()` decorator (pytest), `@qase.tags:` tag (behave, Robot Framework), or `QaseTags.` prefix (Tavern). Tags are sent to the API as a comma-separated string in the `tags` field of the result.
+- Added `tags: List[str]` property to the `Result` model with `add_tag()`, `add_tags()`, and `get_tags()` methods.
+
 # qase-python-commons@5.0.7
 
 ## What's new
