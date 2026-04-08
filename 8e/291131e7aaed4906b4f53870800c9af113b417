@@ -1,0 +1,29 @@
+qase-tavern/docs/usage.md
+  a1fc826a56802a97 12,88-123
+qase-behave/docs/usage.md
+  a1fc826a56802a97 14,150-177
+qase-pytest/docs/usage.md
+  a1fc826a56802a97 15,179-237
+qase-robotframework/docs/usage.md
+  a1fc826a56802a97 13,121-146
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "8e291131e7aaed4906b4f53870800c9af113b417",
+  "prompts": {
+    "a1fc826a56802a97": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a320464a-1bab-4d75-9b2a-e9353f0f80b9",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dmitrii Gridnev",
+      "messages": [],
+      "total_additions": 153,
+      "total_deletions": 0,
+      "accepted_lines": 153,
+      "overriden_lines": 0
+    }
+  }
+}
