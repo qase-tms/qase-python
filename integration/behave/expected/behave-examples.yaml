@@ -4,9 +4,9 @@ run:
     failed: 0
     invalid: 2
     muted: 0
-    passed: 18
+    passed: 16
     skipped: 1
-    total: 21
+    total: 19
 results:
 - title: Test in Authentication suite
   signature: 301::authentication::test_in_authentication_suite
