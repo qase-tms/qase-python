@@ -157,6 +157,13 @@ class ApiV2Client(ApiV1Client):
             if param == "":
                 result.params[key] = "empty"
 
+        # Merge result.tags into fields["tags"] for API
+        if result.tags:
+            existing_str = result.fields.get("tags", "")
+            existing = [t.strip() for t in existing_str.split(",") if t.strip()] if existing_str else []
+            all_tags = list(dict.fromkeys(existing + result.tags))
+            result.fields["tags"] = ",".join(all_tags)
+
         result_model_v2 = ResultCreate(
             title=result.get_title(),
             signature=result.signature,

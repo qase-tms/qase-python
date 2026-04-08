@@ -119,6 +119,100 @@ class TestResultProjectMapping:
         result = Result("Test Title", "test_signature")
         result.testops_ids = [999]  # Old single-project IDs
         result.set_testops_project_mapping("PROJ1", [123, 124])  # New multi-project
-        
+
         assert result.get_testops_ids() == [999]
         assert result.get_testops_project_mapping() == {"PROJ1": [123, 124]}
+
+
+class TestResultTags:
+    """Test cases for Result model tags functionality."""
+
+    def test_result_initializes_with_empty_tags(self):
+        result = Result("Test Title", "test_signature")
+        assert result.tags == []
+
+    def test_add_single_tag(self):
+        result = Result("Test Title", "test_signature")
+        result.add_tag("smoke")
+        assert result.tags == ["smoke"]
+
+    def test_add_multiple_tags(self):
+        result = Result("Test Title", "test_signature")
+        result.add_tag("smoke")
+        result.add_tag("regression")
+        assert "smoke" in result.tags
+        assert "regression" in result.tags
+
+    def test_add_tag_deduplication(self):
+        result = Result("Test Title", "test_signature")
+        result.add_tag("smoke")
+        result.add_tag("smoke")
+        assert result.tags == ["smoke"]
+
+    def test_add_tag_empty_string_ignored(self):
+        result = Result("Test Title", "test_signature")
+        result.add_tag("")
+        assert result.tags == []
+
+    def test_add_tags_list(self):
+        result = Result("Test Title", "test_signature")
+        result.add_tags(["smoke", "regression", "api"])
+        assert "smoke" in result.tags
+        assert "regression" in result.tags
+        assert "api" in result.tags
+
+    def test_add_tags_list_deduplication(self):
+        result = Result("Test Title", "test_signature")
+        result.add_tags(["smoke", "smoke", "regression"])
+        assert result.tags == ["smoke", "regression"]
+
+    def test_get_tags(self):
+        result = Result("Test Title", "test_signature")
+        result.add_tag("smoke")
+        result.add_tag("regression")
+        assert result.get_tags() == ["smoke", "regression"]
+
+    def test_add_tags_accumulates(self):
+        result = Result("Test Title", "test_signature")
+        result.add_tags(["smoke"])
+        result.add_tags(["regression"])
+        assert "smoke" in result.tags
+        assert "regression" in result.tags
+
+
+class TestResultTagsFieldsMerge:
+    """Test tags merge into fields for API mapping."""
+
+    def test_tags_written_to_fields(self):
+        result = Result("Test", "sig")
+        result.add_tags(["smoke", "regression"])
+        # Simulate merge logic
+        existing_str = result.fields.get("tags", "")
+        existing = [t.strip() for t in existing_str.split(",") if t.strip()] if existing_str else []
+        all_tags = list(dict.fromkeys(existing + result.tags))
+        result.fields["tags"] = ",".join(all_tags)
+        assert result.fields["tags"] == "smoke,regression"
+
+    def test_tags_merge_with_existing_fields_tags(self):
+        result = Result("Test", "sig")
+        result.fields["tags"] = "fromfield"
+        result.add_tags(["smoke", "api"])
+        existing_str = result.fields.get("tags", "")
+        existing = [t.strip() for t in existing_str.split(",") if t.strip()] if existing_str else []
+        all_tags = list(dict.fromkeys(existing + result.tags))
+        result.fields["tags"] = ",".join(all_tags)
+        assert result.fields["tags"] == "fromfield,smoke,api"
+
+    def test_tags_merge_deduplication(self):
+        result = Result("Test", "sig")
+        result.fields["tags"] = "smoke,regression"
+        result.add_tags(["smoke", "api"])
+        existing_str = result.fields.get("tags", "")
+        existing = [t.strip() for t in existing_str.split(",") if t.strip()] if existing_str else []
+        all_tags = list(dict.fromkeys(existing + result.tags))
+        result.fields["tags"] = ",".join(all_tags)
+        assert result.fields["tags"] == "smoke,regression,api"
+
+    def test_empty_tags_no_field_written(self):
+        result = Result("Test", "sig")
+        assert "tags" not in result.fields
