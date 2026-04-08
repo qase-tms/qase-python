@@ -84,7 +84,7 @@ class QasePytestPlugin:
         self.runtime.clear()
 
     def start_pytest_item(self, item):
-        qase_ids, project_ids, title = self.extract_qase_ids(self._get_title(item))
+        qase_ids, project_ids, title, tags = self.extract_qase_ids(self._get_title(item))
         self.runtime.result = Result(
             title=title,
             signature='',
@@ -96,6 +96,9 @@ class QasePytestPlugin:
         elif qase_ids:
             # Single project mode: use old testops_ids
             self.runtime.result.testops_ids = qase_ids
+
+        if tags:
+            self.runtime.result.add_tags(tags)
 
         self._set_relations(item)
         self._set_steps(item)
@@ -147,7 +150,7 @@ class QasePytestPlugin:
         )
 
     @staticmethod
-    def extract_qase_ids(text) -> Tuple[List[int], dict, str]:
+    def extract_qase_ids(text) -> Tuple[List[int], dict, str, List[str]]:
         if not isinstance(text, str):
             raise ValueError(f"Expected a string, but got {type(text).__name__}: {repr(text)}")
 
@@ -174,9 +177,16 @@ class QasePytestPlugin:
                 qase_ids = [int(qid) for qid in match.group(1).split(',')]
                 remaining_text = re.sub(r'QaseID=\s*[\d,]+', '', remaining_text, flags=re.IGNORECASE)
 
+        # Extract tags: QaseTags.tag1,tag2
+        tags = []
+        tag_match = re.search(r'QaseTags\.([\w,]+)', remaining_text, re.IGNORECASE)
+        if tag_match:
+            tags = [t.strip() for t in tag_match.group(1).split(',') if t.strip()]
+            remaining_text = re.sub(re.escape(tag_match.group(0)), '', remaining_text, flags=re.IGNORECASE)
+
         remaining_text = remaining_text.strip()
 
-        return qase_ids, project_ids, remaining_text
+        return qase_ids, project_ids, remaining_text, tags
 
 
 class QasePytestPluginSingleton:

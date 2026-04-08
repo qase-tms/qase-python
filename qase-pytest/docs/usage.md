@@ -12,6 +12,7 @@ This guide provides comprehensive instructions for integrating Qase with Pytest.
 - [Adding Title](#adding-title)
 - [Adding Fields](#adding-fields)
 - [Adding Suite](#adding-suite)
+- [Adding Tags](#adding-tags)
 - [Ignoring Tests](#ignoring-tests)
 - [Muting Tests](#muting-tests)
 - [Working with Attachments](#working-with-attachments)
@@ -171,6 +172,65 @@ Authentication/
 │       └── test_google_login
 └── Logout/
     └── test_logout
+```
+
+---
+
+## Adding Tags
+
+Use the `@qase.tags()` decorator to assign tags to test cases. Tags are sent as a comma-separated string to the Qase API.
+
+### Basic Usage
+
+```python
+from qase.pytest import qase
+
+@qase.id(1)
+@qase.tags("smoke", "regression")
+def test_login():
+    pass
+```
+
+### Multiple `@qase.tags` Decorators
+
+Tags from multiple decorators are merged:
+
+```python
+@qase.tags("smoke")
+@qase.tags("regression")
+def test_login():
+    # Tags: smoke, regression
+    pass
+```
+
+### Class-Level and Method-Level Merge
+
+Tags applied at class level are inherited and merged with method-level tags:
+
+```python
+@qase.tags("smoke")
+class TestAuth:
+
+    @qase.tags("regression")
+    def test_login(self):
+        # Tags: regression, smoke (method first, then class)
+        pass
+
+    def test_logout(self):
+        # Tags: smoke (inherited from class)
+        pass
+```
+
+### Tags via `@qase.fields`
+
+You can also set tags via the fields decorator. When both are used, they are merged (fields first):
+
+```python
+@qase.tags("api")
+@qase.fields(("tags", "smoke"))
+def test_login():
+    # Tags: smoke, api
+    pass
 ```
 
 ---

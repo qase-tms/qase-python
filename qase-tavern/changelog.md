@@ -1,3 +1,9 @@
+# qase-tavern 3.1.0
+
+## What's new
+
+- Added support for test-level tags using the `QaseTags.tag1,tag2` prefix in test names.
+
 # qase-tavern 3.0.0
 
 ## What's new

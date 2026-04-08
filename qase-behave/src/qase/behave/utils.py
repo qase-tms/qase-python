@@ -16,6 +16,7 @@ IGNORE = "ignore"
 FIELDS = "fields"
 TESTOPS_ID = "testops_ids"
 TESTOPS_PROJECT_ID = "testops_project_id"
+TAGS = "tags"
 
 
 def filter_scenarios(case_ids: List[int], scenarios: List[Scenario]) -> List[Scenario]:
@@ -49,6 +50,10 @@ def parse_scenario(scenario: Scenario) -> Result:
     
     result.fields = tags.get(FIELDS, {})
     result.ignore = tags.get(IGNORE, False)
+
+    tag_list = tags.get(TAGS, [])
+    if tag_list:
+        result.add_tags(tag_list)
 
     relation = Relation()
     if SUITE in tags:
@@ -107,6 +112,14 @@ def __parse_tags(tags) -> dict:
 
         if tag_lower.startswith("qase.fields"):
             meta_data[FIELDS] = __extract_fields(tag)
+            continue
+
+        if tag_lower.startswith("qase.tags"):
+            tag_values = tag.split(":", 1)[1].split(",")
+            parsed = [t.strip() for t in tag_values if t.strip()]
+            if TAGS not in meta_data:
+                meta_data[TAGS] = []
+            meta_data[TAGS].extend(parsed)
             continue
 
         if tag_lower == "qase.ignore":

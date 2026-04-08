@@ -4,9 +4,9 @@ run:
     failed: 0
     invalid: 1
     muted: 0
-    passed: 1
+    passed: 3
     skipped: 0
-    total: 2
+    total: 4
 results:
 - title: Test With Failing Step
   signature: 302::steps::test_with_failing_step
@@ -77,3 +77,27 @@ results:
         action: Should Be True Should Be True
       execution:
         status: passed
+- title: Test With Single Tag
+  signature: 901::tags::test_with_single_tag
+  testops_ids:
+  - 901
+  status: passed
+  fields:
+    description: Test with one tag
+    tags: smoke
+  relations:
+    suite:
+      data:
+      - title: Tags
+- title: Test With Multiple Tags
+  signature: 902::tags::test_with_multiple_tags
+  testops_ids:
+  - 902
+  status: passed
+  fields:
+    description: Test with multiple tags
+    tags: smoke,regression,api
+  relations:
+    suite:
+      data:
+      - title: Tags

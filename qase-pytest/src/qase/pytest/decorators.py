@@ -210,6 +210,18 @@ class qase:
         return pytest.mark.qase_muted()
 
     @staticmethod
+    def tags(*tags: str):
+        """
+        >>> @qase.tags("smoke", "regression")
+        >>> def test_example():
+        >>>     pass
+
+        :param tags: variable number of tag strings
+        :return: pytest.mark instance
+        """
+        return pytest.mark.qase_tags(tags=tags)
+
+    @staticmethod
     def attach(*files: Union[str, Tuple[str, str], Tuple[bytes, str, str]]):
         """
         Attach files to test results

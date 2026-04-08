@@ -60,17 +60,19 @@ class TestExtractQaseIdsErrors:
             QasePytestPlugin.extract_qase_ids([1, 2])
 
     def test_empty_string_returns_empty(self):
-        qase_ids, project_ids, remaining = QasePytestPlugin.extract_qase_ids("")
+        qase_ids, project_ids, remaining, tags = QasePytestPlugin.extract_qase_ids("")
         assert qase_ids == []
         assert project_ids == {}
         assert remaining == ""
+        assert tags == []
 
     def test_no_matching_pattern_returns_original_text(self):
         text = "No IDs here"
-        qase_ids, project_ids, remaining = QasePytestPlugin.extract_qase_ids(text)
+        qase_ids, project_ids, remaining, tags = QasePytestPlugin.extract_qase_ids(text)
         assert qase_ids == []
         assert project_ids == {}
         assert remaining == "No IDs here"
+        assert tags == []
 
 
 # ---------------------------------------------------------------------------
@@ -83,22 +85,25 @@ class TestExtractQaseIdsMultiProject:
 
     def test_multiple_project_ids(self):
         text = "QaseProjectID.PROJ1=1,2 QaseProjectID.PROJ2=3"
-        qase_ids, project_ids, remaining = QasePytestPlugin.extract_qase_ids(text)
+        qase_ids, project_ids, remaining, tags = QasePytestPlugin.extract_qase_ids(text)
         assert qase_ids == []
         assert project_ids == {"PROJ1": [1, 2], "PROJ2": [3]}
+        assert tags == []
 
     def test_project_ids_take_precedence_over_qase_ids(self):
         """When both QaseProjectID and QaseID present, qase_ids stays empty."""
         text = "QaseProjectID.PROJ1=10 QaseID=99"
-        qase_ids, project_ids, remaining = QasePytestPlugin.extract_qase_ids(text)
+        qase_ids, project_ids, remaining, tags = QasePytestPlugin.extract_qase_ids(text)
         assert qase_ids == []
         assert project_ids == {"PROJ1": [10]}
+        assert tags == []
 
     def test_single_project_multiple_ids(self):
         text = "QaseProjectID.MYPROJ=100,200,300"
-        qase_ids, project_ids, remaining = QasePytestPlugin.extract_qase_ids(text)
+        qase_ids, project_ids, remaining, tags = QasePytestPlugin.extract_qase_ids(text)
         assert project_ids == {"MYPROJ": [100, 200, 300]}
         assert qase_ids == []
+        assert tags == []
 
 
 # ---------------------------------------------------------------------------
@@ -197,3 +202,46 @@ class TestSetSteps:
         ):
             plugin._set_steps(item)
         plugin.runtime.add_step.assert_called_once()
+
+
+# ---------------------------------------------------------------------------
+# extract_qase_ids -- tags extraction
+# ---------------------------------------------------------------------------
+
+
+class TestExtractQaseIdsTags:
+    """Tags extraction from test names."""
+
+    def test_single_tag(self):
+        qase_ids, project_ids, remaining, tags = QasePytestPlugin.extract_qase_ids(
+            "QaseID=101 QaseTags.smoke Get users"
+        )
+        assert qase_ids == [101]
+        assert tags == ["smoke"]
+        assert remaining == "Get users"
+
+    def test_multiple_tags(self):
+        qase_ids, project_ids, remaining, tags = QasePytestPlugin.extract_qase_ids(
+            "QaseID=102 QaseTags.smoke,regression,api Get users"
+        )
+        assert tags == ["smoke", "regression", "api"]
+
+    def test_tags_without_qase_id(self):
+        qase_ids, project_ids, remaining, tags = QasePytestPlugin.extract_qase_ids(
+            "QaseTags.smoke Simple test"
+        )
+        assert qase_ids == []
+        assert tags == ["smoke"]
+        assert remaining == "Simple test"
+
+    def test_no_tags_returns_empty_list(self):
+        qase_ids, project_ids, remaining, tags = QasePytestPlugin.extract_qase_ids(
+            "QaseID=101 Get users"
+        )
+        assert tags == []
+
+    def test_tags_case_insensitive(self):
+        qase_ids, project_ids, remaining, tags = QasePytestPlugin.extract_qase_ids(
+            "qasetags.smoke Test"
+        )
+        assert tags == ["smoke"]

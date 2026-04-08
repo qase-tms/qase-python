@@ -16,6 +16,7 @@ class TestParseTagsEmptyAndBasic:
         assert metadata.ignore is False
         assert metadata.fields == {}
         assert metadata.params == []
+        assert metadata.tags == []
         assert metadata.qase_multi_ids == {}
 
     def test_single_valid_qase_id(self):
@@ -166,3 +167,41 @@ class TestParseTagsMixed:
         assert metadata.qase_multi_ids == {"ABC": [10, 20]}
         assert metadata.qase_ids == []
         assert metadata.params == ["p1"]
+
+
+class TestParseTagsTags:
+    """Tests for qase.tags tag."""
+
+    def test_single_tag(self):
+        metadata = TagParser.parse_tags(["qase.tags:smoke"])
+        assert metadata.tags == ["smoke"]
+
+    def test_multiple_tags(self):
+        metadata = TagParser.parse_tags(["qase.tags:smoke,regression,api"])
+        assert metadata.tags == ["smoke", "regression", "api"]
+
+    def test_tags_trimmed(self):
+        metadata = TagParser.parse_tags(["qase.tags: smoke , regression "])
+        assert metadata.tags == ["smoke", "regression"]
+
+    def test_tags_case_insensitive_prefix(self):
+        metadata = TagParser.parse_tags(["QASE.TAGS:Smoke"])
+        assert metadata.tags == ["Smoke"]
+
+    def test_multiple_tags_entries_accumulated(self):
+        metadata = TagParser.parse_tags(["qase.tags:smoke", "qase.tags:regression"])
+        assert metadata.tags == ["smoke", "regression"]
+
+    def test_tags_with_other_metadata(self):
+        metadata = TagParser.parse_tags([
+            "Q-42",
+            "qase.tags:smoke,api",
+            'qase.fields:{"severity":"blocker"}',
+        ])
+        assert metadata.qase_ids == [42]
+        assert metadata.tags == ["smoke", "api"]
+        assert metadata.fields == {"severity": "blocker"}
+
+    def test_empty_tags_value(self):
+        metadata = TagParser.parse_tags(["qase.tags:"])
+        assert metadata.tags == []

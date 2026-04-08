@@ -1,3 +1,9 @@
+# qase-pytest 8.1.0
+
+## What's new
+
+- Added support for test-level tags using the `@qase.tags()` decorator. Tags can be applied at class and method levels and are automatically merged.
+
 # qase-pytest 8.0.2
 
 ## Bug fixes

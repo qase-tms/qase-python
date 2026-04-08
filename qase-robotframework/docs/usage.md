@@ -10,6 +10,7 @@ This guide provides comprehensive instructions for integrating Qase with Robot F
 
 - [Adding QaseID](#adding-qaseid)
 - [Adding Fields](#adding-fields)
+- [Adding Tags](#adding-tags)
 - [Adding Parameters](#adding-parameters)
 - [Ignoring Tests](#ignoring-tests)
 - [Working with Steps](#working-with-steps)
@@ -113,6 +114,32 @@ Fields can also be added to user keywords:
 Verify Critical Feature
     [Tags]    qase.fields:{"severity":"critical"}
     Log    Verifying critical feature
+```
+
+---
+
+## Adding Tags
+
+Use the `qase.tags:` tag to assign tags to test cases. Tags are sent as a comma-separated string to the Qase API.
+
+### Basic Usage
+
+```robotframework
+*** Test Cases ***
+Login Test
+    [Tags]    Q-1    qase.tags:smoke,regression
+    Should Be True    ${TRUE}
+```
+
+### Multiple Tag Entries
+
+Multiple `qase.tags:` entries are accumulated:
+
+```robotframework
+Login Test
+    [Tags]    Q-1    qase.tags:smoke    qase.tags:regression
+    # Tags: smoke, regression
+    Should Be True    ${TRUE}
 ```
 
 ---

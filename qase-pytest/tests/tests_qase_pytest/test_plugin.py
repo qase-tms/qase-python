@@ -343,3 +343,37 @@ class TestAttachLogsOnSetupFailure:
         with patch.object(plugin, '_attach_logs') as mock_attach:
             run_makereport(plugin, item, call_obj, report)
             mock_attach.assert_not_called()
+
+
+class TestSetTags:
+    """Test _set_tags instance method."""
+
+    def test_no_crash_when_no_markers(self):
+        plugin = make_plugin()
+        item = make_mock_item()
+        item.iter_markers = MagicMock(return_value=iter([]))
+        plugin.runtime.result = MagicMock()
+        plugin._set_tags(item)
+
+    def test_single_tags_marker(self):
+        plugin = make_plugin()
+        marker = make_marker(tags=("smoke", "regression"))
+        item = make_mock_item()
+        item.iter_markers = MagicMock(return_value=iter([marker]))
+        plugin.runtime.result = MagicMock()
+        plugin.runtime.result.tags = []
+        plugin.runtime.result.add_tags = MagicMock()
+        plugin._set_tags(item)
+        plugin.runtime.result.add_tags.assert_called_once_with(["smoke", "regression"])
+
+    def test_multiple_tags_markers_merge(self):
+        plugin = make_plugin()
+        marker1 = make_marker(tags=("smoke",))
+        marker2 = make_marker(tags=("regression",))
+        item = make_mock_item()
+        item.iter_markers = MagicMock(return_value=iter([marker1, marker2]))
+        plugin.runtime.result = MagicMock()
+        plugin.runtime.result.tags = []
+        plugin.runtime.result.add_tags = MagicMock()
+        plugin._set_tags(item)
+        plugin.runtime.result.add_tags.assert_called_once_with(["smoke", "regression"])

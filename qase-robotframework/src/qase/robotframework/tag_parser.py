@@ -35,6 +35,9 @@ class TagParser:
             if tag_lower.startswith("qase.params"):
                 metadata.params = TagParser.__extract_params(tag, logger)
 
+            if tag_lower.startswith("qase.tags"):
+                metadata.tags.extend(TagParser.__extract_tags(tag))
+
         return metadata
 
     @staticmethod
@@ -94,3 +97,8 @@ class TagParser:
             else:
                 print(f"CRITICAL: Error parsing params from tag '{tag}': {e}")
             return []
+
+    @staticmethod
+    def __extract_tags(tag: str) -> list[str]:
+        value = tag.split(':', 1)[-1].strip()
+        return [t.strip() for t in value.split(",") if t.strip()]

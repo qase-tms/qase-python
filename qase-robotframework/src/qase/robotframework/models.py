@@ -100,3 +100,4 @@ class TestMetadata:
         self.ignore = False
         self.fields = {}
         self.params = []
+        self.tags: list[str] = []

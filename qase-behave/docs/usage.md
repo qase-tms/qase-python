@@ -11,6 +11,7 @@ This guide provides comprehensive instructions for integrating Qase with Behave 
 - [Adding QaseID](#adding-qaseid)
 - [Adding Fields](#adding-fields)
 - [Adding Suite](#adding-suite)
+- [Adding Tags](#adding-tags)
 - [Ignoring Tests](#ignoring-tests)
 - [Working with Attachments](#working-with-attachments)
 - [Multi-Project Support](#multi-project-support)
@@ -142,6 +143,34 @@ Feature: Authentication
     Given I am on the login page
     When I click "Login with Google"
     Then I should be redirected to Google
+```
+
+---
+
+## Adding Tags
+
+Use the `@qase.tags:` tag to assign tags to scenarios. Tags are sent as a comma-separated string to the Qase API.
+
+### Basic Usage
+
+```gherkin
+@qase.id:1 @qase.tags:smoke,regression
+Scenario: Login test
+  Given a passing condition
+```
+
+### Feature and Scenario Merge
+
+Tags from the feature level and scenario level are accumulated:
+
+```gherkin
+@qase.tags:smoke
+Feature: Authentication
+
+  @qase.id:1 @qase.tags:regression
+  Scenario: Login test
+    # Tags: smoke, regression
+    Given a passing condition
 ```
 
 ---

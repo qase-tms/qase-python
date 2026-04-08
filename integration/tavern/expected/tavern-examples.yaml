@@ -4,9 +4,9 @@ run:
     failed: 0
     invalid: 1
     muted: 0
-    passed: 5
+    passed: 7
     skipped: 0
-    total: 6
+    total: 8
 results:
 - title: Get list of users
   signature: 101::test_api.tavern.yaml::qaseid=101_get_list_of_users
@@ -125,6 +125,48 @@ results:
   steps:
   - data:
       action: Simple GET request
+    execution:
+      status: passed
+      attachments:
+      - file_name: request.json
+        mime_type: application/json
+      - file_name: response.json
+        mime_type: application/json
+- title: Get tagged users
+  signature: 901::test_api.tavern.yaml::qaseid=901_qasetags.smoke_get_tagged_users
+  testops_ids:
+  - 901
+  status: passed
+  fields:
+    tags: smoke
+  relations:
+    suite:
+      data:
+      - title: test_api.tavern.yaml
+  steps:
+  - data:
+      action: Fetch users with tag
+    execution:
+      status: passed
+      attachments:
+      - file_name: request.json
+        mime_type: application/json
+      - file_name: response.json
+        mime_type: application/json
+- title: Get tagged posts
+  signature: 902::test_api.tavern.yaml::qaseid=902_qasetags.smoke,regression,api_get_tagged_posts
+  testops_ids:
+  - 902
+  status: passed
+  fields:
+    tags: smoke,regression,api
+  relations:
+    suite:
+      data:
+      - title: test_api.tavern.yaml
+  steps:
+  - data:
+      action: Fetch posts with tags
     execution:
       status: passed
       attachments:
