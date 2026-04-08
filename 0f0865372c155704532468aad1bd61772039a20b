@@ -1,0 +1,29 @@
+qase-robotframework/tests/tests_qaseio_robotframework/test_tag_parser.py
+  a1fc826a56802a97 19,170-207
+qase-robotframework/src/qase/robotframework/models.py
+  a1fc826a56802a97 103
+qase-robotframework/src/qase/robotframework/listener.py
+  a1fc826a56802a97 151-153
+qase-robotframework/src/qase/robotframework/tag_parser.py
+  a1fc826a56802a97 38-40,100-104
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "0f0865372c155704532468aad1bd61772039a20b",
+  "prompts": {
+    "a1fc826a56802a97": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a320464a-1bab-4d75-9b2a-e9353f0f80b9",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dmitrii Gridnev",
+      "messages": [],
+      "total_additions": 51,
+      "total_deletions": 0,
+      "accepted_lines": 51,
+      "overriden_lines": 0
+    }
+  }
+}
