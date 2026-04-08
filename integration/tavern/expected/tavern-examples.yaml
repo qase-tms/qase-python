@@ -4,9 +4,9 @@ run:
     failed: 0
     invalid: 1
     muted: 0
-    passed: 5
+    passed: 7
     skipped: 0
-    total: 6
+    total: 8
 results:
 - title: Get list of users
   signature: 101::test_api.tavern.yaml::qaseid=101_get_list_of_users

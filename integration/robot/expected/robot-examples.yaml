@@ -4,9 +4,9 @@ run:
     failed: 0
     invalid: 1
     muted: 0
-    passed: 1
+    passed: 3
     skipped: 0
-    total: 2
+    total: 4
 results:
 - title: Test With Failing Step
   signature: 302::steps::test_with_failing_step
