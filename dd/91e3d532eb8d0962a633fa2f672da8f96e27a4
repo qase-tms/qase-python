@@ -1,0 +1,95 @@
+qase-python-commons/tests/tests_qase_commons/models/test_result.py
+  a1fc826a56802a97 122,125-218
+qase-robotframework/changelog.md
+  a1fc826a56802a97 1-6
+qase-python-commons/src/qase/commons/models/result.py
+  a1fc826a56802a97 89,94-104
+qase-behave/pyproject.toml
+  a1fc826a56802a97 7,31
+qase-tavern/changelog.md
+  a1fc826a56802a97 1-6
+qase-behave/src/qase/behave/utils.py
+  a1fc826a56802a97 19,54-57,117-124
+integration/tavern/expected/tavern-examples.yaml
+  a1fc826a56802a97 7,9,135-176
+qase-pytest/src/qase/pytest/decorators.py
+  a1fc826a56802a97 213-223
+integration/behave/expected/behave-examples.yaml
+  a1fc826a56802a97 7,9,354-387
+qase-pytest/tests/tests_qase_pytest/test_plugin.py
+  a1fc826a56802a97 346-379
+qase-tavern/tests/test_extractor.py
+  a1fc826a56802a97 6,10,14,18,22,26,31,35,40,44,49,53,58,62,67,71,76,80,85,89
+integration/robot/tests/tags.robot
+  a1fc826a56802a97 1-13
+qase-behave/docs/usage.md
+  a1fc826a56802a97 14,150-177
+qase-pytest/src/qase/pytest/plugin.py
+  a1fc826a56802a97 304,412-419
+qase-python-commons/pyproject.toml
+  a1fc826a56802a97 7
+integration/pytest/expected/pytest-examples.yaml
+  a1fc826a56802a97 7,9,378-425
+qase-tavern/tests/test_plugin.py
+  a1fc826a56802a97 63,67,71,75,88,91,96,99,103,106,205-247
+qase-robotframework/src/qase/robotframework/models.py
+  a1fc826a56802a97 103
+integration/robot/expected/robot-examples.yaml
+  a1fc826a56802a97 7,9,80-103
+integration/pytest/tests/test_tags.py
+  a1fc826a56802a97 1-31
+qase-robotframework/src/qase/robotframework/listener.py
+  a1fc826a56802a97 151-153
+qase-behave/tests/test_utils.py
+  a1fc826a56802a97 86-116
+qase-pytest/docs/usage.md
+  a1fc826a56802a97 15,179-237
+qase-python-commons/changelog.md
+  a1fc826a56802a97 1-7
+integration/behave/features/tags.feature
+  a1fc826a56802a97 1-9
+qase-pytest/changelog.md
+  a1fc826a56802a97 1-6
+qase-robotframework/pyproject.toml
+  a1fc826a56802a97 7,27
+qase-tavern/src/qase/tavern/plugin.py
+  a1fc826a56802a97 87,100-101,153,180-186,189
+qase-tavern/docs/usage.md
+  a1fc826a56802a97 12,88-123
+qase-pytest/pyproject.toml
+  a1fc826a56802a97 7,31
+qase-robotframework/tests/tests_qaseio_robotframework/test_tag_parser.py
+  a1fc826a56802a97 19,170-207
+integration/tavern/tests/test_api.tavern.yaml
+  a1fc826a56802a97 71-90
+qase-robotframework/docs/usage.md
+  a1fc826a56802a97 13,121-146
+qase-python-commons/src/qase/commons/client/api_v2_client.py
+  a1fc826a56802a97 160-166
+qase-behave/changelog.md
+  a1fc826a56802a97 1-6
+qase-tavern/pyproject.toml
+  a1fc826a56802a97 7,31
+qase-robotframework/src/qase/robotframework/tag_parser.py
+  a1fc826a56802a97 38-40,100-104
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "dd91e3d532eb8d0962a633fa2f672da8f96e27a4",
+  "prompts": {
+    "a1fc826a56802a97": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a320464a-1bab-4d75-9b2a-e9353f0f80b9",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dmitrii Gridnev",
+      "messages": [],
+      "total_additions": 51,
+      "total_deletions": 0,
+      "accepted_lines": 770,
+      "overriden_lines": 0
+    }
+  }
+}
