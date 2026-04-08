@@ -4,9 +4,9 @@ run:
     failed: 2
     invalid: 0
     muted: 0
-    passed: 24
+    passed: 28
     skipped: 1
-    total: 27
+    total: 31
 results:
 - title: Muted test
   signature: 208::integration::pytest::tests::test_fields.py::test_muted
