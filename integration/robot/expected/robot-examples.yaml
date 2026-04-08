@@ -78,7 +78,7 @@ results:
       execution:
         status: passed
 - title: Test With Single Tag
-  signature: 901::tags::test_with_single_tag
+  signature: 901::steps::test_with_single_tag
   testops_ids:
   - 901
   status: passed
@@ -88,9 +88,9 @@ results:
   relations:
     suite:
       data:
-      - title: Tags
+      - title: Steps
 - title: Test With Multiple Tags
-  signature: 902::tags::test_with_multiple_tags
+  signature: 902::steps::test_with_multiple_tags
   testops_ids:
   - 902
   status: passed
@@ -100,4 +100,4 @@ results:
   relations:
     suite:
       data:
-      - title: Tags
+      - title: Steps
