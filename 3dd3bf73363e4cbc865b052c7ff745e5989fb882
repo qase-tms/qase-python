@@ -1,0 +1,25 @@
+integration/robot/expected/robot-examples.yaml
+  a1fc826a56802a97 81,91,93,103
+integration/robot/tests/steps.robot
+  a1fc826a56802a97 16-25
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "3dd3bf73363e4cbc865b052c7ff745e5989fb882",
+  "prompts": {
+    "a1fc826a56802a97": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a320464a-1bab-4d75-9b2a-e9353f0f80b9",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dmitrii Gridnev",
+      "messages": [],
+      "total_additions": 14,
+      "total_deletions": 4,
+      "accepted_lines": 14,
+      "overriden_lines": 0
+    }
+  }
+}
