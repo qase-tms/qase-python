@@ -1,0 +1,25 @@
+qase-python-commons/tests/tests_qase_commons/models/test_result.py
+  a1fc826a56802a97 181-218
+qase-python-commons/src/qase/commons/client/api_v2_client.py
+  a1fc826a56802a97 160-166
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "48bd12a9d839175d934ecf0c95264da08892cd05",
+  "prompts": {
+    "a1fc826a56802a97": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a320464a-1bab-4d75-9b2a-e9353f0f80b9",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dmitrii Gridnev",
+      "messages": [],
+      "total_additions": 45,
+      "total_deletions": 0,
+      "accepted_lines": 45,
+      "overriden_lines": 0
+    }
+  }
+}
