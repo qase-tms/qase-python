@@ -2,7 +2,8 @@ import pytest
 from unittest.mock import MagicMock
 from qase.commons.models.step import StepType
 from qase.behave.utils import (
-    filter_scenarios, parse_scenario, parse_step, __extract_fields
+    filter_scenarios, parse_scenario, parse_step, __extract_fields,
+    parse_scenario_from_json, parse_step_from_json,
 )
 
 
@@ -114,3 +115,230 @@ def test_parse_scenario_without_tags_has_empty_list(mock_scenario):
     scenario = mock_scenario(tags=["qase.id:100"])
     result = parse_scenario(scenario)
     assert result.tags == []
+
+
+class TestParseScenarioFromJson:
+    """Tests for parse_scenario_from_json(scenario_dict, feature_filename)."""
+
+    def test_basic_scenario(self):
+        scenario_dict = {
+            'name': 'Login with valid credentials',
+            'status': 'passed',
+            'duration': 1.5,
+            'tags': [],
+        }
+        result = parse_scenario_from_json(scenario_dict, 'features/login.feature')
+        assert result.title == 'Login with valid credentials'
+        assert result.execution.status == 'passed'
+        assert result.execution.duration == 1500
+
+    def test_failed_scenario_with_error(self):
+        scenario_dict = {
+            'name': 'Failing test',
+            'status': 'failed',
+            'duration': 0.3,
+            'tags': [],
+            'error_msg': ['AssertionError: expected True', 'got False'],
+        }
+        result = parse_scenario_from_json(scenario_dict, 'features/test.feature')
+        assert result.execution.status == 'failed'
+        assert 'AssertionError: expected True' in result.execution.stacktrace
+        assert 'got False' in result.execution.stacktrace
+
+    def test_error_scenario_maps_to_invalid(self):
+        scenario_dict = {
+            'name': 'Error test',
+            'status': 'error',
+            'duration': 0.1,
+            'tags': [],
+        }
+        result = parse_scenario_from_json(scenario_dict, 'features/test.feature')
+        assert result.execution.status == 'invalid'
+
+    def test_qase_id_tag_parsing(self):
+        scenario_dict = {
+            'name': 'Tagged test',
+            'status': 'passed',
+            'duration': 0.5,
+            'tags': ['qase.id:42'],
+        }
+        result = parse_scenario_from_json(scenario_dict, 'features/test.feature')
+        assert result.testops_ids == [42]
+
+    def test_multiple_qase_tags(self):
+        scenario_dict = {
+            'name': 'Multi-tag test',
+            'status': 'passed',
+            'duration': 0.5,
+            'tags': [
+                'qase.id:10',
+                'qase.suite:Auth||Login',
+                'qase.fields:{"priority":"high"}',
+                'qase.tags:smoke,regression',
+            ],
+        }
+        result = parse_scenario_from_json(scenario_dict, 'features/test.feature')
+        assert result.testops_ids == [10]
+        assert len(result.relations.suite.data) == 2
+        assert result.relations.suite.data[0].title == 'Auth'
+        assert result.relations.suite.data[1].title == 'Login'
+        assert result.fields.get('priority') == 'high'
+        assert 'smoke' in result.tags
+        assert 'regression' in result.tags
+
+    def test_multi_project_tags(self):
+        scenario_dict = {
+            'name': 'Multi-project test',
+            'status': 'passed',
+            'duration': 0.5,
+            'tags': ['qase.project_id.PROJ1:1,2'],
+        }
+        result = parse_scenario_from_json(scenario_dict, 'features/test.feature')
+        mapping = result.get_testops_project_mapping()
+        assert mapping is not None
+        assert mapping['PROJ1'] == [1, 2]
+
+    def test_ignore_tag(self):
+        scenario_dict = {
+            'name': 'Ignored test',
+            'status': 'passed',
+            'duration': 0.1,
+            'tags': ['qase.ignore'],
+        }
+        result = parse_scenario_from_json(scenario_dict, 'features/test.feature')
+        assert result.ignore is True
+
+    def test_scenario_outline_parameters(self):
+        scenario_dict = {
+            'name': 'Parameterized test',
+            'status': 'passed',
+            'duration': 0.2,
+            'tags': [],
+            'parameters': {'username': 'admin', 'password': 'secret'},
+        }
+        result = parse_scenario_from_json(scenario_dict, 'features/test.feature')
+        assert result.params == {'username': 'admin', 'password': 'secret'}
+
+    def test_suite_from_filename_when_no_suite_tag(self):
+        scenario_dict = {
+            'name': 'Suite from path',
+            'status': 'passed',
+            'duration': 0.1,
+            'tags': [],
+        }
+        result = parse_scenario_from_json(scenario_dict, 'features/auth/login.feature')
+        suite_titles = [s.title for s in result.relations.suite.data]
+        assert 'features' in suite_titles
+        assert 'auth' in suite_titles
+        assert 'login.feature' in suite_titles
+
+    def test_start_stop_timestamps(self):
+        scenario_dict = {
+            'name': 'Timed test',
+            'status': 'passed',
+            'duration': 1.0,
+            'tags': [],
+            'start': 1700000000.0,
+            'stop': 1700000001.0,
+        }
+        result = parse_scenario_from_json(scenario_dict, 'features/test.feature')
+        assert result.execution.start_time == 1700000000.0
+        assert result.execution.end_time == 1700000001.0
+
+    def test_thread_from_worker_id(self):
+        scenario_dict = {
+            'name': 'Parallel test',
+            'status': 'passed',
+            'duration': 0.5,
+            'tags': [],
+            'worker_id': '2',
+        }
+        result = parse_scenario_from_json(scenario_dict, 'features/test.feature')
+        assert result.execution.thread == 'worker-2'
+
+    def test_skipped_undefined_untested_statuses(self):
+        for status in ['skipped', 'undefined', 'untested']:
+            scenario_dict = {
+                'name': f'{status} test',
+                'status': status,
+                'duration': 0.0,
+                'tags': [],
+            }
+            result = parse_scenario_from_json(scenario_dict, 'features/test.feature')
+            assert result.execution.status == 'skipped', (
+                f"Status '{status}' should map to 'skipped', got '{result.execution.status}'"
+            )
+
+
+class TestParseStepFromJson:
+    """Tests for parse_step_from_json(step_dict)."""
+
+    def test_basic_passed_step(self):
+        step_dict = {
+            'step_type': 'given',
+            'name': 'a user exists',
+            'line': 5,
+            'status': 'passed',
+            'duration': 0.5,
+        }
+        step = parse_step_from_json(step_dict)
+        assert step.data.keyword == 'given'
+        assert step.data.name == 'a user exists'
+        assert step.data.line == 5
+        assert step.execution.status == 'passed'
+        assert step.execution.duration == 500
+
+    def test_failed_step(self):
+        step_dict = {
+            'step_type': 'then',
+            'name': 'it should fail',
+            'line': 10,
+            'status': 'failed',
+            'duration': 0.1,
+        }
+        step = parse_step_from_json(step_dict)
+        assert step.execution.status == 'failed'
+
+    def test_error_step_maps_to_failed(self):
+        step_dict = {
+            'step_type': 'when',
+            'name': 'an error occurs',
+            'line': 7,
+            'status': 'error',
+            'duration': 0.2,
+        }
+        step = parse_step_from_json(step_dict)
+        assert step.execution.status == 'failed'
+
+    def test_undefined_step_maps_to_skipped(self):
+        step_dict = {
+            'step_type': 'given',
+            'name': 'an undefined step',
+            'line': 3,
+            'status': 'undefined',
+            'duration': 0.0,
+        }
+        step = parse_step_from_json(step_dict)
+        assert step.execution.status == 'skipped'
+
+    def test_step_with_timestamps(self):
+        step_dict = {
+            'step_type': 'given',
+            'name': 'timed step',
+            'line': 1,
+            'status': 'passed',
+            'duration': 1.0,
+            'start': 1700000000.0,
+            'stop': 1700000001.0,
+        }
+        step = parse_step_from_json(step_dict)
+        assert step.execution.start_time == 1700000000.0
+        assert step.execution.end_time == 1700000001.0
+
+    def test_step_defaults(self):
+        step_dict = {}
+        step = parse_step_from_json(step_dict)
+        assert step.data.keyword == 'given'
+        assert step.data.name == ''
+        assert step.data.line == 0
+        assert step.step_type == StepType.GHERKIN
