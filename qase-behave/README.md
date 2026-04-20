@@ -14,6 +14,7 @@ Qase Behave Reporter enables seamless integration between your Behave BDD tests 
 - Automatic step reporting from Gherkin scenarios
 - Multi-project reporting support
 - Flexible configuration (file, environment variables)
+- **[BehaveX](https://github.com/hrcorval/behavex) parallel execution support**
 
 ## Installation
 
@@ -204,10 +205,29 @@ export QASE_TESTOPS_RUN_TITLE="Regression Run"
 behave --format=qase.behave.formatter:QaseFormatter
 ```
 
+### Parallel Execution with BehaveX
+
+Run tests in parallel using [BehaveX](https://github.com/hrcorval/behavex) (v4.0.0+):
+
+```sh
+pip install behavex
+
+behavex --formatter=qase.behave.formatter:QaseFormatter --parallel-processes=4 features/
+
+# Parallel by feature
+behavex --formatter=qase.behave.formatter:QaseFormatter --parallel-processes=4 --parallel-scheme=feature features/
+```
+
+Configuration is done via environment variables or `qase.config.json` (the same as for standard behave).
+
+> **Note:** `qase.attach()` and `qase.comment()` are not supported in BehaveX mode. All other features (test case linking, metadata, steps, statuses) work normally.
+
 ## Requirements
 
 - Python >= 3.9
 - behave >= 1.2.6
+- filelock >= 3.12.2
+- BehaveX >= 4.0.0 (optional, for parallel execution)
 
 ## Documentation
 

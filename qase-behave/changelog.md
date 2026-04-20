@@ -1,3 +1,31 @@
+# qase-behave 3.2.0
+
+## What's new
+
+- Added support for [BehaveX](https://github.com/hrcorval/behavex) parallel test execution via `--formatter` flag. BehaveX calls `launch_json_formatter()` with consolidated JSON after all workers complete — scenarios, steps, tags, statuses, and timing are fully reported.
+- Added `launch_json_formatter()` method implementing the BehaveX custom formatter interface
+- Added `parse_scenario_from_json()` and `parse_step_from_json()` utility functions for mapping BehaveX JSON to Qase models
+- Added `filelock` dependency for cross-process run coordination
+
+### BehaveX Usage
+
+```sh
+behavex --formatter=qase.behave.formatter:QaseFormatter --parallel-processes=4 features/
+```
+
+Configuration via environment variables or `qase.config.json`:
+
+```sh
+export QASE_MODE=testops
+export QASE_TESTOPS_PROJECT=PROJ
+export QASE_TESTOPS_API_TOKEN=your_token
+```
+
+### Known Limitations
+
+- `qase.attach()` and `qase.comment()` are not supported in BehaveX mode — tests have already completed when the formatter processes results.
+- Configuration is only available via environment variables or `qase.config.json` (behave `--define` options are not passed to the BehaveX formatter).
+
 # qase-behave 3.1.0
 
 ## What's new

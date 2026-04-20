@@ -7,10 +7,13 @@ multi-project tags, step status mapping, and scenario field handling.
 These tests complement test_utils.py which covers happy paths.
 """
 
+import os
+import tempfile
 import pytest
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 from qase.commons.models.step import StepType
 from qase.behave.utils import parse_scenario, parse_step, filter_scenarios
+from qase.behave.formatter import QaseFormatter
 
 
 @pytest.fixture
@@ -176,3 +179,141 @@ class TestFilterScenarios:
         assert len(result) == 2
         assert result[0].tags == ["qase.id:10"]
         assert result[1].tags == ["qase.id:30"]
+
+
+class TestBehaveXPostExecution:
+    """Test launch_json_formatter (BehaveX post-execution mode)."""
+
+    def test_init_without_args(self):
+        """QaseFormatter() with no args should not crash."""
+        formatter = QaseFormatter()
+        assert formatter._behavex_mode is True
+        assert formatter.reporter is None
+
+    def test_launch_json_formatter_processes_features(self):
+        """launch_json_formatter should create run, process scenarios, complete run."""
+        formatter = QaseFormatter()
+        mock_reporter = MagicMock()
+        mock_reporter.start_run.return_value = "123"
+
+        json_data = {
+            "features": [{
+                "name": "Login",
+                "filename": "features/login.feature",
+                "scenarios": [{
+                    "name": "Valid login",
+                    "status": "passed",
+                    "duration": 1.0,
+                    "tags": ["qase.id:1"],
+                    "filename": "features/login.feature",
+                    "line": 5,
+                    "steps": [{
+                        "step_type": "given",
+                        "name": "a user",
+                        "status": "passed",
+                        "duration": 0.5,
+                        "line": 6,
+                    }],
+                    "background": {"steps": []},
+                }],
+            }],
+        }
+
+        with patch('qase.behave.formatter.QaseCoreReporter', return_value=mock_reporter), \
+             patch('qase.behave.formatter.ConfigManager'):
+            formatter.launch_json_formatter(json_data)
+
+        mock_reporter.start_run.assert_called_once()
+        mock_reporter.add_result.assert_called_once()
+        mock_reporter.complete_worker.assert_called_once()
+        mock_reporter.complete_run.assert_called_once()
+
+    def test_launch_json_formatter_skips_ignored_scenarios(self):
+        """Scenarios with qase.ignore tag should not be reported."""
+        formatter = QaseFormatter()
+        mock_reporter = MagicMock()
+        mock_reporter.start_run.return_value = "123"
+
+        json_data = {
+            "features": [{
+                "name": "Feature",
+                "filename": "features/f.feature",
+                "scenarios": [{
+                    "name": "Ignored",
+                    "status": "passed",
+                    "duration": 0.1,
+                    "tags": ["qase.ignore"],
+                    "filename": "features/f.feature",
+                    "line": 1,
+                    "steps": [],
+                    "background": {"steps": []},
+                }],
+            }],
+        }
+
+        with patch('qase.behave.formatter.QaseCoreReporter', return_value=mock_reporter), \
+             patch('qase.behave.formatter.ConfigManager'):
+            formatter.launch_json_formatter(json_data)
+
+        mock_reporter.add_result.assert_not_called()
+
+    def test_launch_json_formatter_with_existing_lock_file(self):
+        """If lock file exists (workers already sent results), just complete the run."""
+        formatter = QaseFormatter()
+        mock_reporter = MagicMock()
+
+        with tempfile.NamedTemporaryFile(mode='w', suffix='_run_id', delete=False) as f:
+            f.write("456")
+            lock_path = f.name
+
+        try:
+            formatter._run_id_file = lock_path
+            formatter._lock_file = lock_path + ".lock"
+
+            with patch('qase.behave.formatter.QaseCoreReporter', return_value=mock_reporter), \
+                 patch('qase.behave.formatter.ConfigManager'):
+                formatter.launch_json_formatter({"features": []})
+
+            mock_reporter.set_run_id.assert_called_once_with("456")
+            mock_reporter.start_run.assert_not_called()
+            mock_reporter.complete_run.assert_called_once()
+        finally:
+            if os.path.exists(lock_path):
+                os.remove(lock_path)
+
+
+class TestBehaveXWorkerMode:
+    """Test QaseFormatter in BehaveX worker mode (lock file coordination)."""
+
+    def test_detects_behavex_worker(self):
+        """Formatter detects BehaveX worker via worker_id in userdata."""
+        mock_config = MagicMock()
+        mock_config.userdata = {"worker_id": "0"}
+        mock_reporter = MagicMock()
+        mock_reporter.start_run.return_value = "789"
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            run_id_path = os.path.join(tmpdir, "qase_run_id")
+            lock_path = os.path.join(tmpdir, "qase.lock")
+
+            with patch('qase.behave.formatter.QaseCoreReporter', return_value=mock_reporter), \
+                 patch.object(QaseFormatter, '_run_id_file', run_id_path), \
+                 patch.object(QaseFormatter, '_lock_file', lock_path), \
+                 patch('qase.behave.formatter.ConfigManager'):
+                formatter = QaseFormatter(MagicMock(), mock_config)
+
+            assert formatter._is_behavex_worker is True
+            mock_reporter.start_run.assert_called_once()
+
+    def test_worker_close_calls_complete_worker_not_complete_run(self):
+        """In BehaveX worker mode, close() should call complete_worker() only."""
+        formatter = QaseFormatter()
+        formatter._behavex_mode = False
+        formatter._is_behavex_worker = True
+        formatter.reporter = MagicMock()
+        formatter._QaseFormatter__current_scenario = None
+
+        formatter.close()
+
+        formatter.reporter.complete_worker.assert_called_once()
+        formatter.reporter.complete_run.assert_not_called()

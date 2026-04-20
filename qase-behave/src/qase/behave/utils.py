@@ -143,6 +143,112 @@ def __extract_fields(tag: str) -> dict:
         return {}
 
 
+def parse_scenario_from_json(scenario_dict: dict, feature_filename: str) -> Result:
+    """Parse a BehaveX JSON scenario dict into a Qase Result."""
+    tags = __parse_tags(scenario_dict.get('tags', []))
+
+    name = scenario_dict.get('name', '')
+    result = Result(name, name)
+
+    project_ids = tags.get(TESTOPS_PROJECT_ID, None)
+    if project_ids:
+        for project_code, testops_ids in project_ids.items():
+            result.set_testops_project_mapping(project_code, testops_ids)
+    else:
+        result.testops_ids = tags.get(TESTOPS_ID, None)
+
+    result.fields = tags.get(FIELDS, {})
+    result.ignore = tags.get(IGNORE, False)
+
+    tag_list = tags.get(TAGS, [])
+    if tag_list:
+        result.add_tags(tag_list)
+
+    relation = Relation()
+    if SUITE in tags:
+        for suite in tags[SUITE]:
+            relation.suite.add_data(SuiteData(suite))
+    else:
+        suites = feature_filename.split(os.sep)
+        for suite in suites:
+            relation.suite.add_data(SuiteData(suite))
+    result.relations = relation
+
+    result.params = scenario_dict.get('parameters', {})
+
+    status_map = {
+        'passed': 'passed',
+        'failed': 'failed',
+        'error': 'invalid',
+        'skipped': 'skipped',
+        'undefined': 'skipped',
+        'untested': 'skipped',
+    }
+    result.execution.set_status(
+        status_map.get(scenario_dict.get('status', 'skipped'), 'skipped')
+    )
+
+    duration = scenario_dict.get('duration', 0)
+    result.execution.duration = int(duration * 1000)
+    # Always calculate timestamps relative to current time.
+    # BehaveX timestamps are from before run creation and would be rejected by the API.
+    current_time = QaseUtils.get_real_time()
+    result.execution.end_time = current_time
+    result.execution.start_time = current_time - duration
+
+    worker_id = scenario_dict.get('worker_id')
+    if worker_id is not None:
+        result.execution.thread = f"worker-{worker_id}"
+
+    error_msg = scenario_dict.get('error_msg')
+    if error_msg:
+        if isinstance(error_msg, list):
+            result.execution.stacktrace = '\n'.join(error_msg)
+        else:
+            result.execution.stacktrace = str(error_msg)
+
+    result.signature = QaseUtils.get_signature(
+        result.testops_ids,
+        [suite.title for suite in relation.suite.data] + [name],
+        result.params
+    )
+
+    return result
+
+
+def parse_step_from_json(step_dict: dict) -> QaseStep:
+    """Parse a BehaveX JSON step dict into a Qase Step."""
+    keyword = step_dict.get('step_type', 'given')
+    name = step_dict.get('name', '')
+    line = step_dict.get('line', 0)
+
+    model = QaseStep(
+        step_type=StepType.GHERKIN,
+        id=str(uuid.uuid4()),
+        data=StepGherkinData(keyword=keyword, name=name, line=line)
+    )
+
+    status_mapping = {
+        'passed': 'passed',
+        'failed': 'failed',
+        'error': 'failed',
+        'skipped': 'skipped',
+        'undefined': 'skipped',
+        'untested': 'skipped',
+    }
+    model.execution.set_status(
+        status_mapping.get(step_dict.get('status', 'skipped'), 'skipped')
+    )
+
+    duration = step_dict.get('duration', 0)
+    model.execution.duration = int(duration * 1000)
+    current_time = QaseUtils.get_real_time()
+    model.execution.end_time = current_time
+    model.execution.start_time = current_time - duration
+
+    return model
+
+
 def parse_step(step: Step) -> QaseStep:
     model = QaseStep(
         step_type=StepType.GHERKIN,

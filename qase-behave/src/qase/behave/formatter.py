@@ -1,33 +1,71 @@
+import os
+
 from behave.formatter.base import Formatter
 from behave.model import Feature, Scenario, Step
 from qase.commons import ConfigManager
 from qase.commons.reporters import QaseCoreReporter
 
-from qase.behave.utils import filter_scenarios, parse_scenario, parse_step
+from qase.behave.utils import (
+    filter_scenarios, parse_scenario, parse_step,
+    parse_scenario_from_json, parse_step_from_json,
+)
 from qase.behave.qase_global import qase
 
 
 class QaseFormatter(Formatter):
     name = 'qase'
     description = 'Qase.io formatter'
-    __already_started = False
-    __case_ids = []
-    __current_scenario = None
 
-    def __init__(self, stream_opener, config):
-        super(QaseFormatter, self).__init__(stream_opener, config)
+    # Lock file paths for BehaveX worker coordination
+    _run_id_file = "qase_behavex_run_id"
+    _lock_file = "qase_behavex.lock"
 
-        cfg = self.__parse_config(config.userdata)
-        self.reporter = QaseCoreReporter(cfg, 'behave', 'qase-behave')
+    def __init__(self, stream_opener=None, config=None):
+        self._behavex_mode = stream_opener is None and config is None
+        self._is_behavex_worker = False
+        self.__already_started = False
+        self.__case_ids = []
+        self.__current_scenario = None
+
+        if not self._behavex_mode:
+            super().__init__(stream_opener, config)
+            userdata = config.userdata
+            self._is_behavex_worker = 'worker_id' in userdata
+
+            cfg = self.__parse_config(userdata)
+            self.reporter = QaseCoreReporter(cfg, 'behave', 'qase-behave')
+
+            if self._is_behavex_worker:
+                self._init_worker_run()
+        else:
+            self.reporter = None
+
+    def _init_worker_run(self):
+        """Initialize run in BehaveX worker mode with lock file coordination."""
+        from filelock import FileLock
+
+        with FileLock(self._lock_file):
+            if os.path.exists(self._run_id_file):
+                with open(self._run_id_file, "r") as f:
+                    run_id = f.read().strip()
+                self.reporter.set_run_id(run_id)
+            else:
+                run_id = self.reporter.start_run()
+                with open(self._run_id_file, "w") as f:
+                    f.write(str(run_id))
+
+        self.__already_started = True
 
     def uri(self, uri):
-        if not self.__already_started:
+        if self.__already_started:
+            return
+
+        if not self._is_behavex_worker:
             self.reporter.start_run()
 
-            execution_plan = self.reporter.get_execution_plan()
-            self.__case_ids = execution_plan if execution_plan else []
-
-            self.__already_started = True
+        execution_plan = self.reporter.get_execution_plan()
+        self.__case_ids = execution_plan if execution_plan else []
+        self.__already_started = True
 
     def feature(self, feature: Feature):
         feature.scenarios = filter_scenarios(
@@ -39,51 +77,97 @@ class QaseFormatter(Formatter):
             self.reporter.add_result(self.__current_scenario)
             self.__current_scenario = None
         self.__current_scenario = parse_scenario(scenario)
-        # Update global qase object with current scenario
         qase._set_current_scenario(self.__current_scenario)
-        # Clear current step when starting new scenario
         qase._set_current_step(None)
-        pass
 
     def result(self, result: Step):
         step = parse_step(result)
-        # Set current step to allow future attachments and apply pending ones
         qase._set_current_step(step)
-        
+
         if step.execution.status != 'passed':
-            # Check if it's an assertion error or other error
             is_assertion_error = False
             if result.error_message:
-                # Check if the error message contains assertion-related keywords
                 assertion_keywords = ['assert', 'AssertionError', 'expect', 'should', 'must']
                 is_assertion_error = any(keyword in result.error_message for keyword in assertion_keywords)
-            
-            # Set appropriate status
+
             if step.execution.status == 'failed':
                 status = 'failed' if is_assertion_error else 'invalid'
                 step.execution.set_status(status)
                 self.__current_scenario.execution.set_status(status)
             else:
                 self.__current_scenario.execution.set_status(step.execution.status)
-            
+
             if result.error_message:
                 self.__current_scenario.execution.stacktrace = result.error_message
         self.__current_scenario.steps.append(step)
-        # Clear current step after adding to scenario
         qase._set_current_step(None)
-        pass
 
     def eof(self):
         if self.__current_scenario and self.__current_scenario.ignore == False:
             self.__current_scenario.execution.complete()
             self.reporter.add_result(self.__current_scenario)
             self.__current_scenario = None
-        pass
 
     def close(self):
+        if self._is_behavex_worker:
+            self.reporter.complete_worker()
+        else:
+            self.reporter.complete_worker()
+            self.reporter.complete_run()
+
+    def launch_json_formatter(self, json_data):
+        """BehaveX post-execution formatter entry point.
+
+        Called by BehaveX's FormatterManager after all parallel workers complete.
+        Receives consolidated JSON with all test results.
+        """
+        if self.reporter is None:
+            cfg = ConfigManager()
+            self.reporter = QaseCoreReporter(cfg, 'behave', 'qase-behave')
+
+        # Check if workers already sent results (lock file exists)
+        if os.path.exists(self._run_id_file):
+            with open(self._run_id_file, "r") as f:
+                run_id = f.read().strip()
+            self.reporter.set_run_id(run_id)
+            self.reporter.complete_run()
+            self._cleanup_lock_files()
+            return
+
+        # Workers didn't run QaseFormatter — process JSON ourselves
+        self.reporter.start_run()
+
+        for feature in json_data.get('features', []):
+            feature_filename = feature.get('filename', '')
+            for scenario_dict in feature.get('scenarios', []):
+                result = parse_scenario_from_json(scenario_dict, feature_filename)
+
+                if result.ignore:
+                    continue
+
+                # Background steps first
+                background = scenario_dict.get('background', {})
+                for step_dict in background.get('steps', []):
+                    step = parse_step_from_json(step_dict)
+                    result.steps.append(step)
+
+                # Regular steps
+                for step_dict in scenario_dict.get('steps', []):
+                    step = parse_step_from_json(step_dict)
+                    result.steps.append(step)
+
+                self.reporter.add_result(result)
+
         self.reporter.complete_worker()
         self.reporter.complete_run()
-        pass
+
+    def _cleanup_lock_files(self):
+        """Remove lock and run_id files."""
+        for path in (self._run_id_file, self._lock_file):
+            try:
+                os.remove(path)
+            except FileNotFoundError:
+                pass
 
     @staticmethod
     def __parse_config(userdata) -> ConfigManager:
