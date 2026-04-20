@@ -131,6 +131,10 @@ class TestParseScenarioFromJson:
         assert result.title == 'Login with valid credentials'
         assert result.execution.status == 'passed'
         assert result.execution.duration == 1500
+        # Without start/stop, end_time should be set and start_time calculated
+        assert result.execution.end_time > 0
+        assert result.execution.start_time > 0
+        assert result.execution.start_time <= result.execution.end_time
 
     def test_failed_scenario_with_error(self):
         scenario_dict = {
@@ -232,18 +236,18 @@ class TestParseScenarioFromJson:
         assert 'auth' in suite_titles
         assert 'login.feature' in suite_titles
 
-    def test_start_stop_timestamps(self):
+    def test_timestamps_calculated_from_duration(self):
+        """Timestamps should be calculated from current time and duration."""
         scenario_dict = {
             'name': 'Timed test',
             'status': 'passed',
-            'duration': 1.0,
+            'duration': 2.0,
             'tags': [],
-            'start': 1700000000.0,
-            'stop': 1700000001.0,
         }
         result = parse_scenario_from_json(scenario_dict, 'features/test.feature')
-        assert result.execution.start_time == 1700000000.0
-        assert result.execution.end_time == 1700000001.0
+        assert result.execution.end_time > 0
+        assert result.execution.start_time > 0
+        assert abs(result.execution.end_time - result.execution.start_time - 2.0) < 0.1
 
     def test_thread_from_worker_id(self):
         scenario_dict = {
@@ -287,6 +291,10 @@ class TestParseStepFromJson:
         assert step.data.line == 5
         assert step.execution.status == 'passed'
         assert step.execution.duration == 500
+        # Without start/stop, times should be calculated
+        assert step.execution.end_time > 0
+        assert step.execution.start_time > 0
+        assert step.execution.start_time <= step.execution.end_time
 
     def test_failed_step(self):
         step_dict = {
@@ -321,19 +329,19 @@ class TestParseStepFromJson:
         step = parse_step_from_json(step_dict)
         assert step.execution.status == 'skipped'
 
-    def test_step_with_timestamps(self):
+    def test_step_with_duration(self):
+        """Step timestamps calculated from current time and duration."""
         step_dict = {
             'step_type': 'given',
             'name': 'timed step',
             'line': 1,
             'status': 'passed',
             'duration': 1.0,
-            'start': 1700000000.0,
-            'stop': 1700000001.0,
         }
         step = parse_step_from_json(step_dict)
-        assert step.execution.start_time == 1700000000.0
-        assert step.execution.end_time == 1700000001.0
+        assert step.execution.end_time > 0
+        assert step.execution.start_time > 0
+        assert abs(step.execution.end_time - step.execution.start_time - 1.0) < 0.1
 
     def test_step_defaults(self):
         step_dict = {}

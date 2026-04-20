@@ -190,10 +190,11 @@ def parse_scenario_from_json(scenario_dict: dict, feature_filename: str) -> Resu
 
     duration = scenario_dict.get('duration', 0)
     result.execution.duration = int(duration * 1000)
-    if 'start' in scenario_dict:
-        result.execution.start_time = scenario_dict['start']
-    if 'stop' in scenario_dict:
-        result.execution.end_time = scenario_dict['stop']
+    # Always calculate timestamps relative to current time.
+    # BehaveX timestamps are from before run creation and would be rejected by the API.
+    current_time = QaseUtils.get_real_time()
+    result.execution.end_time = current_time
+    result.execution.start_time = current_time - duration
 
     worker_id = scenario_dict.get('worker_id')
     if worker_id is not None:
@@ -241,10 +242,9 @@ def parse_step_from_json(step_dict: dict) -> QaseStep:
 
     duration = step_dict.get('duration', 0)
     model.execution.duration = int(duration * 1000)
-    if 'start' in step_dict:
-        model.execution.start_time = step_dict['start']
-    if 'stop' in step_dict:
-        model.execution.end_time = step_dict['stop']
+    current_time = QaseUtils.get_real_time()
+    model.execution.end_time = current_time
+    model.execution.start_time = current_time - duration
 
     return model
 
