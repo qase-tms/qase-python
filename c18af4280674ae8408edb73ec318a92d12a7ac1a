@@ -1,0 +1,25 @@
+qase-behave/changelog.md
+  3973fae9a1e85452 1-29
+qase-behave/README.md
+  3973fae9a1e85452 17,208-225,230-231
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.0",
+  "base_commit_sha": "c18af4280674ae8408edb73ec318a92d12a7ac1a",
+  "prompts": {
+    "3973fae9a1e85452": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d1fedcdf-cea2-4caf-ae6a-9a0afaf45116",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dmitrii Gridnev",
+      "messages": [],
+      "total_additions": 50,
+      "total_deletions": 0,
+      "accepted_lines": 24474,
+      "overriden_lines": 0
+    }
+  }
+}
