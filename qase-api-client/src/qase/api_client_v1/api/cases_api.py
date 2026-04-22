@@ -2289,7 +2289,7 @@ class CasesApi:
         _host = None
 
         _collection_formats: Dict[str, str] = {
-            'external_issues[ids][]': 'csv',
+            'external_issues[ids][]': 'multi',
         }
 
         _path_params: Dict[str, str] = {}
