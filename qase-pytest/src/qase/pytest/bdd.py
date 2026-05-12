@@ -5,6 +5,7 @@ Loaded conditionally from conftest.py only when pytest_bdd is installed.
 
 import ast as _ast
 import re
+import warnings as _warnings
 from typing import Iterable, Optional
 
 from qase.commons.models.relation import Relation, SuiteData
@@ -17,6 +18,32 @@ class QasePytestBddPlugin:
     def __init__(self, pytest_plugin):
         self._pytest_plugin = pytest_plugin
         self._current = None  # per-scenario state dict
+        self._install_warning_filter()
+
+    @staticmethod
+    def _install_warning_filter():
+        """Silence pytest-bdd-forwarded Gherkin tags showing up as unknown marks.
+
+        pytest-bdd 7+/8 turns every Gherkin scenario tag into a pytest marker
+        whose name is the raw tag string (e.g. ``qase.id=42``). pytest emits
+        ``PytestUnknownMarkWarning`` for each unique one. The warnings have
+        no diagnostic value for the user (it's not a typo — the tag is
+        intentional), so we silence ONLY the qase.* family. Other unknown
+        marks still warn normally.
+        """
+        try:
+            # local import — pytest is always installed when this plugin loads
+            import pytest as _pytest
+
+            category = getattr(_pytest, "PytestUnknownMarkWarning", Warning)
+        except Exception:
+            category = Warning
+
+        _warnings.filterwarnings(
+            "ignore",
+            message=r"Unknown pytest\.mark\.qase\.",
+            category=category,
+        )
 
     def pytest_bdd_before_scenario(self, request, feature, scenario):
         runtime = getattr(self._pytest_plugin, "runtime", None)

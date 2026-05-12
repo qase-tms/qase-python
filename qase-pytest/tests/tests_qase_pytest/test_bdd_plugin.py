@@ -367,3 +367,61 @@ class TestStepLookupError:
         assert len(invalid) == 1
         assert invalid[0].data.name == "missing impl"
         assert bdd._current["scenario_failed"] is True
+
+
+class TestWarningFilter:
+    def test_init_installs_qase_warning_filter(self):
+        from qase.pytest.bdd import QasePytestBddPlugin
+        import warnings as _warnings
+
+        # Reset filters to a known state, then construct the plugin.
+        with _warnings.catch_warnings():
+            _warnings.resetwarnings()
+            QasePytestBddPlugin(MagicMock())
+            # At least one filter targeting qase.* unknown-mark warnings
+            # must be registered.
+            qase_filters = [
+                f
+                for f in _warnings.filters
+                if f[0] == "ignore"
+                and f[2] is not None
+                and "qase" in (getattr(f[2], "__name__", "") or "")
+                or (f[1] is not None and "qase" in getattr(f[1], "pattern", str(f[1])))
+            ]
+            assert (
+                qase_filters
+            ), f"expected a 'qase' warning filter, got: {_warnings.filters}"
+
+    def test_filter_silences_qase_unknown_mark(self):
+        from qase.pytest.bdd import QasePytestBddPlugin
+        import pytest as _pytest
+        import warnings as _warnings
+
+        with _warnings.catch_warnings(record=True) as caught:
+            _warnings.simplefilter("default")
+            QasePytestBddPlugin(MagicMock())
+            # Emit the warning text pytest would emit.
+            _warnings.warn(
+                "Unknown pytest.mark.qase.id=42 - is this a typo?",
+                getattr(_pytest, "PytestUnknownMarkWarning", UserWarning),
+            )
+
+        relevant = [w for w in caught if "qase.id=42" in str(w.message)]
+        assert relevant == [], f"qase.* unknown-mark warning leaked through: {relevant}"
+
+    def test_filter_does_not_silence_unrelated_unknown_marks(self):
+        from qase.pytest.bdd import QasePytestBddPlugin
+        import pytest as _pytest
+        import warnings as _warnings
+
+        with _warnings.catch_warnings(record=True) as caught:
+            _warnings.simplefilter("default")
+            QasePytestBddPlugin(MagicMock())
+            _warnings.warn(
+                "Unknown pytest.mark.somethingelse - is this a typo?",
+                getattr(_pytest, "PytestUnknownMarkWarning", UserWarning),
+            )
+
+        # The non-qase warning should still surface.
+        relevant = [w for w in caught if "somethingelse" in str(w.message)]
+        assert relevant, "unrelated unknown-mark warning should not be silenced"
