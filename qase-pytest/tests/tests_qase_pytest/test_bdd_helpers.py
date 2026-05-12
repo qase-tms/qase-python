@@ -6,15 +6,13 @@ from qase.pytest.bdd import parse_scenario_tags
 class TestParseScenarioTags:
     def test_empty_returns_empty_dict(self):
         result = parse_scenario_tags([])
-        assert result == {
-            "testops_ids": None,
-            "testops_project_mapping": None,
-            "ignore": False,
-            "muted": False,
-            "suite": None,
-            "fields": {},
-            "tags": [],
-        }
+        assert result["testops_ids"] is None
+        assert result["testops_project_mapping"] is None
+        assert result["ignore"] is False
+        assert result["muted"] is False
+        assert result["suite"] is None
+        assert result["fields"] == {}
+        assert result["tags"] == []
 
     def test_qase_id_single(self):
         result = parse_scenario_tags(["qase.id=42"])
@@ -28,6 +26,12 @@ class TestParseScenarioTags:
         result = parse_scenario_tags(["qase.id=42, 43 ,44"])
         assert result["testops_ids"] == [42, 43, 44]
 
+    def test_repeated_qase_id_keeps_last(self):
+        # Duplicated tags are user error in the .feature file, but the parser
+        # behaves deterministically: the last one wins. Lock that contract.
+        result = parse_scenario_tags(["qase.id=42", "qase.id=99"])
+        assert result["testops_ids"] == [99]
+
     def test_qase_project_id_multi_project(self):
         result = parse_scenario_tags(
             [
@@ -39,6 +43,12 @@ class TestParseScenarioTags:
             "PROJ_A": [1, 2],
             "PROJ_B": [3],
         }
+
+    def test_qase_project_id_with_dotted_code_is_accepted(self):
+        # Mirrors qase-behave parser: extra dots inside the project code are
+        # passed through verbatim. This is intentional consistency.
+        result = parse_scenario_tags(["qase.project_id.A.B=1"])
+        assert result["testops_project_mapping"] == {"A.B": [1]}
 
     def test_ignore_flag(self):
         result = parse_scenario_tags(["qase.ignore"])
