@@ -1,0 +1,21 @@
+docs/superpowers/specs/2026-05-12-pytest-bdd-support-design.md
+  s_290368ba9a6be0::t_6ae80b0df8bd42 112-113,115-117
+  s_290368ba9a6be0::t_ad2e020e61ad9d 1-111,114,118-159,167-239
+  s_290368ba9a6be0::t_5407bbb20b2b17 160-166
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "79f9c5acc3c81b3a6f40b98feaeabb59a159c84f",
+  "prompts": {},
+  "sessions": {
+    "s_290368ba9a6be0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "93dd56cf-4546-462b-8c2d-2da145017d1b",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
