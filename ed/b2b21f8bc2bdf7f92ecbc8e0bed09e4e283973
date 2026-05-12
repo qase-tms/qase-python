@@ -1,0 +1,23 @@
+qase-pytest/src/qase/pytest/bdd.py
+  s_290368ba9a6be0::t_2816547fdb3a0a 18-28,31-45,47-48
+  s_290368ba9a6be0::t_ebfdd5d3369c3b 29-30,46
+qase-pytest/tests/tests_qase_pytest/test_bdd_plugin.py
+  s_290368ba9a6be0::t_f7d7f234a3418b 3-7,23-37,46-120
+  s_290368ba9a6be0::t_ebfdd5d3369c3b 12,19,38-45
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "edb2b21f8bc2bdf7f92ecbc8e0bed09e4e283973",
+  "prompts": {},
+  "sessions": {
+    "s_290368ba9a6be0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "93dd56cf-4546-462b-8c2d-2da145017d1b",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
