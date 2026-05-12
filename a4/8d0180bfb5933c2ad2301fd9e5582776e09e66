@@ -1,0 +1,19 @@
+examples/single/pytest-bdd/features/login.feature
+  s_290368ba9a6be0::t_ec864379a0f450 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "a48d0180bfb5933c2ad2301fd9e5582776e09e66",
+  "prompts": {},
+  "sessions": {
+    "s_290368ba9a6be0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "93dd56cf-4546-462b-8c2d-2da145017d1b",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
