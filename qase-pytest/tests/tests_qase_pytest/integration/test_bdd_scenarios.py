@@ -9,7 +9,6 @@ import json
 
 import pytest
 
-
 pytest_bdd = pytest.importorskip("pytest_bdd")
 
 
@@ -65,8 +64,7 @@ Feature: Login
     Then the user should see the dashboard
 """,
     )
-    pytester.makepyfile(
-        test_login="""
+    pytester.makepyfile(test_login="""
 from pytest_bdd import scenarios, given, when, then
 
 scenarios("features/login.feature")
@@ -82,8 +80,7 @@ def valid_credentials():
 @then("the user should see the dashboard")
 def dashboard_visible():
     pass
-"""
-    )
+""")
 
     result = pytester.runpytest_subprocess("-v")
     result.assert_outcomes(passed=1)
@@ -108,3 +105,88 @@ def dashboard_visible():
     assert "valid credentials" in steps[1]["data"]["action"]
     assert steps[2]["data"]["action"].startswith("Then")
     assert "dashboard" in steps[2]["data"]["action"]
+
+
+def test_failing_step_skips_remaining(pytester):
+    _write_config(pytester)
+    _write_feature(
+        pytester,
+        "math.feature",
+        """
+Feature: Math
+  Scenario: Bad math
+    Given a calculator
+    When I add 2 and 2
+    Then the result is 5
+""",
+    )
+    pytester.makepyfile(test_math="""
+from pytest_bdd import scenarios, given, when, then
+
+scenarios("features/math.feature")
+
+@given("a calculator")
+def a_calc():
+    pass
+
+@when("I add 2 and 2")
+def add():
+    pass
+
+@then("the result is 5")
+def assert_five():
+    assert 2 + 2 == 5
+""")
+
+    result = pytester.runpytest_subprocess("-v")
+    result.assert_outcomes(failed=1)
+
+    results = _read_results(pytester)
+    assert len(results) == 1
+    steps = results[0]["steps"]
+    assert len(steps) == 3
+    assert steps[0]["execution"]["status"] == "passed"
+    assert steps[1]["execution"]["status"] == "passed"
+    assert steps[2]["execution"]["status"] == "failed"
+
+
+def test_assert_in_first_step_skips_rest(pytester):
+    _write_config(pytester)
+    _write_feature(
+        pytester,
+        "fail_first.feature",
+        """
+Feature: Fail early
+  Scenario: Boom
+    Given an impossible precondition
+    When something happens
+    Then we observe an outcome
+""",
+    )
+    pytester.makepyfile(test_fail="""
+from pytest_bdd import scenarios, given, when, then
+
+scenarios("features/fail_first.feature")
+
+@given("an impossible precondition")
+def precond():
+    assert False, "nope"
+
+@when("something happens")
+def happens():
+    pass
+
+@then("we observe an outcome")
+def outcome():
+    pass
+""")
+
+    result = pytester.runpytest_subprocess("-v")
+    result.assert_outcomes(failed=1)
+
+    results = _read_results(pytester)
+    steps = results[0]["steps"]
+    statuses = [s["execution"]["status"] for s in steps]
+    assert statuses[0] == "failed"
+    assert statuses[1] == "skipped"
+    assert statuses[2] == "skipped"
