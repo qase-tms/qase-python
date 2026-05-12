@@ -46,6 +46,7 @@ qase_pytest = "qase.pytest.conftest"
 testing = [
     "pytest",
     "pytest-cov",
+    "pytest-bdd>=7.0,<9.0",
 ]
 
 [tool.tox]
