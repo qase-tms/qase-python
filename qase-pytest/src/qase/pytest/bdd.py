@@ -97,3 +97,34 @@ def _parse_id_list(values: str) -> Optional[list]:
         except ValueError:
             return None
     return parsed or None
+
+
+def format_data_table(table) -> str:
+    """Render a pytest-bdd DataTable as a GitHub-flavored markdown table.
+
+    Accepts a duck-typed object exposing `.rows[].cells[].value`. Returns "" if
+    table is None or empty.
+    """
+    if table is None:
+        return ""
+
+    rows = getattr(table, "rows", None) or []
+    if not rows:
+        return ""
+
+    def _row_values(row):
+        return [_escape_cell(cell.value) for cell in row.cells]
+
+    header_values = _row_values(rows[0])
+    lines = [
+        "| " + " | ".join(header_values) + " |",
+        "| " + " | ".join(["---"] * len(header_values)) + " |",
+    ]
+    for row in rows[1:]:
+        lines.append("| " + " | ".join(_row_values(row)) + " |")
+
+    return "\n".join(lines)
+
+
+def _escape_cell(value) -> str:
+    return str(value).replace("|", "\\|")

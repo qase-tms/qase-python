@@ -1,6 +1,21 @@
 """Unit tests for pure helpers in qase.pytest.bdd."""
 
-from qase.pytest.bdd import parse_scenario_tags
+from qase.pytest.bdd import format_data_table, parse_scenario_tags
+
+
+class _FakeCell:
+    def __init__(self, value):
+        self.value = value
+
+
+class _FakeRow:
+    def __init__(self, values):
+        self.cells = [_FakeCell(v) for v in values]
+
+
+class _FakeDataTable:
+    def __init__(self, rows):
+        self.rows = [_FakeRow(r) for r in rows]
 
 
 class TestParseScenarioTags:
@@ -99,3 +114,38 @@ class TestParseScenarioTags:
         # Non-int values must not crash the parser.
         result = parse_scenario_tags(["qase.id=abc"])
         assert result["testops_ids"] is None
+
+
+class TestFormatDataTable:
+    def test_none_returns_empty_string(self):
+        assert format_data_table(None) == ""
+
+    def test_simple_table(self):
+        table = _FakeDataTable(
+            [
+                ["name", "email"],
+                ["Alice", "alice@example.com"],
+                ["Bob", "bob@example.com"],
+            ]
+        )
+        result = format_data_table(table)
+        assert result == (
+            "| name | email |\n"
+            "| --- | --- |\n"
+            "| Alice | alice@example.com |\n"
+            "| Bob | bob@example.com |"
+        )
+
+    def test_single_row_header_only(self):
+        table = _FakeDataTable([["col1", "col2"]])
+        result = format_data_table(table)
+        assert result == "| col1 | col2 |\n| --- | --- |"
+
+    def test_empty_table_returns_empty_string(self):
+        table = _FakeDataTable([])
+        assert format_data_table(table) == ""
+
+    def test_escapes_pipes_in_values(self):
+        table = _FakeDataTable([["a", "b"], ["x|y", "z"]])
+        result = format_data_table(table)
+        assert "x\\|y" in result
