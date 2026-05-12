@@ -1,0 +1,21 @@
+qase-pytest/tests/tests_qase_pytest/integration/test_bdd_scenarios.py
+  s_290368ba9a6be0::t_71fe477db0061e 88
+  s_290368ba9a6be0::t_3f7dc3eb198378 1-44,46-87,89-110
+  s_290368ba9a6be0::t_2bedc74c03e198 45
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "8a5d500ee66827335348b6d7ef6dcac5f1dc325f",
+  "prompts": {},
+  "sessions": {
+    "s_290368ba9a6be0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "93dd56cf-4546-462b-8c2d-2da145017d1b",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
