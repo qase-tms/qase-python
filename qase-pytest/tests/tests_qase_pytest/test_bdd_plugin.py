@@ -292,6 +292,15 @@ class TestStepErrorAndAfterScenario:
         )
         assert bdd._current is None
 
+    def test_after_scenario_drops_result_when_ignore(self):
+        bdd, pytest_plugin, feature, scenario, *_ = self._setup_two_steps()
+        # Simulate @qase.ignore flag.
+        pytest_plugin.runtime.result.ignore = True
+        bdd.pytest_bdd_after_scenario(
+            request=MagicMock(), feature=feature, scenario=scenario
+        )
+        assert pytest_plugin.runtime.result is None
+
     def test_after_scenario_no_skipped_when_all_passed(self):
         bdd, pytest_plugin, feature, scenario, step_a, step_b = self._setup_two_steps()
         # Run step_a all the way, then step_b all the way.

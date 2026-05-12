@@ -354,3 +354,64 @@ def payload():
     docstring_payload = steps[1]["data"]["input_data"] or ""
     assert docstring_payload.startswith("```")
     assert '"key": "value"' in docstring_payload
+
+
+def test_scenario_tags_map_to_qase_fields(pytester):
+    _write_config(pytester)
+    _write_feature(
+        pytester,
+        "tagged.feature",
+        """
+Feature: Tagged
+  @qase.id=42 @qase.suite=Login.Smoke @qase.severity=critical @smoke
+  Scenario: Tagged scenario
+    Given a step
+""",
+    )
+    pytester.makepyfile(test_tagged="""
+from pytest_bdd import scenarios, given
+
+scenarios("features/tagged.feature")
+
+@given("a step")
+def step_impl():
+    pass
+""")
+
+    pytester.runpytest_subprocess("-v")
+    results = _read_results(pytester)
+    assert len(results) == 1
+    r = results[0]
+    assert r["testops_ids"] == [42]
+    suites = [s["title"] for s in r["relations"]["suite"]["data"]]
+    assert suites == ["Login", "Smoke"]
+    assert r["fields"]["severity"] == "critical"
+    assert "smoke" in r["tags"]
+
+
+def test_scenario_with_qase_ignore_is_skipped(pytester):
+    _write_config(pytester)
+    _write_feature(
+        pytester,
+        "ignored.feature",
+        """
+Feature: Ignored
+  @qase.ignore
+  Scenario: Should not be reported
+    Given a step
+""",
+    )
+    pytester.makepyfile(test_ignored="""
+from pytest_bdd import scenarios, given
+
+scenarios("features/ignored.feature")
+
+@given("a step")
+def step_impl():
+    pass
+""")
+
+    pytester.runpytest_subprocess("-v")
+    results = _read_results(pytester)
+    # The scenario is marked @qase.ignore — it must not appear in the report.
+    assert results == []

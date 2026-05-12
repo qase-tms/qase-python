@@ -95,6 +95,12 @@ class QasePytestBddPlugin:
         runtime = getattr(self._pytest_plugin, "runtime", None)
         if runtime is None or self._current is None:
             return
+        # Honor @qase.ignore: when set, drop the result so the reporter
+        # doesn't emit it.
+        if getattr(runtime.result, "ignore", False):
+            runtime.result = None
+            self._current = None
+            return
         # Steps after the last reached one were skipped because of a prior failure.
         remaining = self._current["remaining_steps"][self._current["next_step_idx"] :]
         for s in remaining:
