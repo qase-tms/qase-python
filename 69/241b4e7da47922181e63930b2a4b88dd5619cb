@@ -1,0 +1,27 @@
+qase-api-v2-client/requirements.txt
+  s_d17c899d10c00e::t_d353deade96b21 3
+qase-api-client/pyproject.toml
+  s_d17c899d10c00e::t_cafd108fb2b542 25
+  s_d17c899d10c00e::t_b704a926eccc83 7
+qase-api-client/requirements.txt
+  s_d17c899d10c00e::t_3c6a17fb3b823e 3
+qase-api-v2-client/pyproject.toml
+  s_d17c899d10c00e::t_f4f4c273be9f73 7
+  s_d17c899d10c00e::t_9b760149f6359d 25
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "69241b4e7da47922181e63930b2a4b88dd5619cb",
+  "prompts": {},
+  "sessions": {
+    "s_d17c899d10c00e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7238cfd6-467a-402a-947b-27fe1d1c2701",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
