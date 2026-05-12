@@ -280,3 +280,57 @@ See the [examples directory](../examples/) for complete working examples.
 ## License
 
 Apache License 2.0. See [LICENSE](../LICENSE) for details.
+
+## Using with pytest-bdd
+
+If `pytest-bdd` is installed alongside `qase-pytest`, Gherkin scenarios
+are reported with full step hierarchy automatically — no manual
+`qase.step()` instrumentation required.
+
+### Feature file
+
+```gherkin
+Feature: Login
+
+  @qase.id=42 @qase.suite=Login.Smoke
+  Scenario: Successful login
+    Given the user is on the login page
+    When the user enters valid credentials
+    Then the user should see the dashboard
+```
+
+### Test module
+
+```python
+from pytest_bdd import scenarios
+
+scenarios("features/login.feature")
+```
+
+Scenario name becomes the test title, the Feature becomes the parent suite,
+each step is captured with its Given/When/Then keyword. You can still
+use `with qase.step("..."):` inside a step function to add nested
+sub-steps — they will appear as children of the Gherkin step.
+
+### Recognized scenario tags
+
+Place tags on the `Scenario` line so they reach the plugin via
+`scenario.tags`:
+
+| Tag | Effect |
+| --- | --- |
+| `@qase.id=123` | Link to test case 123 |
+| `@qase.id=123,124` | Link to multiple test cases |
+| `@qase.project_id.CODE=1,2` | Multi-project link |
+| `@qase.ignore` | Skip the scenario from reporting |
+| `@qase.muted` | Do not let this scenario fail the run |
+| `@qase.suite=A.B.C` | Override suite (dot for nesting) |
+| `@qase.severity=critical` | Set severity field |
+| `@qase.priority=high` | Set priority field |
+| `@qase.layer=e2e` | Set layer field |
+| Any other tag | Stored as a free tag on the result |
+
+### Versions
+
+Tested with `pytest-bdd >= 7.0, < 9.0`. `pytest-bdd-ng` is expected to
+work but is not officially tested.
