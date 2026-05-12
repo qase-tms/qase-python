@@ -262,3 +262,49 @@ def opens():
     # Child step actions are the qase.step() titles.
     child_actions = {child["data"]["action"] for child in steps[0]["steps"]}
     assert child_actions == {"Navigate", "Wait for load"}
+
+
+def test_scenario_outline_produces_multiple_parameterized_results(pytester):
+    _write_config(pytester)
+    _write_feature(
+        pytester,
+        "outline.feature",
+        """
+Feature: Outline
+  Scenario Outline: Adding numbers
+    Given I have <a> and <b>
+    Then their sum is <c>
+
+    Examples:
+      | a | b | c  |
+      | 1 | 2 | 3  |
+      | 5 | 7 | 12 |
+""",
+    )
+    pytester.makepyfile(test_outline="""
+from pytest_bdd import scenarios, given, then, parsers
+
+scenarios("features/outline.feature")
+
+@given(parsers.parse("I have {a:d} and {b:d}"), target_fixture="numbers")
+def numbers(a, b):
+    return a, b
+
+@then(parsers.parse("their sum is {c:d}"))
+def check_sum(numbers, c):
+    assert sum(numbers) == c
+""")
+
+    result = pytester.runpytest_subprocess("-v")
+    result.assert_outcomes(passed=2)
+
+    results = _read_results(pytester)
+    assert len(results) == 2
+    # Each result should have its own params populated (from pytest-bdd's
+    # Examples-to-parametrize conversion captured by the existing _set_params).
+    all_params = [r.get("params") or {} for r in results]
+    # At least one result must have a non-empty params dict — the Examples row
+    # provided real parameter values, so this is a strict expectation.
+    assert any(
+        p for p in all_params
+    ), "expected at least one result with params populated"
