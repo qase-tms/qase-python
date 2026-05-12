@@ -15,6 +15,37 @@ class QasePytestBddPlugin:
 
     def __init__(self, pytest_plugin):
         self._pytest_plugin = pytest_plugin
+        self._current = None  # per-scenario state dict
+
+    def pytest_bdd_before_scenario(self, request, feature, scenario):
+        runtime = getattr(self._pytest_plugin, "runtime", None)
+        if runtime is None or runtime.result is None:
+            return
+
+        enrich_result_from_scenario(runtime.result, feature, scenario)
+
+        # Build the ordered cache: background steps first, then scenario steps,
+        # de-duplicated by identity in case pytest-bdd already merges them.
+        background = getattr(feature, "background", None) or getattr(
+            scenario, "background", None
+        )
+        bg_steps = list(getattr(background, "steps", []) or []) if background else []
+        sc_steps = list(getattr(scenario, "steps", []) or [])
+        seen = set()
+        remaining = []
+        for s in bg_steps + sc_steps:
+            sid = id(s)
+            if sid in seen:
+                continue
+            seen.add(sid)
+            remaining.append(s)
+
+        self._current = {
+            "remaining_steps": remaining,
+            "next_step_idx": 0,
+            "bdd_step_to_id": {},  # id(bdd_step) -> qase Step.id
+            "scenario_failed": False,
+        }
 
 
 _KNOWN_FIELD_KEYS = {"severity", "priority", "layer", "description"}
