@@ -118,3 +118,99 @@ class TestBeforeScenarioHook:
         bdd.pytest_bdd_before_scenario(
             request=MagicMock(), feature=feature, scenario=scenario
         )
+
+
+class TestBeforeAfterStepHooks:
+    def _setup(self):
+        from qase.pytest.bdd import QasePytestBddPlugin
+
+        pytest_plugin = MagicMock()
+        runtime = _runtime_with_result()
+        pytest_plugin.runtime = runtime
+        bdd = QasePytestBddPlugin(pytest_plugin)
+        step_a = MagicMock(
+            keyword="Given", line_number=1, data_table=None, docstring=None
+        )
+        step_a.name = "a"
+        step_b = MagicMock(
+            keyword="When", line_number=2, data_table=None, docstring=None
+        )
+        step_b.name = "b"
+        feature, scenario = _fake_scenario(steps=[step_a, step_b])
+        bdd.pytest_bdd_before_scenario(
+            request=MagicMock(), feature=feature, scenario=scenario
+        )
+        return bdd, pytest_plugin, feature, scenario, step_a, step_b
+
+    def test_before_step_adds_step_to_runtime(self):
+        bdd, pytest_plugin, feature, scenario, step_a, _ = self._setup()
+
+        bdd.pytest_bdd_before_step(
+            request=MagicMock(),
+            feature=feature,
+            scenario=scenario,
+            step=step_a,
+            step_func=MagicMock(),
+        )
+
+        # Runtime.add_step was called once with a Step(GHERKIN).
+        assert pytest_plugin.runtime.add_step.call_count == 1
+        added_step = pytest_plugin.runtime.add_step.call_args.args[0]
+        assert added_step.data.name == "a"
+        assert added_step.data.keyword == "Given"
+        # ID mapping recorded.
+        assert id(step_a) in bdd._current["bdd_step_to_id"]
+        # Next index advanced past this step.
+        assert bdd._current["next_step_idx"] == 1
+
+    def test_after_step_marks_passed(self):
+        bdd, pytest_plugin, feature, scenario, step_a, _ = self._setup()
+        bdd.pytest_bdd_before_step(
+            request=MagicMock(),
+            feature=feature,
+            scenario=scenario,
+            step=step_a,
+            step_func=MagicMock(),
+        )
+
+        bdd.pytest_bdd_after_step(
+            request=MagicMock(),
+            feature=feature,
+            scenario=scenario,
+            step=step_a,
+            step_func=MagicMock(),
+            step_func_args={"foo": "bar"},
+        )
+
+        qase_step_id = bdd._current["bdd_step_to_id"][id(step_a)]
+        pytest_plugin.runtime.finish_step.assert_called_once_with(
+            qase_step_id, status="passed"
+        )
+
+    def test_no_state_is_safe(self):
+        """If before_scenario was never called, hooks must not crash."""
+        from qase.pytest.bdd import QasePytestBddPlugin
+
+        pytest_plugin = MagicMock()
+        pytest_plugin.runtime = _runtime_with_result()
+        bdd = QasePytestBddPlugin(pytest_plugin)
+        step = MagicMock(
+            keyword="Given", name="x", line_number=0, data_table=None, docstring=None
+        )
+
+        # Must not raise.
+        bdd.pytest_bdd_before_step(
+            request=MagicMock(),
+            feature=MagicMock(),
+            scenario=MagicMock(),
+            step=step,
+            step_func=MagicMock(),
+        )
+        bdd.pytest_bdd_after_step(
+            request=MagicMock(),
+            feature=MagicMock(),
+            scenario=MagicMock(),
+            step=step,
+            step_func=MagicMock(),
+            step_func_args={},
+        )

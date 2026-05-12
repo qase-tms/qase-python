@@ -47,6 +47,26 @@ class QasePytestBddPlugin:
             "scenario_failed": False,
         }
 
+    def pytest_bdd_before_step(self, request, feature, scenario, step, step_func):
+        runtime = getattr(self._pytest_plugin, "runtime", None)
+        if runtime is None or self._current is None:
+            return
+        qase_step = build_step(step)
+        runtime.add_step(qase_step)
+        self._current["bdd_step_to_id"][id(step)] = qase_step.id
+        self._current["next_step_idx"] += 1
+
+    def pytest_bdd_after_step(
+        self, request, feature, scenario, step, step_func, step_func_args
+    ):
+        runtime = getattr(self._pytest_plugin, "runtime", None)
+        if runtime is None or self._current is None:
+            return
+        qase_step_id = self._current["bdd_step_to_id"].get(id(step))
+        if qase_step_id is None:
+            return
+        runtime.finish_step(qase_step_id, status="passed")
+
 
 _KNOWN_FIELD_KEYS = {"severity", "priority", "layer", "description"}
 
