@@ -1,6 +1,10 @@
 """Unit tests for pure helpers in qase.pytest.bdd."""
 
-from qase.pytest.bdd import format_data_table, parse_scenario_tags
+from qase.pytest.bdd import (
+    format_data_table,
+    format_docstring,
+    parse_scenario_tags,
+)
 
 
 class _FakeCell:
@@ -165,9 +169,6 @@ class TestFormatDataTable:
         assert "line1\nline2" not in result
 
 
-from qase.pytest.bdd import format_docstring
-
-
 class TestFormatDocstring:
     def test_none_returns_empty_string(self):
         assert format_docstring(None) == ""
@@ -187,3 +188,16 @@ class TestFormatDocstring:
         # triple-quote indentation.
         text = "\n\nline\n\n"
         assert format_docstring(text) == "```\nline\n```"
+
+    def test_whitespace_only_returns_empty_string(self):
+        # Whitespace-only input collapses to empty after stripping.
+        assert format_docstring("\n\n  \n") == ""
+
+    def test_triple_backticks_inside_uses_longer_fence(self):
+        text = "before\n```\ninner\n```\nafter"
+        result = format_docstring(text)
+        # Fence must be 4+ backticks to safely wrap content with a `` ``` `` run.
+        assert result.startswith("````\n")
+        assert result.endswith("\n````")
+        # The original triple-backtick content is preserved unchanged.
+        assert "```\ninner\n```" in result

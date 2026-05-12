@@ -141,12 +141,24 @@ def _escape_markdown_table_cell(value) -> str:
 def format_docstring(text) -> str:
     """Render a Gherkin step docstring as a fenced markdown code block.
 
-    Returns "" for None/empty input. Outer blank lines from triple-quote
-    indentation are stripped; internal newlines are preserved.
+    Returns "" for None/empty input. Outer leading/trailing newlines and
+    trailing whitespace are stripped; internal indentation and internal
+    trailing whitespace are preserved verbatim (Gherkin docstrings may
+    contain semantically significant indentation, e.g. code samples).
+
+    If the input contains a run of backticks, the wrapping fence is made
+    one longer than the longest run found — preventing premature fence
+    closure (standard CommonMark behavior).
     """
     if not text:
         return ""
     stripped = text.strip("\n").rstrip()
     if not stripped:
         return ""
-    return "```\n" + stripped + "\n```"
+
+    longest_run = 0
+    for match in re.finditer(r"`+", stripped):
+        longest_run = max(longest_run, len(match.group(0)))
+    fence = "`" * max(3, longest_run + 1)
+
+    return fence + "\n" + stripped + "\n" + fence
