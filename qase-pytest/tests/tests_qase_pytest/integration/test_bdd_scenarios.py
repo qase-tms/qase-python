@@ -190,3 +190,37 @@ def outcome():
     assert statuses[0] == "failed"
     assert statuses[1] == "skipped"
     assert statuses[2] == "skipped"
+
+
+def test_step_lookup_error_marks_step_invalid(pytester):
+    _write_config(pytester)
+    _write_feature(
+        pytester,
+        "missing.feature",
+        """
+Feature: Missing impl
+  Scenario: Step not implemented
+    Given a step that has an implementation
+    When a step that nobody has implemented
+""",
+    )
+    pytester.makepyfile(test_missing="""
+from pytest_bdd import scenarios, given
+
+scenarios("features/missing.feature")
+
+@given("a step that has an implementation")
+def implemented():
+    pass
+""")
+
+    pytester.runpytest_subprocess("-v")
+
+    results = _read_results(pytester)
+    assert len(results) == 1
+    steps = results[0]["steps"]
+    statuses = [s["execution"]["status"] for s in steps]
+    # First step passes (it has an implementation).
+    assert statuses[0] == "passed"
+    # The missing one should be marked invalid by our plugin.
+    assert "invalid" in statuses
