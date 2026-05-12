@@ -415,3 +415,42 @@ def step_impl():
     results = _read_results(pytester)
     # The scenario is marked @qase.ignore — it must not appear in the report.
     assert results == []
+
+
+def test_bdd_and_plain_pytest_coexist(pytester):
+    _write_config(pytester)
+    _write_feature(
+        pytester,
+        "coexist.feature",
+        """
+Feature: Coexist
+  Scenario: BDD path
+    Given a bdd step
+""",
+    )
+    pytester.makepyfile(
+        test_bdd="""
+from pytest_bdd import scenarios, given
+
+scenarios("features/coexist.feature")
+
+@given("a bdd step")
+def bdd_step():
+    pass
+""",
+        test_plain="""
+def test_plain_passes():
+    assert 1 + 1 == 2
+""",
+    )
+
+    result = pytester.runpytest_subprocess("-v")
+    result.assert_outcomes(passed=2)
+
+    results = _read_results(pytester)
+    assert len(results) == 2
+    titles = {r["title"] for r in results}
+    # The BDD test should expose its scenario name as title; the plain test
+    # keeps its function name.
+    assert "BDD path" in titles
+    assert "test_plain_passes" in titles
