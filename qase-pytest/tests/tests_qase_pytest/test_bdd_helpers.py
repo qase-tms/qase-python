@@ -1,9 +1,12 @@
 """Unit tests for pure helpers in qase.pytest.bdd."""
 
+from qase.commons.models.relation import Relation, SuiteData
+from qase.commons.models.result import Result
 from qase.commons.models.step import StepType
 
 from qase.pytest.bdd import (
     build_step,
+    enrich_result_from_scenario,
     format_data_table,
     format_docstring,
     parse_scenario_tags,
@@ -258,3 +261,142 @@ class TestBuildStep:
         s1 = build_step(_FakeBddStep())
         s2 = build_step(_FakeBddStep())
         assert s1.id != s2.id
+
+
+class _FakeFeature:
+    def __init__(
+        self,
+        name="My Feature",
+        description="Feature desc",
+        filename="features/x.feature",
+    ):
+        self.name = name
+        self.description = description
+        self.filename = filename
+
+
+class _FakeScenario:
+    def __init__(
+        self,
+        name="My Scenario",
+        description="",
+        tags=None,
+        feature=None,
+    ):
+        self.name = name
+        self.description = description
+        self.tags = tags or set()
+        self.feature = feature or _FakeFeature()
+
+
+class TestEnrichResultFromScenario:
+    def _new_result(self):
+        r = Result(title="placeholder", signature="")
+        rel = Relation()
+        rel.add_suite(SuiteData(title="placeholder_suite"))
+        r.relations = rel
+        return r
+
+    def test_title_replaced_by_scenario_name(self):
+        r = self._new_result()
+        enrich_result_from_scenario(r, _FakeFeature(), _FakeScenario(name="Login OK"))
+        assert r.title == "Login OK"
+
+    def test_feature_prepended_to_suite_chain(self):
+        r = self._new_result()
+        feature = _FakeFeature(name="Auth")
+        enrich_result_from_scenario(r, feature, _FakeScenario())
+        suites = [s.title for s in r.relations.suite.data]
+        assert suites[0] == "Auth"
+
+    def test_description_combines_feature_and_scenario(self):
+        r = self._new_result()
+        feature = _FakeFeature(description="Big feature description")
+        scenario = _FakeScenario(description="Specific scenario context")
+        enrich_result_from_scenario(r, feature, scenario)
+        assert "Big feature description" in r.fields["description"]
+        assert "Specific scenario context" in r.fields["description"]
+
+    def test_only_feature_description(self):
+        r = self._new_result()
+        feature = _FakeFeature(description="Just feature")
+        scenario = _FakeScenario(description="")
+        enrich_result_from_scenario(r, feature, scenario)
+        assert r.fields["description"].strip() == "Just feature"
+
+    def test_no_description_field_when_both_empty(self):
+        r = self._new_result()
+        feature = _FakeFeature(description="")
+        scenario = _FakeScenario(description="")
+        enrich_result_from_scenario(r, feature, scenario)
+        assert "description" not in r.fields
+
+    def test_testops_ids_from_tag(self):
+        r = self._new_result()
+        enrich_result_from_scenario(
+            r, _FakeFeature(), _FakeScenario(tags={"qase.id=42"})
+        )
+        assert r.testops_ids == [42]
+
+    def test_suite_override_replaces_chain(self):
+        r = self._new_result()
+        enrich_result_from_scenario(
+            r,
+            _FakeFeature(name="ShouldBeIgnored"),
+            _FakeScenario(tags={"qase.suite=Login.Smoke"}),
+        )
+        suites = [s.title for s in r.relations.suite.data]
+        assert suites == ["Login", "Smoke"]
+
+    def test_severity_priority_layer_fields(self):
+        r = self._new_result()
+        enrich_result_from_scenario(
+            r,
+            _FakeFeature(),
+            _FakeScenario(
+                tags={
+                    "qase.severity=critical",
+                    "qase.priority=high",
+                    "qase.layer=e2e",
+                }
+            ),
+        )
+        assert r.fields["severity"] == "critical"
+        assert r.fields["priority"] == "high"
+        assert r.fields["layer"] == "e2e"
+
+    def test_muted_flag(self):
+        r = self._new_result()
+        enrich_result_from_scenario(
+            r, _FakeFeature(), _FakeScenario(tags={"qase.muted"})
+        )
+        assert r.muted is True
+
+    def test_ignore_flag(self):
+        r = self._new_result()
+        enrich_result_from_scenario(
+            r, _FakeFeature(), _FakeScenario(tags={"qase.ignore"})
+        )
+        assert getattr(r, "ignore", False) is True
+
+    def test_free_tags_added_to_result(self):
+        r = self._new_result()
+        enrich_result_from_scenario(
+            r,
+            _FakeFeature(),
+            _FakeScenario(tags={"smoke", "regression"}),
+        )
+        assert "smoke" in r.tags
+        assert "regression" in r.tags
+
+    def test_project_id_mapping(self):
+        r = self._new_result()
+        enrich_result_from_scenario(
+            r,
+            _FakeFeature(),
+            _FakeScenario(
+                tags={"qase.project_id.PROJ_A=1,2", "qase.project_id.PROJ_B=3"}
+            ),
+        )
+        assert r.get_testops_ids_for_project("PROJ_A") == [1, 2]
+        assert r.get_testops_ids_for_project("PROJ_B") == [3]

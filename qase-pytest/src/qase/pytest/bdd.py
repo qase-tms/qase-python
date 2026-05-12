@@ -6,6 +6,7 @@ Loaded conditionally from conftest.py only when pytest_bdd is installed.
 import re
 from typing import Iterable, Optional
 
+from qase.commons.models.relation import Relation, SuiteData
 from qase.commons.models.step import Step, StepGherkinData, StepType
 
 
@@ -196,3 +197,45 @@ def build_step(bdd_step) -> Step:
             data=payload,
         ),
     )
+
+
+def enrich_result_from_scenario(result, feature, scenario) -> None:
+    """Mutate an existing Result with metadata extracted from a pytest-bdd scenario."""
+    if getattr(scenario, "name", None):
+        result.title = scenario.name
+
+    parsed = parse_scenario_tags(getattr(scenario, "tags", []) or [])
+
+    feature_desc = (getattr(feature, "description", "") or "").strip()
+    scenario_desc = (getattr(scenario, "description", "") or "").strip()
+    description_parts = [p for p in (feature_desc, scenario_desc) if p]
+    if description_parts:
+        result.fields["description"] = "\n\n".join(description_parts)
+
+    if parsed["suite"]:
+        new_relation = Relation()
+        for s in parsed["suite"]:
+            new_relation.add_suite(SuiteData(title=s))
+        result.relations = new_relation
+    elif getattr(feature, "name", None):
+        relation = result.relations or Relation()
+        existing = list(getattr(relation.suite, "data", []) or [])
+        new_relation = Relation()
+        new_relation.add_suite(SuiteData(title=feature.name))
+        for s in existing:
+            new_relation.add_suite(s)
+        result.relations = new_relation
+
+    if parsed["testops_project_mapping"]:
+        for code, ids in parsed["testops_project_mapping"].items():
+            result.set_testops_project_mapping(code, ids)
+    elif parsed["testops_ids"]:
+        result.testops_ids = parsed["testops_ids"]
+
+    for key, value in parsed["fields"].items():
+        result.fields[key] = value
+
+    if parsed["tags"]:
+        result.add_tags(parsed["tags"])
+    result.muted = parsed["muted"]
+    result.ignore = parsed["ignore"]
