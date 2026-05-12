@@ -1,10 +1,8 @@
 """Tests for the pytest-bdd bridge plugin (QasePytestBddPlugin)."""
 
-import pytest
-
 
 def test_bdd_module_importable():
-    """The bdd module exists and can be imported without pytest_bdd present at runtime."""
+    """The bdd module is importable and exposes QasePytestBddPlugin."""
     from qase.pytest import bdd as bdd_module
     assert hasattr(bdd_module, "QasePytestBddPlugin")
 
