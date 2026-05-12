@@ -1,0 +1,35 @@
+examples/single/pytest-bdd/tests/test_data_carriers.py
+  s_290368ba9a6be0::t_6ce2bcddd102e1 1-21
+examples/single/pytest-bdd/features/data_carriers.feature
+  s_290368ba9a6be0::t_57851f92fccd02 1-13
+examples/single/pytest-bdd/tests/test_checkout.py
+  s_290368ba9a6be0::t_cd35e217e9e0ee 1-33
+examples/single/pytest-bdd/tests/test_calculator.py
+  s_290368ba9a6be0::t_a727170778c15b 1-13
+examples/single/pytest-bdd/features/failing.feature
+  s_290368ba9a6be0::t_4f0985ee2b800f 1-7
+examples/single/pytest-bdd/features/checkout.feature
+  s_290368ba9a6be0::t_c2959135246937 1-16
+examples/single/pytest-bdd/README.md
+  s_290368ba9a6be0::t_174d0b8d8e6c45 3-5,7-28,35-56,58-60
+examples/single/pytest-bdd/features/calculator.feature
+  s_290368ba9a6be0::t_f0b791a1a37506 1-12
+examples/single/pytest-bdd/tests/test_failing.py
+  s_290368ba9a6be0::t_9105970150c9c8 1-18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "97392310b472dfeec21430786c807f9fd6645dad",
+  "prompts": {},
+  "sessions": {
+    "s_290368ba9a6be0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "93dd56cf-4546-462b-8c2d-2da145017d1b",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
