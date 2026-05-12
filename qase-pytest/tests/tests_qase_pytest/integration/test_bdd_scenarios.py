@@ -308,3 +308,49 @@ def check_sum(numbers, c):
     assert any(
         p for p in all_params
     ), "expected at least one result with params populated"
+
+
+def test_data_table_and_docstring_preserved(pytester):
+    _write_config(pytester)
+    _write_feature(
+        pytester,
+        "data.feature",
+        '''
+Feature: Data carriers
+  Scenario: With table and docstring
+    Given the following users:
+      | name  | role  |
+      | Alice | admin |
+      | Bob   | user  |
+    When I send the payload:
+      """
+      {"key": "value"}
+      """
+''',
+    )
+    pytester.makepyfile(test_data="""
+from pytest_bdd import scenarios, given, when
+
+scenarios("features/data.feature")
+
+@given("the following users:")
+def users():
+    pass
+
+@when("I send the payload:")
+def payload():
+    pass
+""")
+
+    pytester.runpytest_subprocess("-v")
+    results = _read_results(pytester)
+    assert len(results) == 1
+    steps = results[0]["steps"]
+    assert len(steps) == 2
+    # DataTable formatted as markdown by format_data_table() lands in input_data.
+    table_payload = steps[0]["data"]["input_data"] or ""
+    assert "| name | role |" in table_payload
+    # The DocString is wrapped as a fenced code block by format_docstring().
+    docstring_payload = steps[1]["data"]["input_data"] or ""
+    assert docstring_payload.startswith("```")
+    assert '"key": "value"' in docstring_payload

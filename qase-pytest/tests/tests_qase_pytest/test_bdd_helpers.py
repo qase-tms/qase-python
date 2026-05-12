@@ -246,6 +246,21 @@ class TestBuildStep:
         assert "| a | b |" in step.data.data
         assert "| 1 | 2 |" in step.data.data
 
+    def test_with_datatable_attribute(self):
+        # pytest-bdd >= 7 exposes the table on `datatable` (no underscore).
+        class _StepWithDatatable:
+            keyword = "Given"
+            name = "users"
+            line_number = 5
+            data_table = None
+            docstring = None
+
+        s = _StepWithDatatable()
+        s.datatable = _FakeDataTable([["name"], ["Alice"]])
+        step = build_step(s)
+        assert "| name |" in step.data.data
+        assert "| Alice |" in step.data.data
+
     def test_with_docstring(self):
         step = build_step(_FakeBddStep("When", "send body", 5, docstring="payload"))
         # Default fence is 3 backticks because there are no backticks in "payload".

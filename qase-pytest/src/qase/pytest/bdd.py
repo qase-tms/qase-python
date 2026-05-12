@@ -259,13 +259,17 @@ def build_step(bdd_step) -> Step:
     """Build a Qase Step(GHERKIN) from a pytest-bdd Step object.
 
     Reads keyword, name, line_number, data_table, docstring defensively so the
-    helper survives minor API drifts between pytest-bdd versions.
+    helper survives minor API drifts between pytest-bdd versions. pytest-bdd
+    >= 7 exposes the DataTable on ``datatable`` (no underscore); older or
+    alternative API shapes may use ``data_table`` — accept either.
     """
     keyword = getattr(bdd_step, "keyword", "")
     name = getattr(bdd_step, "name", "")
     line = getattr(bdd_step, "line_number", 0) or 0
 
-    data_table = getattr(bdd_step, "data_table", None)
+    data_table = getattr(bdd_step, "data_table", None) or getattr(
+        bdd_step, "datatable", None
+    )
     docstring = getattr(bdd_step, "docstring", None)
 
     payload = None
