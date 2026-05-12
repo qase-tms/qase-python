@@ -113,7 +113,7 @@ def format_data_table(table) -> str:
         return ""
 
     def _row_values(row):
-        return [_escape_cell(cell.value) for cell in row.cells]
+        return [_escape_markdown_table_cell(cell.value) for cell in row.cells]
 
     header_values = _row_values(rows[0])
     lines = [
@@ -126,5 +126,13 @@ def format_data_table(table) -> str:
     return "\n".join(lines)
 
 
-def _escape_cell(value) -> str:
-    return str(value).replace("|", "\\|")
+def _escape_markdown_table_cell(value) -> str:
+    """Escape characters that would break a markdown table row."""
+    text = str(value)
+    # Order matters: escape backslashes first so subsequently inserted
+    # backslashes (from pipe escaping) are not re-doubled.
+    text = text.replace("\\", "\\\\")
+    text = text.replace("|", "\\|")
+    # Newlines split table rows; map them to <br> which renders inside cells.
+    text = text.replace("\r\n", "<br>").replace("\n", "<br>").replace("\r", "<br>")
+    return text

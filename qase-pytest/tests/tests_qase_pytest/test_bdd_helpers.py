@@ -149,3 +149,17 @@ class TestFormatDataTable:
         table = _FakeDataTable([["a", "b"], ["x|y", "z"]])
         result = format_data_table(table)
         assert "x\\|y" in result
+
+    def test_escapes_backslashes_before_pipes(self):
+        table = _FakeDataTable([["a"], ["C:\\Users"]])
+        result = format_data_table(table)
+        # Backslash must be escaped as \\, not left bare.
+        assert "C:\\\\Users" in result
+
+    def test_replaces_newlines_with_br_inside_cells(self):
+        table = _FakeDataTable([["a"], ["line1\nline2"]])
+        result = format_data_table(table)
+        # Newline must not split the row; rendered as <br>.
+        assert "line1<br>line2" in result
+        # The cell stays on a single output line.
+        assert "line1\nline2" not in result
