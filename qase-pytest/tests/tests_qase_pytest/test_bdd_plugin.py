@@ -292,6 +292,42 @@ class TestStepErrorAndAfterScenario:
         )
         assert bdd._current is None
 
+    def test_after_scenario_no_skipped_when_all_passed(self):
+        bdd, pytest_plugin, feature, scenario, step_a, step_b = self._setup_two_steps()
+        # Run step_a all the way, then step_b all the way.
+        bdd.pytest_bdd_after_step(
+            request=MagicMock(),
+            feature=feature,
+            scenario=scenario,
+            step=step_a,
+            step_func=MagicMock(),
+            step_func_args={},
+        )
+        bdd.pytest_bdd_before_step(
+            request=MagicMock(),
+            feature=feature,
+            scenario=scenario,
+            step=step_b,
+            step_func=MagicMock(),
+        )
+        bdd.pytest_bdd_after_step(
+            request=MagicMock(),
+            feature=feature,
+            scenario=scenario,
+            step=step_b,
+            step_func=MagicMock(),
+            step_func_args={},
+        )
+
+        bdd.pytest_bdd_after_scenario(
+            request=MagicMock(), feature=feature, scenario=scenario
+        )
+
+        # No "skipped" steps should appear when all steps ran.
+        added = pytest_plugin.runtime.steps
+        skipped = [s for s in added.values() if s.execution.status == "skipped"]
+        assert skipped == []
+
 
 class TestStepLookupError:
     def test_lookup_error_records_invalid_step(self):
