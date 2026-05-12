@@ -224,3 +224,41 @@ def implemented():
     assert statuses[0] == "passed"
     # The missing one should be marked invalid by our plugin.
     assert "invalid" in statuses
+
+
+def test_nested_qase_step_inherits_gherkin_parent(pytester):
+    _write_config(pytester)
+    _write_feature(
+        pytester,
+        "nested.feature",
+        """
+Feature: Nested
+  Scenario: User flow
+    Given the user opens the page
+""",
+    )
+    pytester.makepyfile(test_nested="""
+from pytest_bdd import scenarios, given
+from qase.pytest import qase
+
+scenarios("features/nested.feature")
+
+@given("the user opens the page")
+def opens():
+    with qase.step("Navigate"):
+        pass
+    with qase.step("Wait for load"):
+        pass
+""")
+
+    result = pytester.runpytest_subprocess("-v")
+    result.assert_outcomes(passed=1)
+
+    results = _read_results(pytester)
+    steps = results[0]["steps"]
+    # One top-level Gherkin step (flattened to text in the report) with two children.
+    assert len(steps) == 1
+    assert len(steps[0]["steps"]) == 2
+    # Child step actions are the qase.step() titles.
+    child_actions = {child["data"]["action"] for child in steps[0]["steps"]}
+    assert child_actions == {"Navigate", "Wait for load"}
