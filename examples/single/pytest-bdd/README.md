@@ -1,8 +1,8 @@
 # qase-pytest + pytest-bdd example
 
-Reproduces the Allure-vs-Qase scenario from the customer feedback: a
-single Gherkin login scenario with three steps, each containing a
-nested manual step via `qase.step(...)`.
+Reproduces the customer feedback scenario: a single Gherkin login
+scenario with three steps, each containing a nested manual step via
+`qase.step(...)`.
 
 ## Run
 
