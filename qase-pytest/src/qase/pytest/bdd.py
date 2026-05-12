@@ -3,9 +3,97 @@
 Loaded conditionally from conftest.py only when pytest_bdd is installed.
 """
 
+import re
+from typing import Iterable, Optional
+
 
 class QasePytestBddPlugin:
     """Bridge between pytest-bdd hooks and the main QasePytestPlugin runtime."""
 
     def __init__(self, pytest_plugin):
         self._pytest_plugin = pytest_plugin
+
+
+_KNOWN_FIELD_KEYS = {"severity", "priority", "layer", "description"}
+
+
+def parse_scenario_tags(tags: Iterable[str]) -> dict:
+    """Parse pytest-bdd scenario tags into Qase metadata.
+
+    Recognized forms (single separator: '='):
+        qase.id=123                       -> testops_ids
+        qase.id=123,124                   -> testops_ids
+        qase.project_id.CODE=1,2          -> testops_project_mapping
+        qase.ignore                       -> ignore flag
+        qase.muted                        -> muted flag
+        qase.suite=A.B                    -> nested suites
+        qase.severity= / priority= / layer= -> fields
+    Any other tag (with or without '@' prefix) is appended to tags.
+    """
+    out = {
+        "testops_ids": None,
+        "testops_project_mapping": None,
+        "ignore": False,
+        "muted": False,
+        "suite": None,
+        "fields": {},
+        "tags": [],
+    }
+
+    for raw in tags:
+        tag = raw[1:] if raw.startswith("@") else raw
+        lowered = tag.lower()
+
+        if lowered == "qase.ignore":
+            out["ignore"] = True
+            continue
+        if lowered == "qase.muted":
+            out["muted"] = True
+            continue
+
+        if lowered.startswith("qase.id="):
+            values = tag.split("=", 1)[1]
+            ids = _parse_id_list(values)
+            if ids:
+                out["testops_ids"] = ids
+            continue
+
+        if lowered.startswith("qase.project_id."):
+            # qase.project_id.CODE=1,2
+            head, _, values = tag.partition("=")
+            code = head.split(".", 2)[2] if head.count(".") >= 2 else None
+            ids = _parse_id_list(values)
+            if code and ids:
+                if out["testops_project_mapping"] is None:
+                    out["testops_project_mapping"] = {}
+                out["testops_project_mapping"][code] = ids
+            continue
+
+        if lowered.startswith("qase.suite="):
+            value = tag.split("=", 1)[1]
+            out["suite"] = [s.strip() for s in value.split(".") if s.strip()]
+            continue
+
+        # qase.<known_field>=value
+        if lowered.startswith("qase.") and "=" in lowered:
+            key = lowered.split("=", 1)[0].split(".", 1)[1]
+            if key in _KNOWN_FIELD_KEYS:
+                out["fields"][key] = tag.split("=", 1)[1]
+                continue
+
+        # Unknown — treat as a free tag.
+        out["tags"].append(tag)
+
+    return out
+
+
+def _parse_id_list(values: str) -> Optional[list]:
+    parsed = []
+    for chunk in re.split(r"\s*,\s*", values.strip()):
+        if not chunk:
+            continue
+        try:
+            parsed.append(int(chunk))
+        except ValueError:
+            return None
+    return parsed or None
