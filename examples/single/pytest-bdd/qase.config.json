@@ -1,0 +1,12 @@
+{
+  "mode": "report",
+  "fallback": "off",
+  "debug": true,
+  "report": {
+    "driver": "local",
+    "connection": {
+      "path": "./build/qase-report",
+      "format": "json"
+    }
+  }
+}
