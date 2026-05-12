@@ -214,3 +214,111 @@ class TestBeforeAfterStepHooks:
             step_func=MagicMock(),
             step_func_args={},
         )
+
+
+class TestStepErrorAndAfterScenario:
+    def _setup_two_steps(self):
+        from qase.pytest.bdd import QasePytestBddPlugin
+
+        pytest_plugin = MagicMock()
+        pytest_plugin.runtime = _runtime_with_result()
+        bdd = QasePytestBddPlugin(pytest_plugin)
+        step_a = MagicMock(
+            keyword="Given", line_number=1, data_table=None, docstring=None
+        )
+        step_a.name = "a"
+        step_b = MagicMock(
+            keyword="When", line_number=2, data_table=None, docstring=None
+        )
+        step_b.name = "b"
+        feature, scenario = _fake_scenario(steps=[step_a, step_b])
+        bdd.pytest_bdd_before_scenario(
+            request=MagicMock(), feature=feature, scenario=scenario
+        )
+        bdd.pytest_bdd_before_step(
+            request=MagicMock(),
+            feature=feature,
+            scenario=scenario,
+            step=step_a,
+            step_func=MagicMock(),
+        )
+        return bdd, pytest_plugin, feature, scenario, step_a, step_b
+
+    def test_step_error_marks_failed_and_flags_scenario(self):
+        bdd, pytest_plugin, feature, scenario, step_a, _ = self._setup_two_steps()
+
+        bdd.pytest_bdd_step_error(
+            request=MagicMock(),
+            feature=feature,
+            scenario=scenario,
+            step=step_a,
+            step_func=MagicMock(),
+            step_func_args={},
+            exception=AssertionError("boom"),
+        )
+
+        qase_id = bdd._current["bdd_step_to_id"][id(step_a)]
+        pytest_plugin.runtime.finish_step.assert_called_once_with(
+            qase_id, status="failed"
+        )
+        assert bdd._current["scenario_failed"] is True
+
+    def test_after_scenario_skips_unreached_steps(self):
+        bdd, pytest_plugin, feature, scenario, step_a, step_b = self._setup_two_steps()
+        bdd.pytest_bdd_step_error(
+            request=MagicMock(),
+            feature=feature,
+            scenario=scenario,
+            step=step_a,
+            step_func=MagicMock(),
+            step_func_args={},
+            exception=AssertionError("boom"),
+        )
+
+        bdd.pytest_bdd_after_scenario(
+            request=MagicMock(), feature=feature, scenario=scenario
+        )
+
+        # step_b was never started; must be added directly with status='skipped'.
+        added = pytest_plugin.runtime.steps
+        skipped_steps = [s for s in added.values() if s.execution.status == "skipped"]
+        assert len(skipped_steps) == 1
+        assert skipped_steps[0].data.name == "b"
+
+    def test_after_scenario_clears_state(self):
+        bdd, pytest_plugin, feature, scenario, *_ = self._setup_two_steps()
+        bdd.pytest_bdd_after_scenario(
+            request=MagicMock(), feature=feature, scenario=scenario
+        )
+        assert bdd._current is None
+
+
+class TestStepLookupError:
+    def test_lookup_error_records_invalid_step(self):
+        from qase.pytest.bdd import QasePytestBddPlugin
+
+        pytest_plugin = MagicMock()
+        pytest_plugin.runtime = _runtime_with_result()
+        bdd = QasePytestBddPlugin(pytest_plugin)
+        step = MagicMock(
+            keyword="Given", line_number=3, data_table=None, docstring=None
+        )
+        step.name = "missing impl"
+        feature, scenario = _fake_scenario(steps=[step])
+        bdd.pytest_bdd_before_scenario(
+            request=MagicMock(), feature=feature, scenario=scenario
+        )
+
+        bdd.pytest_bdd_step_func_lookup_error(
+            request=MagicMock(),
+            feature=feature,
+            scenario=scenario,
+            step=step,
+            exception=Exception("no def for step"),
+        )
+
+        added = pytest_plugin.runtime.steps
+        invalid = [s for s in added.values() if s.execution.status == "invalid"]
+        assert len(invalid) == 1
+        assert invalid[0].data.name == "missing impl"
+        assert bdd._current["scenario_failed"] is True

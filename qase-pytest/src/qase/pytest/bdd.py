@@ -67,6 +67,43 @@ class QasePytestBddPlugin:
             return
         runtime.finish_step(qase_step_id, status="passed")
 
+    def pytest_bdd_step_error(
+        self, request, feature, scenario, step, step_func, step_func_args, exception
+    ):
+        runtime = getattr(self._pytest_plugin, "runtime", None)
+        if runtime is None or self._current is None:
+            return
+        qase_step_id = self._current["bdd_step_to_id"].get(id(step))
+        if qase_step_id is not None:
+            runtime.finish_step(qase_step_id, status="failed")
+        self._current["scenario_failed"] = True
+
+    def pytest_bdd_step_func_lookup_error(
+        self, request, feature, scenario, step, exception
+    ):
+        runtime = getattr(self._pytest_plugin, "runtime", None)
+        if runtime is None or self._current is None:
+            return
+        # No before_step fired — create the Step directly with status='invalid'.
+        qase_step = build_step(step)
+        qase_step.execution.set_status("invalid")
+        qase_step.execution.complete()
+        runtime.steps[qase_step.id] = qase_step
+        self._current["scenario_failed"] = True
+
+    def pytest_bdd_after_scenario(self, request, feature, scenario):
+        runtime = getattr(self._pytest_plugin, "runtime", None)
+        if runtime is None or self._current is None:
+            return
+        # Steps after the last reached one were skipped because of a prior failure.
+        remaining = self._current["remaining_steps"][self._current["next_step_idx"] :]
+        for s in remaining:
+            qase_step = build_step(s)
+            qase_step.execution.set_status("skipped")
+            qase_step.execution.complete()
+            runtime.steps[qase_step.id] = qase_step
+        self._current = None
+
 
 _KNOWN_FIELD_KEYS = {"severity", "priority", "layer", "description"}
 
