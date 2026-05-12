@@ -1,6 +1,9 @@
 """Unit tests for pure helpers in qase.pytest.bdd."""
 
+from qase.commons.models.step import StepType
+
 from qase.pytest.bdd import (
+    build_step,
     format_data_table,
     format_docstring,
     parse_scenario_tags,
@@ -201,3 +204,57 @@ class TestFormatDocstring:
         assert result.endswith("\n````")
         # The original triple-backtick content is preserved unchanged.
         assert "```\ninner\n```" in result
+
+
+class _FakeBddStep:
+    def __init__(
+        self,
+        keyword="Given",
+        name="something happens",
+        line_number=3,
+        data_table=None,
+        docstring=None,
+    ):
+        self.keyword = keyword
+        self.name = name
+        self.line_number = line_number
+        self.data_table = data_table
+        self.docstring = docstring
+
+
+class TestBuildStep:
+    def test_basic_step(self):
+        step = build_step(_FakeBddStep("Given", "a user", 5))
+        assert step.step_type == StepType.GHERKIN
+        assert step.data.keyword == "Given"
+        assert step.data.name == "a user"
+        assert step.data.line == 5
+        assert step.data.data is None
+
+    def test_when_keyword(self):
+        step = build_step(_FakeBddStep("When", "they click", 7))
+        assert step.data.keyword == "When"
+
+    def test_with_data_table(self):
+        # _FakeDataTable is defined module-level in this test file
+        # (see TestFormatDataTable section above).
+        table = _FakeDataTable([["a", "b"], ["1", "2"]])
+        step = build_step(_FakeBddStep("Given", "table", 5, data_table=table))
+        assert "| a | b |" in step.data.data
+        assert "| 1 | 2 |" in step.data.data
+
+    def test_with_docstring(self):
+        step = build_step(_FakeBddStep("When", "send body", 5, docstring="payload"))
+        # Default fence is 3 backticks because there are no backticks in "payload".
+        assert step.data.data == "```\npayload\n```"
+
+    def test_default_line_when_missing(self):
+        s = _FakeBddStep("Given", "x", 0)
+        del s.line_number  # simulate missing attribute on older pytest-bdd
+        step = build_step(s)
+        assert step.data.line == 0
+
+    def test_each_call_returns_unique_id(self):
+        s1 = build_step(_FakeBddStep())
+        s2 = build_step(_FakeBddStep())
+        assert s1.id != s2.id

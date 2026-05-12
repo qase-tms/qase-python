@@ -6,6 +6,8 @@ Loaded conditionally from conftest.py only when pytest_bdd is installed.
 import re
 from typing import Iterable, Optional
 
+from qase.commons.models.step import Step, StepGherkinData, StepType
+
 
 class QasePytestBddPlugin:
     """Bridge between pytest-bdd hooks and the main QasePytestPlugin runtime."""
@@ -162,3 +164,35 @@ def format_docstring(text) -> str:
     fence = "`" * max(3, longest_run + 1)
 
     return fence + "\n" + stripped + "\n" + fence
+
+
+def build_step(bdd_step) -> Step:
+    """Build a Qase Step(GHERKIN) from a pytest-bdd Step object.
+
+    Reads keyword, name, line_number, data_table, docstring defensively so the
+    helper survives minor API drifts between pytest-bdd versions.
+    """
+    keyword = getattr(bdd_step, "keyword", "")
+    name = getattr(bdd_step, "name", "")
+    line = getattr(bdd_step, "line_number", 0) or 0
+
+    data_table = getattr(bdd_step, "data_table", None)
+    docstring = getattr(bdd_step, "docstring", None)
+
+    payload = None
+    table_md = format_data_table(data_table)
+    if table_md:
+        payload = table_md
+    elif docstring:
+        payload = format_docstring(docstring)
+
+    return Step(
+        step_type=StepType.GHERKIN,
+        id=None,  # let Step generate uuid
+        data=StepGherkinData(
+            keyword=keyword,
+            name=name,
+            line=line,
+            data=payload,
+        ),
+    )
