@@ -163,3 +163,27 @@ class TestFormatDataTable:
         assert "line1<br>line2" in result
         # The cell stays on a single output line.
         assert "line1\nline2" not in result
+
+
+from qase.pytest.bdd import format_docstring
+
+
+class TestFormatDocstring:
+    def test_none_returns_empty_string(self):
+        assert format_docstring(None) == ""
+
+    def test_empty_string_returns_empty_string(self):
+        assert format_docstring("") == ""
+
+    def test_single_line(self):
+        assert format_docstring("hello") == "```\nhello\n```"
+
+    def test_multiline_preserved(self):
+        text = "line1\nline2\nline3"
+        assert format_docstring(text) == "```\nline1\nline2\nline3\n```"
+
+    def test_strips_only_outer_blank_lines(self):
+        # pytest-bdd sometimes includes leading/trailing blank lines from
+        # triple-quote indentation.
+        text = "\n\nline\n\n"
+        assert format_docstring(text) == "```\nline\n```"

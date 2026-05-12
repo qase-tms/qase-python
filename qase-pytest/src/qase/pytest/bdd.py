@@ -136,3 +136,17 @@ def _escape_markdown_table_cell(value) -> str:
     # Newlines split table rows; map them to <br> which renders inside cells.
     text = text.replace("\r\n", "<br>").replace("\n", "<br>").replace("\r", "<br>")
     return text
+
+
+def format_docstring(text) -> str:
+    """Render a Gherkin step docstring as a fenced markdown code block.
+
+    Returns "" for None/empty input. Outer blank lines from triple-quote
+    indentation are stripped; internal newlines are preserved.
+    """
+    if not text:
+        return ""
+    stripped = text.strip("\n").rstrip()
+    if not stripped:
+        return ""
+    return "```\n" + stripped + "\n```"
