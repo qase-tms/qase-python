@@ -303,11 +303,17 @@ def check_sum(numbers, c):
     # Each result should have its own params populated (from pytest-bdd's
     # Examples-to-parametrize conversion captured by the existing _set_params).
     all_params = [r.get("params") or {} for r in results]
-    # At least one result must have a non-empty params dict — the Examples row
-    # provided real parameter values, so this is a strict expectation.
-    assert any(
-        p for p in all_params
-    ), "expected at least one result with params populated"
+    # Each result must have the Examples row exploded into individual params,
+    # not a single ugly _pytest_bdd_example key.
+    all_keys = set()
+    for p in all_params:
+        assert (
+            "_pytest_bdd_example" not in p
+        ), "Scenario Outline params should be exploded, not kept as a single key"
+        all_keys.update(p.keys())
+    assert {"a", "b", "c"}.issubset(
+        all_keys
+    ), f"expected a/b/c in exploded params, got keys: {sorted(all_keys)}"
 
 
 def test_data_table_and_docstring_preserved(pytester):

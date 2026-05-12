@@ -3,6 +3,7 @@
 Loaded conditionally from conftest.py only when pytest_bdd is installed.
 """
 
+import ast as _ast
 import re
 from typing import Iterable, Optional
 
@@ -297,6 +298,37 @@ def build_step(bdd_step) -> Step:
     )
 
 
+def expand_pytest_bdd_example_params(result) -> None:
+    """Explode pytest-bdd's `_pytest_bdd_example` param into individual keys.
+
+    pytest-bdd 8.x converts a Scenario Outline row into a single parametrize
+    argument `_pytest_bdd_example` whose value is a dict (sometimes already
+    a dict, sometimes a repr string). We unpack it into one param per
+    column for readable rendering in Qase, and drop the original key.
+
+    No-op if the key is absent or its value cannot be parsed as a dict.
+    """
+    params = getattr(result, "params", None)
+    if not params or "_pytest_bdd_example" not in params:
+        return
+
+    raw = params["_pytest_bdd_example"]
+    parsed = raw
+    if isinstance(parsed, str):
+        try:
+            parsed = _ast.literal_eval(parsed)
+        except (ValueError, SyntaxError):
+            return  # keep the original key — can't parse safely
+
+    if not isinstance(parsed, dict):
+        return
+
+    # Remove the wrapper key only after we know the unpack will succeed.
+    params.pop("_pytest_bdd_example", None)
+    for key, value in parsed.items():
+        params[str(key)] = str(value)
+
+
 def enrich_result_from_scenario(result, feature, scenario) -> None:
     """Mutate an existing Result with metadata extracted from a pytest-bdd scenario."""
     if getattr(scenario, "name", None):
@@ -337,3 +369,5 @@ def enrich_result_from_scenario(result, feature, scenario) -> None:
         result.add_tags(parsed["tags"])
     result.muted = parsed["muted"]
     result.ignore = parsed["ignore"]
+
+    expand_pytest_bdd_example_params(result)

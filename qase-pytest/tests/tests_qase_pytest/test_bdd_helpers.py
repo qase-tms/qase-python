@@ -7,6 +7,7 @@ from qase.commons.models.step import StepType
 from qase.pytest.bdd import (
     build_step,
     enrich_result_from_scenario,
+    expand_pytest_bdd_example_params,
     format_data_table,
     format_docstring,
     parse_scenario_tags,
@@ -415,3 +416,58 @@ class TestEnrichResultFromScenario:
         )
         assert r.get_testops_ids_for_project("PROJ_A") == [1, 2]
         assert r.get_testops_ids_for_project("PROJ_B") == [3]
+
+    def test_pytest_bdd_example_param_is_expanded(self):
+        r = self._new_result()
+        r.params = {"_pytest_bdd_example": "{'a': '5', 'b': '7'}"}
+        enrich_result_from_scenario(r, _FakeFeature(), _FakeScenario())
+        assert r.params == {"a": "5", "b": "7"}
+
+
+class TestExpandPytestBddExampleParams:
+    def _result_with_params(self, params):
+        r = Result(title="placeholder", signature="")
+        r.params = dict(params)
+        return r
+
+    def test_noop_when_key_absent(self):
+        r = self._result_with_params({"foo": "bar"})
+        expand_pytest_bdd_example_params(r)
+        assert r.params == {"foo": "bar"}
+
+    def test_expands_str_dict(self):
+        r = self._result_with_params(
+            {"_pytest_bdd_example": "{'a': '1', 'b': '2', 'c': '3'}"}
+        )
+        expand_pytest_bdd_example_params(r)
+        assert r.params == {"a": "1", "b": "2", "c": "3"}
+        assert "_pytest_bdd_example" not in r.params
+
+    def test_expands_real_dict(self):
+        # Some pytest-bdd versions may pass a dict directly (defensive).
+        r = self._result_with_params({"_pytest_bdd_example": {"x": 10, "y": 20}})
+        expand_pytest_bdd_example_params(r)
+        assert r.params == {"x": "10", "y": "20"}
+
+    def test_keeps_original_when_unparseable(self):
+        r = self._result_with_params({"_pytest_bdd_example": "not a dict repr"})
+        expand_pytest_bdd_example_params(r)
+        # Cannot parse — preserve the key untouched.
+        assert r.params == {"_pytest_bdd_example": "not a dict repr"}
+
+    def test_keeps_original_when_parsed_is_not_dict(self):
+        r = self._result_with_params(
+            {"_pytest_bdd_example": "[1, 2, 3]"}  # parses to list, not dict
+        )
+        expand_pytest_bdd_example_params(r)
+        assert r.params == {"_pytest_bdd_example": "[1, 2, 3]"}
+
+    def test_preserves_other_params(self):
+        r = self._result_with_params(
+            {
+                "_pytest_bdd_example": "{'a': '1'}",
+                "browser": "chrome",
+            }
+        )
+        expand_pytest_bdd_example_params(r)
+        assert r.params == {"a": "1", "browser": "chrome"}
