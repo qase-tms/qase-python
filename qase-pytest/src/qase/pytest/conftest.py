@@ -32,6 +32,16 @@ def pytest_configure(config):
         name="qase-pytest",
     )
 
+    try:
+        import pytest_bdd  # noqa: F401
+        from .bdd import QasePytestBddPlugin
+        config.pluginmanager.register(
+            QasePytestBddPlugin(config.qase),
+            name="qase-pytest-bdd",
+        )
+    except ImportError:
+        pass
+
 
 def _add_markers(config):
     config.addinivalue_line(
