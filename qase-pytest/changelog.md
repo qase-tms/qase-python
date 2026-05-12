@@ -1,3 +1,18 @@
+# qase-pytest 8.2.0
+
+## What's new
+
+- Added native pytest-bdd integration. When `pytest-bdd` is installed,
+  Gherkin scenarios are reported automatically with full step
+  hierarchy: scenario name becomes the test title, the feature becomes
+  the parent suite, Given/When/Then keywords are preserved on each
+  step, DataTable and DocString contents are captured, Scenario Outline
+  rows become parameterized results, and a `qase.step()` inside a step
+  function appears as a sub-step of the Gherkin step.
+- Tags on scenarios drive Qase metadata: `@qase.id=`, `@qase.suite=`,
+  `@qase.severity=`, `@qase.priority=`, `@qase.layer=`, `@qase.ignore`,
+  `@qase.muted`, `@qase.project_id.CODE=`.
+
 # qase-pytest 8.1.0
 
 ## What's new

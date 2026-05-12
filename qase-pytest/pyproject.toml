@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qase-pytest"
-version = "8.1.0"
+version = "8.2.0"
 description = "Qase Pytest Plugin for Qase TestOps and Qase Report"
 readme = "README.md"
 keywords = ["qase", "pytest", "plugin", "testops", "report", "qase reporting", "test observability"]
@@ -46,6 +46,7 @@ qase_pytest = "qase.pytest.conftest"
 testing = [
     "pytest",
     "pytest-cov",
+    "pytest-bdd>=7.0,<9.0",
 ]
 
 [tool.tox]
