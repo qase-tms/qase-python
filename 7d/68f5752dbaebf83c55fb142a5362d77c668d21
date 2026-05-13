@@ -1,0 +1,11 @@
+.github/workflows/pythonpackage.yml
+  ai_agent 5-9,49-52,71,80,96,114,133,176-177
+pip.conf
+  ai_agent 1-10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "7d68f5752dbaebf83c55fb142a5362d77c668d21",
+  "prompts": {}
+}
