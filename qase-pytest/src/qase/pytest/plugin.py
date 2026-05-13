@@ -542,7 +542,7 @@ class QasePytestPlugin:
         return hasattr(report, 'wasxfail')
 
     @staticmethod
-    def _get_qase_ids(item) -> Union[None, List[int]]:
+    def get_qase_ids(item) -> Union[None, List[int]]:
         marker = item.get_closest_marker("qase_id")
         if marker is None:
             return None
