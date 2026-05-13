@@ -2,6 +2,11 @@ name: Python package
 
 on: [ push ]
 
+env:
+  # Supply-chain protection: refuse PyPI packages uploaded less than 3 days ago.
+  # Honored by pip>=26.1 (relative durations); silently ignored by older pip.
+  PIP_UPLOADED_PRIOR_TO: "P3D"
+
 jobs:
   test:
     runs-on: ubuntu-22.04
@@ -41,7 +46,10 @@ jobs:
       - name: Install dependencies
         if: steps.filter.outputs.changes == 'true'
         run: |
-          python -m pip install --upgrade pip
+          # Bootstrap with PIP_UPLOADED_PRIOR_TO unset: the seeded pip may be
+          # 26.0, which validates the value but only accepts ISO datetimes —
+          # the P3D form was added in 26.1.
+          env -u PIP_UPLOADED_PRIOR_TO python -m pip install --upgrade 'pip>=26.1'
           pip install tox tox-gh-actions
       - name: Run tox
         if: steps.filter.outputs.changes == 'true'
@@ -60,7 +68,7 @@ jobs:
 
       - name: Install reporters-validator
         run: |
-          python -m pip install --upgrade pip
+          env -u PIP_UPLOADED_PRIOR_TO python -m pip install --upgrade 'pip>=26.1'
           pip install git+https://github.com/qase-tms/reporters-validator.git
 
       - name: Download report schemas
@@ -69,6 +77,7 @@ jobs:
       - name: Validate Pytest reporter
         run: |
           python -m venv /tmp/venv-pytest
+          env -u PIP_UPLOADED_PRIOR_TO /tmp/venv-pytest/bin/python -m pip install --upgrade 'pip>=26.1'
           /tmp/venv-pytest/bin/pip install -q \
             ./qase-api-client ./qase-api-v2-client ./qase-python-commons ./qase-pytest
 
@@ -84,6 +93,7 @@ jobs:
       - name: Validate Behave reporter
         run: |
           python -m venv /tmp/venv-behave
+          env -u PIP_UPLOADED_PRIOR_TO /tmp/venv-behave/bin/python -m pip install --upgrade 'pip>=26.1'
           /tmp/venv-behave/bin/pip install -q \
             ./qase-api-client ./qase-api-v2-client ./qase-python-commons ./qase-behave
 
@@ -101,6 +111,7 @@ jobs:
       - name: Validate Robot Framework reporter
         run: |
           python -m venv /tmp/venv-robot
+          env -u PIP_UPLOADED_PRIOR_TO /tmp/venv-robot/bin/python -m pip install --upgrade 'pip>=26.1'
           /tmp/venv-robot/bin/pip install -q \
             ./qase-api-client ./qase-api-v2-client ./qase-python-commons ./qase-robotframework \
             robotframework
@@ -119,6 +130,7 @@ jobs:
       - name: Validate Tavern reporter
         run: |
           python -m venv /tmp/venv-tavern
+          env -u PIP_UPLOADED_PRIOR_TO /tmp/venv-tavern/bin/python -m pip install --upgrade 'pip>=26.1'
           /tmp/venv-tavern/bin/pip install -q \
             ./qase-api-client ./qase-api-v2-client ./qase-python-commons ./qase-tavern \
             tavern
@@ -161,7 +173,8 @@ jobs:
       - name: Install build dependencies
         if: contains(github.event.ref, matrix.prefix)
         run: |
-          python -m pip install --upgrade pip setuptools wheel build
+          env -u PIP_UPLOADED_PRIOR_TO python -m pip install --upgrade 'pip>=26.1'
+          pip install --upgrade setuptools wheel build
       - name: Build the package
         if: contains(github.event.ref, matrix.prefix)
         working-directory: ./${{ matrix.prefix }}
