@@ -1,0 +1,28 @@
+pip.conf
+  s_24411616422fa2::t_16e7ba909c275c 1-10
+.github/workflows/pythonpackage.yml
+  s_24411616422fa2::t_ad68ef0e0d40ff 68
+  s_24411616422fa2::t_225cd3cbae7920 173
+  s_24411616422fa2::t_7c767a2b0ebf12 111
+  s_24411616422fa2::t_ae5509d28c993f 130
+  s_24411616422fa2::t_d7804d87c44d17 93
+  s_24411616422fa2::t_f568b73662e161 77
+  s_24411616422fa2::t_05b8554399e9c5 49
+  s_24411616422fa2::t_cc70baa6fbb74a 5-9
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "677634432c19b086b801c7417262a2e385131bd6",
+  "prompts": {},
+  "sessions": {
+    "s_24411616422fa2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "031fe9fe-be2f-4c3c-a8f3-85186392c875",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
