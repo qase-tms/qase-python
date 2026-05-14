@@ -1,5 +1,23 @@
 # Upgrade guides
 
+## From 5.x to 6.x
+
+### Suite hierarchy is preserved
+
+Prior to v6, the reporter registered each test under only the deepest (leaf) suite of its Robot Framework hierarchy. A test located in `Tests > Account > Login` ended up in a flat `Login` suite in Qase, with `Tests` and `Account` discarded.
+
+Starting with v6, the reporter sends the full nested suite path, so the same test now lands in `Tests / Account / Login` in Qase.
+
+Impact:
+
+- If you are starting from a clean Qase project, no action is required.
+- If your Qase project already has cases created against the old flattened layout (or you reorganised the tree manually), the next run will create cases in a new nested location, which can result in duplicates.
+
+To avoid duplicates, either:
+
+- accept the new hierarchy and remove or archive the old flat suites in Qase, or
+- pin annotated tests to the existing cases by setting the Qase ID on each `*** Test Cases ***` entry (see [usage docs](usage.md)).
+
 ## From 2.x to 3.x
 
 ### Execution

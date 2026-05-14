@@ -1,3 +1,9 @@
+# qase-robotframework 6.0.0
+
+## Breaking changes
+
+- Robot Framework suite hierarchy is now preserved when reporting to Qase. Previously the reporter registered only the deepest (leaf) suite, so a test under `Tests > Account > Login` ended up in a flat `Login` suite in Qase. The reporter now sends the full nested path. Existing projects whose Qase suites were created against the old flattened behaviour may see test cases land in a new nested suite tree on the next run, which can result in duplicates or breakage of any manual reorganisation. Review your project's suite layout before upgrading. ([#486](https://github.com/qase-tms/qase-python/issues/486))
+
 # qase-robotframework 5.1.0
 
 ## What's new
