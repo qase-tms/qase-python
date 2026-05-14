@@ -101,7 +101,7 @@ class QasePytestPlugin:
             new_items = []
             for item in items:
                 if item.get_closest_marker('qase_id'):
-                    ids = QasePytestPlugin._get_qase_ids(item)
+                    ids = QasePytestPlugin.get_qase_ids(item)
                     if any(id in self.execution_plan for id in ids):
                         new_items.append(item)
 
@@ -430,7 +430,7 @@ class QasePytestPlugin:
                         self.runtime.result.set_testops_project_mapping(project_code, testops_ids)
             else:
                 # Single project mode: use old testops_ids
-                self.runtime.result.testops_ids = QasePytestPlugin._get_qase_ids(item)
+                self.runtime.result.testops_ids = QasePytestPlugin.get_qase_ids(item)
         except (AttributeError, TypeError, ValueError):
             pass
 
@@ -542,7 +542,7 @@ class QasePytestPlugin:
         return hasattr(report, 'wasxfail')
 
     @staticmethod
-    def _get_qase_ids(item) -> Union[None, List[int]]:
+    def get_qase_ids(item) -> Union[None, List[int]]:
         marker = item.get_closest_marker("qase_id")
         if marker is None:
             return None

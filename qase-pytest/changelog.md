@@ -1,3 +1,11 @@
+# qase-pytest 8.3.0
+
+## What's new
+
+- Exposed `QasePytestPlugin.get_qase_ids(item)` as a public static method
+  so third-party pytest plugins can read the Qase IDs associated with a
+  pytest item without parsing the `qase_id` marker themselves.
+
 # qase-pytest 8.2.0
 
 ## What's new

@@ -59,37 +59,37 @@ def make_plugin():
 
 
 class TestGetQaseIds:
-    """Test _get_qase_ids static method edge cases."""
+    """Test get_qase_ids static method edge cases."""
 
     def test_returns_none_when_no_marker(self):
         item = make_mock_item()
-        assert QasePytestPlugin._get_qase_ids(item) is None
+        assert QasePytestPlugin.get_qase_ids(item) is None
 
     def test_returns_list_with_integer_id(self):
         marker = make_marker(id=42)
         item = make_mock_item(markers={"qase_id": marker})
-        assert QasePytestPlugin._get_qase_ids(item) == [42]
+        assert QasePytestPlugin.get_qase_ids(item) == [42]
 
     def test_returns_list_from_comma_separated_string(self):
         marker = make_marker(id="1,2,3")
         item = make_mock_item(markers={"qase_id": marker})
-        assert QasePytestPlugin._get_qase_ids(item) == [1, 2, 3]
+        assert QasePytestPlugin.get_qase_ids(item) == [1, 2, 3]
 
     def test_returns_none_when_id_kwarg_is_none(self):
         marker = make_marker(id=None)
         item = make_mock_item(markers={"qase_id": marker})
-        assert QasePytestPlugin._get_qase_ids(item) is None
+        assert QasePytestPlugin.get_qase_ids(item) is None
 
     def test_handles_string_with_spaces(self):
         marker = make_marker(id="10, 20, 30")
         item = make_mock_item(markers={"qase_id": marker})
-        assert QasePytestPlugin._get_qase_ids(item) == [10, 20, 30]
+        assert QasePytestPlugin.get_qase_ids(item) == [10, 20, 30]
 
     def test_raises_on_non_numeric_string(self):
         marker = make_marker(id="abc")
         item = make_mock_item(markers={"qase_id": marker})
         with pytest.raises(ValueError):
-            QasePytestPlugin._get_qase_ids(item)
+            QasePytestPlugin.get_qase_ids(item)
 
 
 class TestGetTitle:
