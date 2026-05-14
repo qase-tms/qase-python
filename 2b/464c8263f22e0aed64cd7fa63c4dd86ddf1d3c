@@ -1,0 +1,19 @@
+.github/workflows/pythonpackage.yml
+  s_cd1ca1c470d5e9::t_5a5fb095f27a22 5-8,46-50,54-57,74-78,81,90,106,124,143,183-187,191
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "2b464c8263f22e0aed64cd7fa63c4dd86ddf1d3c",
+  "prompts": {},
+  "sessions": {
+    "s_cd1ca1c470d5e9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "58735898-7dd5-40f9-bc6a-e6fb1cafd520",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
