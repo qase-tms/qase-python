@@ -2,10 +2,10 @@ name: Python package
 
 on: [ push ]
 
-env:
-  # Supply-chain protection: refuse PyPI packages uploaded less than 3 days ago.
-  # Honored by pip>=26.1 (relative durations); silently ignored by older pip.
-  PIP_UPLOADED_PRIOR_TO: "P3D"
+# Supply-chain protection: refuse PyPI packages uploaded less than 3 days ago.
+# The cutoff is computed per job as an ISO 8601 datetime (see the "Compute
+# supply-chain cutoff" step). pip 26.1 added the relative-duration form
+# ("P3D"), but that requires Python>=3.10 and we still test on 3.9.
 
 jobs:
   test:
@@ -43,13 +43,18 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Compute supply-chain cutoff
+        if: steps.filter.outputs.changes == 'true'
+        run: |
+          cutoff=$(date -u -d '3 days ago' +%Y-%m-%dT%H:%M:%SZ)
+          echo "PIP_UPLOADED_PRIOR_TO=$cutoff" >> "$GITHUB_ENV"
       - name: Install dependencies
         if: steps.filter.outputs.changes == 'true'
         run: |
-          # Bootstrap with PIP_UPLOADED_PRIOR_TO unset: the seeded pip may be
-          # 26.0, which validates the value but only accepts ISO datetimes —
-          # the P3D form was added in 26.1.
-          env -u PIP_UPLOADED_PRIOR_TO python -m pip install --upgrade 'pip>=26.1'
+          # Bootstrap with PIP_UPLOADED_PRIOR_TO unset: a seeded pip older than
+          # 26.0 would treat the env var as an unknown --uploaded-prior-to flag
+          # and abort.
+          env -u PIP_UPLOADED_PRIOR_TO python -m pip install --upgrade 'pip>=26.0'
           pip install tox tox-gh-actions
       - name: Run tox
         if: steps.filter.outputs.changes == 'true'
@@ -66,9 +71,14 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Compute supply-chain cutoff
+        run: |
+          cutoff=$(date -u -d '3 days ago' +%Y-%m-%dT%H:%M:%SZ)
+          echo "PIP_UPLOADED_PRIOR_TO=$cutoff" >> "$GITHUB_ENV"
+
       - name: Install reporters-validator
         run: |
-          env -u PIP_UPLOADED_PRIOR_TO python -m pip install --upgrade 'pip>=26.1'
+          env -u PIP_UPLOADED_PRIOR_TO python -m pip install --upgrade 'pip>=26.0'
           pip install git+https://github.com/qase-tms/reporters-validator.git
 
       - name: Download report schemas
@@ -77,7 +87,7 @@ jobs:
       - name: Validate Pytest reporter
         run: |
           python -m venv /tmp/venv-pytest
-          env -u PIP_UPLOADED_PRIOR_TO /tmp/venv-pytest/bin/python -m pip install --upgrade 'pip>=26.1'
+          env -u PIP_UPLOADED_PRIOR_TO /tmp/venv-pytest/bin/python -m pip install --upgrade 'pip>=26.0'
           /tmp/venv-pytest/bin/pip install -q \
             ./qase-api-client ./qase-api-v2-client ./qase-python-commons ./qase-pytest
 
@@ -93,7 +103,7 @@ jobs:
       - name: Validate Behave reporter
         run: |
           python -m venv /tmp/venv-behave
-          env -u PIP_UPLOADED_PRIOR_TO /tmp/venv-behave/bin/python -m pip install --upgrade 'pip>=26.1'
+          env -u PIP_UPLOADED_PRIOR_TO /tmp/venv-behave/bin/python -m pip install --upgrade 'pip>=26.0'
           /tmp/venv-behave/bin/pip install -q \
             ./qase-api-client ./qase-api-v2-client ./qase-python-commons ./qase-behave
 
@@ -111,7 +121,7 @@ jobs:
       - name: Validate Robot Framework reporter
         run: |
           python -m venv /tmp/venv-robot
-          env -u PIP_UPLOADED_PRIOR_TO /tmp/venv-robot/bin/python -m pip install --upgrade 'pip>=26.1'
+          env -u PIP_UPLOADED_PRIOR_TO /tmp/venv-robot/bin/python -m pip install --upgrade 'pip>=26.0'
           /tmp/venv-robot/bin/pip install -q \
             ./qase-api-client ./qase-api-v2-client ./qase-python-commons ./qase-robotframework \
             robotframework
@@ -130,7 +140,7 @@ jobs:
       - name: Validate Tavern reporter
         run: |
           python -m venv /tmp/venv-tavern
-          env -u PIP_UPLOADED_PRIOR_TO /tmp/venv-tavern/bin/python -m pip install --upgrade 'pip>=26.1'
+          env -u PIP_UPLOADED_PRIOR_TO /tmp/venv-tavern/bin/python -m pip install --upgrade 'pip>=26.0'
           /tmp/venv-tavern/bin/pip install -q \
             ./qase-api-client ./qase-api-v2-client ./qase-python-commons ./qase-tavern \
             tavern
@@ -170,10 +180,15 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: 3.9
+      - name: Compute supply-chain cutoff
+        if: contains(github.event.ref, matrix.prefix)
+        run: |
+          cutoff=$(date -u -d '3 days ago' +%Y-%m-%dT%H:%M:%SZ)
+          echo "PIP_UPLOADED_PRIOR_TO=$cutoff" >> "$GITHUB_ENV"
       - name: Install build dependencies
         if: contains(github.event.ref, matrix.prefix)
         run: |
-          env -u PIP_UPLOADED_PRIOR_TO python -m pip install --upgrade 'pip>=26.1'
+          env -u PIP_UPLOADED_PRIOR_TO python -m pip install --upgrade 'pip>=26.0'
           pip install --upgrade setuptools wheel build
       - name: Build the package
         if: contains(github.event.ref, matrix.prefix)
