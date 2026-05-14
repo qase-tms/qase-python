@@ -1,0 +1,23 @@
+qase-robotframework/changelog.md
+  s_cd1ca1c470d5e9::t_37c4309e69297e 1-6
+qase-robotframework/pyproject.toml
+  s_cd1ca1c470d5e9::t_b1e7a01fcc462c 7
+qase-robotframework/docs/UPGRADE.md
+  s_cd1ca1c470d5e9::t_f9a7eb6b2ca169 3-20
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "8b2826b899aa9749a764ee9064425320bd8aed7e",
+  "prompts": {},
+  "sessions": {
+    "s_cd1ca1c470d5e9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "58735898-7dd5-40f9-bc6a-e6fb1cafd520",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
