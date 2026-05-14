@@ -70,7 +70,12 @@ class Listener:
             selector = Filter(*execution_plan)
             suite.visit(selector)
 
-        self.tests.update(self.__extract_tests_with_suites(suite))
+        # Robot Framework invokes start_suite for every suite in the hierarchy
+        # (root → leaves). Extract tests only on the root call so each test is
+        # registered once with its full suite path; otherwise subsequent calls
+        # for child suites would overwrite the entry with a shorter hierarchy.
+        if getattr(suite, "parent", None) is None:
+            self.tests.update(self.__extract_tests_with_suites(suite))
 
     def start_test(self, test, result):
         self.logger.log_debug(f"Starting test '{test.name}'")
