@@ -1,0 +1,27 @@
+qase-pytest/src/qase/pytest/plugin.py
+  s_a8a472b62bb149::t_41311af61579bf 104,433
+  s_a8a472b62bb149::t_18edb2473e5ea0 545
+qase-pytest/changelog.md
+  s_a8a472b62bb149::t_555f579bef2263 1-8
+qase-pytest/pyproject.toml
+  s_a8a472b62bb149::t_3216572679cd0c 7
+qase-pytest/tests/tests_qase_pytest/test_plugin.py
+  s_a8a472b62bb149::t_32e4fd318f608d 66,71,76,81,86,92
+  s_a8a472b62bb149::t_98e711cf7e0ba3 62
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "3c667b70c78dcacd32c928a26c043101ce237d3b",
+  "prompts": {},
+  "sessions": {
+    "s_a8a472b62bb149": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3caa81fc-16a7-44bc-8663-a2ae3018d18b",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
