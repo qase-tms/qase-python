@@ -1,0 +1,21 @@
+integration/robot/expected/robot-examples.yaml
+  s_cd1ca1c470d5e9::t_e8036eb7d92044 83,93,96,106
+  s_cd1ca1c470d5e9::t_122500e4e3c50b 12,21
+  s_cd1ca1c470d5e9::t_a44296b6f082bd 43,52
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "104213a8156eaa496d4fccab0bfde1b30473df8a",
+  "prompts": {},
+  "sessions": {
+    "s_cd1ca1c470d5e9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "58735898-7dd5-40f9-bc6a-e6fb1cafd520",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
