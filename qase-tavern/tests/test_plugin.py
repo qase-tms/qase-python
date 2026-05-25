@@ -245,3 +245,111 @@ class TestExtractQaseIdsTags:
             "qasetags.smoke Test"
         )
         assert tags == ["smoke"]
+
+
+# ---------------------------------------------------------------------------
+# pytest_tavern_beta_* hooks -- per-stage timing
+# ---------------------------------------------------------------------------
+
+
+class TestTavernBetaHooksTiming:
+    """Each Tavern stage must carry its own start_time/end_time.
+
+    Regression for the bug where all Step() objects were created up-front
+    in start_pytest_item (so they shared one start_time), and then closed
+    in a single makereport loop (so they shared one end_time), making the
+    TestOps timeline collapse all stages onto the same instant.
+    """
+
+    def _plugin_with_steps(self, stages):
+        """Create a plugin with one Step per stage and a fresh stage index."""
+        plugin = _make_plugin(with_result=True)
+        from qase.commons.models.step import Step, StepType, StepTextData
+
+        for name in stages:
+            step = Step(StepType.TEXT, name, StepTextData(name))
+            plugin.runtime.add_step(step)
+        plugin._tavern_stage_index = 0
+        return plugin
+
+    def test_each_stage_gets_distinct_timings(self):
+        plugin = self._plugin_with_steps(["s1", "s2", "s3"])
+
+        plugin.pytest_tavern_beta_before_every_request(request_args={})
+        plugin.pytest_tavern_beta_after_every_response(expected={}, response=None)
+
+        plugin.pytest_tavern_beta_before_every_request(request_args={})
+        plugin.pytest_tavern_beta_after_every_response(expected={}, response=None)
+
+        plugin.pytest_tavern_beta_before_every_request(request_args={})
+        plugin.pytest_tavern_beta_after_every_response(expected={}, response=None)
+
+        starts = [s.execution.start_time for s in plugin.runtime.steps.values()]
+        ends = [s.execution.end_time for s in plugin.runtime.steps.values()]
+
+        # Hooks fire in real time, so each start must be >= the previous end.
+        assert starts[0] < ends[0] <= starts[1] < ends[1] <= starts[2] < ends[2]
+        # And no two steps share the same start/end.
+        assert len(set(starts)) == 3
+        assert len(set(ends)) == 3
+
+    def test_hooks_advance_only_one_stage_per_pair(self):
+        plugin = self._plugin_with_steps(["s1", "s2"])
+
+        plugin.pytest_tavern_beta_before_every_request(request_args={})
+        plugin.pytest_tavern_beta_after_every_response(expected={}, response=None)
+
+        assert plugin._tavern_stage_index == 1
+        # s2 must still be untouched by hooks.
+        s2 = list(plugin.runtime.steps.values())[1]
+        # complete() sets end_time to float; un-completed default is 0.
+        assert s2.execution.end_time == 0
+
+    def test_extra_hook_calls_after_last_stage_are_ignored(self):
+        """If Tavern fires more hooks than we have steps (e.g. MQTT multiple
+        responses) we must not crash or wrap around to the first step."""
+        plugin = self._plugin_with_steps(["only"])
+
+        plugin.pytest_tavern_beta_before_every_request(request_args={})
+        plugin.pytest_tavern_beta_after_every_response(expected={}, response=None)
+
+        original_end = list(plugin.runtime.steps.values())[0].execution.end_time
+
+        # One extra spurious pair — must not touch the existing step.
+        plugin.pytest_tavern_beta_before_every_request(request_args={})
+        plugin.pytest_tavern_beta_after_every_response(expected={}, response=None)
+
+        assert list(plugin.runtime.steps.values())[0].execution.end_time == original_end
+
+    def test_ensure_step_closed_skips_already_closed(self):
+        plugin = _make_plugin(with_result=True)
+        from qase.commons.models.step import Step, StepType, StepTextData
+
+        step = Step(StepType.TEXT, "s", StepTextData("s"))
+        step.execution.start_time = 100.0
+        step.execution.end_time = 100.5
+        step.execution.duration = 500
+
+        plugin._ensure_step_closed(step, "passed")
+
+        # Original timings preserved; only status updated.
+        assert step.execution.start_time == 100.0
+        assert step.execution.end_time == 100.5
+        assert step.execution.duration == 500
+        assert step.execution.status == "passed"
+
+    def test_ensure_step_closed_marks_unrun_skipped_as_zero_duration(self):
+        plugin = _make_plugin(with_result=True)
+        from qase.commons.models.step import Step, StepType, StepTextData
+
+        step = Step(StepType.TEXT, "s", StepTextData("s"))
+        original_start = step.execution.start_time  # set by StepExecution.__init__
+
+        plugin._ensure_step_closed(step, "skipped")
+
+        # Step never ran — give it a zero-duration placeholder at "now",
+        # not a duration spanning the whole test.
+        assert step.execution.start_time != original_start
+        assert step.execution.start_time == step.execution.end_time
+        assert step.execution.duration == 0
+        assert step.execution.status == "skipped"

@@ -21,6 +21,7 @@ class QasePytestPlugin:
         self.run_id = None
         self._current_item = None
         self.ignore = None
+        self._tavern_stage_index = 0
 
     def pytest_sessionstart(self, session):
         self.run_id = self.reporter.start_run()
@@ -31,6 +32,27 @@ class QasePytestPlugin:
 
     def pytest_runtest_protocol(self, item):
         self.start_pytest_item(item)
+
+    def pytest_tavern_beta_before_every_request(self, request_args):
+        """Mark the actual start time of the current Tavern stage.
+
+        Each stage triggers exactly one ``before_every_request`` call, so
+        we use the current stage index as a cursor into ``runtime.steps``.
+        """
+        if self.runtime.result is None:
+            return
+        steps_list = list(self.runtime.steps.values())
+        if self._tavern_stage_index < len(steps_list):
+            steps_list[self._tavern_stage_index].execution.start_time = QaseUtils.get_real_time()
+
+    def pytest_tavern_beta_after_every_response(self, expected, response):
+        """Mark the actual end time of the current Tavern stage and advance."""
+        if self.runtime.result is None:
+            return
+        steps_list = list(self.runtime.steps.values())
+        if self._tavern_stage_index < len(steps_list):
+            steps_list[self._tavern_stage_index].execution.complete()
+            self._tavern_stage_index += 1
 
     def pytest_runtest_makereport(self, item, call):
         if self.runtime.result is None:
@@ -51,29 +73,46 @@ class QasePytestPlugin:
 
                         is_failed = False
                         for key, step in self.runtime.steps.items():
-                            step.execution.complete()
                             if step.data.action == failed_step:
-                                step.execution.set_status("failed")
+                                self._ensure_step_closed(step, "failed")
                                 is_failed = True
                                 continue
 
                             if is_failed:
-                                step.execution.set_status("skipped")
+                                self._ensure_step_closed(step, "skipped")
                                 continue
 
-                            step.execution.set_status("passed")
+                            self._ensure_step_closed(step, "passed")
                         return
 
                     for key, step in self.runtime.steps.items():
-                        step.execution.complete()
-                        step.execution.set_status("skipped")
+                        self._ensure_step_closed(step, "skipped")
 
                 return
 
             self.runtime.result.execution.status = "passed"
             for key, step in self.runtime.steps.items():
+                self._ensure_step_closed(step, "passed")
+
+    @staticmethod
+    def _ensure_step_closed(step, status):
+        """Close a step without overwriting timings already set by Tavern hooks.
+
+        ``pytest_tavern_beta_after_every_response`` calls ``complete()`` for
+        every stage that actually ran, so we must not stamp the test-end
+        time on top of that. Steps that never executed (skipped after a
+        failure, or no hook fired) get a zero-duration placeholder at
+        ``now`` so the timeline doesn't show them spanning the full test.
+        """
+        if not step.execution.end_time:
+            if status == "skipped":
+                now = QaseUtils.get_real_time()
+                step.execution.start_time = now
+                step.execution.end_time = now
+                step.execution.duration = 0
+            else:
                 step.execution.complete()
-                step.execution.set_status("passed")
+        step.execution.set_status(status)
 
     def pytest_runtest_logfinish(self):
         if self.runtime.result is None:
@@ -84,6 +123,7 @@ class QasePytestPlugin:
         self.runtime.clear()
 
     def start_pytest_item(self, item):
+        self._tavern_stage_index = 0
         qase_ids, project_ids, title, tags = self.extract_qase_ids(self._get_title(item))
         self.runtime.result = Result(
             title=title,

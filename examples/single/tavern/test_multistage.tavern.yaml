@@ -1,0 +1,57 @@
+# Multi-stage tests used to verify per-stage step timings reach Qase TestOps.
+
+---
+test_name: QaseID=200 Multistage GET sequence
+
+stages:
+  - name: Stage 1 - Get all users
+    delay_before: 0.05
+    request:
+      url: https://jsonplaceholder.typicode.com/users
+      method: GET
+    response:
+      status_code: 200
+
+  - name: Stage 2 - Get single user
+    delay_before: 0.05
+    request:
+      url: https://jsonplaceholder.typicode.com/users/1
+      method: GET
+    response:
+      status_code: 200
+
+  - name: Stage 3 - Get posts list
+    delay_before: 0.05
+    request:
+      url: https://jsonplaceholder.typicode.com/posts
+      method: GET
+    response:
+      status_code: 200
+
+---
+test_name: QaseID=201 Multistage with longer pause between stages
+
+stages:
+  - name: First request
+    delay_before: 0.1
+    request:
+      url: https://jsonplaceholder.typicode.com/todos/1
+      method: GET
+    response:
+      status_code: 200
+
+  - name: Pause then second
+    delay_before: 0.3
+    request:
+      url: https://jsonplaceholder.typicode.com/todos/2
+      method: GET
+    response:
+      status_code: 200
+
+  - name: Pause then third
+    delay_before: 0.2
+    request:
+      url: https://jsonplaceholder.typicode.com/todos/3
+      method: GET
+    response:
+      status_code: 200
