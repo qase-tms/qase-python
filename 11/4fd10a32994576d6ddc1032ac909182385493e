@@ -1,0 +1,25 @@
+qase-tavern/tests/test_plugin.py
+  s_6b076d61d481e0::t_977a0de984bd18 248-355
+qase-tavern/src/qase/tavern/plugin.py
+  s_6b076d61d481e0::t_71d03423bb0c89 126
+  s_6b076d61d481e0::t_38d21a8f616c59 24
+  s_6b076d61d481e0::t_268bc37d526455 36-56,77,82,85,89,95-113,115
+examples/single/tavern/test_multistage.tavern.yaml
+  s_6b076d61d481e0::t_fcb56f66360fe1 1-57
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "114fd10a32994576d6ddc1032ac909182385493e",
+  "prompts": {},
+  "sessions": {
+    "s_6b076d61d481e0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2851970a-bb2e-4afe-a6a7-fba8ae7ef33b",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
