@@ -3,6 +3,8 @@ import uuid
 import re
 from typing import Tuple, List
 
+import pytest
+
 from qase.commons.models import Runtime, Result, Relation, Attachment
 from qase.commons.models.relation import SuiteData
 from qase.commons.models.step import Step, StepType, StepTextData
@@ -33,6 +35,11 @@ class QasePytestPlugin:
     def pytest_runtest_protocol(self, item):
         self.start_pytest_item(item)
 
+    # ``optionalhook=True`` prevents pluggy from refusing to load the plugin
+    # when the Tavern package isn't installed (and therefore the hookspec
+    # isn't registered) — the unit-test environment in tox installs only
+    # qase-tavern + pytest, not Tavern itself.
+    @pytest.hookimpl(optionalhook=True)
     def pytest_tavern_beta_before_every_request(self, request_args):
         """Mark the actual start time of the current Tavern stage.
 
@@ -45,6 +52,7 @@ class QasePytestPlugin:
         if self._tavern_stage_index < len(steps_list):
             steps_list[self._tavern_stage_index].execution.start_time = QaseUtils.get_real_time()
 
+    @pytest.hookimpl(optionalhook=True)
     def pytest_tavern_beta_after_every_response(self, expected, response):
         """Mark the actual end time of the current Tavern stage and advance."""
         if self.runtime.result is None:
