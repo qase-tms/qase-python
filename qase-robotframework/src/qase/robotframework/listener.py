@@ -527,7 +527,7 @@ class Listener:
                 step_status = "failed"  # Keep as failed for steps, main test status is handled above
             step.execution.set_status(step_status)
             step.execution.start_time = result.body[i].start_time.timestamp()
-            step.execution.duration = result.body[i].elapsed_time.microseconds
+            step.execution.duration = int(result.body[i].elapsed_time.total_seconds() * 1000)
             step.execution.end_time = result.body[i].end_time.timestamp()
 
             if hasattr(result.body[i], "body"):
