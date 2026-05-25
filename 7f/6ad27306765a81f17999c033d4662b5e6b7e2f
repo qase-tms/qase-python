@@ -1,0 +1,22 @@
+qase-robotframework/src/qase/robotframework/listener.py
+  s_6b076d61d481e0::t_cbb700ecbc2e21 530
+qase-robotframework/tests/tests_qaseio_robotframework/test_listener.py
+  s_6b076d61d481e0::t_e9ce7fbbb73b23 227-289
+  s_6b076d61d481e0::t_681fba2c31df00 7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "7f6ad27306765a81f17999c033d4662b5e6b7e2f",
+  "prompts": {},
+  "sessions": {
+    "s_6b076d61d481e0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2851970a-bb2e-4afe-a6a7-fba8ae7ef33b",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
