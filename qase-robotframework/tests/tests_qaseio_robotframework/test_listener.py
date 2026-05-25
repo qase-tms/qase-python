@@ -287,3 +287,68 @@ class TestParseStepsDuration:
 
         assert steps[0].execution.start_time == keyword.start_time.timestamp()
         assert steps[0].execution.end_time == keyword.end_time.timestamp()
+
+
+class _FakeIfBranch:
+    """Stand-in for a Robot Framework IF/ELSE branch body element."""
+
+    def __init__(self, branch_type: str, elapsed_seconds: float, body=None):
+        start = datetime(2026, 1, 1, tzinfo=timezone.utc)
+        self.type = branch_type  # "IF" / "ELSE IF" / "ELSE"
+        self.status = "PASS"
+        self.start_time = start
+        self.elapsed_time = timedelta(seconds=elapsed_seconds)
+        self.end_time = start + self.elapsed_time
+        self.body = body or []
+        self.values = ()
+
+
+class TestParseConditionStepsTiming:
+    """IF/ELSE branches must carry their RF start_time/end_time/duration.
+
+    Regression for the bug where __parse_condition_steps unconditionally
+    overwrote start_time/end_time with None, so conditional branches
+    showed up in TestOps without any timing data.
+    """
+
+    def _parse(self, listener, branches):
+        result_step = MagicMock(spec=["body"])
+        result_step.body = branches
+        return listener._Listener__parse_condition_steps(result_step)
+
+    def test_executed_if_branch_carries_real_timestamps(self):
+        listener = _bare_listener()
+        branch = _FakeIfBranch("IF", elapsed_seconds=0.053)
+
+        steps = self._parse(listener, [branch])
+
+        assert len(steps) == 1
+        assert steps[0].execution.start_time == branch.start_time.timestamp()
+        assert steps[0].execution.end_time == branch.end_time.timestamp()
+        assert steps[0].execution.duration == 53
+
+    def test_skipped_else_branch_still_gets_timestamps(self):
+        """Skipped branches have near-zero elapsed time but must still have
+        non-None start_time/end_time so the timeline shows them."""
+        listener = _bare_listener()
+        branch = _FakeIfBranch("ELSE", elapsed_seconds=0.0001)
+
+        steps = self._parse(listener, [branch])
+
+        assert steps[0].execution.start_time is not None
+        assert steps[0].execution.end_time is not None
+        assert steps[0].execution.duration == 0  # int(0.0001 * 1000) == 0
+
+    def test_else_if_chain_each_branch_keeps_timing(self):
+        listener = _bare_listener()
+        branches = [
+            _FakeIfBranch("IF", elapsed_seconds=0.0001),       # not taken
+            _FakeIfBranch("ELSE IF", elapsed_seconds=0.076),   # taken
+            _FakeIfBranch("ELSE", elapsed_seconds=0.0001),     # not taken
+        ]
+
+        steps = self._parse(listener, branches)
+
+        assert [s.execution.duration for s in steps] == [0, 76, 0]
+        assert all(s.execution.start_time is not None for s in steps)
+        assert all(s.execution.end_time is not None for s in steps)
