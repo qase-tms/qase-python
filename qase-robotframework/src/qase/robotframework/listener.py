@@ -554,8 +554,14 @@ class Listener:
             else:
                 step = Listener._create_gherkin_step_from_name(body_element)
 
-            step.execution.start_time = None
-            step.execution.end_time = None
+            start_time = getattr(body_element, "start_time", None)
+            end_time = getattr(body_element, "end_time", None)
+            elapsed = getattr(body_element, "elapsed_time", None)
+
+            step.execution.start_time = start_time.timestamp() if start_time is not None else None
+            step.execution.end_time = end_time.timestamp() if end_time is not None else None
+            if elapsed is not None:
+                step.execution.duration = int(elapsed.total_seconds() * 1000)
 
             steps.append(step)
 
