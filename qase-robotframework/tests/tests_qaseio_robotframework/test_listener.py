@@ -4,6 +4,7 @@ Only tests static/class methods that do NOT require Robot Framework runtime
 or ConfigManager/QaseCoreReporter initialization.
 """
 
+from datetime import datetime, timedelta, timezone
 from unittest.mock import patch, MagicMock
 
 import pytest
@@ -223,3 +224,66 @@ class TestStartSuiteHierarchy:
             listener.start_suite(account, MagicMock())
 
         assert listener.tests == {}
+
+
+class _FakeKeyword:
+    """Minimal Robot Framework keyword stand-in for __parse_steps.
+
+    The class name must be ``Keyword`` so listener's ``class_name == 'Keyword'``
+    branch is taken and ``elapsed_time`` is read from the real attribute.
+    """
+
+    def __init__(self, elapsed_seconds: float):
+        start = datetime(2026, 1, 1, tzinfo=timezone.utc)
+        self.type = "KEYWORD"
+        self.name = "Some Keyword"
+        self.args = ()
+        self.status = "PASS"
+        self.start_time = start
+        self.elapsed_time = timedelta(seconds=elapsed_seconds)
+        self.end_time = start + self.elapsed_time
+        self.body = []
+
+
+Keyword = _FakeKeyword  # rename so __class__.__name__ == 'Keyword' inside listener
+
+
+class TestParseStepsDuration:
+    """Step duration must be elapsed time in milliseconds.
+
+    Regression for the bug where duration was taking ``timedelta.microseconds``
+    — the residual-microseconds field (0..999999) — instead of the full
+    elapsed milliseconds, inflating sub-second durations by ~1000x.
+    """
+
+    def _parse(self, listener, body_element):
+        result = MagicMock(spec=["body", "status"])
+        result.body = [body_element]
+        result.status = "PASS"
+        return listener._Listener__parse_steps(result)
+
+    @pytest.mark.parametrize(
+        "elapsed_seconds, expected_ms",
+        [
+            (0.0015, 1),        # 1.5 ms → 1 ms after int()
+            (0.5, 500),         # half a second → 500 ms (was 500000 before the fix)
+            (2.5, 2500),        # 2.5 s → 2500 ms (was 500000: only the residual µs field)
+            (12.345, 12345),    # double-digit seconds with sub-ms tail
+        ],
+    )
+    def test_duration_is_total_elapsed_milliseconds(self, elapsed_seconds, expected_ms):
+        listener = _bare_listener()
+        steps = self._parse(listener, Keyword(elapsed_seconds))
+
+        assert len(steps) == 1
+        assert steps[0].execution.duration == expected_ms
+
+    def test_start_and_end_time_round_trip(self):
+        listener = _bare_listener()
+        elapsed = 1.234
+        keyword = Keyword(elapsed)
+
+        steps = self._parse(listener, keyword)
+
+        assert steps[0].execution.start_time == keyword.start_time.timestamp()
+        assert steps[0].execution.end_time == keyword.end_time.timestamp()
