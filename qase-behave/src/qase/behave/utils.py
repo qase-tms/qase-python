@@ -143,8 +143,17 @@ def __extract_fields(tag: str) -> dict:
         return {}
 
 
-def parse_scenario_from_json(scenario_dict: dict, feature_filename: str) -> Result:
-    """Parse a BehaveX JSON scenario dict into a Qase Result."""
+def parse_scenario_from_json(
+    scenario_dict: dict,
+    feature_filename: str,
+    time_offset: float = 0.0,
+) -> Result:
+    """Parse a BehaveX JSON scenario dict into a Qase Result.
+
+    ``time_offset`` (seconds) is added to every absolute timestamp read
+    from BehaveX so the original timeline can be replayed inside the
+    current Qase run window. See ``QaseFormatter._compute_time_offset``.
+    """
     tags = __parse_tags(scenario_dict.get('tags', []))
 
     name = scenario_dict.get('name', '')
@@ -190,11 +199,17 @@ def parse_scenario_from_json(scenario_dict: dict, feature_filename: str) -> Resu
 
     duration = scenario_dict.get('duration', 0)
     result.execution.duration = int(duration * 1000)
-    # Always calculate timestamps relative to current time.
-    # BehaveX timestamps are from before run creation and would be rejected by the API.
-    current_time = QaseUtils.get_real_time()
-    result.execution.end_time = current_time
-    result.execution.start_time = current_time - duration
+    start_ms = scenario_dict.get('start')
+    stop_ms = scenario_dict.get('stop')
+    if start_ms is not None and stop_ms is not None:
+        result.execution.start_time = (start_ms / 1000.0) + time_offset
+        result.execution.end_time = (stop_ms / 1000.0) + time_offset
+    else:
+        # Fallback when BehaveX did not record absolute timestamps:
+        # synthesise a window ending "now" with the recorded duration.
+        current_time = QaseUtils.get_real_time()
+        result.execution.end_time = current_time
+        result.execution.start_time = current_time - duration
 
     worker_id = scenario_dict.get('worker_id')
     if worker_id is not None:
@@ -216,8 +231,11 @@ def parse_scenario_from_json(scenario_dict: dict, feature_filename: str) -> Resu
     return result
 
 
-def parse_step_from_json(step_dict: dict) -> QaseStep:
-    """Parse a BehaveX JSON step dict into a Qase Step."""
+def parse_step_from_json(step_dict: dict, time_offset: float = 0.0) -> QaseStep:
+    """Parse a BehaveX JSON step dict into a Qase Step.
+
+    See ``parse_scenario_from_json`` for the ``time_offset`` contract.
+    """
     keyword = step_dict.get('step_type', 'given')
     name = step_dict.get('name', '')
     line = step_dict.get('line', 0)
@@ -242,9 +260,15 @@ def parse_step_from_json(step_dict: dict) -> QaseStep:
 
     duration = step_dict.get('duration', 0)
     model.execution.duration = int(duration * 1000)
-    current_time = QaseUtils.get_real_time()
-    model.execution.end_time = current_time
-    model.execution.start_time = current_time - duration
+    start_ms = step_dict.get('start')
+    stop_ms = step_dict.get('stop')
+    if start_ms is not None and stop_ms is not None:
+        model.execution.start_time = (start_ms / 1000.0) + time_offset
+        model.execution.end_time = (stop_ms / 1000.0) + time_offset
+    else:
+        current_time = QaseUtils.get_real_time()
+        model.execution.end_time = current_time
+        model.execution.start_time = current_time - duration
 
     return model
 

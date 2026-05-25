@@ -350,3 +350,77 @@ class TestParseStepFromJson:
         assert step.data.name == ''
         assert step.data.line == 0
         assert step.step_type == StepType.GHERKIN
+
+
+class TestBehavexAbsoluteTimestamps:
+    """When BehaveX records ``start`` / ``stop`` (unix-ms), the parsed
+    Result/Step must use those timestamps (shifted by ``time_offset``)
+    rather than synthesising a window relative to ``now()``."""
+
+    def test_scenario_uses_real_start_stop_with_offset(self):
+        # BehaveX timestamps from an old run (start=10s, stop=10.5s in unix-ms).
+        scenario_dict = {
+            'name': 'old run', 'status': 'passed', 'duration': 0.5,
+            'tags': [], 'start': 10_000, 'stop': 10_500,
+        }
+        offset = 1_000_000.0  # shift the whole timeline by 1e6 seconds
+
+        result = parse_scenario_from_json(
+            scenario_dict, 'features/x.feature', time_offset=offset
+        )
+
+        assert result.execution.start_time == 10.0 + offset
+        assert result.execution.end_time == 10.5 + offset
+        assert result.execution.duration == 500
+
+    def test_scenario_without_start_stop_falls_back_to_now(self):
+        scenario_dict = {
+            'name': 'no times', 'status': 'passed', 'duration': 0.3, 'tags': [],
+        }
+        result = parse_scenario_from_json(
+            scenario_dict, 'features/x.feature', time_offset=999.0
+        )
+
+        # No start/stop → behave like the legacy path; offset must NOT be applied.
+        assert result.execution.duration == 300
+        assert result.execution.end_time > 1_000_000  # current unix time, not 999
+        assert abs(result.execution.end_time - result.execution.start_time - 0.3) < 0.1
+
+    def test_step_uses_real_start_stop_with_offset(self):
+        step_dict = {
+            'step_type': 'when', 'name': 'press button', 'line': 1,
+            'status': 'passed', 'duration': 0.12,
+            'start': 2_000, 'stop': 2_120,
+        }
+        offset = 5_000_000.0
+        step = parse_step_from_json(step_dict, time_offset=offset)
+
+        assert step.execution.start_time == 2.0 + offset
+        assert step.execution.end_time == 2.12 + offset
+        assert step.execution.duration == 120
+
+    def test_scenarios_preserve_real_ordering_after_offset(self):
+        """Three BehaveX scenarios spaced 200 ms apart must remain spaced
+        200 ms apart after offsetting (regression for the bug that
+        collapsed all scenarios onto the same current_time)."""
+        offset = 1_000_000.0
+        scenarios = [
+            {'name': 'A', 'status': 'passed', 'duration': 0.1, 'tags': [],
+             'start': 0,   'stop': 100},
+            {'name': 'B', 'status': 'passed', 'duration': 0.2, 'tags': [],
+             'start': 200, 'stop': 400},
+            {'name': 'C', 'status': 'passed', 'duration': 0.3, 'tags': [],
+             'start': 600, 'stop': 900},
+        ]
+
+        results = [
+            parse_scenario_from_json(sc, 'features/x.feature', time_offset=offset)
+            for sc in scenarios
+        ]
+
+        starts = [r.execution.start_time for r in results]
+        ends = [r.execution.end_time for r in results]
+
+        assert ends[0] < starts[1] < ends[1] < starts[2] < ends[2]
+        assert pytest.approx(starts[1] - starts[0], abs=1e-6) == 0.2
+        assert pytest.approx(starts[2] - starts[1], abs=1e-6) == 0.4
