@@ -1,0 +1,26 @@
+qase-behave/src/qase/behave/utils.py
+  s_6b076d61d481e0::t_b156ace97f6f2a 276-286,303-313
+qase-behave/tests/test_utils.py
+  s_6b076d61d481e0::t_3d8bb641640a9a 355-405
+qase-behave/tests/test_formatter.py
+  s_6b076d61d481e0::t_3de04af1b2db91 340-399
+qase-behave/src/qase/behave/formatter.py
+  s_6b076d61d481e0::t_fd8245717a8967 29
+  s_6b076d61d481e0::t_fe7ebddde0f0c6 83-95,98-99
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "1a57247510dbaa1b84dda9c3214e9ef27b55c29e",
+  "prompts": {},
+  "sessions": {
+    "s_6b076d61d481e0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2851970a-bb2e-4afe-a6a7-fba8ae7ef33b",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
