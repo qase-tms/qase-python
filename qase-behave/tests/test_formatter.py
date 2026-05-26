@@ -337,6 +337,66 @@ class TestComputeTimeOffset:
         assert before - 1000.0 <= offset <= after - 1000.0
 
 
+class TestFormatterStepCallback:
+    """``formatter.step()`` is behave's only "right before this step runs"
+    hook from a formatter's perspective. Capturing the wall-clock at that
+    instant and passing it to parse_step is what prevents after_step hook
+    latency from leaking into the next step's absolute start_time.
+    """
+
+    def _make_formatter(self):
+        formatter = QaseFormatter()
+        formatter._behavex_mode = False  # exercise the standard path
+        formatter.reporter = MagicMock()
+        formatter._QaseFormatter__current_scenario = MagicMock()
+        formatter._QaseFormatter__current_scenario.ignore = False
+        formatter._QaseFormatter__current_scenario.steps = []
+        return formatter
+
+    def test_step_stores_start_time(self):
+        formatter = self._make_formatter()
+        formatter._QaseFormatter__current_step_start = None
+
+        formatter.step(MagicMock())
+
+        assert formatter._QaseFormatter__current_step_start is not None
+        assert formatter._QaseFormatter__current_step_start > 0
+
+    def test_result_passes_stored_start_to_parse_step(self):
+        formatter = self._make_formatter()
+        formatter._QaseFormatter__current_step_start = 12345.6
+
+        captured = {}
+
+        def fake_parse_step(step, start_time=None):
+            captured['start_time'] = start_time
+            qstep = MagicMock()
+            qstep.execution.status = 'passed'
+            return qstep
+
+        step_result = MagicMock()
+        step_result.error_message = None
+
+        with patch('qase.behave.formatter.parse_step', side_effect=fake_parse_step):
+            formatter.result(step_result)
+
+        assert captured['start_time'] == 12345.6
+        # And the slot is cleared so a subsequent step doesn't reuse it.
+        assert formatter._QaseFormatter__current_step_start is None
+
+    def test_scenario_resets_step_start(self):
+        """When a new scenario begins, any leftover step-start from the
+        previous scenario must be discarded so it can't leak across."""
+        formatter = self._make_formatter()
+        formatter._QaseFormatter__current_step_start = 42.0
+        formatter._QaseFormatter__current_scenario = None  # no prior scenario to flush
+
+        with patch('qase.behave.formatter.parse_scenario', return_value=MagicMock(ignore=False)):
+            formatter.scenario(MagicMock())
+
+        assert formatter._QaseFormatter__current_step_start is None
+
+
 class TestBehaveXWorkerMode:
     """Test QaseFormatter in BehaveX worker mode (lock file coordination)."""
 
