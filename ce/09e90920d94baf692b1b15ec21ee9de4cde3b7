@@ -1,0 +1,19 @@
+qase-behave/pyproject.toml
+  s_6b076d61d481e0::t_630f7015e6cb16 7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "ce09e90920d94baf692b1b15ec21ee9de4cde3b7",
+  "prompts": {},
+  "sessions": {
+    "s_6b076d61d481e0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2851970a-bb2e-4afe-a6a7-fba8ae7ef33b",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
