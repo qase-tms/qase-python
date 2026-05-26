@@ -281,6 +281,61 @@ class TestBehaveXPostExecution:
             if os.path.exists(lock_path):
                 os.remove(lock_path)
 
+    def test_launch_json_formatter_survives_null_background(self):
+        """Real BehaveX reports often carry ``"background": null`` for
+        scenarios without a background — ``.get('background', {})`` would
+        return None and the next ``.get('steps')`` would raise."""
+        formatter = QaseFormatter()
+        mock_reporter = MagicMock()
+        mock_reporter.start_run.return_value = "1"
+
+        json_data = {
+            "features": [{
+                "name": "F", "filename": "f.feature",
+                "scenarios": [{
+                    "name": "X", "status": "passed", "duration": 0.0,
+                    "tags": [], "filename": "f.feature", "line": 1,
+                    "steps": [],
+                    "background": None,
+                }],
+            }],
+        }
+
+        with patch('qase.behave.formatter.QaseCoreReporter', return_value=mock_reporter), \
+             patch('qase.behave.formatter.ConfigManager'):
+            formatter.launch_json_formatter(json_data)
+
+        mock_reporter.add_result.assert_called_once()
+
+
+class TestComputeTimeOffset:
+    """``_compute_time_offset`` shifts the whole BehaveX timeline so the
+    earliest scenario lands at ~"now", preserving relative timing."""
+
+    def test_no_scenarios_returns_zero(self):
+        offset = QaseFormatter._compute_time_offset({"features": []})
+        assert offset == 0.0
+
+    def test_scenarios_without_start_returns_zero(self):
+        json_data = {"features": [{"scenarios": [{"name": "x"}]}]}
+        assert QaseFormatter._compute_time_offset(json_data) == 0.0
+
+    def test_offset_lands_earliest_near_now(self):
+        from qase.commons.utils import QaseUtils
+        before = QaseUtils.get_real_time()
+        json_data = {"features": [{"scenarios": [
+            {"name": "later",   "start": 1_000_500},  # 1000.5 s
+            {"name": "earlier", "start": 1_000_000},  # 1000.0 s  ← earliest
+            {"name": "latest",  "start": 1_000_800},
+        ]}]}
+
+        offset = QaseFormatter._compute_time_offset(json_data)
+        after = QaseUtils.get_real_time()
+
+        # Earliest BehaveX ts (1000.0 s) + offset ≈ now → offset ≈ now - 1000.0.
+        # Allow for the small wall-clock window in this test.
+        assert before - 1000.0 <= offset <= after - 1000.0
+
 
 class TestBehaveXWorkerMode:
     """Test QaseFormatter in BehaveX worker mode (lock file coordination)."""

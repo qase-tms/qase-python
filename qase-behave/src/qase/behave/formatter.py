@@ -137,29 +137,57 @@ class QaseFormatter(Formatter):
         # Workers didn't run QaseFormatter — process JSON ourselves
         self.reporter.start_run()
 
+        time_offset = self._compute_time_offset(json_data)
+
         for feature in json_data.get('features', []):
             feature_filename = feature.get('filename', '')
             for scenario_dict in feature.get('scenarios', []):
-                result = parse_scenario_from_json(scenario_dict, feature_filename)
+                result = parse_scenario_from_json(
+                    scenario_dict, feature_filename, time_offset=time_offset
+                )
 
                 if result.ignore:
                     continue
 
                 # Background steps first
-                background = scenario_dict.get('background', {})
+                background = scenario_dict.get('background') or {}
                 for step_dict in background.get('steps', []):
-                    step = parse_step_from_json(step_dict)
+                    step = parse_step_from_json(step_dict, time_offset=time_offset)
                     result.steps.append(step)
 
                 # Regular steps
                 for step_dict in scenario_dict.get('steps', []):
-                    step = parse_step_from_json(step_dict)
+                    step = parse_step_from_json(step_dict, time_offset=time_offset)
                     result.steps.append(step)
 
                 self.reporter.add_result(result)
 
         self.reporter.complete_worker()
         self.reporter.complete_run()
+
+    @staticmethod
+    def _compute_time_offset(json_data) -> float:
+        """Offset added to every BehaveX scenario/step timestamp.
+
+        BehaveX records absolute timestamps from before this Qase run was
+        created, and the API rejects test results whose start_time predates
+        the run. Shift all timestamps by the same constant so the earliest
+        scenario lands at "now" — the relative ordering and durations
+        between scenarios/steps (including worker parallelism) are
+        preserved, but the whole timeline ends up inside the run window.
+        """
+        earliest_ms = None
+        for feature in json_data.get('features', []):
+            for scenario_dict in feature.get('scenarios', []):
+                sc_start = scenario_dict.get('start')
+                if sc_start is None:
+                    continue
+                if earliest_ms is None or sc_start < earliest_ms:
+                    earliest_ms = sc_start
+        if earliest_ms is None:
+            return 0.0
+        from qase.commons.utils import QaseUtils
+        return QaseUtils.get_real_time() - (earliest_ms / 1000.0)
 
     def _cleanup_lock_files(self):
         """Remove lock and run_id files."""
