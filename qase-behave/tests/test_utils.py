@@ -352,6 +352,57 @@ class TestParseStepFromJson:
         assert step.step_type == StepType.GHERKIN
 
 
+class TestParseStepRealTimeStart:
+    """parse_step must anchor timestamps to a wall-clock instant supplied
+    by the formatter, rather than deriving them from ``now() - duration``.
+
+    Regression for the standard-behave bug where ``after_step`` hook
+    latency contaminated every step's absolute start_time / end_time.
+    """
+
+    def _make_step(self, duration=0.05, status_name="passed"):
+        step = MagicMock()
+        step.keyword = "Given"
+        step.name = "a step"
+        step.line = 1
+        step.duration = duration
+        step.status.name = status_name
+        return step
+
+    def test_explicit_start_time_anchors_end_to_duration(self):
+        step = self._make_step(duration=0.05)
+
+        qstep = parse_step(step, start_time=1000.0)
+
+        assert qstep.execution.start_time == 1000.0
+        # end = start + behave's recorded duration — NOT current time.
+        assert qstep.execution.end_time == 1000.05
+        assert qstep.execution.duration == 50
+
+    def test_explicit_start_time_excludes_callback_latency(self):
+        """If the formatter captured step start at T and then 5 minutes
+        of debugger pause elapsed before result() fired, the recorded
+        end_time must still be T + duration — not T + 5 minutes."""
+        step = self._make_step(duration=0.1)
+
+        qstep = parse_step(step, start_time=500.0)
+        # Sleeping/blocking happens between formatter.step() and
+        # formatter.result() — but parse_step doesn't read the clock.
+        import time as _t
+        _t.sleep(0.01)
+
+        assert qstep.execution.end_time == 500.1
+
+    def test_fallback_to_now_minus_duration_when_no_start_time(self):
+        step = self._make_step(duration=0.2)
+
+        qstep = parse_step(step)
+
+        assert qstep.execution.duration == 200
+        assert qstep.execution.end_time > 1_000_000  # current unix time
+        assert abs(qstep.execution.end_time - qstep.execution.start_time - 0.2) < 0.05
+
+
 class TestBehavexAbsoluteTimestamps:
     """When BehaveX records ``start`` / ``stop`` (unix-ms), the parsed
     Result/Step must use those timestamps (shifted by ``time_offset``)

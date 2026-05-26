@@ -26,6 +26,7 @@ class QaseFormatter(Formatter):
         self.__already_started = False
         self.__case_ids = []
         self.__current_scenario = None
+        self.__current_step_start = None
 
         if not self._behavex_mode:
             super().__init__(stream_opener, config)
@@ -79,9 +80,23 @@ class QaseFormatter(Formatter):
         self.__current_scenario = parse_scenario(scenario)
         qase._set_current_scenario(self.__current_scenario)
         qase._set_current_step(None)
+        self.__current_step_start = None
+
+    def step(self, step):
+        """Capture the real wall-clock start of the upcoming step.
+
+        Behave calls ``formatter.step()`` immediately before executing
+        the step (after ``before_step`` hooks). Without this, parse_step
+        would later derive ``start_time = result_callback_time - duration``,
+        which absorbs any ``after_step`` hook latency into the next
+        step's absolute timestamps.
+        """
+        from qase.commons.utils import QaseUtils
+        self.__current_step_start = QaseUtils.get_real_time()
 
     def result(self, result: Step):
-        step = parse_step(result)
+        step = parse_step(result, start_time=self.__current_step_start)
+        self.__current_step_start = None
         qase._set_current_step(step)
 
         if step.execution.status != 'passed':

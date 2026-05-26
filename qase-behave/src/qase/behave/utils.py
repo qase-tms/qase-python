@@ -273,15 +273,23 @@ def parse_step_from_json(step_dict: dict, time_offset: float = 0.0) -> QaseStep:
     return model
 
 
-def parse_step(step: Step) -> QaseStep:
+def parse_step(step: Step, start_time: float = None) -> QaseStep:
+    """Build a Qase Step model from a behave step result.
+
+    ``start_time`` is the wall-clock instant captured by
+    ``QaseFormatter.step()`` just before behave handed control to the
+    step body — it excludes ``after_step`` hook latency that would
+    otherwise contaminate every subsequent step's start_time.
+
+    If no ``start_time`` is supplied (legacy callers, BehaveX JSON
+    replay) fall back to ``now - step.duration``.
+    """
     model = QaseStep(
         step_type=StepType.GHERKIN,
         id=str(uuid.uuid4()),
         data=StepGherkinData(keyword=step.keyword, name=step.name, line=step.line)
     )
 
-    current_time = QaseUtils.get_real_time()
-    
     # Map behave status to qase status
     status_mapping = {
         'passed': 'passed',
@@ -290,10 +298,18 @@ def parse_step(step: Step) -> QaseStep:
         'undefined': 'skipped',
         'pending': 'skipped'
     }
-    
     model.execution.set_status(status_mapping.get(step.status.name, 'skipped'))
-    model.execution.start_time = current_time - step.duration
     model.execution.duration = int(step.duration * 1000)
-    model.execution.end_time = current_time
+
+    if start_time is not None:
+        # Anchor to the real moment behave called formatter.step(); use
+        # behave's recorded duration for end_time so any after_step hook
+        # latency in the result() callback doesn't inflate end_time.
+        model.execution.start_time = start_time
+        model.execution.end_time = start_time + step.duration
+    else:
+        current_time = QaseUtils.get_real_time()
+        model.execution.end_time = current_time
+        model.execution.start_time = current_time - step.duration
 
     return model
