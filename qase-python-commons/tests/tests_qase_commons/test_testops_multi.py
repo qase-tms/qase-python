@@ -152,15 +152,56 @@ class TestQaseTestOpsMulti:
         mock_config = self._create_mock_config()
         mock_logger = Mock()
         mock_client = self._create_mock_client()
-        
+
         reporter = QaseTestOpsMulti(mock_config, mock_logger, mock_client)
         reporter.set_run_id("UNKNOWN_PROJ", "123")
-        
+
         # Verify warning was logged
         mock_logger.log.assert_called_once()
         call_args = mock_logger.log.call_args
         assert "Unknown project code" in call_args[0][0]
         assert "warning" in call_args[0] or call_args[1].get("level") == "warning"
+
+    def test_set_run_ids_bulk(self):
+        """set_run_ids stores int run ids for every known project at once."""
+        mock_config = self._create_mock_config()
+        mock_logger = Mock()
+        mock_client = self._create_mock_client()
+
+        reporter = QaseTestOpsMulti(mock_config, mock_logger, mock_client)
+        reporter.set_run_ids({"PROJ1": 111, "PROJ2": 222})
+
+        assert reporter.project_runs["PROJ1"] == 111
+        assert reporter.project_runs["PROJ2"] == 222
+        mock_logger.log.assert_not_called()
+
+    def test_set_run_ids_converts_strings(self):
+        """set_run_ids coerces stringified ids to int."""
+        mock_config = self._create_mock_config()
+        mock_logger = Mock()
+        mock_client = self._create_mock_client()
+
+        reporter = QaseTestOpsMulti(mock_config, mock_logger, mock_client)
+        reporter.set_run_ids({"PROJ1": "333", "PROJ2": "444"})
+
+        assert reporter.project_runs["PROJ1"] == 333
+        assert reporter.project_runs["PROJ2"] == 444
+        assert isinstance(reporter.project_runs["PROJ1"], int)
+
+    def test_set_run_ids_warns_on_unknown_project(self):
+        """set_run_ids warns about unknown codes but still applies known ones."""
+        mock_config = self._create_mock_config()
+        mock_logger = Mock()
+        mock_client = self._create_mock_client()
+
+        reporter = QaseTestOpsMulti(mock_config, mock_logger, mock_client)
+        reporter.set_run_ids({"PROJ1": 555, "UNKNOWN": 999})
+
+        assert reporter.project_runs["PROJ1"] == 555
+        assert "UNKNOWN" not in reporter.project_runs
+        warn_calls = [c for c in mock_logger.log.call_args_list
+                      if "Unknown project code" in c[0][0]]
+        assert len(warn_calls) == 1
 
     def test_add_result_with_project_mapping(self):
         """Test adding result with project mapping."""
