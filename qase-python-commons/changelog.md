@@ -1,3 +1,9 @@
+# qase-python-commons@5.1.2
+
+## What's new
+
+- Added `QaseTestOpsMulti.set_run_ids()` to seed run ids for several projects in one call, and routed `QaseCoreReporter.set_run_id()` to use it when invoked with a dict. Required for xdist workers in `testops_multi` mode, where the controller produces a `{project_code: run_id}` mapping that workers must replay locally.
+
 # qase-python-commons@5.1.1
 
 ## What's new
