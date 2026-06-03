@@ -260,10 +260,15 @@ class QaseCoreReporter:
             for profiler in self.profilers:
                 profiler.disable()
 
-    def set_run_id(self, run_id: str) -> None:
+    def set_run_id(self, run_id) -> None:
         if self.reporter:
             try:
-                self.reporter.set_run_id(run_id)
+                # Multi-project mode: run_id is a dict of project -> run_id.
+                # Dispatch to set_run_ids so each project gets seeded.
+                if isinstance(run_id, dict) and hasattr(self.reporter, 'set_run_ids'):
+                    self.reporter.set_run_ids(run_id)
+                else:
+                    self.reporter.set_run_id(run_id)
             except Exception as e:
                 # Log error and run fallback
                 self.logger.log('Failed to set run id', 'info')

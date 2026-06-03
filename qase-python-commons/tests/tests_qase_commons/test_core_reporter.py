@@ -161,6 +161,50 @@ class TestCoreReporterFallback:
         assert reporter.reporter is reporter.fallback
 
 
+class TestCoreReporterSetRunId:
+    """set_run_id dispatch between single and multi reporters."""
+
+    def _make_reporter_with_inner(self, inner):
+        """Build a QaseCoreReporter bypassing __init__ to attach any inner reporter."""
+        reporter = QaseCoreReporter.__new__(QaseCoreReporter)
+        reporter.reporter = inner
+        reporter.fallback = None
+        reporter.logger = Mock()
+        reporter.overhead = 0.0
+        return reporter
+
+    def test_dict_run_id_routes_to_set_run_ids(self):
+        """A dict run_id from xdist controller must be applied via set_run_ids."""
+        inner = Mock(spec=["set_run_ids", "set_run_id"])
+        reporter = self._make_reporter_with_inner(inner)
+
+        reporter.set_run_id({"PROJ1": 111, "PROJ2": 222})
+
+        inner.set_run_ids.assert_called_once_with({"PROJ1": 111, "PROJ2": 222})
+        inner.set_run_id.assert_not_called()
+
+    def test_scalar_run_id_routes_to_set_run_id(self):
+        """A scalar run_id keeps the single-project code path."""
+        inner = Mock(spec=["set_run_id"])
+        reporter = self._make_reporter_with_inner(inner)
+
+        reporter.set_run_id("1553")
+
+        inner.set_run_id.assert_called_once_with("1553")
+
+    def test_dict_run_id_falls_back_when_inner_has_no_set_run_ids(self):
+        """If inner reporter lacks set_run_ids, the call must not raise — caller never crashes."""
+        inner = Mock(spec=["set_run_id"])  # no set_run_ids attribute
+        inner.set_run_id.side_effect = TypeError("missing arg")
+        reporter = self._make_reporter_with_inner(inner)
+
+        # Should swallow the TypeError just like any other exception
+        reporter.set_run_id({"PROJ1": 111})
+
+        inner.set_run_id.assert_called_once()
+        reporter.logger.log.assert_any_call("Failed to set run id", "info")
+
+
 class TestCoreReporterErrorHandling:
     """TEST-03: Error classification helpers and diagnostic logging."""
 
