@@ -166,6 +166,18 @@ class QaseTestOpsMulti:
         else:
             self.logger.log(f"Unknown project code: {project_code}", "warning")
 
+    def set_run_ids(self, run_ids: Dict[str, Union[str, int]]) -> None:
+        """Set run_ids for multiple projects at once.
+
+        Used by xdist workers to seed run ids produced by the controller.
+        Unknown project codes are skipped with a warning but do not raise.
+        """
+        for project_code, run_id in run_ids.items():
+            if project_code in self.project_configs:
+                self.project_runs[project_code] = int(run_id) if isinstance(run_id, str) else run_id
+            else:
+                self.logger.log(f"Unknown project code: {project_code}", "warning")
+
     def start_run(self) -> Dict[str, int]:
         """
         Create or verify test runs for all projects.
