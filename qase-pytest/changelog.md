@@ -1,3 +1,9 @@
+# qase-pytest 8.3.1
+
+## What's fixed
+
+- Fixed `testops_multi` mode under pytest-xdist. The controller now serialises the run id map as JSON in the lock file and workers reconstruct the dict, dispatching it through `QaseCoreReporter.set_run_id()` so every project's run id is seeded in each worker. Previously workers crashed with `QaseTestOpsMulti.set_run_id() missing 1 required positional argument: 'run_id'` and all results were dropped with `No run_id for project ..., skipping send`.
+
 # qase-pytest 8.3.0
 
 ## What's new
