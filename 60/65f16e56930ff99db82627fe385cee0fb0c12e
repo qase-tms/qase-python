@@ -1,0 +1,29 @@
+qase-python-commons/src/qase/commons/reporters/testops_multi.py
+  s_04639036ce2358::t_fe26fc93867ea7 169-179
+qase-python-commons/src/qase/commons/util/token_masker.py
+  s_04639036ce2358::t_fe26fc93867ea7 1-46
+qase-python-commons/tests/tests_qase_commons/test_core_reporter.py
+  s_04639036ce2358::t_fe26fc93867ea7 164-207
+qase-python-commons/src/qase/commons/reporters/core.py
+  s_04639036ce2358::t_fe26fc93867ea7 15,72,264,267-272
+qase-python-commons/tests/tests_qase_commons/test_testops_multi.py
+  s_04639036ce2358::t_fe26fc93867ea7 155,158,165-204
+qase-python-commons/tests/tests_qase_commons/test_token_masker.py
+  s_04639036ce2358::t_fe26fc93867ea7 1-97
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "6065f16e56930ff99db82627fe385cee0fb0c12e",
+  "prompts": {},
+  "sessions": {
+    "s_04639036ce2358": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8f3d484f-3242-4e3e-a5aa-adc89e17e1d6",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
