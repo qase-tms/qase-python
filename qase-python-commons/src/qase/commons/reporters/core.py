@@ -12,6 +12,7 @@ from ..models.config.qaseconfig import Mode
 from typing import Union, List, Dict
 
 from ..util import get_host_info
+from ..util.token_masker import sanitize_config_for_log
 from ..status_mapping.status_mapping import StatusMapping
 from ..exceptions.reporter import ReporterException
 
@@ -68,7 +69,7 @@ class QaseCoreReporter:
 
         self.fallback = self._fallback_setup()
 
-        self.logger.log_debug(f"Config: {self.config}")
+        self.logger.log_debug(f"Config: {sanitize_config_for_log(self.config)}")
 
         host_data = get_host_info(framework, reporter_name)
         self.logger.log_debug(f"Host data: {host_data}")
@@ -260,10 +261,15 @@ class QaseCoreReporter:
             for profiler in self.profilers:
                 profiler.disable()
 
-    def set_run_id(self, run_id: str) -> None:
+    def set_run_id(self, run_id) -> None:
         if self.reporter:
             try:
-                self.reporter.set_run_id(run_id)
+                # Multi-project mode: run_id is a dict of project -> run_id.
+                # Dispatch to set_run_ids so each project gets seeded.
+                if isinstance(run_id, dict) and hasattr(self.reporter, 'set_run_ids'):
+                    self.reporter.set_run_ids(run_id)
+                else:
+                    self.reporter.set_run_id(run_id)
             except Exception as e:
                 # Log error and run fallback
                 self.logger.log('Failed to set run id', 'info')
