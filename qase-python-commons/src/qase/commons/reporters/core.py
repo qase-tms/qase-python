@@ -12,6 +12,7 @@ from ..models.config.qaseconfig import Mode
 from typing import Union, List, Dict
 
 from ..util import get_host_info
+from ..util.token_masker import sanitize_config_for_log
 from ..status_mapping.status_mapping import StatusMapping
 from ..exceptions.reporter import ReporterException
 
@@ -68,7 +69,7 @@ class QaseCoreReporter:
 
         self.fallback = self._fallback_setup()
 
-        self.logger.log_debug(f"Config: {self.config}")
+        self.logger.log_debug(f"Config: {sanitize_config_for_log(self.config)}")
 
         host_data = get_host_info(framework, reporter_name)
         self.logger.log_debug(f"Host data: {host_data}")

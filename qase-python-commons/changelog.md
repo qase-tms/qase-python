@@ -3,6 +3,7 @@
 ## What's new
 
 - Added `QaseTestOpsMulti.set_run_ids()` to seed run ids for several projects in one call, and routed `QaseCoreReporter.set_run_id()` to use it when invoked with a dict. Required for xdist workers in `testops_multi` mode, where the controller produces a `{project_code: run_id}` mapping that workers must replay locally.
+- Masked the API token in the debug config dump. `QaseCoreReporter` now logs the config through `sanitize_config_for_log`, which keeps the first three and last four characters of `testops.api.token` and replaces the middle with `****`. Tokens of 7 chars or fewer are fully replaced. Mirrors the `token-masker` contract used in `qase-javascript-commons`.
 
 # qase-python-commons@5.1.1
 
