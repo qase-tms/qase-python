@@ -1,0 +1,33 @@
+qase-pytest/tests/tests_qase_pytest/test_plugin.py
+  s_04639036ce2358::t_f7995b2a44c5bf 9-11
+  s_04639036ce2358::t_b22d73a0127659 371-372,382-383
+  s_04639036ce2358::t_131a85f7b884ee 351-370,373-381,384-417
+qase-python-commons/tests/tests_qase_commons/test_testops_multi.py
+  s_04639036ce2358::t_7987f0ea02620f 155,158,165-204
+qase-python-commons/src/qase/commons/reporters/testops_multi.py
+  s_04639036ce2358::t_50fea8921c1987 169-179
+qase-python-commons/src/qase/commons/reporters/core.py
+  s_04639036ce2358::t_221a9db16d7764 263,266-271
+qase-python-commons/tests/tests_qase_commons/test_core_reporter.py
+  s_04639036ce2358::t_c4a5dbebb13152 164-207
+qase-pytest/src/qase/pytest/plugin.py
+  s_04639036ce2358::t_0144a86c7ac45f 1
+  s_04639036ce2358::t_7b5b55ddf25581 357-369
+  s_04639036ce2358::t_f747eddfdf61c0 117-119
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "b151a197db9852743e592824919a091a34d44e38",
+  "prompts": {},
+  "sessions": {
+    "s_04639036ce2358": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8f3d484f-3242-4e3e-a5aa-adc89e17e1d6",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
