@@ -48,6 +48,25 @@ jobs:
         run: |
           cutoff=$(date -u -d '3 days ago' +%Y-%m-%dT%H:%M:%SZ)
           echo "PIP_UPLOADED_PRIOR_TO=$cutoff" >> "$GITHUB_ENV"
+      - name: Prefetch first-party qase-* releases (cutoff-exempt)
+        if: steps.filter.outputs.changes == 'true'
+        # qase-* packages are released from this repo's own pipeline, so the
+        # 3-day quarantine that guards against external supply-chain attacks
+        # does not need to apply to them. Otherwise a cross-package PR that
+        # depends on a freshly-published qase-python-commons cannot pass CI
+        # until the cutoff window rolls past, blocking releases for 3 days.
+        # Download them with the cutoff disabled into a find-links cache;
+        # PIP_UPLOADED_PRIOR_TO does not filter wheels resolved via
+        # --find-links (the flag inspects PyPI metadata, which local wheels
+        # do not carry). Subsequent pip invocations - including those tox
+        # spawns inside its venv - pick up PIP_FIND_LINKS via the
+        # environment.
+        run: |
+          mkdir -p /tmp/qase-wheel-cache
+          env -u PIP_UPLOADED_PRIOR_TO python -m pip download \
+            --no-deps --dest /tmp/qase-wheel-cache \
+            qase-python-commons qase-api-client qase-api-v2-client
+          echo "PIP_FIND_LINKS=/tmp/qase-wheel-cache" >> "$GITHUB_ENV"
       - name: Install dependencies
         if: steps.filter.outputs.changes == 'true'
         run: |

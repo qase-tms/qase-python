@@ -1,3 +1,4 @@
+import json
 import os
 import re
 from typing import Tuple, Union, List
@@ -113,7 +114,9 @@ class QasePytestPlugin:
             with FileLock("qase.lock"):
                 if self.run_id:
                     with open(self.meta_run_file, "w") as lock_file:
-                        lock_file.write(str(self.run_id))
+                        # JSON keeps the dict shape used by testops_multi mode
+                        # intact across the xdist controller -> worker boundary.
+                        lock_file.write(json.dumps(self.run_id))
         else:
             self.load_run_from_lock()
 
@@ -351,11 +354,19 @@ class QasePytestPlugin:
     def load_run_from_lock(self):
         if os.path.exists(QasePytestPlugin.meta_run_file):
             with open(QasePytestPlugin.meta_run_file, "r") as lock_file:
-                try:
-                    self.run_id = str(lock_file.read())
-                    self.reporter.set_run_id(self.run_id)
-                except ValueError:
-                    pass
+                raw = lock_file.read()
+            try:
+                parsed = json.loads(raw)
+            except json.JSONDecodeError:
+                parsed = raw
+            if isinstance(parsed, dict):
+                self.run_id = parsed
+            else:
+                self.run_id = str(parsed)
+            try:
+                self.reporter.set_run_id(self.run_id)
+            except ValueError:
+                pass
         else:
             self.run_id = self.reporter.start_run()
 

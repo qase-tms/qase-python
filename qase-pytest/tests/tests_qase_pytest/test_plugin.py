@@ -6,6 +6,9 @@ qase_muted, qase_project_id), graceful fallback behavior, and
 singleton lifecycle.
 """
 
+import json
+import os
+
 import pytest
 from unittest.mock import MagicMock, PropertyMock, patch, call
 
@@ -343,6 +346,73 @@ class TestAttachLogsOnSetupFailure:
         with patch.object(plugin, '_attach_logs') as mock_attach:
             run_makereport(plugin, item, call_obj, report)
             mock_attach.assert_not_called()
+
+
+class TestXdistRunIdRoundtrip:
+    """xdist controller -> worker handoff of run_id via lock file.
+
+    Regression for testops_multi + xdist where the worker crashed with
+    ``set_run_id() missing 1 required positional argument`` because the
+    controller wrote ``str(dict)`` into the lock file.
+    """
+
+    @pytest.fixture
+    def isolated_lock_file(self, tmp_path, monkeypatch):
+        """Redirect meta_run_file to a tmp path so tests don't touch repo CWD."""
+        lock_path = tmp_path / "src.run"
+        monkeypatch.setattr(QasePytestPlugin, "meta_run_file", str(lock_path))
+        monkeypatch.chdir(tmp_path)  # FileLock writes qase.lock in cwd
+        return lock_path
+
+    def test_controller_writes_dict_run_id_as_json(self, isolated_lock_file):
+        plugin = make_plugin()
+        plugin.reporter.start_run.return_value = {"DW": 1553, "PROJ2": 42}
+
+        with patch("qase.pytest.plugin.is_xdist_controller", return_value=True):
+            plugin.pytest_sessionstart(session=MagicMock())
+
+        contents = isolated_lock_file.read_text()
+        assert json.loads(contents) == {"DW": 1553, "PROJ2": 42}
+
+    def test_controller_writes_scalar_run_id_as_json(self, isolated_lock_file):
+        """Single-project mode still produces a parseable scalar lock file."""
+        plugin = make_plugin()
+        plugin.reporter.start_run.return_value = 1553
+
+        with patch("qase.pytest.plugin.is_xdist_controller", return_value=True):
+            plugin.pytest_sessionstart(session=MagicMock())
+
+        assert json.loads(isolated_lock_file.read_text()) == 1553
+
+    def test_worker_loads_dict_run_id_and_seeds_reporter(self, isolated_lock_file):
+        """Worker reads dict lock file and forwards the dict to the reporter."""
+        isolated_lock_file.write_text(json.dumps({"DW": 1553, "PROJ2": 42}))
+        plugin = make_plugin()
+
+        plugin.load_run_from_lock()
+
+        assert plugin.run_id == {"DW": 1553, "PROJ2": 42}
+        plugin.reporter.set_run_id.assert_called_once_with({"DW": 1553, "PROJ2": 42})
+
+    def test_worker_loads_scalar_run_id_as_string(self, isolated_lock_file):
+        """Single-project workers receive the run_id as a string (legacy contract)."""
+        isolated_lock_file.write_text(json.dumps(1553))
+        plugin = make_plugin()
+
+        plugin.load_run_from_lock()
+
+        assert plugin.run_id == "1553"
+        plugin.reporter.set_run_id.assert_called_once_with("1553")
+
+    def test_worker_tolerates_legacy_non_json_lock_file(self, isolated_lock_file):
+        """A pre-existing plain numeric lock file (legacy format) still loads."""
+        isolated_lock_file.write_text("1553")
+        plugin = make_plugin()
+
+        plugin.load_run_from_lock()
+
+        assert plugin.run_id == "1553"
+        plugin.reporter.set_run_id.assert_called_once_with("1553")
 
 
 class TestSetTags:
