@@ -47,7 +47,9 @@ class TestCase(BaseModel):
     layer: Optional[StrictInt] = None
     is_flaky: Optional[StrictInt] = None
     behavior: Optional[StrictInt] = None
-    automation: Optional[StrictInt] = None
+    automation: Optional[StrictInt] = Field(default=None, description="Deprecated, use `isManual` and `isToBeAutomated` instead. Encodes the test case automation state as a single integer: `0` = manual, `1` = manual planned to be automated, `2` = automated.")
+    is_manual: Optional[StrictInt] = Field(default=None, description="`1` if the case is manual, `0` if it is automated. Combined with `isToBeAutomated`, replaces the deprecated `automation` field.", alias="isManual")
+    is_to_be_automated: Optional[StrictInt] = Field(default=None, description="`1` if a manual case is planned to be automated, `0` otherwise. Only meaningful when `isManual = 1`; ignored when `isManual = 0`.", alias="isToBeAutomated")
     status: Optional[StrictInt] = None
     milestone_id: Optional[StrictInt] = None
     suite_id: Optional[StrictInt] = None
@@ -66,7 +68,7 @@ class TestCase(BaseModel):
     created: Optional[StrictStr] = Field(default=None, description="Deprecated, use the `created_at` property instead.")
     updated: Optional[StrictStr] = Field(default=None, description="Deprecated, use the `updated_at` property instead.")
     external_issues: Optional[List[ExternalIssue]] = None
-    __properties: ClassVar[List[str]] = ["id", "position", "title", "description", "preconditions", "postconditions", "severity", "priority", "type", "layer", "is_flaky", "behavior", "automation", "status", "milestone_id", "suite_id", "custom_fields", "attachments", "steps_type", "steps", "params", "parameters", "tags", "member_id", "author_id", "created_at", "updated_at", "deleted", "created", "updated", "external_issues"]
+    __properties: ClassVar[List[str]] = ["id", "position", "title", "description", "preconditions", "postconditions", "severity", "priority", "type", "layer", "is_flaky", "behavior", "automation", "isManual", "isToBeAutomated", "status", "milestone_id", "suite_id", "custom_fields", "attachments", "steps_type", "steps", "params", "parameters", "tags", "member_id", "author_id", "created_at", "updated_at", "deleted", "created", "updated", "external_issues"]
 
     @field_validator('steps_type')
     def steps_type_validate_enum(cls, value):
@@ -222,6 +224,8 @@ class TestCase(BaseModel):
             "is_flaky": obj.get("is_flaky"),
             "behavior": obj.get("behavior"),
             "automation": obj.get("automation"),
+            "isManual": obj.get("isManual"),
+            "isToBeAutomated": obj.get("isToBeAutomated"),
             "status": obj.get("status"),
             "milestone_id": obj.get("milestone_id"),
             "suite_id": obj.get("suite_id"),
