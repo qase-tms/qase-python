@@ -42,7 +42,9 @@ class TestCaseUpdate(BaseModel):
     is_flaky: Optional[StrictInt] = None
     suite_id: Optional[StrictInt] = None
     milestone_id: Optional[StrictInt] = None
-    automation: Optional[StrictInt] = None
+    automation: Optional[StrictInt] = Field(default=None, description="Deprecated, use `isManual` and `isToBeAutomated` instead. Encodes the test case automation state as a single integer: `0` = manual, `1` = manual planned to be automated, `2` = automated. If both `automation` and `isManual`/`isToBeAutomated` are provided, `isManual` and `isToBeAutomated` take precedence.")
+    is_manual: Optional[StrictInt] = Field(default=None, description="`1` if the case is manual, `0` if it is automated. Combined with `isToBeAutomated`, replaces the deprecated `automation` field.", alias="isManual")
+    is_to_be_automated: Optional[StrictInt] = Field(default=None, description="`1` if a manual case is planned to be automated, `0` otherwise. Only meaningful when `isManual = 1`; ignored when `isManual = 0`.", alias="isToBeAutomated")
     status: Optional[StrictInt] = None
     steps_type: Optional[StrictStr] = Field(default='classic', description="Determines the format of the steps field. When \"classic\", steps use the standard action/expected_result/data format. When \"gherkin\", steps use the {value: \"Given...\\nWhen...\\nThen...\"} format.")
     attachments: Optional[List[StrictStr]] = Field(default=None, description="A list of Attachment hashes.")
@@ -50,8 +52,8 @@ class TestCaseUpdate(BaseModel):
     tags: Optional[List[StrictStr]] = None
     params: Optional[Dict[str, List[StrictStr]]] = Field(default=None, description="Deprecated, use `parameters` instead.")
     parameters: Optional[List[TestCaseParameterCreate]] = None
-    custom_field: Optional[Dict[str, StrictStr]] = Field(default=None, description="A map of custom fields values (id => value)")
-    __properties: ClassVar[List[str]] = ["description", "preconditions", "postconditions", "title", "severity", "priority", "behavior", "type", "layer", "is_flaky", "suite_id", "milestone_id", "automation", "status", "steps_type", "attachments", "steps", "tags", "params", "parameters", "custom_field"]
+    custom_field: Optional[Dict[str, StrictStr]] = Field(default=None, description="Custom field values keyed by the field's project-scoped `internal_id` (see `GET /custom_field`). Values are always **scalar strings**; arrays, objects or non-scalars are rejected.  | Field type           | Value format                              | Example                 | |----------------------|-------------------------------------------|-------------------------| | `string`, `text`     | Plain string                              | `\"hello\"`               | | `number`             | Numeric string                            | `\"42\"`                  | | `url`                | Valid URL                                 | `\"https://qase.io\"`     | | `datetime`           | Absolute date (ISO 8601 recommended)      | `\"2026-04-29T15:00:00Z\"`| | `selectbox`, `radio` | Option `id` as string                     | `\"1\"`                   | | `multiselect`        | Comma-separated option `id`s (no spaces)  | `\"1,2,3\"`               | | `checkbox`           | `\"1\"` to check, `\"\"` to uncheck           | `\"1\"`                   | | `user`               | Team member `internal_id` as string       | `\"42\"`                  |  Partial update: only fields present in the payload are validated; required fields not included are not enforced. Send `\"\"` to clear a value. Unknown `internal_id`s are rejected; option-based values must reference an existing option.  Note: a `required` checkbox without a default cannot be unchecked via the API — set a default or clear `required` in workspace settings. ")
+    __properties: ClassVar[List[str]] = ["description", "preconditions", "postconditions", "title", "severity", "priority", "behavior", "type", "layer", "is_flaky", "suite_id", "milestone_id", "automation", "isManual", "isToBeAutomated", "status", "steps_type", "attachments", "steps", "tags", "params", "parameters", "custom_field"]
 
     @field_validator('steps_type')
     def steps_type_validate_enum(cls, value):
@@ -151,6 +153,8 @@ class TestCaseUpdate(BaseModel):
             "suite_id": obj.get("suite_id"),
             "milestone_id": obj.get("milestone_id"),
             "automation": obj.get("automation"),
+            "isManual": obj.get("isManual"),
+            "isToBeAutomated": obj.get("isToBeAutomated"),
             "status": obj.get("status"),
             "steps_type": obj.get("steps_type") if obj.get("steps_type") is not None else 'classic',
             "attachments": obj.get("attachments"),
