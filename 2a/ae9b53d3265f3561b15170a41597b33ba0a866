@@ -1,0 +1,19 @@
+qase-api-client/pyproject.toml
+  s_db4449b556d9c4::t_551c5105d03ea0 7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "2aae9b53d3265f3561b15170a41597b33ba0a866",
+  "prompts": {},
+  "sessions": {
+    "s_db4449b556d9c4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a06810e2-9716-4157-80e5-a0d6f84ece52",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
