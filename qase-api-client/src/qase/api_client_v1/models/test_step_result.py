@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt
+from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from qase.api_client_v1.models.attachment import Attachment
 from typing import Optional, Set
@@ -30,9 +30,13 @@ class TestStepResult(BaseModel):
     """ # noqa: E501
     status: Optional[StrictInt] = Field(default=None, description="1 - passed, 2 - failed, 3 - blocked, 5 - skipped, 7 - in_progress")
     position: Optional[StrictInt] = None
+    comment: Optional[StrictStr] = Field(default=None, description="Comment left for the step.")
+    start_time: Optional[StrictInt] = Field(default=None, description="Unix timestamp of the step start time.")
+    end_time: Optional[StrictInt] = Field(default=None, description="Unix timestamp of the step end time.")
+    duration_ms: Optional[StrictInt] = Field(default=None, description="Step duration in milliseconds.")
     attachments: Optional[List[Attachment]] = None
-    steps: Optional[List[Dict[str, Any]]] = Field(default=None, description="Nested steps results will be here. The same structure is used for them for them.")
-    __properties: ClassVar[List[str]] = ["status", "position", "attachments", "steps"]
+    steps: Optional[List[TestStepResult]] = Field(default=None, description="Nested steps results will be here. The same structure is used for them.")
+    __properties: ClassVar[List[str]] = ["status", "position", "comment", "start_time", "end_time", "duration_ms", "attachments", "steps"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -80,6 +84,28 @@ class TestStepResult(BaseModel):
                 if _item_attachments:
                     _items.append(_item_attachments.to_dict())
             _dict['attachments'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in steps (list)
+        _items = []
+        if self.steps:
+            for _item_steps in self.steps:
+                if _item_steps:
+                    _items.append(_item_steps.to_dict())
+            _dict['steps'] = _items
+        # set to None if start_time (nullable) is None
+        # and model_fields_set contains the field
+        if self.start_time is None and "start_time" in self.model_fields_set:
+            _dict['start_time'] = None
+
+        # set to None if end_time (nullable) is None
+        # and model_fields_set contains the field
+        if self.end_time is None and "end_time" in self.model_fields_set:
+            _dict['end_time'] = None
+
+        # set to None if duration_ms (nullable) is None
+        # and model_fields_set contains the field
+        if self.duration_ms is None and "duration_ms" in self.model_fields_set:
+            _dict['duration_ms'] = None
+
         return _dict
 
     @classmethod
@@ -94,9 +120,15 @@ class TestStepResult(BaseModel):
         _obj = cls.model_validate({
             "status": obj.get("status"),
             "position": obj.get("position"),
+            "comment": obj.get("comment"),
+            "start_time": obj.get("start_time"),
+            "end_time": obj.get("end_time"),
+            "duration_ms": obj.get("duration_ms"),
             "attachments": [Attachment.from_dict(_item) for _item in obj["attachments"]] if obj.get("attachments") is not None else None,
-            "steps": obj.get("steps")
+            "steps": [TestStepResult.from_dict(_item) for _item in obj["steps"]] if obj.get("steps") is not None else None
         })
         return _obj
 
+# TODO: Rewrite to not use raise_errors
+TestStepResult.model_rebuild(raise_errors=False)
 

@@ -7,8 +7,12 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **status** | **int** | 1 - passed, 2 - failed, 3 - blocked, 5 - skipped, 7 - in_progress | [optional] 
 **position** | **int** |  | [optional] 
+**comment** | **str** | Comment left for the step. | [optional] 
+**start_time** | **int** | Unix timestamp of the step start time. | [optional] 
+**end_time** | **int** | Unix timestamp of the step end time. | [optional] 
+**duration_ms** | **int** | Step duration in milliseconds. | [optional] 
 **attachments** | [**List[Attachment]**](Attachment.md) |  | [optional] 
-**steps** | **List[object]** | Nested steps results will be here. The same structure is used for them for them. | [optional] 
+**steps** | [**List[TestStepResult]**](TestStepResult.md) | Nested steps results will be here. The same structure is used for them. | [optional] 
 
 ## Example
 
