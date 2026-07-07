@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from qase.api_client_v1.models.test_case_parameter_create import TestCaseParameterCreate
@@ -43,8 +43,8 @@ class TestCasebulkCasesInner(BaseModel):
     suite_id: Optional[StrictInt] = None
     milestone_id: Optional[StrictInt] = None
     automation: Optional[StrictInt] = Field(default=None, description="Deprecated, use `isManual` and `isToBeAutomated` instead. Encodes the test case automation state as a single integer: `0` = manual, `1` = manual planned to be automated, `2` = automated. If both `automation` and `isManual`/`isToBeAutomated` are provided, `isManual` and `isToBeAutomated` take precedence.")
-    is_manual: Optional[StrictInt] = Field(default=None, description="`1` if the case is manual, `0` if it is automated. Combined with `isToBeAutomated`, replaces the deprecated `automation` field.", alias="isManual")
-    is_to_be_automated: Optional[StrictInt] = Field(default=None, description="`1` if a manual case is planned to be automated, `0` otherwise. Only meaningful when `isManual = 1`; ignored when `isManual = 0`.", alias="isToBeAutomated")
+    is_manual: Optional[StrictBool] = Field(default=None, description="`true` if the case is manual, `false` if it is automated. Combined with `isToBeAutomated`, replaces the deprecated `automation` field.", alias="isManual")
+    is_to_be_automated: Optional[StrictBool] = Field(default=None, description="`true` if a manual case is planned to be automated, `false` otherwise. Only meaningful when `isManual` is `true`; ignored when `isManual` is `false`.", alias="isToBeAutomated")
     status: Optional[StrictInt] = None
     steps_type: Optional[StrictStr] = Field(default='classic', description="Determines the format of the steps field. When \"classic\", steps use the standard action/expected_result/data format. When \"gherkin\", steps use the {value: \"Given...\\nWhen...\\nThen...\"} format.")
     attachments: Optional[List[StrictStr]] = Field(default=None, description="A list of Attachment hashes.")
