@@ -1,0 +1,35 @@
+qase-api-client/docs/TestCase.md
+  s_9949356bb8136a::t_824575712de8ca 21-22
+qase-api-client/docs/TestCaseCreate.md
+  s_9949356bb8136a::t_99d011c3dfa7bc 21-22
+qase-api-client/docs/TestCaseUpdate.md
+  s_9949356bb8136a::t_5dd5cad1c32c2a 21-22
+qase-api-client/docs/TestCasebulkCasesInner.md
+  s_9949356bb8136a::t_2c3a49958fde25 21-22
+qase-api-client/pyproject.toml
+  s_9949356bb8136a::t_fc949eea5f172c 7
+qase-api-client/src/qase/api_client_v1/models/test_case.py
+  s_9949356bb8136a::t_7c1d4c35663551 22,51-52
+qase-api-client/src/qase/api_client_v1/models/test_case_create.py
+  s_9949356bb8136a::t_1aa6672f6bc0f9 21,46-47
+qase-api-client/src/qase/api_client_v1/models/test_case_update.py
+  s_9949356bb8136a::t_51bd94690ef880 21,46-47
+qase-api-client/src/qase/api_client_v1/models/test_casebulk_cases_inner.py
+  s_9949356bb8136a::t_5cde43e768a6d2 21,46-47
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "a01137696f7d652a4928af64972a7884561a8972",
+  "prompts": {},
+  "sessions": {
+    "s_9949356bb8136a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9373579e-1e0e-4b20-a586-4931f56494e8",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
