@@ -1889,10 +1889,10 @@ class CasesApi:
         suite_id: Annotated[Optional[StrictInt], Field(description="ID of test suite.")] = None,
         severity: Annotated[Optional[StrictStr], Field(description="A list of severity values separated by comma. Possible values: undefined, blocker, critical, major, normal, minor, trivial ")] = None,
         priority: Annotated[Optional[StrictStr], Field(description="A list of priority values separated by comma. Possible values: undefined, high, medium, low ")] = None,
-        type: Annotated[Optional[StrictStr], Field(description="A list of type values separated by comma. Possible values: other, functional smoke, regression, security, usability, performance, acceptance ")] = None,
-        behavior: Annotated[Optional[StrictStr], Field(description="A list of behavior values separated by comma. Possible values: undefined, positive negative, destructive ")] = None,
-        automation: Annotated[Optional[StrictStr], Field(description="A list of values separated by comma. Possible values: is-not-automated, automated to-be-automated ")] = None,
-        status: Annotated[Optional[StrictStr], Field(description="A list of values separated by comma. Possible values: actual, draft deprecated ")] = None,
+        type: Annotated[Optional[StrictStr], Field(description="A list of type values separated by comma. Possible values: other, functional, smoke, regression, security, usability, performance, acceptance ")] = None,
+        behavior: Annotated[Optional[StrictStr], Field(description="A list of behavior values separated by comma. Possible values: undefined, positive, negative, destructive ")] = None,
+        automation: Annotated[Optional[StrictStr], Field(description="A list of values separated by comma. Possible values: is-not-automated, automated, to-be-automated ")] = None,
+        status: Annotated[Optional[StrictStr], Field(description="A list of values separated by comma. Possible values: actual, draft, deprecated ")] = None,
         external_issues_type: Annotated[Optional[StrictStr], Field(description="An integration type. ")] = None,
         external_issues_ids: Annotated[Optional[List[StrictStr]], Field(description="A list of issue IDs.")] = None,
         include: Annotated[Optional[StrictStr], Field(description="A list of entities to include in response separated by comma. Possible values: external_issues. ")] = None,
@@ -1927,13 +1927,13 @@ class CasesApi:
         :type severity: str
         :param priority: A list of priority values separated by comma. Possible values: undefined, high, medium, low 
         :type priority: str
-        :param type: A list of type values separated by comma. Possible values: other, functional smoke, regression, security, usability, performance, acceptance 
+        :param type: A list of type values separated by comma. Possible values: other, functional, smoke, regression, security, usability, performance, acceptance 
         :type type: str
-        :param behavior: A list of behavior values separated by comma. Possible values: undefined, positive negative, destructive 
+        :param behavior: A list of behavior values separated by comma. Possible values: undefined, positive, negative, destructive 
         :type behavior: str
-        :param automation: A list of values separated by comma. Possible values: is-not-automated, automated to-be-automated 
+        :param automation: A list of values separated by comma. Possible values: is-not-automated, automated, to-be-automated 
         :type automation: str
-        :param status: A list of values separated by comma. Possible values: actual, draft deprecated 
+        :param status: A list of values separated by comma. Possible values: actual, draft, deprecated 
         :type status: str
         :param external_issues_type: An integration type. 
         :type external_issues_type: str
@@ -2018,10 +2018,10 @@ class CasesApi:
         suite_id: Annotated[Optional[StrictInt], Field(description="ID of test suite.")] = None,
         severity: Annotated[Optional[StrictStr], Field(description="A list of severity values separated by comma. Possible values: undefined, blocker, critical, major, normal, minor, trivial ")] = None,
         priority: Annotated[Optional[StrictStr], Field(description="A list of priority values separated by comma. Possible values: undefined, high, medium, low ")] = None,
-        type: Annotated[Optional[StrictStr], Field(description="A list of type values separated by comma. Possible values: other, functional smoke, regression, security, usability, performance, acceptance ")] = None,
-        behavior: Annotated[Optional[StrictStr], Field(description="A list of behavior values separated by comma. Possible values: undefined, positive negative, destructive ")] = None,
-        automation: Annotated[Optional[StrictStr], Field(description="A list of values separated by comma. Possible values: is-not-automated, automated to-be-automated ")] = None,
-        status: Annotated[Optional[StrictStr], Field(description="A list of values separated by comma. Possible values: actual, draft deprecated ")] = None,
+        type: Annotated[Optional[StrictStr], Field(description="A list of type values separated by comma. Possible values: other, functional, smoke, regression, security, usability, performance, acceptance ")] = None,
+        behavior: Annotated[Optional[StrictStr], Field(description="A list of behavior values separated by comma. Possible values: undefined, positive, negative, destructive ")] = None,
+        automation: Annotated[Optional[StrictStr], Field(description="A list of values separated by comma. Possible values: is-not-automated, automated, to-be-automated ")] = None,
+        status: Annotated[Optional[StrictStr], Field(description="A list of values separated by comma. Possible values: actual, draft, deprecated ")] = None,
         external_issues_type: Annotated[Optional[StrictStr], Field(description="An integration type. ")] = None,
         external_issues_ids: Annotated[Optional[List[StrictStr]], Field(description="A list of issue IDs.")] = None,
         include: Annotated[Optional[StrictStr], Field(description="A list of entities to include in response separated by comma. Possible values: external_issues. ")] = None,
@@ -2056,13 +2056,13 @@ class CasesApi:
         :type severity: str
         :param priority: A list of priority values separated by comma. Possible values: undefined, high, medium, low 
         :type priority: str
-        :param type: A list of type values separated by comma. Possible values: other, functional smoke, regression, security, usability, performance, acceptance 
+        :param type: A list of type values separated by comma. Possible values: other, functional, smoke, regression, security, usability, performance, acceptance 
         :type type: str
-        :param behavior: A list of behavior values separated by comma. Possible values: undefined, positive negative, destructive 
+        :param behavior: A list of behavior values separated by comma. Possible values: undefined, positive, negative, destructive 
         :type behavior: str
-        :param automation: A list of values separated by comma. Possible values: is-not-automated, automated to-be-automated 
+        :param automation: A list of values separated by comma. Possible values: is-not-automated, automated, to-be-automated 
         :type automation: str
-        :param status: A list of values separated by comma. Possible values: actual, draft deprecated 
+        :param status: A list of values separated by comma. Possible values: actual, draft, deprecated 
         :type status: str
         :param external_issues_type: An integration type. 
         :type external_issues_type: str
@@ -2147,10 +2147,10 @@ class CasesApi:
         suite_id: Annotated[Optional[StrictInt], Field(description="ID of test suite.")] = None,
         severity: Annotated[Optional[StrictStr], Field(description="A list of severity values separated by comma. Possible values: undefined, blocker, critical, major, normal, minor, trivial ")] = None,
         priority: Annotated[Optional[StrictStr], Field(description="A list of priority values separated by comma. Possible values: undefined, high, medium, low ")] = None,
-        type: Annotated[Optional[StrictStr], Field(description="A list of type values separated by comma. Possible values: other, functional smoke, regression, security, usability, performance, acceptance ")] = None,
-        behavior: Annotated[Optional[StrictStr], Field(description="A list of behavior values separated by comma. Possible values: undefined, positive negative, destructive ")] = None,
-        automation: Annotated[Optional[StrictStr], Field(description="A list of values separated by comma. Possible values: is-not-automated, automated to-be-automated ")] = None,
-        status: Annotated[Optional[StrictStr], Field(description="A list of values separated by comma. Possible values: actual, draft deprecated ")] = None,
+        type: Annotated[Optional[StrictStr], Field(description="A list of type values separated by comma. Possible values: other, functional, smoke, regression, security, usability, performance, acceptance ")] = None,
+        behavior: Annotated[Optional[StrictStr], Field(description="A list of behavior values separated by comma. Possible values: undefined, positive, negative, destructive ")] = None,
+        automation: Annotated[Optional[StrictStr], Field(description="A list of values separated by comma. Possible values: is-not-automated, automated, to-be-automated ")] = None,
+        status: Annotated[Optional[StrictStr], Field(description="A list of values separated by comma. Possible values: actual, draft, deprecated ")] = None,
         external_issues_type: Annotated[Optional[StrictStr], Field(description="An integration type. ")] = None,
         external_issues_ids: Annotated[Optional[List[StrictStr]], Field(description="A list of issue IDs.")] = None,
         include: Annotated[Optional[StrictStr], Field(description="A list of entities to include in response separated by comma. Possible values: external_issues. ")] = None,
@@ -2185,13 +2185,13 @@ class CasesApi:
         :type severity: str
         :param priority: A list of priority values separated by comma. Possible values: undefined, high, medium, low 
         :type priority: str
-        :param type: A list of type values separated by comma. Possible values: other, functional smoke, regression, security, usability, performance, acceptance 
+        :param type: A list of type values separated by comma. Possible values: other, functional, smoke, regression, security, usability, performance, acceptance 
         :type type: str
-        :param behavior: A list of behavior values separated by comma. Possible values: undefined, positive negative, destructive 
+        :param behavior: A list of behavior values separated by comma. Possible values: undefined, positive, negative, destructive 
         :type behavior: str
-        :param automation: A list of values separated by comma. Possible values: is-not-automated, automated to-be-automated 
+        :param automation: A list of values separated by comma. Possible values: is-not-automated, automated, to-be-automated 
         :type automation: str
-        :param status: A list of values separated by comma. Possible values: actual, draft deprecated 
+        :param status: A list of values separated by comma. Possible values: actual, draft, deprecated 
         :type status: str
         :param external_issues_type: An integration type. 
         :type external_issues_type: str

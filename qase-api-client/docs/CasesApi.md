@@ -589,10 +589,10 @@ with qase.api_client_v1.ApiClient(configuration) as api_client:
     suite_id = 56 # int | ID of test suite. (optional)
     severity = 'severity_example' # str | A list of severity values separated by comma. Possible values: undefined, blocker, critical, major, normal, minor, trivial  (optional)
     priority = 'priority_example' # str | A list of priority values separated by comma. Possible values: undefined, high, medium, low  (optional)
-    type = 'type_example' # str | A list of type values separated by comma. Possible values: other, functional smoke, regression, security, usability, performance, acceptance  (optional)
-    behavior = 'behavior_example' # str | A list of behavior values separated by comma. Possible values: undefined, positive negative, destructive  (optional)
-    automation = 'automation_example' # str | A list of values separated by comma. Possible values: is-not-automated, automated to-be-automated  (optional)
-    status = 'status_example' # str | A list of values separated by comma. Possible values: actual, draft deprecated  (optional)
+    type = 'type_example' # str | A list of type values separated by comma. Possible values: other, functional, smoke, regression, security, usability, performance, acceptance  (optional)
+    behavior = 'behavior_example' # str | A list of behavior values separated by comma. Possible values: undefined, positive, negative, destructive  (optional)
+    automation = 'automation_example' # str | A list of values separated by comma. Possible values: is-not-automated, automated, to-be-automated  (optional)
+    status = 'status_example' # str | A list of values separated by comma. Possible values: actual, draft, deprecated  (optional)
     external_issues_type = 'external_issues_type_example' # str | An integration type.  (optional)
     external_issues_ids = ['external_issues_ids_example'] # List[str] | A list of issue IDs. (optional)
     include = 'include_example' # str | A list of entities to include in response separated by comma. Possible values: external_issues.  (optional)
@@ -621,10 +621,10 @@ Name | Type | Description  | Notes
  **suite_id** | **int**| ID of test suite. | [optional] 
  **severity** | **str**| A list of severity values separated by comma. Possible values: undefined, blocker, critical, major, normal, minor, trivial  | [optional] 
  **priority** | **str**| A list of priority values separated by comma. Possible values: undefined, high, medium, low  | [optional] 
- **type** | **str**| A list of type values separated by comma. Possible values: other, functional smoke, regression, security, usability, performance, acceptance  | [optional] 
- **behavior** | **str**| A list of behavior values separated by comma. Possible values: undefined, positive negative, destructive  | [optional] 
- **automation** | **str**| A list of values separated by comma. Possible values: is-not-automated, automated to-be-automated  | [optional] 
- **status** | **str**| A list of values separated by comma. Possible values: actual, draft deprecated  | [optional] 
+ **type** | **str**| A list of type values separated by comma. Possible values: other, functional, smoke, regression, security, usability, performance, acceptance  | [optional] 
+ **behavior** | **str**| A list of behavior values separated by comma. Possible values: undefined, positive, negative, destructive  | [optional] 
+ **automation** | **str**| A list of values separated by comma. Possible values: is-not-automated, automated, to-be-automated  | [optional] 
+ **status** | **str**| A list of values separated by comma. Possible values: actual, draft, deprecated  | [optional] 
  **external_issues_type** | **str**| An integration type.  | [optional] 
  **external_issues_ids** | [**List[str]**](str.md)| A list of issue IDs. | [optional] 
  **include** | **str**| A list of entities to include in response separated by comma. Possible values: external_issues.  | [optional] 
