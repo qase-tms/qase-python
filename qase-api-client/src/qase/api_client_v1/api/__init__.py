@@ -12,6 +12,7 @@ from qase.api_client_v1.api.milestones_api import MilestonesApi
 from qase.api_client_v1.api.plans_api import PlansApi
 from qase.api_client_v1.api.projects_api import ProjectsApi
 from qase.api_client_v1.api.results_api import ResultsApi
+from qase.api_client_v1.api.reviews_api import ReviewsApi
 from qase.api_client_v1.api.runs_api import RunsApi
 from qase.api_client_v1.api.search_api import SearchApi
 from qase.api_client_v1.api.shared_parameters_api import SharedParametersApi

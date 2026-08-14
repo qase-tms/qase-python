@@ -47,7 +47,7 @@ configuration.api_key['TokenAuth'] = os.environ["API_KEY"]
 with qase.api_client_v1.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = qase.api_client_v1.AuthorsApi(api_client)
-    id = 56 # int | Identifier.
+    id = 'id_example' # str | Author UUID, or the deprecated integer author ID.
 
     try:
         # Get a specific author
@@ -65,7 +65,7 @@ with qase.api_client_v1.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **int**| Identifier. | 
+ **id** | **str**| Author UUID, or the deprecated integer author ID. | 
 
 ### Return type
 

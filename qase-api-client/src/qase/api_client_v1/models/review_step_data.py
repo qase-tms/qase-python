@@ -18,25 +18,23 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
 
-class Author(BaseModel):
+class ReviewStepData(BaseModel):
     """
-    Author
+    A step of the proposed test case. When `steps_type` is `gherkin` the step carries the scenario in `value` and nothing else: a non-empty `action`, `expected_result`, `data`, `attachments`, `shared` or nested `steps` is rejected.
     """ # noqa: E501
-    id: Optional[StrictInt] = None
-    uuid: Optional[UUID] = Field(default=None, description="Author UUID. Use it to reference the author in other API methods.")
-    author_id: Optional[StrictInt] = Field(default=None, description="Deprecated, use `uuid` instead.")
-    entity_type: Optional[StrictStr] = None
-    entity_id: Optional[StrictInt] = None
-    email: Optional[StrictStr] = None
-    name: Optional[StrictStr] = None
-    is_active: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["id", "uuid", "author_id", "entity_type", "entity_id", "email", "name", "is_active"]
+    action: Optional[StrictStr] = Field(default=None, description="Step action text. Classic steps only.")
+    shared: Optional[StrictStr] = Field(default=None, description="Hash of an existing shared step to insert at this position.")
+    expected_result: Optional[StrictStr] = None
+    data: Optional[StrictStr] = None
+    value: Optional[StrictStr] = Field(default=None, description="Gherkin scenario text. Used when steps_type is \"gherkin\". Example: \"Given a user exists\\nWhen they log in\\nThen they see the dashboard\"")
+    attachments: Optional[List[StrictStr]] = Field(default=None, description="A list of Attachment hashes.")
+    steps: Optional[List[Dict[str, Any]]] = Field(default=None, description="Nested steps may be passed here. Use same structure for them.")
+    __properties: ClassVar[List[str]] = ["action", "shared", "expected_result", "data", "value", "attachments", "steps"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -56,7 +54,7 @@ class Author(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of Author from a JSON string"""
+        """Create an instance of ReviewStepData from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -81,7 +79,7 @@ class Author(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of Author from a dict"""
+        """Create an instance of ReviewStepData from a dict"""
         if obj is None:
             return None
 
@@ -89,14 +87,13 @@ class Author(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": obj.get("id"),
-            "uuid": obj.get("uuid"),
-            "author_id": obj.get("author_id"),
-            "entity_type": obj.get("entity_type"),
-            "entity_id": obj.get("entity_id"),
-            "email": obj.get("email"),
-            "name": obj.get("name"),
-            "is_active": obj.get("is_active")
+            "action": obj.get("action"),
+            "shared": obj.get("shared"),
+            "expected_result": obj.get("expected_result"),
+            "data": obj.get("data"),
+            "value": obj.get("value"),
+            "attachments": obj.get("attachments"),
+            "steps": obj.get("steps")
         })
         return _obj
 

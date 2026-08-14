@@ -18,25 +18,21 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from uuid import UUID
+from qase.api_client_v1.models.review_case_data import ReviewCaseData
 from typing import Optional, Set
 from typing_extensions import Self
 
-class Author(BaseModel):
+class ReviewUpdate(BaseModel):
     """
-    Author
+    ReviewUpdate
     """ # noqa: E501
-    id: Optional[StrictInt] = None
-    uuid: Optional[UUID] = Field(default=None, description="Author UUID. Use it to reference the author in other API methods.")
-    author_id: Optional[StrictInt] = Field(default=None, description="Deprecated, use `uuid` instead.")
-    entity_type: Optional[StrictStr] = None
-    entity_id: Optional[StrictInt] = None
-    email: Optional[StrictStr] = None
-    name: Optional[StrictStr] = None
-    is_active: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["id", "uuid", "author_id", "entity_type", "entity_id", "email", "name", "is_active"]
+    reviewers: Optional[Annotated[List[UUID], Field(max_length=20)]] = Field(default=None, description="Author UUIDs of team members assigned as reviewers (see `GET /author`). When provided, replaces the current reviewer list; an empty array removes all reviewers. Omit to leave reviewers unchanged.")
+    proposed_case: Optional[ReviewCaseData] = Field(default=None, description="Sent fields are merged into the stored proposal. Changing the proposal resets all existing approvals; updating only the reviewers keeps them.")
+    __properties: ClassVar[List[str]] = ["reviewers", "proposed_case"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -56,7 +52,7 @@ class Author(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of Author from a JSON string"""
+        """Create an instance of ReviewUpdate from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -77,11 +73,14 @@ class Author(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of proposed_case
+        if self.proposed_case:
+            _dict['proposed_case'] = self.proposed_case.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of Author from a dict"""
+        """Create an instance of ReviewUpdate from a dict"""
         if obj is None:
             return None
 
@@ -89,14 +88,8 @@ class Author(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": obj.get("id"),
-            "uuid": obj.get("uuid"),
-            "author_id": obj.get("author_id"),
-            "entity_type": obj.get("entity_type"),
-            "entity_id": obj.get("entity_id"),
-            "email": obj.get("email"),
-            "name": obj.get("name"),
-            "is_active": obj.get("is_active")
+            "reviewers": obj.get("reviewers"),
+            "proposed_case": ReviewCaseData.from_dict(obj["proposed_case"]) if obj.get("proposed_case") is not None else None
         })
         return _obj
 
