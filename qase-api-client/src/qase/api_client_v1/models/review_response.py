@@ -18,25 +18,19 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictBool
 from typing import Any, ClassVar, Dict, List, Optional
-from uuid import UUID
+from qase.api_client_v1.models.review_detailed import ReviewDetailed
 from typing import Optional, Set
 from typing_extensions import Self
 
-class Author(BaseModel):
+class ReviewResponse(BaseModel):
     """
-    Author
+    ReviewResponse
     """ # noqa: E501
-    id: Optional[StrictInt] = None
-    uuid: Optional[UUID] = Field(default=None, description="Author UUID. Use it to reference the author in other API methods.")
-    author_id: Optional[StrictInt] = Field(default=None, description="Deprecated, use `uuid` instead.")
-    entity_type: Optional[StrictStr] = None
-    entity_id: Optional[StrictInt] = None
-    email: Optional[StrictStr] = None
-    name: Optional[StrictStr] = None
-    is_active: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["id", "uuid", "author_id", "entity_type", "entity_id", "email", "name", "is_active"]
+    status: Optional[StrictBool] = None
+    result: Optional[ReviewDetailed] = None
+    __properties: ClassVar[List[str]] = ["status", "result"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -56,7 +50,7 @@ class Author(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of Author from a JSON string"""
+        """Create an instance of ReviewResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -77,11 +71,14 @@ class Author(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of result
+        if self.result:
+            _dict['result'] = self.result.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of Author from a dict"""
+        """Create an instance of ReviewResponse from a dict"""
         if obj is None:
             return None
 
@@ -89,14 +86,8 @@ class Author(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": obj.get("id"),
-            "uuid": obj.get("uuid"),
-            "author_id": obj.get("author_id"),
-            "entity_type": obj.get("entity_type"),
-            "entity_id": obj.get("entity_id"),
-            "email": obj.get("email"),
-            "name": obj.get("name"),
-            "is_active": obj.get("is_active")
+            "status": obj.get("status"),
+            "result": ReviewDetailed.from_dict(obj["result"]) if obj.get("result") is not None else None
         })
         return _obj
 

@@ -25,7 +25,7 @@ from typing_extensions import Self
 
 class TestStepCreate(BaseModel):
     """
-    TestStepCreate
+    When `steps_type` is `gherkin` only the scenario text is read from a step. A non-empty `expected_result`, `data`, `attachments`, `shared` or nested `steps` is rejected, and so is sending the scenario in `value` and `action` at once.
     """ # noqa: E501
     action: Optional[StrictStr] = Field(default=None, description="Step action text. Used for classic steps. For gherkin steps, use the \"value\" property instead.")
     shared: Optional[StrictStr] = Field(default=None, description="Hash of an existing shared step to insert at this position.")

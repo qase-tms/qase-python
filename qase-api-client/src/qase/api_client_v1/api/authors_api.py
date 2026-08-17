@@ -16,7 +16,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictInt, StrictStr, field_validator
+from pydantic import Field, StrictStr, field_validator
 from typing import Optional
 from typing_extensions import Annotated
 from qase.api_client_v1.models.author_list_response import AuthorListResponse
@@ -43,7 +43,7 @@ class AuthorsApi:
     @validate_call
     def get_author(
         self,
-        id: Annotated[StrictInt, Field(description="Identifier.")],
+        id: Annotated[StrictStr, Field(description="Author UUID, or the deprecated integer author ID.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -61,8 +61,8 @@ class AuthorsApi:
 
         This method allows to retrieve a specific author. 
 
-        :param id: Identifier. (required)
-        :type id: int
+        :param id: Author UUID, or the deprecated integer author ID. (required)
+        :type id: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -115,7 +115,7 @@ class AuthorsApi:
     @validate_call
     def get_author_with_http_info(
         self,
-        id: Annotated[StrictInt, Field(description="Identifier.")],
+        id: Annotated[StrictStr, Field(description="Author UUID, or the deprecated integer author ID.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -133,8 +133,8 @@ class AuthorsApi:
 
         This method allows to retrieve a specific author. 
 
-        :param id: Identifier. (required)
-        :type id: int
+        :param id: Author UUID, or the deprecated integer author ID. (required)
+        :type id: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -187,7 +187,7 @@ class AuthorsApi:
     @validate_call
     def get_author_without_preload_content(
         self,
-        id: Annotated[StrictInt, Field(description="Identifier.")],
+        id: Annotated[StrictStr, Field(description="Author UUID, or the deprecated integer author ID.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -205,8 +205,8 @@ class AuthorsApi:
 
         This method allows to retrieve a specific author. 
 
-        :param id: Identifier. (required)
-        :type id: int
+        :param id: Author UUID, or the deprecated integer author ID. (required)
+        :type id: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of

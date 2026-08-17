@@ -30,6 +30,7 @@ __all__ = [
     "PlansApi",
     "ProjectsApi",
     "ResultsApi",
+    "ReviewsApi",
     "RunsApi",
     "SearchApi",
     "SharedParametersApi",
@@ -143,6 +144,22 @@ __all__ = [
     "ResultQuery",
     "ResultResponse",
     "ResultUpdate",
+    "Review",
+    "ReviewBulk",
+    "ReviewBulkResponse",
+    "ReviewBulkResponseAllOfResult",
+    "ReviewBulkResponseAllOfResultItems",
+    "ReviewCaseData",
+    "ReviewCreate",
+    "ReviewDetailed",
+    "ReviewListResponse",
+    "ReviewListResponseAllOfResult",
+    "ReviewProposedCase",
+    "ReviewProposedStep",
+    "ReviewResponse",
+    "ReviewReviewersInner",
+    "ReviewStepData",
+    "ReviewUpdate",
     "Run",
     "RunCreate",
     "RunCreateCloudRunConfig",
@@ -231,6 +248,7 @@ from qase.api_client_v1.api.milestones_api import MilestonesApi as MilestonesApi
 from qase.api_client_v1.api.plans_api import PlansApi as PlansApi
 from qase.api_client_v1.api.projects_api import ProjectsApi as ProjectsApi
 from qase.api_client_v1.api.results_api import ResultsApi as ResultsApi
+from qase.api_client_v1.api.reviews_api import ReviewsApi as ReviewsApi
 from qase.api_client_v1.api.runs_api import RunsApi as RunsApi
 from qase.api_client_v1.api.search_api import SearchApi as SearchApi
 from qase.api_client_v1.api.shared_parameters_api import SharedParametersApi as SharedParametersApi
@@ -348,6 +366,22 @@ from qase.api_client_v1.models.result_list_response_all_of_result import ResultL
 from qase.api_client_v1.models.result_query import ResultQuery as ResultQuery
 from qase.api_client_v1.models.result_response import ResultResponse as ResultResponse
 from qase.api_client_v1.models.result_update import ResultUpdate as ResultUpdate
+from qase.api_client_v1.models.review import Review as Review
+from qase.api_client_v1.models.review_bulk import ReviewBulk as ReviewBulk
+from qase.api_client_v1.models.review_bulk_response import ReviewBulkResponse as ReviewBulkResponse
+from qase.api_client_v1.models.review_bulk_response_all_of_result import ReviewBulkResponseAllOfResult as ReviewBulkResponseAllOfResult
+from qase.api_client_v1.models.review_bulk_response_all_of_result_items import ReviewBulkResponseAllOfResultItems as ReviewBulkResponseAllOfResultItems
+from qase.api_client_v1.models.review_case_data import ReviewCaseData as ReviewCaseData
+from qase.api_client_v1.models.review_create import ReviewCreate as ReviewCreate
+from qase.api_client_v1.models.review_detailed import ReviewDetailed as ReviewDetailed
+from qase.api_client_v1.models.review_list_response import ReviewListResponse as ReviewListResponse
+from qase.api_client_v1.models.review_list_response_all_of_result import ReviewListResponseAllOfResult as ReviewListResponseAllOfResult
+from qase.api_client_v1.models.review_proposed_case import ReviewProposedCase as ReviewProposedCase
+from qase.api_client_v1.models.review_proposed_step import ReviewProposedStep as ReviewProposedStep
+from qase.api_client_v1.models.review_response import ReviewResponse as ReviewResponse
+from qase.api_client_v1.models.review_reviewers_inner import ReviewReviewersInner as ReviewReviewersInner
+from qase.api_client_v1.models.review_step_data import ReviewStepData as ReviewStepData
+from qase.api_client_v1.models.review_update import ReviewUpdate as ReviewUpdate
 from qase.api_client_v1.models.run import Run as Run
 from qase.api_client_v1.models.run_create import RunCreate as RunCreate
 from qase.api_client_v1.models.run_create_cloud_run_config import RunCreateCloudRunConfig as RunCreateCloudRunConfig

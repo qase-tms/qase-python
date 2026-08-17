@@ -18,25 +18,21 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictInt
 from typing import Any, ClassVar, Dict, List, Optional
-from uuid import UUID
+from qase.api_client_v1.models.review import Review
 from typing import Optional, Set
 from typing_extensions import Self
 
-class Author(BaseModel):
+class ReviewListResponseAllOfResult(BaseModel):
     """
-    Author
+    ReviewListResponseAllOfResult
     """ # noqa: E501
-    id: Optional[StrictInt] = None
-    uuid: Optional[UUID] = Field(default=None, description="Author UUID. Use it to reference the author in other API methods.")
-    author_id: Optional[StrictInt] = Field(default=None, description="Deprecated, use `uuid` instead.")
-    entity_type: Optional[StrictStr] = None
-    entity_id: Optional[StrictInt] = None
-    email: Optional[StrictStr] = None
-    name: Optional[StrictStr] = None
-    is_active: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["id", "uuid", "author_id", "entity_type", "entity_id", "email", "name", "is_active"]
+    total: Optional[StrictInt] = None
+    filtered: Optional[StrictInt] = None
+    count: Optional[StrictInt] = None
+    entities: Optional[List[Review]] = None
+    __properties: ClassVar[List[str]] = ["total", "filtered", "count", "entities"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -56,7 +52,7 @@ class Author(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of Author from a JSON string"""
+        """Create an instance of ReviewListResponseAllOfResult from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -77,11 +73,18 @@ class Author(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in entities (list)
+        _items = []
+        if self.entities:
+            for _item_entities in self.entities:
+                if _item_entities:
+                    _items.append(_item_entities.to_dict())
+            _dict['entities'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of Author from a dict"""
+        """Create an instance of ReviewListResponseAllOfResult from a dict"""
         if obj is None:
             return None
 
@@ -89,14 +92,10 @@ class Author(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": obj.get("id"),
-            "uuid": obj.get("uuid"),
-            "author_id": obj.get("author_id"),
-            "entity_type": obj.get("entity_type"),
-            "entity_id": obj.get("entity_id"),
-            "email": obj.get("email"),
-            "name": obj.get("name"),
-            "is_active": obj.get("is_active")
+            "total": obj.get("total"),
+            "filtered": obj.get("filtered"),
+            "count": obj.get("count"),
+            "entities": [Review.from_dict(_item) for _item in obj["entities"]] if obj.get("entities") is not None else None
         })
         return _obj
 
