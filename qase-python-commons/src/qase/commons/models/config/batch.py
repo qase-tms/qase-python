@@ -8,6 +8,6 @@ class BatchConfig(BaseModel):
         self.size = 200
 
     def set_size(self, size: int):
-        if size > 2000 or size == 0:
-            raise ValueError("Batch size should be greater than 0 and less than 2000")
+        if size > 200 or size == 0:
+            raise ValueError("Batch size should be greater than 0 and no greater than 200")
         self.size = size

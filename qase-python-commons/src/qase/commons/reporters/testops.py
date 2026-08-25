@@ -32,7 +32,7 @@ class QaseTestOps:
         self.complete_after_run = self.config.testops.run.complete
         self.environment = None
 
-        self.batch_size = min(2000, max(1, int(self.config.testops.batch.size or DEFAULT_BATCH_SIZE)))
+        self.batch_size = min(200, max(1, int(self.config.testops.batch.size or DEFAULT_BATCH_SIZE)))
         self.send_semaphore = threading.Semaphore(DEFAULT_THREAD_COUNT)  # Semaphore to limit concurrent sends
         self.lock = threading.Lock()
         self.count_running_threads = 0
