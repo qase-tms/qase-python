@@ -426,6 +426,7 @@ class ResultsApi:
             '401': None,
             '403': None,
             '404': None,
+            '413': None,
             '422': None,
         }
         response_data = self.api_client.call_api(
@@ -506,6 +507,7 @@ class ResultsApi:
             '401': None,
             '403': None,
             '404': None,
+            '413': None,
             '422': None,
         }
         response_data = self.api_client.call_api(
@@ -586,6 +588,7 @@ class ResultsApi:
             '401': None,
             '403': None,
             '404': None,
+            '413': None,
             '422': None,
         }
         response_data = self.api_client.call_api(

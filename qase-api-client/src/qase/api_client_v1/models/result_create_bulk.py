@@ -29,7 +29,7 @@ class ResultCreateBulk(BaseModel):
     """
     ResultCreateBulk
     """ # noqa: E501
-    results: Annotated[List[ResultCreate], Field(max_length=2000)]
+    results: Annotated[List[ResultCreate], Field(max_length=200)]
     __properties: ClassVar[List[str]] = ["results"]
 
     model_config = ConfigDict(
