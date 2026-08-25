@@ -1,3 +1,9 @@
+# qase-python-commons@5.1.3
+
+## What's new
+
+- Lowered the maximum batch size from 2000 to 200 results per request, matching the new bulk-results API cap. `BatchConfig.set_size` now rejects a size above 200, and both TestOps reporters clamp the configured size with `min(200, ...)`. The default stays 200, so setups on defaults are unaffected.
+
 # qase-python-commons@5.1.2
 
 ## What's new
