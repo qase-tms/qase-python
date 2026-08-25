@@ -1,0 +1,27 @@
+qase-pytest/docs/UPGRADE.md
+  s_ae3dba0d307cfe::t_5b1fae7448bfc1 20
+qase-python-commons/src/qase/commons/models/config/batch.py
+  s_ae3dba0d307cfe::t_33ce6aa4aa6165 11-12
+qase-python-commons/src/qase/commons/reporters/testops.py
+  s_ae3dba0d307cfe::t_62ca3d23cbbdf6 35
+qase-robotframework/docs/UPGRADE.md
+  s_ae3dba0d307cfe::t_27be0f3a8cd11c 43
+qase-python-commons/src/qase/commons/reporters/testops_multi.py
+  s_ae3dba0d307cfe::t_b86c4c171f760e 25
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "9c280c2eaad14fa4d1493d200adb3f02c3b62ee2",
+  "prompts": {},
+  "sessions": {
+    "s_ae3dba0d307cfe": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c865193d-7019-4aa9-b702-dae72eb24448",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Manju R <cskmnrpt@gmail.com>"
+    }
+  }
+}
