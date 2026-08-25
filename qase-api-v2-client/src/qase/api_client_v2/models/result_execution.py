@@ -32,8 +32,9 @@ class ResultExecution(BaseModel):
     status: StrictStr = Field(description="Can have the following values passed, failed, blocked, skipped, invalid + custom statuses")
     duration: Optional[StrictInt] = Field(default=None, description="Duration of the test execution in milliseconds.")
     stacktrace: Optional[StrictStr] = None
+    error_context: Optional[StrictStr] = Field(default=None, description="Free-form failure context captured by the reporter. For Playwright this is the content of error-context.md (test info, error details, page snapshot), so it may include rendered page content. Stored verbatim so it can be copied as raw text. Values longer than 262144 characters are silently truncated by Qase and the request still succeeds. Write-only — not returned by the result read endpoints.")
     thread: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["start_time", "end_time", "status", "duration", "stacktrace", "thread"]
+    __properties: ClassVar[List[str]] = ["start_time", "end_time", "status", "duration", "stacktrace", "error_context", "thread"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -94,6 +95,11 @@ class ResultExecution(BaseModel):
         if self.stacktrace is None and "stacktrace" in self.model_fields_set:
             _dict['stacktrace'] = None
 
+        # set to None if error_context (nullable) is None
+        # and model_fields_set contains the field
+        if self.error_context is None and "error_context" in self.model_fields_set:
+            _dict['error_context'] = None
+
         # set to None if thread (nullable) is None
         # and model_fields_set contains the field
         if self.thread is None and "thread" in self.model_fields_set:
@@ -116,6 +122,7 @@ class ResultExecution(BaseModel):
             "status": obj.get("status"),
             "duration": obj.get("duration"),
             "stacktrace": obj.get("stacktrace"),
+            "error_context": obj.get("error_context"),
             "thread": obj.get("thread")
         })
         return _obj
