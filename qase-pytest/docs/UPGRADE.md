@@ -17,7 +17,7 @@ In v5, two configuration options defined how the reporter was uploading results 
 `testops.bulk` and `testops.chunk`.
 
 In v6, reporter always sends results in portions, called batches.
-Default batch size is 200, and can be set to anything from 1 to 2000.
+Default batch size is 200, and can be set to anything from 1 to 200.
 Update the config in the following way:
 
 ```diff
