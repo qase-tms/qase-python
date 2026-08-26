@@ -26,6 +26,9 @@ class ApiV1Client(BaseApiClient):
             configuration = Configuration()
             configuration.api_key['TokenAuth'] = self.config.testops.api.token
             configuration.ssl_ca_cert = certifi.where()
+            # See the note in ApiV2Client: urllib3's default retry policy is
+            # pinned off so it cannot multiply with the application-level one.
+            configuration.retries = 0
             host = self.config.testops.api.host
             if host == 'qase.io':
                 configuration.host = f'https://api.{host}/v1'

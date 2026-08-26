@@ -37,3 +37,18 @@ def test_prepare_result_ids_differ_between_results():
     first = client._prepare_result("DEMO", _result("a", "s-a"))
     second = client._prepare_result("DEMO", _result("b", "s-b"))
     assert first.id != second.id
+
+
+def test_send_results_passes_the_configured_timeout():
+    client = _client()
+    client.config.testops.api.timeout = 7
+    client.client_v2 = Mock()
+    client._prepare_result = Mock(return_value=Mock())
+
+    with patch("qase.commons.client.api_v2_client.ResultsApi") as results_api, patch(
+        "qase.commons.client.api_v2_client.CreateResultsRequestV2"
+    ):
+        client.send_results("DEMO", "1", [Mock()])
+
+    kwargs = results_api.return_value.create_results_v2.call_args.kwargs
+    assert kwargs["_request_timeout"] == 7

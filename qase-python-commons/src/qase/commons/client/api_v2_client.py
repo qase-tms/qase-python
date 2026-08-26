@@ -36,6 +36,11 @@ class ApiV2Client(ApiV1Client):
             configuration = Configuration()
             configuration.api_key['TokenAuth'] = self.config.testops.api.token
             configuration.ssl_ca_cert = certifi.where()
+            # Pin urllib3's own retry policy off: the reporter retries at the
+            # application level, and leaving this at None lets urllib3's
+            # defaults multiply with ours -- a 3-attempt policy would issue
+            # 9 requests, the opposite of what is wanted on a 429.
+            configuration.retries = 0
             host = self.config.testops.api.host
             if host == 'qase.io':
                 configuration.host = f'https://api.{host}/v2'
@@ -131,7 +136,8 @@ class ApiV2Client(ApiV1Client):
         run_id_int = int(run_id) if isinstance(run_id, str) else run_id
         self.logger.log_debug(f"Sending results for run {run_id_int}: {results_to_send}")
         api_results.create_results_v2(project_code, run_id_int,
-                                      create_results_request_v2=CreateResultsRequestV2(results=results_to_send))
+                                      create_results_request_v2=CreateResultsRequestV2(results=results_to_send),
+                                      _request_timeout=self.config.testops.api.timeout)
         self.logger.log_debug(f"Results for run {run_id_int} sent successfully")
 
     def _prepare_result(self, project_code: str, result: Result) -> ResultCreate:
