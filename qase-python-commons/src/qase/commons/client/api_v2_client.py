@@ -158,6 +158,7 @@ class ApiV2Client(ApiV1Client):
                 result.params[key] = "empty"
 
         result_model_v2 = ResultCreate(
+            id=result.id,
             title=result.get_title(),
             signature=result.signature,
             testops_ids=result.get_testops_ids(),
