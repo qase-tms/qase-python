@@ -20,6 +20,9 @@ class TestQaseTestOpsMulti:
         mock_config.testops.api = Mock()
         mock_config.testops.api.host = "qase.io"
         mock_config.testops.api.token = "test_token"
+        mock_config.testops.api.timeout = 30
+        mock_config.testops.api.retries = 1
+        mock_config.testops.api.retry_backoff = 0
         mock_config.testops.batch = Mock()
         mock_config.testops.batch.size = 200
         mock_config.testops.status_filter = []
@@ -382,3 +385,59 @@ class TestQaseTestOpsMulti:
         
         # Verify public report was enabled
         mock_client.enable_public_report.assert_called()
+
+    def test_exhausted_retries_count_the_batch_as_lost_for_that_project(self):
+        """A batch that cannot be delivered is counted against its own project."""
+        mock_config = self._create_mock_config()
+        mock_client = self._create_mock_client()
+        mock_client.send_results.side_effect = ConnectionResetError(104, "reset")
+
+        reporter = QaseTestOpsMulti(mock_config, Mock(), mock_client)
+        results = [Result(title=f"t{i}", signature=f"s{i}") for i in range(50)]
+        reporter._send_results_threaded("PROJ1", 123, results)
+
+        assert reporter.lost_results["PROJ1"] == 50
+        assert reporter.lost_results["PROJ2"] == 0
+        assert reporter.processed["PROJ1"] == []
+
+    def test_a_retryable_failure_is_retried_then_succeeds(self):
+        """A transient failure that clears on the second attempt loses nothing."""
+        mock_config = self._create_mock_config()
+        mock_config.testops.api.retries = 2
+        mock_client = self._create_mock_client()
+        mock_client.send_results.side_effect = [ConnectionResetError(), None]
+
+        reporter = QaseTestOpsMulti(mock_config, Mock(), mock_client)
+        results = [Result(title="t", signature="s")]
+        reporter._send_results_threaded("PROJ1", 123, results)
+
+        assert mock_client.send_results.call_count == 2
+        assert reporter.lost_results["PROJ1"] == 0
+        assert len(reporter.processed["PROJ1"]) == 1
+
+    def test_the_worker_does_not_raise_out_of_the_thread(self):
+        """The batch is accounted for instead of escaping as a thread exception."""
+        mock_config = self._create_mock_config()
+        mock_client = self._create_mock_client()
+        mock_client.send_results.side_effect = ConnectionResetError()
+
+        reporter = QaseTestOpsMulti(mock_config, Mock(), mock_client)
+        reporter._send_results_threaded("PROJ1", 123, [Result(title="t", signature="s")])
+
+        assert reporter.lost_results["PROJ1"] == 1
+
+    def test_completion_is_skipped_only_for_projects_that_lost_results(self):
+        """One project's loss must not stop another project's run completing."""
+        mock_config = self._create_mock_config()
+        mock_client = self._create_mock_client()
+        mock_client.create_test_run.side_effect = [123, 456]
+
+        reporter = QaseTestOpsMulti(mock_config, Mock(), mock_client)
+        reporter.start_run()
+        reporter.lost_results["PROJ1"] = 25
+
+        reporter.complete_run()
+
+        completed = [call.args[0] for call in mock_client.complete_run.call_args_list]
+        assert "PROJ1" not in completed
+        assert "PROJ2" in completed

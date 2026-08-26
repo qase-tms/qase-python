@@ -1,4 +1,5 @@
 import threading
+import time
 import urllib.parse
 import copy
 
@@ -8,9 +9,11 @@ from .. import Logger, ReporterException
 from ..client.base_api_client import BaseApiClient
 from ..models import Result
 from ..models.config.qaseconfig import QaseConfig
+from ..retry import send_with_retry
 
 DEFAULT_BATCH_SIZE = 200
 DEFAULT_THREAD_COUNT = 4
+DEFAULT_THREAD_POLL_INTERVAL = 0.05
 
 
 class QaseTestOpsMulti:
@@ -44,6 +47,9 @@ class QaseTestOpsMulti:
         self.project_results: Dict[str, List[Result]] = {project.code: [] for project in self.multi_config.projects}
         self.project_runs: Dict[str, int] = {}  # Store run_id as int
         self.processed: Dict[str, List[Result]] = {project.code: [] for project in self.multi_config.projects}
+        # Results in batches that could not be delivered after all retries,
+        # counted per project so one project's loss does not hide another's.
+        self.lost_results: Dict[str, int] = {project.code: 0 for project in self.multi_config.projects}
 
         # Initialize environment for each project
         for project_code, project_data in self.project_configs.items():
@@ -101,15 +107,28 @@ class QaseTestOpsMulti:
         try:
             # Convert run_id to str for send_results (it will convert to int internally for API)
             run_id_str = str(run_id) if isinstance(run_id, int) else run_id
-            self.client.send_results(project_code, run_id_str, results)
+            send_with_retry(
+                lambda: self.client.send_results(project_code, run_id_str, results),
+                attempts=self.config.testops.api.retries,
+                backoff=self.config.testops.api.retry_backoff,
+                logger=self.logger,
+            )
             with self.lock:
                 self.processed[project_code].extend(results)
         except Exception as e:
+            # Account for the batch here rather than re-raising. The raise only
+            # ever surfaced as a PytestUnhandledThreadExceptionWarning that
+            # nothing acted on, which is how the loss stayed invisible.
             with self.lock:
-                self.logger.log(f"Error at sending results for project {project_code}, run {run_id}: {e}", "error")
-            raise
+                self.lost_results[project_code] = self.lost_results.get(project_code, 0) + len(results)
+                self.logger.log(
+                    f"Failed to send {len(results)} results for project {project_code}, "
+                    f"run {run_id} after {self.config.testops.api.retries} attempt(s): {e}",
+                    "error",
+                )
         finally:
-            self.count_running_threads -= 1
+            with self.lock:
+                self.count_running_threads -= 1
             self.send_semaphore.release()
 
     def _send_results_for_project(self, project_code: str) -> None:
@@ -141,7 +160,8 @@ class QaseTestOpsMulti:
         if results_to_send:
             # Acquire semaphore before starting the send operation
             self.send_semaphore.acquire()
-            self.count_running_threads += 1
+            with self.lock:
+                self.count_running_threads += 1
 
             # Start a new thread for sending results
             # run_id is stored as int, convert to str for thread (will be converted back to int in send_results)
@@ -230,10 +250,21 @@ class QaseTestOpsMulti:
 
         # Wait for all send operations to complete
         while self.count_running_threads > 0:
-            pass
+            time.sleep(DEFAULT_THREAD_POLL_INTERVAL)
 
         # Complete all test runs
         for project_code, project_data in self.project_configs.items():
+            if self.lost_results.get(project_code, 0) > 0:
+                # `continue`, not `return`: one project's loss must not stop
+                # the others completing. Leaving this run open is the signal.
+                self.logger.log(
+                    f"{self.lost_results[project_code]} result(s) were not delivered for "
+                    f"project {project_code}. Its run will not be marked complete so the "
+                    f"gap stays visible.",
+                    "error",
+                )
+                continue
+
             if project_data.get('complete_after_run'):
                 run_id = self.project_runs.get(project_code)
                 if run_id:
@@ -258,7 +289,7 @@ class QaseTestOpsMulti:
         if any(len(results) > 0 for results in self.project_results.values()):
             self._send_results()
         while self.count_running_threads > 0:
-            pass
+            time.sleep(DEFAULT_THREAD_POLL_INTERVAL)
         self.logger.log_debug("Worker completed")
 
     def add_result(self, result: Result) -> None:
