@@ -1,0 +1,27 @@
+qase-python-commons/tests/tests_qase_commons/test_testops_multi.py
+  s_46e24d355609fd::t_75f34a2c4e572d 23-25
+  s_46e24d355609fd::t_8520ec9814b761 388-443
+qase-python-commons/src/qase/commons/reporters/testops_multi.py
+  s_46e24d355609fd::t_7f154c2af2efdb 2
+  s_46e24d355609fd::t_01f400a3c91ba8 12,16
+  s_46e24d355609fd::t_f1af4453c044ae 110-115,119-121,123-128,130-131
+  s_46e24d355609fd::t_c0eab35e8814e9 163-164,253,292
+  s_46e24d355609fd::t_47f99ee0e28d04 50-52
+  s_46e24d355609fd::t_f6b8bf59b85e2d 257-267
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "5ccf000c52c8d9a0b95c26d598b6074ba7101fe9",
+  "prompts": {},
+  "sessions": {
+    "s_46e24d355609fd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a687922e-04e9-44b3-9ebf-b9fa8614a9d5",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
