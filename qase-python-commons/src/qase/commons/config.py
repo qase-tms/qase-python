@@ -109,6 +109,20 @@ class ConfigManager:
                                 self.config.testops.api.set_token(
                                     api.get("token"))
 
+                            if api.get("timeout"):
+                                self.config.testops.api.set_timeout(
+                                    api.get("timeout"))
+
+                            # `is not None`, not truthiness: 0 is a valid value
+                            # for both, meaning "no retries" / "no backoff".
+                            if api.get("retries") is not None:
+                                self.config.testops.api.set_retries(
+                                    api.get("retries"))
+
+                            if api.get("retryBackoff") is not None:
+                                self.config.testops.api.set_retry_backoff(
+                                    api.get("retryBackoff"))
+
                         if testops.get("project"):
                             self.config.testops.set_project(
                                 testops.get("project"))
@@ -287,6 +301,15 @@ class ConfigManager:
 
                 if key == 'QASE_TESTOPS_API_TOKEN':
                     self.config.testops.api.set_token(value)
+
+                if key == 'QASE_TESTOPS_API_TIMEOUT':
+                    self.config.testops.api.set_timeout(value)
+
+                if key == 'QASE_TESTOPS_API_RETRIES':
+                    self.config.testops.api.set_retries(value)
+
+                if key == 'QASE_TESTOPS_API_RETRY_BACKOFF':
+                    self.config.testops.api.set_retry_backoff(value)
 
                 if key == 'QASE_TESTOPS_PROJECT':
                     self.config.testops.set_project(value)

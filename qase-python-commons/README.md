@@ -30,6 +30,7 @@ Core library for all Qase Python reporters. Contains the complete configuration 
   - [Status Filtering](#status-filtering)
   - [External Links](#external-links)
   - [Test Run Configurations](#test-run-configurations)
+  - [Upload Reliability](#upload-reliability)
 
 ---
 
@@ -102,6 +103,9 @@ The reporter mode is set via the `mode` option:
 |-------------|-------------|---------------------|---------|----------|
 | API token | `testops.api.token` | `QASE_TESTOPS_API_TOKEN` | — | Yes* |
 | API host | `testops.api.host` | `QASE_TESTOPS_API_HOST` | `qase.io` | No |
+| Request timeout, seconds | `testops.api.timeout` | `QASE_TESTOPS_API_TIMEOUT` | `30` | No |
+| Upload attempts | `testops.api.retries` | `QASE_TESTOPS_API_RETRIES` | `3` | No |
+| Retry backoff base, seconds | `testops.api.retryBackoff` | `QASE_TESTOPS_API_RETRY_BACKOFF` | `2` | No |
 | Project code | `testops.project` | `QASE_TESTOPS_PROJECT` | — | Yes* |
 | Test run ID | `testops.run.id` | `QASE_TESTOPS_RUN_ID` | — | No |
 | Test run title | `testops.run.title` | `QASE_TESTOPS_RUN_TITLE` | `Automated run <date>` | No |
@@ -261,6 +265,9 @@ export QASE_TESTOPS_API_TOKEN="<token>"
 export QASE_TESTOPS_PROJECT="DEMO"
 export QASE_TESTOPS_RUN_TITLE="Automated Run"
 export QASE_TESTOPS_RUN_COMPLETE="true"
+export QASE_TESTOPS_API_TIMEOUT="30"
+export QASE_TESTOPS_API_RETRIES="3"
+export QASE_TESTOPS_API_RETRY_BACKOFF="2"
 
 # Pytest
 export QASE_PYTEST_CAPTURE_LOGS="true"
@@ -369,6 +376,44 @@ Creates or finds configurations in Qase TestOps:
         { "name": "os", "value": "linux" }
       ],
       "createIfNotExists": true
+    }
+  }
+}
+```
+
+### Upload Reliability
+
+Results are uploaded in batches from background threads. A batch that fails on
+a transient error is retried rather than dropped.
+
+| Setting | Meaning |
+|---------|---------|
+| `testops.api.timeout` | Per-request timeout in seconds. Without it a stalled connection blocks the session at teardown. |
+| `testops.api.retries` | Total attempts per batch, not retries on top of the first. `3` means three tries; `0` sends once and never retries. |
+| `testops.api.retryBackoff` | Base of the exponential delay: attempt *n* waits `retryBackoff ** n` seconds. |
+
+Retried: connection resets, timeouts and other transport failures, plus HTTP
+408, 429 and 5xx. Not retried: 400, 401, 403, 404, 413, 422 and 507 — a second
+attempt fails identically and only adds load.
+
+When a 429 carries a `Retry-After` header, that value replaces the computed
+backoff. Qase sends roughly 60 seconds, so a run that hits the rate limit takes
+longer to finish rather than losing the batch.
+
+**If a batch cannot be delivered after all attempts**, the reporter logs an
+error naming how many results were lost and **does not mark the run complete**.
+An open run is the signal that its data is incomplete; a completed run over
+partial results would look trustworthy and not be. In `testops_multi` mode this
+is per project — one project's failure does not stop the others completing.
+
+```json
+{
+  "testops": {
+    "api": {
+      "token": "<token>",
+      "timeout": 30,
+      "retries": 3,
+      "retryBackoff": 2
     }
   }
 }

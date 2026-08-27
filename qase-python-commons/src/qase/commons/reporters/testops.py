@@ -8,6 +8,7 @@ from .. import Logger, ReporterException
 from ..client.base_api_client import BaseApiClient
 from ..models import Result
 from ..models.config.qaseconfig import QaseConfig
+from ..retry import send_with_retry
 
 DEFAULT_BATCH_SIZE = 200
 DEFAULT_THREAD_COUNT = 4
@@ -36,6 +37,8 @@ class QaseTestOps:
         self.send_semaphore = threading.Semaphore(DEFAULT_THREAD_COUNT)  # Semaphore to limit concurrent sends
         self.lock = threading.Lock()
         self.count_running_threads = 0
+        # Results in batches that could not be delivered after all retries.
+        self.lost_results = 0
 
         environment = self.config.environment
         if environment:
@@ -70,15 +73,28 @@ class QaseTestOps:
 
     def _send_results_threaded(self, results):
         try:
-            self.client.send_results(self.project_code, self.run_id, results)
+            send_with_retry(
+                lambda: self.client.send_results(self.project_code, self.run_id, results),
+                attempts=self.config.testops.api.retries,
+                backoff=self.config.testops.api.retry_backoff,
+                logger=self.logger,
+            )
             with self.lock:
                 self.processed.extend(results)
         except Exception as e:
+            # Account for the batch here rather than re-raising. The raise only
+            # ever surfaced as a PytestUnhandledThreadExceptionWarning that
+            # nothing acted on, which is how the loss stayed invisible.
             with self.lock:
-                self.logger.log(f"Error at sending results for run {self.run_id}: {e}", "error")
-            raise  # Re-raise the exception to be caught by the thread handler
+                self.lost_results += len(results)
+                self.logger.log(
+                    f"Failed to send {len(results)} results for run {self.run_id} "
+                    f"after {self.config.testops.api.retries} attempt(s): {e}",
+                    "error",
+                )
         finally:
-            self.count_running_threads -= 1
+            with self.lock:
+                self.count_running_threads -= 1
             self.send_semaphore.release()  # Release semaphore whether success or exception
 
     def _send_results(self) -> None:
@@ -101,7 +117,8 @@ class QaseTestOps:
             if results_to_send:
                 # Acquire semaphore before starting the send operation
                 self.send_semaphore.acquire()
-                self.count_running_threads += 1
+                with self.lock:
+                    self.count_running_threads += 1
 
                 # Start a new thread for sending results
                 send_thread = threading.Thread(target=self._send_results_threaded, args=(results_to_send,))
@@ -136,7 +153,17 @@ class QaseTestOps:
 
         while self.count_running_threads > 0:
             time.sleep(DEFAULT_THREAD_POLL_INTERVAL)
-        
+
+        if self.lost_results > 0:
+            # Leaving the run open is the signal. A run marked complete over
+            # partial data looks trustworthy and is not.
+            self.logger.log(
+                f"{self.lost_results} result(s) were not delivered to Qase. "
+                f"The run will not be marked complete so the gap stays visible.",
+                "error",
+            )
+            return
+
         if self.complete_after_run:
             self.logger.log_debug("Completing run")
             self.client.complete_run(self.project_code, self.run_id)
@@ -158,7 +185,7 @@ class QaseTestOps:
         if len(self.results) > 0:
             self._send_results()
         while self.count_running_threads > 0:
-            pass
+            time.sleep(DEFAULT_THREAD_POLL_INTERVAL)
         self.logger.log_debug("Worker completed")
 
     def add_result(self, result: Result) -> None:
