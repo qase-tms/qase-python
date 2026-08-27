@@ -1,3 +1,13 @@
+# qase-python-commons@5.1.4
+
+## What's new
+
+- Fixed silent loss of test results when a batch upload fails ([#504](https://github.com/qase-tms/qase-python/issues/504)). The reporter discarded its only copy of a batch when it started the upload thread rather than when the server confirmed it, so a connection reset made those results cease to exist while the run was still marked complete and the process exited 0. Failed batches are now retried; if a batch still cannot be delivered, the reporter logs an error naming how many results were lost and leaves the run open instead of completing it. In `testops_multi` mode this is tracked per project, so one project's failure does not stop the others completing.
+- `ResultCreate.id` is now sent on bulk upload. The v2 API uses it as an idempotency key, and the value was already generated on every result but dropped when building the payload. Without it a retried batch would create duplicate results.
+- Added `testops.api.timeout` (default `30`), `testops.api.retries` (default `3`) and `testops.api.retryBackoff` (default `2`), with `QASE_TESTOPS_API_TIMEOUT`, `QASE_TESTOPS_API_RETRIES` and `QASE_TESTOPS_API_RETRY_BACKOFF` overrides. Retries cover transport failures and HTTP 408/429/5xx, honour `Retry-After`, and never fire on 400/401/403/404/413/422/507. `retries` counts total attempts, so `0` sends once without retrying.
+- Set an explicit request timeout on result uploads. There was none, so a connection that stalled rather than failed hung the session at teardown until CI killed the job.
+- Pinned urllib3's own retry policy off (`Configuration.retries = 0`). It was left unset, so urllib3's defaults applied and would have multiplied with the new application-level retry.
+
 # qase-python-commons@5.1.3
 
 ## What's new
