@@ -1,0 +1,57 @@
+qase-pytest/pyproject.toml
+  s_64747c54626bda::t_dd31ccaa5ebac0 7
+qase-tavern/changelog.md
+  s_64747c54626bda::t_1bfb70a89b204f 1-16
+qase-robotframework/tests/tests_qaseio_robotframework/test_listener.py
+  s_64747c54626bda::t_104454ae6990c4 355-405
+qase-tavern/src/qase/tavern/plugin.py
+  s_64747c54626bda::t_7c20188f7086f8 68,71-74,105-115
+qase-robotframework/pyproject.toml
+  s_64747c54626bda::t_0e546cce1cc092 7
+qase-pytest/tests/tests_qase_pytest/test_plugin.py
+  s_64747c54626bda::t_ed631b1365b95e 351-468
+qase-behave/tests/test_formatter.py
+  s_64747c54626bda::t_c9abb6052596bb 400-558
+qase-behave/src/qase/behave/utils.py
+  s_64747c54626bda::t_352386d54c6627 293-297,300-303
+qase-behave/pyproject.toml
+  s_64747c54626bda::t_00de5dfbc8f0ab 7
+qase-tavern/tests/test_plugin.py
+  s_64747c54626bda::t_7b522b3858c89f 356-437
+qase-tavern/pyproject.toml
+  s_64747c54626bda::t_5def937496e9d4 7
+qase-behave/changelog.md
+  s_64747c54626bda::t_eae33e586b8820 1-19
+qase-robotframework/changelog.md
+  s_64747c54626bda::t_eee4fadd488260 1-16
+qase-robotframework/src/qase/robotframework/listener.py
+  s_64747c54626bda::t_033f007b21e522 170-189
+  s_64747c54626bda::t_22b06d180cc107 125
+qase-behave/src/qase/behave/formatter.py
+  s_64747c54626bda::t_4be73e3475de2f 77,79,84-108
+  s_64747c54626bda::t_efcbd539e8e96c 144
+  s_64747c54626bda::t_6e7f7effe60847 129-132
+  s_64747c54626bda::t_36f3489bb21c5f 29
+  s_64747c54626bda::t_76d86c9c6f4bc5 109
+qase-pytest/changelog.md
+  s_64747c54626bda::t_c22d81e8c93bd1 1-16
+qase-pytest/src/qase/pytest/plugin.py
+  s_64747c54626bda::t_387b1ca5fd31b0 194-200,216-221,223,226-227
+  s_64747c54626bda::t_23a623f514e3cb 160-165
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "ffdfb5700e3add6e685ae4cbe2ae180f92789033",
+  "prompts": {},
+  "sessions": {
+    "s_64747c54626bda": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9649fcf5-1af9-423a-a579-5e8d36c36877",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
