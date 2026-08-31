@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qase-tavern"
-version = "3.1.1"
+version = "4.0.0"
 description = "Qase Tavern Plugin for Qase TestOps and Qase Report"
 readme = "README.md"
 keywords = ["qase", "tavern", "plugin", "testops", "report", "qase reporting", "test observability"]

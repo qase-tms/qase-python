@@ -157,8 +157,12 @@ class QasePytestPlugin:
 
         report = (yield).get_result()
 
-        # Skip processing if not in the relevant phase
-        if call.when not in ["setup", "call"]:
+        # Skip processing if not in the relevant phase. A failed teardown is
+        # let through too, so a broken teardown can't leave a green result
+        # behind; a passing teardown is still skipped.
+        if call.when not in ["setup", "call"] and not (
+            call.when == "teardown" and report.failed
+        ):
             return
 
         # Process test result and update status
@@ -187,6 +191,13 @@ class QasePytestPlugin:
 
     def _process_test_result(self, report, call, item):
         """Process test results and set appropriate status."""
+        # A broken setup/teardown must never downgrade or overwrite an
+        # already-failed call-phase result: skip it before touching the
+        # stacktrace, status, or message.
+        if (report.failed and call.when != "call" and
+                self.runtime.result.execution.status == PYTEST_TO_QASE_STATUS['FAILED']):
+            return
+
         # Add stacktrace if available
         if report.longrepr:
             self.runtime.result.execution.stacktrace = report.longreprtext
@@ -202,15 +213,18 @@ class QasePytestPlugin:
             self._handle_passed_test(report, call)
 
     def _handle_failed_test(self, call):
-        """Handle failed test case and set appropriate status."""
-        is_assertion_error = False
+        """Handle failed test case and set appropriate status.
+
+        A call-phase failure is a test failure, whatever the exception type;
+        a failure in setup or teardown is a broken test. This is the
+        distinction pytest itself makes via ``call.when``.
+        """
         error_message = "Test failed"
-        
+
         if call.excinfo is not None:
-            is_assertion_error = call.excinfo.typename == "AssertionError"
             error_message = call.excinfo.exconly()
-        
-        status = PYTEST_TO_QASE_STATUS['FAILED'] if is_assertion_error else PYTEST_TO_QASE_STATUS['BROKEN']
+
+        status = PYTEST_TO_QASE_STATUS['FAILED'] if call.when == "call" else PYTEST_TO_QASE_STATUS['BROKEN']
         self._set_result_status(status)
         self.runtime.result.add_message(error_message)
 

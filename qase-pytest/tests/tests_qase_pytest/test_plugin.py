@@ -348,6 +348,124 @@ class TestAttachLogsOnSetupFailure:
             mock_attach.assert_not_called()
 
 
+class TestFailureStatusFromPhase:
+    """Failure status is derived from call.when, not the exception type (#511)."""
+
+    def test_call_phase_assertion_error_is_failed(self):
+        plugin = make_plugin_with_capture_logs(capture_logs=False)
+        excinfo = MagicMock()
+        excinfo.typename = "AssertionError"
+        excinfo.exconly.return_value = "AssertionError: expected X"
+        report = make_report(failed=True)
+        call_obj = make_call(when="call", excinfo=excinfo)
+        item = make_mock_item()
+
+        run_makereport(plugin, item, call_obj, report)
+
+        assert plugin.runtime.result.execution.status == 'failed'
+
+    def test_call_phase_custom_exception_is_failed(self):
+        """A non-AssertionError raised in the call phase is still a real test failure."""
+        plugin = make_plugin_with_capture_logs(capture_logs=False)
+        excinfo = MagicMock()
+        excinfo.typename = "MyTimeoutError"
+        excinfo.exconly.return_value = "MyTimeoutError: cluster never became Ready"
+        report = make_report(failed=True)
+        call_obj = make_call(when="call", excinfo=excinfo)
+        item = make_mock_item()
+
+        run_makereport(plugin, item, call_obj, report)
+
+        assert plugin.runtime.result.execution.status == 'failed'
+
+    def test_call_phase_pytest_fail_is_failed(self):
+        """pytest.fail() raises Failed, not AssertionError, but is still a call-phase failure."""
+        plugin = make_plugin_with_capture_logs(capture_logs=False)
+        excinfo = MagicMock()
+        excinfo.typename = "Failed"
+        excinfo.exconly.return_value = "Failed: explicit pytest.fail"
+        report = make_report(failed=True)
+        call_obj = make_call(when="call", excinfo=excinfo)
+        item = make_mock_item()
+
+        run_makereport(plugin, item, call_obj, report)
+
+        assert plugin.runtime.result.execution.status == 'failed'
+
+    def test_setup_phase_assertion_error_is_invalid(self):
+        """An assert inside a fixture is a broken setup, not a test failure."""
+        plugin = make_plugin_with_capture_logs(capture_logs=False)
+        excinfo = MagicMock()
+        excinfo.typename = "AssertionError"
+        excinfo.exconly.return_value = "AssertionError: bad fixture"
+        report = make_report(failed=True)
+        call_obj = make_call(when="setup", excinfo=excinfo)
+        item = make_mock_item()
+
+        run_makereport(plugin, item, call_obj, report)
+
+        assert plugin.runtime.result.execution.status == 'invalid'
+
+    def test_setup_phase_custom_exception_is_invalid(self):
+        plugin = make_plugin_with_capture_logs(capture_logs=False)
+        excinfo = MagicMock()
+        excinfo.typename = "RuntimeError"
+        excinfo.exconly.return_value = "RuntimeError: fixture broke"
+        report = make_report(failed=True)
+        call_obj = make_call(when="setup", excinfo=excinfo)
+        item = make_mock_item()
+
+        run_makereport(plugin, item, call_obj, report)
+
+        assert plugin.runtime.result.execution.status == 'invalid'
+
+    def test_teardown_failure_after_pass_is_invalid(self):
+        """A test that passes but whose teardown raises must not be reported as passed."""
+        plugin = make_plugin_with_capture_logs(capture_logs=False)
+        plugin.runtime.result.execution.status = 'passed'
+        excinfo = MagicMock()
+        excinfo.typename = "RuntimeError"
+        excinfo.exconly.return_value = "RuntimeError: cleanup never finished"
+        report = make_report(failed=True)
+        call_obj = make_call(when="teardown", excinfo=excinfo)
+        item = make_mock_item()
+
+        run_makereport(plugin, item, call_obj, report)
+
+        assert plugin.runtime.result.execution.status == 'invalid'
+
+    def test_teardown_success_does_not_touch_existing_status(self):
+        """A passing teardown must not touch a status already set by the call phase."""
+        plugin = make_plugin_with_capture_logs(capture_logs=False)
+        plugin.runtime.result.execution.status = 'passed'
+        report = make_report(failed=False)
+        call_obj = make_call(when="teardown")
+        item = make_mock_item()
+
+        run_makereport(plugin, item, call_obj, report)
+
+        assert plugin.runtime.result.execution.status == 'passed'
+
+    def test_teardown_failure_after_call_failure_keeps_original_status_and_message(self):
+        """A broken teardown must never downgrade or overwrite an existing call-phase failure."""
+        plugin = make_plugin_with_capture_logs(capture_logs=False)
+        plugin.runtime.result.execution.status = 'failed'
+        plugin.runtime.result.execution.stacktrace = 'original call-phase stacktrace'
+        item = make_mock_item()
+
+        excinfo = MagicMock()
+        excinfo.exconly.return_value = "RuntimeError: cleanup never finished"
+        report = make_report(
+            failed=True, longrepr=MagicMock(), longreprtext="teardown stacktrace")
+        call_obj = make_call(when="teardown", excinfo=excinfo)
+
+        run_makereport(plugin, item, call_obj, report)
+
+        assert plugin.runtime.result.execution.status == 'failed'
+        assert plugin.runtime.result.execution.stacktrace == 'original call-phase stacktrace'
+        plugin.runtime.result.add_message.assert_not_called()
+
+
 class TestXdistRunIdRoundtrip:
     """xdist controller -> worker handoff of run_id via lock file.
 

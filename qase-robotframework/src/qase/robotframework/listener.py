@@ -122,16 +122,7 @@ class Listener:
 
         self.runtime.result.execution.complete()
 
-        # Determine if it's an assertion error or other error
-        status = STATUSES[result.status]
-        if status == "failed" and hasattr(result, 'message'):
-            # Check if the error message contains assertion-related keywords
-            assertion_keywords = ['assert', 'AssertionError',
-                                  'expect', 'should', 'must', 'equal', 'not equal']
-            is_assertion_error = any(
-                keyword in result.message for keyword in assertion_keywords)
-            status = "failed" if is_assertion_error else "invalid"
-
+        status = self._resolve_failure_status(STATUSES[result.status], result)
         self.runtime.result.execution.set_status(status)
         if hasattr(result, 'message'):
             self.runtime.result.execution.stacktrace = result.message
@@ -175,6 +166,26 @@ class Listener:
         self.logger.log_info(
             f"Finished case result: {result.status}, error: {hasattr(result, 'message') and result.message or None}"
         )
+
+    @staticmethod
+    def _resolve_failure_status(status, result):
+        """Attribute a test failure to the right phase.
+
+        A failure in ``[Setup]`` or ``[Teardown]`` is a broken test, not a
+        test failure -- but a teardown failure must never downgrade a real
+        failure already present in the test body.
+        """
+        if status != "failed":
+            return status
+
+        if getattr(result, 'has_setup', False) and result.setup.failed:
+            return "invalid"
+
+        if (getattr(result, 'has_teardown', False) and result.teardown.failed and
+                not any(kw.failed for kw in result.body)):
+            return "invalid"
+
+        return status
 
     def close(self):
         if self.last_level_flag is not None:

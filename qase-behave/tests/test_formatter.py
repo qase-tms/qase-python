@@ -397,6 +397,165 @@ class TestFormatterStepCallback:
         assert formatter._QaseFormatter__current_step_start is None
 
 
+class TestStepFailureStatusFromHookFailed:
+    """A step's failed-vs-invalid status is derived from ``hook_failed``, not
+    from matching keywords against the error text (#511)."""
+
+    def _make_formatter(self):
+        formatter = QaseFormatter()
+        formatter._behavex_mode = False
+        formatter.reporter = MagicMock()
+        formatter._QaseFormatter__current_scenario = MagicMock()
+        formatter._QaseFormatter__current_scenario.ignore = False
+        formatter._QaseFormatter__current_scenario.steps = []
+        return formatter
+
+    @staticmethod
+    def _make_step(status="failed", hook_failed=False, error_message="boom"):
+        step = MagicMock()
+        step.keyword = "Then"
+        step.name = "a step"
+        step.line = 1
+        step.status.name = status
+        step.duration = 0.1
+        step.hook_failed = hook_failed
+        step.error_message = error_message
+        return step
+
+    def test_assertion_failure_in_step_body_is_failed(self):
+        """behave's own error text is 'Assertion Failed: ...' (capital A) --
+        the old lowercase keyword match never matched this."""
+        formatter = self._make_formatter()
+        step = self._make_step(
+            status="failed", hook_failed=False,
+            error_message="Assertion Failed: expected X")
+
+        formatter.result(step)
+
+        formatter._QaseFormatter__current_scenario.execution.set_status.assert_called_with('failed')
+
+    def test_custom_exception_in_step_body_is_failed(self):
+        formatter = self._make_formatter()
+        step = self._make_step(
+            status="failed", hook_failed=False,
+            error_message="cluster never became Ready within 900s")
+
+        formatter.result(step)
+
+        formatter._QaseFormatter__current_scenario.execution.set_status.assert_called_with('failed')
+
+    def test_before_or_after_step_hook_failure_is_invalid(self):
+        formatter = self._make_formatter()
+        step = self._make_step(
+            status="failed", hook_failed=True,
+            error_message="before_step hook exploded")
+
+        formatter.result(step)
+
+        formatter._QaseFormatter__current_scenario.execution.set_status.assert_called_with('invalid')
+
+    def test_undefined_step_status_is_untouched(self):
+        """Non-failed statuses (skipped/undefined/pending) pass through as before."""
+        formatter = self._make_formatter()
+        step = self._make_step(status="undefined", hook_failed=False, error_message=None)
+
+        formatter.result(step)
+
+        formatter._QaseFormatter__current_scenario.execution.set_status.assert_called_with('skipped')
+
+
+class TestScenarioHookFailure:
+    """before_scenario/after_scenario hook failures must not report a
+    scenario as 'passed' just because result() was never called (#511)."""
+
+    def _make_formatter(self):
+        formatter = QaseFormatter()
+        formatter._behavex_mode = False
+        formatter.reporter = MagicMock()
+        return formatter
+
+    @staticmethod
+    def _make_result(status="passed", ignore=False):
+        from qase.commons.models import Result
+        result = Result(title="s", signature="s")
+        result.execution.set_status(status)
+        result.ignore = ignore
+        return result
+
+    def test_before_scenario_hook_failure_is_invalid_not_passed(self):
+        """No steps ran (before_scenario hook exploded), so the parsed
+        scenario is still stuck on parse_scenario's optimistic 'passed'
+        default -- it must not survive."""
+        formatter = self._make_formatter()
+        result = self._make_result(status="passed")
+        raw_scenario = MagicMock(hook_failed=True)
+        formatter._QaseFormatter__current_scenario = result
+        formatter._QaseFormatter__current_raw_scenario = raw_scenario
+
+        formatter._QaseFormatter__finalize_current_scenario()
+
+        assert result.execution.status == "invalid"
+        formatter.reporter.add_result.assert_called_once_with(result)
+
+    def test_after_scenario_hook_failure_after_pass_is_invalid(self):
+        formatter = self._make_formatter()
+        result = self._make_result(status="passed")
+        raw_scenario = MagicMock(hook_failed=True)
+        formatter._QaseFormatter__current_scenario = result
+        formatter._QaseFormatter__current_raw_scenario = raw_scenario
+
+        formatter._QaseFormatter__finalize_current_scenario()
+
+        assert result.execution.status == "invalid"
+
+    def test_after_scenario_hook_failure_does_not_downgrade_a_real_failure(self):
+        """A step already failed the scenario -- a later after_scenario hook
+        failure must not overwrite that real failure with 'invalid'."""
+        formatter = self._make_formatter()
+        result = self._make_result(status="failed")
+        raw_scenario = MagicMock(hook_failed=True)
+        formatter._QaseFormatter__current_scenario = result
+        formatter._QaseFormatter__current_raw_scenario = raw_scenario
+
+        formatter._QaseFormatter__finalize_current_scenario()
+
+        assert result.execution.status == "failed"
+
+    def test_no_hook_failure_leaves_status_untouched(self):
+        formatter = self._make_formatter()
+        result = self._make_result(status="passed")
+        raw_scenario = MagicMock(hook_failed=False)
+        formatter._QaseFormatter__current_scenario = result
+        formatter._QaseFormatter__current_raw_scenario = raw_scenario
+
+        formatter._QaseFormatter__finalize_current_scenario()
+
+        assert result.execution.status == "passed"
+
+    def test_ignored_scenario_is_never_sent(self):
+        formatter = self._make_formatter()
+        result = self._make_result(status="passed", ignore=True)
+        raw_scenario = MagicMock(hook_failed=True)
+        formatter._QaseFormatter__current_scenario = result
+        formatter._QaseFormatter__current_raw_scenario = raw_scenario
+
+        formatter._QaseFormatter__finalize_current_scenario()
+
+        formatter.reporter.add_result.assert_not_called()
+
+    def test_eof_finalizes_a_hook_failed_scenario_too(self):
+        formatter = self._make_formatter()
+        result = self._make_result(status="passed")
+        raw_scenario = MagicMock(hook_failed=True)
+        formatter._QaseFormatter__current_scenario = result
+        formatter._QaseFormatter__current_raw_scenario = raw_scenario
+
+        formatter.eof()
+
+        assert result.execution.status == "invalid"
+        formatter.reporter.add_result.assert_called_once_with(result)
+
+
 class TestBehaveXWorkerMode:
     """Test QaseFormatter in BehaveX worker mode (lock file coordination)."""
 

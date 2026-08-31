@@ -26,6 +26,7 @@ class QaseFormatter(Formatter):
         self.__already_started = False
         self.__case_ids = []
         self.__current_scenario = None
+        self.__current_raw_scenario = None
         self.__current_step_start = None
 
         if not self._behavex_mode:
@@ -73,14 +74,38 @@ class QaseFormatter(Formatter):
             self.__case_ids, feature.scenarios)
 
     def scenario(self, scenario: Scenario):
-        if self.__current_scenario and self.__current_scenario.ignore == False:
-            self.__current_scenario.execution.complete()
-            self.reporter.add_result(self.__current_scenario)
-            self.__current_scenario = None
+        self.__finalize_current_scenario()
         self.__current_scenario = parse_scenario(scenario)
+        self.__current_raw_scenario = scenario
         qase._set_current_scenario(self.__current_scenario)
         qase._set_current_step(None)
         self.__current_step_start = None
+
+    def __finalize_current_scenario(self):
+        """Complete and send the in-flight scenario, if any.
+
+        A ``before_scenario``/``after_scenario`` hook failure is invisible
+        to ``result()`` -- if ``before_scenario`` fails, behave skips every
+        step so ``result()`` is never called at all, and the parsed
+        scenario keeps the optimistic 'passed' default set by
+        ``parse_scenario``. Check the raw behave ``Scenario``'s
+        ``hook_failed`` (present since behave 1.2.6) here instead, and
+        never let it downgrade a real step failure.
+        """
+        if self.__current_scenario is None or self.__current_scenario.ignore:
+            self.__current_scenario = None
+            self.__current_raw_scenario = None
+            return
+
+        if (self.__current_raw_scenario is not None and
+                getattr(self.__current_raw_scenario, 'hook_failed', False) and
+                self.__current_scenario.execution.status != 'failed'):
+            self.__current_scenario.execution.set_status('invalid')
+
+        self.__current_scenario.execution.complete()
+        self.reporter.add_result(self.__current_scenario)
+        self.__current_scenario = None
+        self.__current_raw_scenario = None
 
     def step(self, step):
         """Capture the real wall-clock start of the upcoming step.
@@ -100,13 +125,11 @@ class QaseFormatter(Formatter):
         qase._set_current_step(step)
 
         if step.execution.status != 'passed':
-            is_assertion_error = False
-            if result.error_message:
-                assertion_keywords = ['assert', 'AssertionError', 'expect', 'should', 'must']
-                is_assertion_error = any(keyword in result.error_message for keyword in assertion_keywords)
-
             if step.execution.status == 'failed':
-                status = 'failed' if is_assertion_error else 'invalid'
+                # A before_step/after_step hook failure is a broken step,
+                # like a setup/teardown error; any other step-body failure
+                # (assertion or otherwise) is a real test failure.
+                status = 'invalid' if getattr(result, 'hook_failed', False) else 'failed'
                 step.execution.set_status(status)
                 self.__current_scenario.execution.set_status(status)
             else:
@@ -118,10 +141,7 @@ class QaseFormatter(Formatter):
         qase._set_current_step(None)
 
     def eof(self):
-        if self.__current_scenario and self.__current_scenario.ignore == False:
-            self.__current_scenario.execution.complete()
-            self.reporter.add_result(self.__current_scenario)
-            self.__current_scenario = None
+        self.__finalize_current_scenario()
 
     def close(self):
         if self._is_behavex_worker:
