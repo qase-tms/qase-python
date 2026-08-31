@@ -1,8 +1,8 @@
 run:
   stats:
     blocked: 0
-    failed: 0
-    invalid: 2
+    failed: 2
+    invalid: 0
     muted: 0
     passed: 18
     skipped: 1
@@ -73,7 +73,7 @@ results:
   signature: 402::features::steps_feature.feature::test_with_failing_step
   testops_ids:
   - 402
-  status: invalid
+  status: failed
   relations:
     suite:
       data:
@@ -87,7 +87,7 @@ results:
   - data:
       action: When the user triggers a failure
     execution:
-      status: invalid
+      status: failed
 - title: Test in deeply nested suite
   signature: 303::authentication::oauth::google::test_in_deeply_nested_suite
   testops_ids:
@@ -188,7 +188,7 @@ results:
   signature: 102::features::basic.feature::simple_failing_test
   testops_ids:
   - 102
-  status: invalid
+  status: failed
   relations:
     suite:
       data:
@@ -198,7 +198,7 @@ results:
   - data:
       action: Given a failing condition
     execution:
-      status: invalid
+      status: failed
 - title: Test with file attachment
   signature: 601::features::attachments.feature::test_with_file_attachment
   testops_ids:

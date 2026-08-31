@@ -1,8 +1,8 @@
 run:
   stats:
     blocked: 0
-    failed: 0
-    invalid: 1
+    failed: 1
+    invalid: 0
     muted: 0
     passed: 7
     skipped: 0
@@ -59,7 +59,7 @@ results:
   signature: 104::test_api.tavern.yaml::qaseid=104_intentionally_failing_test
   testops_ids:
   - 104
-  status: invalid
+  status: failed
   relations:
     suite:
       data:
