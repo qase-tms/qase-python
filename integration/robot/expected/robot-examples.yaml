@@ -1,8 +1,8 @@
 run:
   stats:
     blocked: 0
-    failed: 0
-    invalid: 1
+    failed: 1
+    invalid: 0
     muted: 0
     passed: 3
     skipped: 0
@@ -12,7 +12,7 @@ results:
   signature: 302::tests::steps::test_with_failing_step
   testops_ids:
   - 302
-  status: invalid
+  status: failed
   fields:
     description: ''
   relations:

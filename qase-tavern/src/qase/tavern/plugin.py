@@ -65,12 +65,13 @@ class QasePytestPlugin:
     def pytest_runtest_makereport(self, item, call):
         if self.runtime.result is None:
             return
+
         if call.when == "call":
             if call.excinfo:
-                # Determine if it's an assertion error or other error
-                is_assertion_error = call.excinfo.typename == "AssertionError"
-                status = "failed" if is_assertion_error else "invalid"
-                self.runtime.result.execution.status = status
+                # A call-phase failure is a real test failure, whatever the
+                # exception type -- pytest-tavern raises its own TestFailError,
+                # never AssertionError.
+                self.runtime.result.execution.status = "failed"
                 if hasattr(call.excinfo, "value"):
                     self.runtime.result.execution.stacktrace = '\n'.join(str(a) for a in call.excinfo.value.args)
                     if hasattr(call.excinfo.value, "failures"):
@@ -101,6 +102,17 @@ class QasePytestPlugin:
             self.runtime.result.execution.status = "passed"
             for key, step in self.runtime.steps.items():
                 self._ensure_step_closed(step, "passed")
+            return
+
+        # A setup/teardown failure (e.g. a broken pytest fixture used by the
+        # Tavern test) is a broken test, not a call-phase failure -- but it
+        # must never downgrade or overwrite an already-failed call-phase
+        # result.
+        if call.when in ("setup", "teardown") and call.excinfo:
+            if self.runtime.result.execution.status == "failed":
+                return
+            self.runtime.result.execution.status = "invalid"
+            self.runtime.result.execution.stacktrace = call.excinfo.exconly()
 
     @staticmethod
     def _ensure_step_closed(step, status):

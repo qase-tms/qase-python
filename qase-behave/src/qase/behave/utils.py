@@ -290,10 +290,17 @@ def parse_step(step: Step, start_time: float = None) -> QaseStep:
         data=StepGherkinData(keyword=step.keyword, name=step.name, line=step.line)
     )
 
-    # Map behave status to qase status
+    # Map behave status to qase status. The failed-vs-invalid decision is
+    # made in the formatter, from ``step.hook_failed`` (present since behave
+    # 1.2.6) rather than from any of these names, so 'error'/'hook_error'/
+    # 'cleanup_error' (behave >=1.3's richer Status enum; absent on 1.2.6)
+    # only need to route into the same "failed" branch here.
     status_mapping = {
         'passed': 'passed',
-        'failed': 'failed',  # This will be updated in formatter based on error type
+        'failed': 'failed',
+        'error': 'failed',
+        'hook_error': 'failed',
+        'cleanup_error': 'failed',
         'skipped': 'skipped',
         'undefined': 'skipped',
         'pending': 'skipped'

@@ -352,3 +352,54 @@ class TestParseConditionStepsTiming:
         assert [s.execution.duration for s in steps] == [0, 76, 0]
         assert all(s.execution.start_time is not None for s in steps)
         assert all(s.execution.end_time is not None for s in steps)
+
+
+class TestResolveFailureStatus:
+    """A test-body failure is `failed`; a [Setup]/[Teardown] failure is
+    `invalid` (#511). Replaces the old keyword-matching heuristic, which
+    misclassified idiomatic RF failures like ``Should Be Equal`` (message
+    ``"1 != 2"``, matching none of the old keywords) as `invalid`.
+    """
+
+    @staticmethod
+    def _make_result(has_setup=False, setup_failed=False,
+                      has_teardown=False, teardown_failed=False,
+                      body_failed_flags=()):
+        result = MagicMock(spec=["has_setup", "setup", "has_teardown", "teardown", "body"])
+        result.has_setup = has_setup
+        result.setup = MagicMock(spec=["failed"], failed=setup_failed)
+        result.has_teardown = has_teardown
+        result.teardown = MagicMock(spec=["failed"], failed=teardown_failed)
+        result.body = [MagicMock(spec=["failed"], failed=f) for f in body_failed_flags]
+        return result
+
+    def test_non_failed_status_is_returned_unchanged(self):
+        result = self._make_result()
+        assert Listener._resolve_failure_status("passed", result) == "passed"
+        assert Listener._resolve_failure_status("skipped", result) == "skipped"
+
+    def test_body_failure_with_no_setup_or_teardown_stays_failed(self):
+        """The idiomatic case: `Should Be Equal` fails in the test body."""
+        result = self._make_result(body_failed_flags=[True])
+        assert Listener._resolve_failure_status("failed", result) == "failed"
+
+    def test_setup_failure_is_invalid(self):
+        result = self._make_result(has_setup=True, setup_failed=True)
+        assert Listener._resolve_failure_status("failed", result) == "invalid"
+
+    def test_setup_ran_fine_stays_failed(self):
+        result = self._make_result(has_setup=True, setup_failed=False,
+                                    body_failed_flags=[True])
+        assert Listener._resolve_failure_status("failed", result) == "failed"
+
+    def test_teardown_failure_after_passing_body_is_invalid(self):
+        result = self._make_result(has_teardown=True, teardown_failed=True,
+                                    body_failed_flags=[False])
+        assert Listener._resolve_failure_status("failed", result) == "invalid"
+
+    def test_teardown_failure_does_not_downgrade_a_failing_body(self):
+        """The test body itself already failed -- a teardown failure on top
+        must not overwrite that real failure with 'invalid'."""
+        result = self._make_result(has_teardown=True, teardown_failed=True,
+                                    body_failed_flags=[True])
+        assert Listener._resolve_failure_status("failed", result) == "failed"

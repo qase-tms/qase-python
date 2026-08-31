@@ -1,3 +1,22 @@
+# qase-behave 4.0.0
+
+## Breaking changes
+
+- Failure status is now derived from behave's own `hook_failed` signal instead of guessed by matching keywords (`assert`, `should`, `equal`, ...) against the error text. That heuristic was broken for the common case: behave's own failure message is `"Assertion Failed: ..."` (capital A), which never matched the lowercase `'assert'` keyword, so a literal `assert` in a step body was misclassified as `invalid`. Two further gaps are fixed alongside it:
+  - If a `before_scenario`/`before_step` hook raised, no steps ran at all and the scenario was silently reported as `passed` (the parser's optimistic default was never corrected, since `result()` is never called when a scenario's steps don't run). It's now reported as `invalid`, unless the scenario had already failed for real (a later `after_scenario` hook failure never downgrades a real step failure).
+  - On behave >=1.3, the newer `Status.error`/`Status.hook_error` names weren't in the status-mapping table and silently collapsed to `skipped`; they now route correctly.
+  ([#511](https://github.com/qase-tms/qase-python/issues/511))
+
+  | Failure phase | Old status (guessed from exception text) | New status (from behave's hook_failed) |
+  |---|---|---|
+  | Step body fails with what looks like an assertion (message contains `assert`/`should`/`equal`/...) | `failed` (in practice, almost never — see above) | `failed` |
+  | Step body fails with anything else (custom exception, timeout, behave's own `"Assertion Failed: ..."` text) | `invalid` — wrong | `failed` |
+  | `before_scenario`/`before_step` hook fails | `passed` (no steps ran) or `invalid`, inconsistently | `invalid` |
+  | `after_scenario`/`after_step` hook fails, scenario already passed | `passed` — wrong, hides the failure | `invalid` |
+  | `after_scenario`/`after_step` hook fails, scenario already failed | status could be overwritten by the hook's own message | scenario's status and diagnostics are kept untouched — the real failure always wins |
+
+  If your suite relies on the old behaviour, review any downstream logic (dashboards, defect linking, status filters) that branches on `invalid` vs `failed`.
+
 # qase-behave 3.2.0
 
 ## What's new

@@ -1,3 +1,19 @@
+# qase-pytest 9.0.0
+
+## Breaking changes
+
+- Failure status is now derived from the pytest phase (`call.when`) instead of guessed from the exception type. Previously any failure other than `AssertionError` (a custom exception, `pytest.fail()`, a timeout) was reported as `invalid` even when it happened in the test body, and a test that passed but whose `teardown` fixture raised was reported as `passed` — the teardown phase wasn't processed at all. A failing `setup`/`teardown` can no longer overwrite an already-failed test's status or diagnostics. ([#511](https://github.com/qase-tms/qase-python/issues/511))
+
+  | Failure phase | Old status (guessed from exception text) | New status (from pytest phase) |
+  |---|---|---|
+  | Test body (`call`) fails with what looks like an assertion (message contains `assert`/`should`/`equal`/...) | `failed` | `failed` |
+  | Test body (`call`) fails with anything else (custom exception, timeout, `pytest.fail()`, framework error text) | `invalid` — wrong | `failed` |
+  | Setup / before-hook fails | `invalid`, unless the exception's message happened to match an assertion keyword, in which case `failed` — inconsistent | `invalid` |
+  | Teardown / after-hook fails, test body already passed | `passed` — wrong, hides the failure | `invalid` |
+  | Teardown / after-hook fails, test body already failed | body's status kept, but the teardown message could silently overwrite the real failure's message/stacktrace | body's status and diagnostics are kept untouched — the real failure always wins |
+
+  If your suite relies on the old behaviour, review any downstream logic (dashboards, defect linking, status filters) that branches on `invalid` vs `failed`.
+
 # qase-pytest 8.3.1
 
 ## What's fixed

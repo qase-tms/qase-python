@@ -1,3 +1,19 @@
+# qase-robotframework 7.0.0
+
+## Breaking changes
+
+- Failure status is now derived from `[Setup]`/`[Teardown]` keyword results instead of guessed by matching keywords (`assert`, `should`, `equal`, ...) against the error message. That heuristic missed even the idiomatic case: `Should Be Equal` fails with a message like `"1 != 2"`, which matches none of the old keywords, so a textbook assertion failure was reported as `invalid`. The reporter now checks `result.setup.failed` / `result.teardown.failed` directly; a teardown failure never overwrites an already-failed test body's status. ([#511](https://github.com/qase-tms/qase-python/issues/511))
+
+  | Failure phase | Old status (guessed from error message) | New status (from `[Setup]`/`[Teardown]` result) |
+  |---|---|---|
+  | Test body fails with what looks like an assertion (message contains `assert`/`should`/`equal`/...) | `failed` (in practice, rarely — see above) | `failed` |
+  | Test body fails with anything else (custom keyword failure, `Fail`, framework error text) | `invalid` — wrong | `failed` |
+  | `[Setup]` fails | `invalid`, unless the message happened to match a keyword, in which case `failed` — inconsistent | `invalid` |
+  | `[Teardown]` fails, test body already passed | `invalid` only if the message matched a keyword — inconsistent | `invalid` |
+  | `[Teardown]` fails, test body already failed | status decided purely by whichever message happened to match | test body's status wins — the real failure is never downgraded |
+
+  If your suite relies on the old behaviour, review any downstream logic (dashboards, defect linking, status filters) that branches on `invalid` vs `failed`.
+
 # qase-robotframework 6.0.0
 
 ## Breaking changes

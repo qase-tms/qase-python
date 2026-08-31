@@ -353,3 +353,85 @@ class TestTavernBetaHooksTiming:
         assert step.execution.start_time == step.execution.end_time
         assert step.execution.duration == 0
         assert step.execution.status == "skipped"
+
+
+# ---------------------------------------------------------------------------
+# pytest_runtest_makereport -- failure status is derived from call.when,
+# not the exception type (#511)
+# ---------------------------------------------------------------------------
+
+
+def _make_call(when="call", excinfo=None):
+    """Create a mock pytest CallInfo."""
+    call_obj = MagicMock()
+    call_obj.when = when
+    call_obj.excinfo = excinfo
+    return call_obj
+
+
+def _make_excinfo(exconly="TestFailError: stage failed", value=None):
+    excinfo = MagicMock()
+    excinfo.exconly.return_value = exconly
+    excinfo.value = value if value is not None else Exception()
+    return excinfo
+
+
+class TestFailureStatusFromPhase:
+    """pytest-tavern raises its own TestFailError, never AssertionError --
+    the old exception-type check made every call-phase failure ``invalid``.
+    """
+
+    def test_call_phase_failure_is_failed(self):
+        """A Tavern stage failure (TestFailError) must be `failed`, not `invalid`."""
+        plugin = _make_plugin(with_result=True)
+        excinfo = _make_excinfo(value=Exception("stage failed"))
+
+        plugin.pytest_runtest_makereport(item=MagicMock(), call=_make_call(when="call", excinfo=excinfo))
+
+        assert plugin.runtime.result.execution.status == "failed"
+
+    def test_call_phase_pass_is_passed(self):
+        plugin = _make_plugin(with_result=True)
+
+        plugin.pytest_runtest_makereport(item=MagicMock(), call=_make_call(when="call", excinfo=None))
+
+        assert plugin.runtime.result.execution.status == "passed"
+
+    def test_setup_phase_fixture_failure_is_invalid(self):
+        """A broken pytest fixture used by a Tavern test is a broken test."""
+        plugin = _make_plugin(with_result=True)
+        excinfo = _make_excinfo(exconly="RuntimeError: fixture broke")
+
+        plugin.pytest_runtest_makereport(item=MagicMock(), call=_make_call(when="setup", excinfo=excinfo))
+
+        assert plugin.runtime.result.execution.status == "invalid"
+        assert plugin.runtime.result.execution.stacktrace == "RuntimeError: fixture broke"
+
+    def test_teardown_failure_after_pass_is_invalid(self):
+        plugin = _make_plugin(with_result=True)
+        plugin.runtime.result.execution.status = "passed"
+        excinfo = _make_excinfo(exconly="RuntimeError: cleanup never finished")
+
+        plugin.pytest_runtest_makereport(item=MagicMock(), call=_make_call(when="teardown", excinfo=excinfo))
+
+        assert plugin.runtime.result.execution.status == "invalid"
+
+    def test_teardown_failure_after_call_failure_keeps_failed_status(self):
+        """A broken teardown must never downgrade an existing call-phase failure."""
+        plugin = _make_plugin(with_result=True)
+        plugin.runtime.result.execution.status = "failed"
+        plugin.runtime.result.execution.stacktrace = "original call-phase stacktrace"
+        excinfo = _make_excinfo(exconly="RuntimeError: cleanup never finished")
+
+        plugin.pytest_runtest_makereport(item=MagicMock(), call=_make_call(when="teardown", excinfo=excinfo))
+
+        assert plugin.runtime.result.execution.status == "failed"
+        assert plugin.runtime.result.execution.stacktrace == "original call-phase stacktrace"
+
+    def test_teardown_success_does_not_touch_existing_status(self):
+        plugin = _make_plugin(with_result=True)
+        plugin.runtime.result.execution.status = "passed"
+
+        plugin.pytest_runtest_makereport(item=MagicMock(), call=_make_call(when="teardown", excinfo=None))
+
+        assert plugin.runtime.result.execution.status == "passed"
