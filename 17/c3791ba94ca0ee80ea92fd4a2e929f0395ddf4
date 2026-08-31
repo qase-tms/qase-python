@@ -1,0 +1,27 @@
+integration/tavern/expected/tavern-examples.yaml
+  s_64747c54626bda::t_7964a32150b4d4 4-5
+  s_64747c54626bda::t_9a4705755b52b5 62
+integration/behave/expected/behave-examples.yaml
+  s_64747c54626bda::t_5d5fe2d4c1aa3d 76,90
+  s_64747c54626bda::t_7c8611bf596019 191,201
+  s_64747c54626bda::t_5ba57d0c171834 4-5
+integration/robot/expected/robot-examples.yaml
+  s_64747c54626bda::t_294315e88bbd0d 4-5
+  s_64747c54626bda::t_bb85b4fe898092 15
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "17c3791ba94ca0ee80ea92fd4a2e929f0395ddf4",
+  "prompts": {},
+  "sessions": {
+    "s_64747c54626bda": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9649fcf5-1af9-423a-a579-5e8d36c36877",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
