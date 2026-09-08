@@ -1,3 +1,10 @@
+# qase-python-commons@5.1.5
+
+## What's new
+
+- Fixed a hang where an attachment upload could block a reporter thread forever ([#513](https://github.com/qase-tms/qase-python/issues/513)). The configured `testops.api.timeout` was applied to result uploads but never to the API v1 client, so an attachment request that stalled without failing was waited on indefinitely: the batch it belonged to was never submitted, the reporter thread never finished, and `pytest` — one `pytest-xdist` worker in particular — could only be killed by the CI timeout. Every API v1 call now carries the configured timeout.
+- Attachment batches are now retried on transient failures using `testops.api.retries` and `testops.api.retryBackoff`, the same policy as result uploads. Previously an attachment error was swallowed inside the upload loop, so the outer retry never saw it. After the attempts are exhausted the reporter logs the failure, drops those attachments and still submits the results — an attachment can no longer cost you the test results.
+
 # qase-python-commons@5.1.4
 
 ## What's new
