@@ -400,6 +400,12 @@ When a 429 carries a `Retry-After` header, that value replaces the computed
 backoff. Qase sends roughly 60 seconds, so a run that hits the rate limit takes
 longer to finish rather than losing the batch.
 
+The same timeout and retry settings apply to attachment uploads, which go
+through the API v1 client in batches of up to 20 files. **If an attachment batch
+cannot be uploaded after all attempts**, the reporter logs an error, drops those
+attachments and still submits the results they belong to — a failed attachment
+never costs you the test results.
+
 **If a batch cannot be delivered after all attempts**, the reporter logs an
 error naming how many results were lost and **does not mark the run complete**.
 An open run is the signal that its data is incomplete; a completed run over

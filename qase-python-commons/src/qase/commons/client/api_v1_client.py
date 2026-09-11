@@ -8,6 +8,7 @@ from qase.api_client_v1.models.attachmentupload import Attachmentupload
 from qase.api_client_v1.configuration import Configuration
 from .. import Logger
 from .base_api_client import BaseApiClient
+from ..retry import send_with_retry
 from ..exceptions.reporter import ReporterException
 from ..models import Attachment
 from ..models.config.framework import Video, Trace
@@ -46,7 +47,9 @@ class ApiV1Client(BaseApiClient):
     def get_project(self, project_code: str) -> Union[Project, None]:
         try:
             self.logger.log_debug(f"Getting project {project_code}")
-            response = ProjectsApi(self.client).get_project(code=project_code)
+            response = ProjectsApi(self.client).get_project(
+                code=project_code, _request_timeout=self.config.testops.api.timeout
+            )
             if hasattr(response, 'result'):
                 self.logger.log_debug(f"Project {project_code} found: {response.result.to_json()}")
                 return response.result
@@ -59,7 +62,9 @@ class ApiV1Client(BaseApiClient):
         try:
             self.logger.log_debug(f"Getting environment {environment}")
             api_instance = EnvironmentsApi(self.client)
-            response = api_instance.get_environments(code=project_code)
+            response = api_instance.get_environments(
+                code=project_code, _request_timeout=self.config.testops.api.timeout
+            )
             if hasattr(response, 'result') and hasattr(response.result, 'entities'):
                 for env in response.result.entities:
                     if env.slug == environment:
@@ -76,7 +81,9 @@ class ApiV1Client(BaseApiClient):
         try:
             self.logger.log_debug(f"Getting configurations for project {project_code}")
             api_instance = ConfigurationsApi(self.client)
-            response = api_instance.get_configurations(code=project_code)
+            response = api_instance.get_configurations(
+                code=project_code, _request_timeout=self.config.testops.api.timeout
+            )
             if hasattr(response, 'result') and hasattr(response.result, 'entities'):
                 return response.result.entities
             return []
@@ -117,8 +124,9 @@ class ApiV1Client(BaseApiClient):
                 # Create new group
                 group_create = ConfigurationGroupCreate(title=config_value.name)
                 group_response = ConfigurationsApi(self.client).create_configuration_group(
-                    code=project_code, 
-                    configuration_group_create=group_create
+                    code=project_code,
+                    configuration_group_create=group_create,
+                    _request_timeout=self.config.testops.api.timeout
                 )
                 group_id = group_response.result.id
             
@@ -129,7 +137,8 @@ class ApiV1Client(BaseApiClient):
             )
             config_response = ConfigurationsApi(self.client).create_configuration(
                 code=project_code,
-                configuration_create=config_create
+                configuration_create=config_create,
+                _request_timeout=self.config.testops.api.timeout
             )
             config_id = config_response.result.id
             return config_id
@@ -141,12 +150,16 @@ class ApiV1Client(BaseApiClient):
     def complete_run(self, project_code: str, run_id: int) -> None:
         api_runs = RunsApi(self.client)
         self.logger.log_debug(f"Completing run {run_id}")
-        res = api_runs.get_run(project_code, run_id).result
+        res = api_runs.get_run(
+            project_code, run_id, _request_timeout=self.config.testops.api.timeout
+        ).result
         if res.status == 1:
             self.logger.log_debug(f"Run {run_id} already completed")
             return
         try:
-            api_runs.complete_run(project_code, run_id)
+            api_runs.complete_run(
+                project_code, run_id, _request_timeout=self.config.testops.api.timeout
+            )
             self.logger.log(f"Test run link: {self.web}/run/{project_code}/dashboard/{run_id}", "info")
         except Exception as e:
             self.logger.log(f"Error at completing run {run_id}: {e}", "error")
@@ -240,10 +253,33 @@ class ApiV1Client(BaseApiClient):
                 
                 # Prepare files for upload
                 files_for_upload = [att.get_for_upload() for att in batch]
-                
-                # Upload batch
-                response = attach_api.upload_attachment(project_code, file=files_for_upload)
-                
+
+                # The timeout is what keeps a stalled connection from blocking
+                # the reporter thread forever: without it urllib3 waits
+                # indefinitely, no exception is ever raised, and the retry below
+                # never gets a chance to run.
+                #
+                # Unlike results, an attachment carries no idempotency key, so a
+                # retry whose first response was lost can leave an unreferenced
+                # file behind. That is cheaper than the alternative: the whole
+                # batch of results these attachments belong to going nowhere.
+                response = None
+
+                def upload_batch():
+                    nonlocal response
+                    response = attach_api.upload_attachment(
+                        project_code,
+                        file=files_for_upload,
+                        _request_timeout=self.config.testops.api.timeout
+                    )
+
+                send_with_retry(
+                    upload_batch,
+                    attempts=self.config.testops.api.retries,
+                    backoff=self.config.testops.api.retry_backoff,
+                    logger=self.logger,
+                )
+
                 if response.result:
                     all_uploaded.extend(response.result)
                     self.logger.log_debug(
@@ -294,7 +330,8 @@ class ApiV1Client(BaseApiClient):
         try:
             result = RunsApi(self.client).create_run(
                 code=project_code,
-                run_create=RunCreate(**{k: v for k, v in kwargs.items() if v is not None})
+                run_create=RunCreate(**{k: v for k, v in kwargs.items() if v is not None}),
+                _request_timeout=self.config.testops.api.timeout
             )
 
             run_id = result.result.id
@@ -311,7 +348,9 @@ class ApiV1Client(BaseApiClient):
 
     def check_test_run(self, project_code: str, run_id: int) -> bool:
         api_runs = RunsApi(self.client)
-        run = api_runs.get_run(code=project_code, id=run_id)
+        run = api_runs.get_run(
+            code=project_code, id=run_id, _request_timeout=self.config.testops.api.timeout
+        )
         if run.result.id:
             return True
         return False
@@ -332,7 +371,10 @@ class ApiV1Client(BaseApiClient):
             run_public = RunPublic(status=True)
             
             # Call the API to enable public report
-            response = api_runs.update_run_publicity(project_code, run_id, run_public)
+            response = api_runs.update_run_publicity(
+                project_code, run_id, run_public,
+                _request_timeout=self.config.testops.api.timeout
+            )
             
             # Extract the public URL from response
             if response.result and response.result.url:
@@ -368,7 +410,8 @@ class ApiV1Client(BaseApiClient):
             
             RunsApi(self.client).run_update_external_issue(
                 code=project_code,
-                runexternal_issues=run_external_issues
+                runexternal_issues=run_external_issues,
+                _request_timeout=self.config.testops.api.timeout
             )
             
             self.logger.log(f"External link updated for run {run_id}: {external_link.link}", "debug")
