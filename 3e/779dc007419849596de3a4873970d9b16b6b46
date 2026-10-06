@@ -1,0 +1,23 @@
+qase-tavern/requirements.txt
+  s_82084dabb68c65::t_ddbb2851be0cc8 2
+qase-tavern/changelog.md
+  s_82084dabb68c65::t_15875ca069ddec 1-6
+qase-tavern/pyproject.toml
+  s_82084dabb68c65::t_86d88a0da23f35 32
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "3e779dc007419849596de3a4873970d9b16b6b46",
+  "prompts": {},
+  "sessions": {
+    "s_82084dabb68c65": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3f9a9e6e-9762-4a7c-8920-b76e71221857",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
