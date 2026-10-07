@@ -1,3 +1,9 @@
+# qase-tavern 4.0.1
+
+## Bug fixes
+
+- Removed the `pytest<7.3` upper bound from the package dependencies. It made `qase-tavern` impossible to install alongside Tavern 3.x (which requires `pytest>=8`) and kept users on pytest versions affected by vulnerable tmpdir handling ([CVE-2025-71176](https://github.com/advisories/GHSA-6w46-j5rx-g56g)) (fixed in pytest 9.0.3). The pytest version is now constrained by Tavern itself: Tavern 3.7+ installs pytest 9.x, Tavern 2.x keeps pytest 7.2.
+
 # qase-tavern 4.0.0
 
 ## Breaking changes

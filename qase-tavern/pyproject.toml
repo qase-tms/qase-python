@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qase-tavern"
-version = "4.0.0"
+version = "4.0.1"
 description = "Qase Tavern Plugin for Qase TestOps and Qase Report"
 readme = "README.md"
 keywords = ["qase", "tavern", "plugin", "testops", "report", "qase reporting", "test observability"]
@@ -29,7 +29,7 @@ classifiers = [
 requires-python = ">=3.9"
 dependencies = [
     "qase-python-commons~=5.1.1",
-    "pytest>=7,<7.3",
+    "pytest>=7",
     "filelock>=3.12.2",
     "more_itertools",
 ]
