@@ -1,3 +1,9 @@
+# qase-python-commons@5.1.6
+
+## What's new
+
+- Fixed run links for the EU cluster. With `testops.api.host` set to `eu.qase.io`, API calls already went to `https://api-eu.qase.io`, but the "Test run link" and "See why this test failed" links pointed to `https://eu.qase.io` instead of the EU web app at `https://app-eu.qase.io`. Web app URLs are now resolved in one place from an explicit table of known clusters; `qase.io` and enterprise hosts (`example.qase.io` → `https://example.qase.io`) are unchanged.
+
 # qase-python-commons@5.1.5
 
 ## What's new
