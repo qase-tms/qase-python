@@ -1,0 +1,33 @@
+qase-python-commons/changelog.md
+  s_531e0b712b9182::t_1a57d797b8c655 1-6
+qase-python-commons/pyproject.toml
+  s_531e0b712b9182::t_4cdbff2c3509f4 7
+qase-python-commons/src/qase/commons/client/api_v1_client.py
+  s_531e0b712b9182::t_c3806da5155bb9 12,35
+qase-python-commons/src/qase/commons/client/api_v2_client.py
+  s_531e0b712b9182::t_383241e78cb891 23,46
+qase-python-commons/src/qase/commons/reporters/testops.py
+  s_531e0b712b9182::t_9f4e9cde5bdd50 12,24
+qase-python-commons/src/qase/commons/reporters/testops_multi.py
+  s_531e0b712b9182::t_f58beb418ef92a 13,25
+qase-python-commons/src/qase/commons/util/api_host.py
+  s_531e0b712b9182::t_ed871179cdb07f 1-24
+qase-python-commons/tests/tests_qase_commons/test_api_host.py
+  s_531e0b712b9182::t_365e85e7a10ef4 1-49
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "2e3d61dd462bdfac6b639e2e5c9f6b14680a488d",
+  "prompts": {},
+  "sessions": {
+    "s_531e0b712b9182": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c0502f13-b6be-4d22-84cf-e9e77bf5f3e6",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
