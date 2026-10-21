@@ -9,6 +9,7 @@ from qase.api_client_v1.configuration import Configuration
 from .. import Logger
 from .base_api_client import BaseApiClient
 from ..retry import send_with_retry
+from ..util.api_host import get_web_app_url
 from ..exceptions.reporter import ReporterException
 from ..models import Attachment
 from ..models.config.framework import Video, Trace
@@ -31,12 +32,11 @@ class ApiV1Client(BaseApiClient):
             # pinned off so it cannot multiply with the application-level one.
             configuration.retries = 0
             host = self.config.testops.api.host
+            self.web = get_web_app_url(host)
             if host == 'qase.io':
                 configuration.host = f'https://api.{host}/v1'
-                self.web = f'https://app.{host}'
             else:
                 configuration.host = f'https://api-{host}/v1'
-                self.web = f'https://{host}'
 
             self.client = ApiClient(configuration)
             self.logger.log_debug("API client prepared")

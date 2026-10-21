@@ -10,6 +10,7 @@ from ..client.base_api_client import BaseApiClient
 from ..models import Result
 from ..models.config.qaseconfig import QaseConfig
 from ..retry import send_with_retry
+from ..util.api_host import get_web_app_url
 
 DEFAULT_BATCH_SIZE = 200
 DEFAULT_THREAD_COUNT = 4
@@ -21,7 +22,7 @@ class QaseTestOpsMulti:
     def __init__(self, config: QaseConfig, logger: Logger, client: BaseApiClient) -> None:
         self.config = config
         self.logger = logger
-        self.__baseUrl = self.__get_host(config.testops.api.host)
+        self.__baseUrl = get_web_app_url(config.testops.api.host)
         self.client = client
 
         self.multi_config = config.testops_multi
@@ -369,10 +370,3 @@ class QaseTestOpsMulti:
         if ids is not None and len(ids) > 0:
             return f"{link}{project_code}-{ids[0]}"
         return f"{link}{urllib.parse.quote_plus(title)}"
-
-    @staticmethod
-    def __get_host(host: str):
-        """Get host URL for Qase."""
-        if host == 'qase.io':
-            return 'https://app.qase.io'
-        return f'https://{host.replace("api", "app")}'

@@ -20,6 +20,7 @@ from ..models.config.framework import Video, Trace
 from ..models import Attachment, Result
 from ..models.config.qaseconfig import QaseConfig
 from ..models.step import StepType, Step
+from ..util.api_host import get_web_app_url
 from ..util.host_data import HostData
 
 
@@ -42,12 +43,11 @@ class ApiV2Client(ApiV1Client):
             # 9 requests, the opposite of what is wanted on a 429.
             configuration.retries = 0
             host = self.config.testops.api.host
+            self.web = get_web_app_url(host)
             if host == 'qase.io':
                 configuration.host = f'https://api.{host}/v2'
-                self.web = f'https://app.{host}'
             else:
                 configuration.host = f'https://api-{host}/v2'
-                self.web = f'https://{host}'
 
             self.client_v2 = ApiClient(configuration)
             
