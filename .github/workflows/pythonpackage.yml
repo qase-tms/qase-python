@@ -7,6 +7,9 @@ on: [ push ]
 # supply-chain cutoff" step). pip 26.1 added the relative-duration form
 # ("P3D"), but that requires Python>=3.10 and we still test on 3.9.
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-22.04
