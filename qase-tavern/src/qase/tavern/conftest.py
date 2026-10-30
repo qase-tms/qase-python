@@ -1,3 +1,5 @@
+import pytest
+
 from qase.commons import ConfigManager
 from qase.commons.reporters import QaseCoreReporter
 
@@ -29,12 +31,21 @@ def _add_markers(config):
     return config
 
 
+# trylast: qase-pytest has to be configured first so its reporter can be shared.
+@pytest.hookimpl(trylast=True)
 def pytest_configure(config):
     config = _add_markers(config)
 
-    config_manager = setup_config_manager(config)
-
-    QasePytestPluginSingleton.init(reporter=QaseCoreReporter(config_manager, 'tavern', 'qase-tavern'))
+    qase_pytest = config.pluginmanager.get_plugin("qase-pytest")
+    if qase_pytest is not None:
+        if not getattr(qase_pytest, "delegates_tavern_items", False):
+            # An older qase-pytest reports Tavern tests itself; a second
+            # reporter would only duplicate them in a second run.
+            return
+        QasePytestPluginSingleton.init(reporter=qase_pytest.reporter, owns_run=False)
+    else:
+        config_manager = setup_config_manager(config)
+        QasePytestPluginSingleton.init(reporter=QaseCoreReporter(config_manager, 'tavern', 'qase-tavern'))
     config.qase = QasePytestPluginSingleton.get_instance()
     config.pluginmanager.register(
         config.qase,
@@ -43,7 +54,7 @@ def pytest_configure(config):
 
 
 def pytest_unconfigure(config):
-    qase = getattr(config, "src", None)
+    qase = getattr(config, "qase", None)
     if qase:
         del config.qase
         config.pluginmanager.unregister(qase)

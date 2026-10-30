@@ -252,7 +252,7 @@ def setup_config_manager(config):
 
 
 def pytest_unconfigure(config):
-    qase = getattr(config, "src", None)
+    qase = getattr(config, "qase", None)
     if qase:
         del config.qase
         config.pluginmanager.unregister(qase)

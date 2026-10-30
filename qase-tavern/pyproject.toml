@@ -40,12 +40,13 @@ Repository = "https://github.com/qase-tms/qase-python/tree/main/qase-tavern"
 Documentation = "https://developers.qase.io"
 
 [project.entry-points.pytest11]
-qase_pytest = "qase.tavern.conftest"
+qase_tavern = "qase.tavern.conftest"
 
 [project.optional-dependencies]
 testing = [
     "pytest",
     "pytest-cov",
+    "tomli; python_version < '3.11'",
 ]
 
 [tool.tox]
