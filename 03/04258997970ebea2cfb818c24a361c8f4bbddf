@@ -1,0 +1,38 @@
+qase-tavern/src/qase/tavern/conftest.py
+  s_8aa4c51c324fd6::t_74bd3beda42918 1-2,34-35,39-48
+  s_8aa4c51c324fd6::t_ead9dbd5511c51 57
+qase-pytest/src/qase/pytest/plugin.py
+  s_8aa4c51c324fd6::t_628ec174e12b91 46-48,107-109,116-120,144
+qase-tavern/src/qase/tavern/plugin.py
+  s_8aa4c51c324fd6::t_74bd3beda42918 18-19,28-34,37-38,41-43,46-47
+qase-pytest/src/qase/pytest/conftest.py
+  s_8aa4c51c324fd6::t_628ec174e12b91 255
+qase-tavern/tests/test_conftest.py
+  s_8aa4c51c324fd6::t_85a8d7bbfd01fd 1-32
+qase-pytest/tests/tests_qase_pytest/test_tavern_coexistence.py
+  s_8aa4c51c324fd6::t_54519fb84eb931 17,24
+  s_8aa4c51c324fd6::t_134f3401d1568f 5,19-22
+  s_8aa4c51c324fd6::t_448cb271fc0f32 1-4,6-16,18,23,25-84
+qase-tavern/tests/test_shared_run.py
+  s_8aa4c51c324fd6::t_134f3401d1568f 15-16,33,39
+  s_8aa4c51c324fd6::t_a62544895262bc 1-14,17-32,34-38,40-115
+qase-tavern/pyproject.toml
+  s_8aa4c51c324fd6::t_ead9dbd5511c51 43
+  s_8aa4c51c324fd6::t_3179f45fc9171f 49
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "0304258997970ebea2cfb818c24a361c8f4bbddf",
+  "prompts": {},
+  "sessions": {
+    "s_8aa4c51c324fd6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "66c592f2-12c9-4f45-9eba-43c50effb022",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": null
+    }
+  }
+}
