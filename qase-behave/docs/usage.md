@@ -281,6 +281,7 @@ behave --format=qase.behave.formatter:QaseFormatter
 export QASE_MODE=testops
 export QASE_TESTOPS_PROJECT=PROJ
 export QASE_TESTOPS_API_TOKEN=your_token
+export QASE_TESTOPS_API_HOST=qase.io  # eu.qase.io for the EU cluster
 behave --format=qase.behave.formatter:QaseFormatter
 ```
 
@@ -294,7 +295,8 @@ Create `qase.config.json`:
   "testops": {
     "project": "PROJ",
     "api": {
-      "token": "your_token"
+      "token": "your_token",
+      "host": "qase.io"
     }
   }
 }

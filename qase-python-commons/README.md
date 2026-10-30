@@ -102,7 +102,7 @@ The reporter mode is set via the `mode` option:
 | Description | Config file | Environment variable | Default | Required |
 |-------------|-------------|---------------------|---------|----------|
 | API token | `testops.api.token` | `QASE_TESTOPS_API_TOKEN` | — | Yes* |
-| API host | `testops.api.host` | `QASE_TESTOPS_API_HOST` | `qase.io` | No |
+| Qase API host. `qase.io` is the US cluster; set `eu.qase.io` if your workspace is on the EU cluster (you open Qase at `app-eu.qase.io`) | `testops.api.host` | `QASE_TESTOPS_API_HOST` | `qase.io` | Yes, on the EU cluster |
 | Request timeout, seconds | `testops.api.timeout` | `QASE_TESTOPS_API_TIMEOUT` | `30` | No |
 | Upload attempts | `testops.api.retries` | `QASE_TESTOPS_API_RETRIES` | `3` | No |
 | Retry backoff base, seconds | `testops.api.retryBackoff` | `QASE_TESTOPS_API_RETRY_BACKOFF` | `2` | No |
@@ -262,6 +262,7 @@ export QASE_DEBUG="false"
 
 # TestOps
 export QASE_TESTOPS_API_TOKEN="<token>"
+export QASE_TESTOPS_API_HOST="qase.io"  # eu.qase.io for the EU cluster
 export QASE_TESTOPS_PROJECT="DEMO"
 export QASE_TESTOPS_RUN_TITLE="Automated Run"
 export QASE_TESTOPS_RUN_COMPLETE="true"
