@@ -1,0 +1,35 @@
+qase-behave/README.md
+  s_c3e47f5cf45a98::t_2a1a36e66c3d16 35-36,42-43,76,87-88,203
+qase-behave/docs/usage.md
+  s_c3e47f5cf45a98::t_cdd3cb36df8e03 284,298-299
+qase-pytest/README.md
+  s_c3e47f5cf45a98::t_9214791c90ff3d 35-36,42-43,79,90-91,250
+qase-pytest/docs/usage.md
+  s_c3e47f5cf45a98::t_ff0548f07e1a37 533
+qase-python-commons/README.md
+  s_c3e47f5cf45a98::t_40e1b3e7dd5541 105,265
+qase-robotframework/README.md
+  s_c3e47f5cf45a98::t_2bf1ae1f3779d6 35-36,42-43,79,90-91,202,212
+qase-robotframework/docs/usage.md
+  s_c3e47f5cf45a98::t_f43d9b8d431a0c 305,316
+qase-tavern/README.md
+  s_c3e47f5cf45a98::t_a01cba1129ca2e 33-34,40-41,78,89-90,220
+qase-tavern/docs/usage.md
+  s_c3e47f5cf45a98::t_09a68ae3fa7c4d 236
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "1aafd47a034bd8a4bb4f2dc163b1b067ede358ea",
+  "prompts": {},
+  "sessions": {
+    "s_c3e47f5cf45a98": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "504bcd79-2ecb-484d-8aa3-2456deafeac2",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Manju R <cskmnrpt@gmail.com>"
+    }
+  }
+}
