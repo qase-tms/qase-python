@@ -32,11 +32,14 @@ pip install qase-pytest
   "testops": {
     "project": "YOUR_PROJECT_CODE",
     "api": {
-      "token": "YOUR_API_TOKEN"
+      "token": "YOUR_API_TOKEN",
+      "host": "qase.io"
     }
   }
 }
 ```
+
+If your workspace is on the EU cluster (you open Qase at `app-eu.qase.io`), set `host` to `eu.qase.io`. The default, `qase.io`, is the US cluster.
 
 **2. Add Qase ID to your test:**
 
@@ -73,6 +76,7 @@ The reporter is configured via (in order of priority):
 | `mode` | `QASE_MODE` | `--qase-mode` | Set to `testops` to enable reporting |
 | `testops.project` | `QASE_TESTOPS_PROJECT` | `--qase-testops-project` | Your Qase project code |
 | `testops.api.token` | `QASE_TESTOPS_API_TOKEN` | `--qase-testops-api-token` | Your Qase API token |
+| `testops.api.host` | `QASE_TESTOPS_API_HOST` | — | `qase.io` (US cluster, the default) or `eu.qase.io` (EU cluster). Required if your workspace is on the EU cluster |
 
 ### Example `qase.config.json`
 
@@ -83,7 +87,8 @@ The reporter is configured via (in order of priority):
   "testops": {
     "project": "YOUR_PROJECT_CODE",
     "api": {
-      "token": "YOUR_API_TOKEN"
+      "token": "YOUR_API_TOKEN",
+      "host": "qase.io"
     },
     "run": {
       "title": "Pytest Automated Run"
@@ -242,6 +247,7 @@ pytest \
 export QASE_MODE=testops
 export QASE_TESTOPS_PROJECT=PROJ
 export QASE_TESTOPS_API_TOKEN=your_token
+export QASE_TESTOPS_API_HOST=qase.io  # eu.qase.io for the EU cluster
 pytest
 ```
 

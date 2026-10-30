@@ -302,6 +302,7 @@ robot --listener qase.robotframework.Listener tests/
 export QASE_MODE=testops
 export QASE_TESTOPS_PROJECT=PROJ
 export QASE_TESTOPS_API_TOKEN=your_token
+export QASE_TESTOPS_API_HOST=qase.io  # eu.qase.io for the EU cluster
 robot --listener qase.robotframework.Listener tests/
 ```
 
@@ -312,6 +313,7 @@ robot --listener qase.robotframework.Listener \
     --variable QASE_MODE:testops \
     --variable QASE_TESTOPS_PROJECT:PROJ \
     --variable QASE_TESTOPS_API_TOKEN:your_token \
+    --variable QASE_TESTOPS_API_HOST:qase.io \
     tests/
 ```
 

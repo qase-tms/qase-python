@@ -233,6 +233,7 @@ pytest \
 export QASE_MODE=testops
 export QASE_TESTOPS_PROJECT=PROJ
 export QASE_TESTOPS_API_TOKEN=your_token
+export QASE_TESTOPS_API_HOST=qase.io  # eu.qase.io for the EU cluster
 pytest
 ```
 
