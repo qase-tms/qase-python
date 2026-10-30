@@ -25,6 +25,7 @@ def _reporter(client, retries=1, backoff=0):
     reporter.results = []
     reporter.processed = []
     reporter.lost_results = 0
+    reporter.undelivered = []
     reporter.lock = threading.Lock()
     reporter.send_semaphore = threading.Semaphore(4)
     reporter.count_running_threads = 0
