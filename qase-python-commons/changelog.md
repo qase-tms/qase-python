@@ -1,3 +1,11 @@
+# qase-python-commons@5.1.8
+
+## What's new
+
+- An invalid setting no longer discards the rest of the configuration. Environment variables and `qase.config.json` used to be applied inside a single error handler, so the first value that failed to parse silently dropped every setting after it — for example, `QASE_TESTOPS_RUN_ID=""` left the reporter with `mode: off` and no project. Each setting is now applied on its own, and an invalid one is logged with its name and skipped.
+- Empty `QASE_*` environment variables are treated as not set. This is what CI templates such as `QASE_TESTOPS_RUN_ID=${RUN_ID}` produce when the variable is undefined.
+- `testops.batch.size` given as a string (`"50"`) is accepted, and values below 1 are rejected instead of silently sending one result per request.
+
 # qase-python-commons@5.1.7
 
 ## What's new
