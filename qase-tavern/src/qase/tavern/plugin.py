@@ -15,7 +15,8 @@ class QasePytestPlugin:
 
     def __init__(
             self,
-            reporter
+            reporter,
+            owns_run=True
     ):
         self.runtime = Runtime()
         self.reporter = reporter
@@ -24,16 +25,26 @@ class QasePytestPlugin:
         self._current_item = None
         self.ignore = None
         self._tavern_stage_index = 0
+        # False when sharing qase-pytest's reporter: qase-pytest starts and
+        # completes the run and reports every non-Tavern test.
+        self.owns_run = owns_run
+
+    @staticmethod
+    def handles(item) -> bool:
+        return hasattr(item, "spec")
 
     def pytest_sessionstart(self, session):
-        self.run_id = self.reporter.start_run()
+        if self.owns_run:
+            self.run_id = self.reporter.start_run()
 
     def pytest_sessionfinish(self, session, exitstatus):
-        self.reporter.complete_worker()
-        self.reporter.complete_run()
+        if self.owns_run:
+            self.reporter.complete_worker()
+            self.reporter.complete_run()
 
     def pytest_runtest_protocol(self, item):
-        self.start_pytest_item(item)
+        if self.owns_run or self.handles(item):
+            self.start_pytest_item(item)
 
     # ``optionalhook=True`` prevents pluggy from refusing to load the plugin
     # when the Tavern package isn't installed (and therefore the hookspec

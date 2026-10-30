@@ -43,6 +43,9 @@ class PluginNotInitializedException(Exception):
 class QasePytestPlugin:
     run = None
     meta_run_file = "src.run"
+    # Read by qase-tavern: this version leaves Tavern tests to it, so both can
+    # report into one run.
+    delegates_tavern_items = True
 
     def __init__(
             self,
@@ -101,12 +104,19 @@ class QasePytestPlugin:
         if self.execution_plan:
             new_items = []
             for item in items:
-                if item.get_closest_marker('qase_id'):
+                if self._is_reported_by_tavern(item):
+                    new_items.append(item)
+                elif item.get_closest_marker('qase_id'):
                     ids = QasePytestPlugin.get_qase_ids(item)
                     if any(id in self.execution_plan for id in ids):
                         new_items.append(item)
 
             items[:] = new_items
+
+    @staticmethod
+    def _is_reported_by_tavern(item) -> bool:
+        tavern = item.config.pluginmanager.get_plugin("qase-tavern")
+        return tavern is not None and tavern.handles(item)
 
     def pytest_sessionstart(self, session):
         if is_xdist_controller(session):
@@ -131,7 +141,7 @@ class QasePytestPlugin:
 
     @pytest.hookimpl(hookwrapper=True)
     def pytest_runtest_protocol(self, item):
-        self.ignore = True if item.get_closest_marker("qase_ignore") else False
+        self.ignore = bool(item.get_closest_marker("qase_ignore")) or self._is_reported_by_tavern(item)
 
         if not self.ignore:
             self.reporter.enable_profilers()
