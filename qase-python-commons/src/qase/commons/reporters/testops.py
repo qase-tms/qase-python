@@ -40,6 +40,7 @@ class QaseTestOps:
         self.count_running_threads = 0
         # Results in batches that could not be delivered after all retries.
         self.lost_results = 0
+        self.undelivered = []
 
         environment = self.config.environment
         if environment:
@@ -88,6 +89,7 @@ class QaseTestOps:
             # nothing acted on, which is how the loss stayed invisible.
             with self.lock:
                 self.lost_results += len(results)
+                self.undelivered.extend(results)
                 self.logger.log(
                     f"Failed to send {len(results)} results for run {self.run_id} "
                     f"after {self.config.testops.api.retries} attempt(s): {e}",
@@ -197,7 +199,7 @@ class QaseTestOps:
             self._send_results()
 
     def get_results(self) -> List:
-        return self.results + self.processed
+        return self.results + self.processed + self.undelivered
 
     def set_results(self, results) -> None:
         self.results = results

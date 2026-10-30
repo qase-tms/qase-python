@@ -179,9 +179,13 @@ class QaseCoreReporter:
                 self.overhead += time.time() - ts
                 return run_id
             except Exception as e:
-                self.logger.log('Failed to start run, disabling reporting', 'info')
+                self.logger.log('Failed to start run', 'info')
                 self.logger.log(e, 'error')
-                self.reporter = None
+                if self._can_fallback():
+                    self._run_fallback()
+                else:
+                    self.logger.log('Disabling reporting', 'info')
+                    self.reporter = None
                 return None
 
         return None
@@ -197,6 +201,12 @@ class QaseCoreReporter:
                 # We don't want to disable reporting here
                 self.logger.log('Failed to complete run', 'info')
                 self.logger.log(e, 'error')
+
+            if self._can_fallback() and self._has_undelivered_results():
+                self.logger.log('Some results were not delivered, saving all results with the fallback reporter',
+                                'info')
+                self._run_fallback()
+                self.complete_run()
 
     def add_result(self, result: Result) -> None:
         if self.reporter:
@@ -289,21 +299,25 @@ class QaseCoreReporter:
     def get_execution_plan(self) -> Union[None, List[int]]:
         return self._execution_plan
 
+    def _can_fallback(self) -> bool:
+        # After a failed TestOps init the fallback is already the active reporter;
+        # restarting it would wipe the results it has written.
+        return self.fallback is not None and self.reporter is not self.fallback
+
+    def _has_undelivered_results(self) -> bool:
+        lost = getattr(self.reporter, 'lost_results', 0)
+        if isinstance(lost, dict):
+            lost = sum(lost.values())
+        return isinstance(lost, int) and lost > 0
+
     def _run_fallback(self) -> None:
-        if self.fallback:
+        if self._can_fallback():
             try:
                 results = self.reporter.get_results()
 
                 self.fallback.start_run()
                 self.reporter = self.fallback
-                # Handle both single project (list) and multi-project (dict) results
-                if isinstance(results, dict):
-                    # Multi-project mode: results is dict of project -> list of results
-                    for project_code, project_results in results.items():
-                        self.reporter.set_results({project_code: project_results})
-                else:
-                    # Single project mode: results is list
-                    self.reporter.set_results(results)
+                self.reporter.set_results(results)
                 self.fallback = None
             except Exception as e:
                 # Log error, disable reporting and continue
