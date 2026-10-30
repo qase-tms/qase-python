@@ -1,5 +1,6 @@
 import os
 import json
+from contextlib import contextmanager
 from .logger import Logger, LoggingOptions
 from .models.config.qaseconfig import QaseConfig, Mode
 from .utils import QaseUtils
@@ -53,347 +54,343 @@ class ConfigManager:
     def __str__(self):
         return json.dumps(self.config, indent=4, sort_keys=True)
 
-    def __load_file_config(self):
+    @contextmanager
+    def __option(self, name: str):
+        # One invalid value must not discard the settings loaded after it.
         try:
-            if os.path.exists(self.__config_file):
-                with open(self.__config_file, "r") as file:
-                    config = json.load(file)
-
-                    if config.get("mode"):
-                        self.config.set_mode(config.get("mode"))
-
-                    if config.get("fallback"):
-                        self.config.set_fallback(config.get("fallback"))
-
-                    if config.get("environment"):
-                        self.config.set_environment(config.get("environment"))
-
-                    if config.get("rootSuite"):
-                        self.config.set_root_suite(config.get("rootSuite"))
-
-                    if config.get("profilers"):
-                        self.config.set_profilers(config.get("profilers"))
-
-                    if config.get("debug") is not None:
-                        self.config.set_debug(
-                            config.get("debug")
-                        )
-
-                    if config.get("excludeParams"):
-                        self.config.set_exclude_params(
-                            config.get("excludeParams")
-                        )
-
-                    if config.get("statusMapping"):
-                        self.config.set_status_mapping(
-                            config.get("statusMapping")
-                        )
-
-                    if config.get("executionPlan"):
-                        execution_plan = config.get("executionPlan")
-                        if execution_plan.get("path"):
-                            self.config.execution_plan.set_path(
-                                execution_plan.get("path"))
-
-                    if config.get("testops"):
-                        testops = config.get("testops")
-
-                        if testops.get("api"):
-                            api = testops.get("api")
-
-                            if api.get("host"):
-                                self.config.testops.api.set_host(
-                                    api.get("host"))
-
-                            if api.get("token"):
-                                self.config.testops.api.set_token(
-                                    api.get("token"))
-
-                            if api.get("timeout"):
-                                self.config.testops.api.set_timeout(
-                                    api.get("timeout"))
-
-                            # `is not None`, not truthiness: 0 is a valid value
-                            # for both, meaning "no retries" / "no backoff".
-                            if api.get("retries") is not None:
-                                self.config.testops.api.set_retries(
-                                    api.get("retries"))
-
-                            if api.get("retryBackoff") is not None:
-                                self.config.testops.api.set_retry_backoff(
-                                    api.get("retryBackoff"))
-
-                        if testops.get("project"):
-                            self.config.testops.set_project(
-                                testops.get("project"))
-
-                        if testops.get("defect") is not None:
-                            self.config.testops.set_defect(
-                                testops.get("defect")
-                            )
-
-                        if testops.get("plan"):
-                            plan = testops.get("plan")
-
-                            if plan.get("id"):
-                                self.config.testops.plan.set_id(plan.get("id"))
-
-                        if testops.get("run"):
-                            run = testops.get("run")
-
-                            if run.get("id"):
-                                self.config.testops.run.set_id(run.get("id"))
-
-                            if run.get("title"):
-                                self.config.testops.run.set_title(
-                                    run.get("title"))
-
-                            if run.get("description"):
-                                self.config.testops.run.set_description(
-                                    run.get("description"))
-
-                            if run.get("complete") is not None:
-                                self.config.testops.run.set_complete(
-                                    run.get("complete")
-                                )
-
-                            if run.get("tags"):
-                                self.config.testops.run.set_tags(
-                                    [tag.strip() for tag in run.get("tags")])
-
-                            if run.get("externalLink"):
-                                self.config.testops.run.set_external_link(
-                                    run.get("externalLink"))
-
-                        if testops.get("batch"):
-                            batch = testops.get("batch")
-
-                            if batch.get("size"):
-                                self.config.testops.batch.set_size(
-                                    batch.get("size"))
-
-                        if testops.get("configurations"):
-                            configurations = testops.get("configurations")
-
-                            if configurations.get("values"):
-                                values = configurations.get("values")
-                                for value in values:
-                                    if value.get("name") and value.get("value"):
-                                        self.config.testops.configurations.add_value(
-                                            value.get("name"), value.get("value"))
-
-                            if configurations.get("createIfNotExists") is not None:
-                                self.config.testops.configurations.set_create_if_not_exists(
-                                    configurations.get("createIfNotExists"))
-
-                        if testops.get("statusFilter"):
-                            status_filter = testops.get("statusFilter")
-                            if isinstance(status_filter, list):
-                                self.config.testops.set_status_filter(status_filter)
-                            elif isinstance(status_filter, str):
-                                # Parse comma-separated string
-                                self.config.testops.set_status_filter([s.strip() for s in status_filter.split(',')])
-
-                        if testops.get("showPublicReportLink") is not None:
-                            self.config.testops.set_show_public_report_link(
-                                testops.get("showPublicReportLink")
-                            )
-
-                    if config.get("testops_multi"):
-                        self.config.set_testops_multi(config.get("testops_multi"))
-
-                    if config.get("report"):
-                        report = config.get("report")
-
-                        if report.get("driver"):
-                            self.config.report.set_driver(report.get("driver"))
-
-                        if report.get("connection"):
-                            connection = report.get("connection")
-
-                            if connection.get("path"):
-                                self.config.report.connection.set_path(
-                                    connection.get("path"))
-
-                            if connection.get("format"):
-                                self.config.report.connection.set_format(
-                                    connection.get("format")
-                                )
-
-                    if config.get("framework"):
-                        framework = config.get("framework")
-
-                        if framework.get("pytest"):
-                            pytest = framework.get("pytest")
-
-                            if pytest.get("captureLogs") is not None:
-                                self.config.framework.pytest.set_capture_logs(
-                                    pytest.get("captureLogs")
-                                )
-
-                            if pytest.get("xfailStatus"):
-                                xfail_status = pytest.get("xfailStatus")
-
-                                if xfail_status.get("xfail"):
-                                    self.config.framework.pytest.xfail_status.set_xfail(
-                                        xfail_status.get("xfail")
-                                    )
-
-                                if xfail_status.get("xpass"):
-                                    self.config.framework.pytest.xfail_status.set_xpass(
-                                        xfail_status.get("xpass")
-                                    )
-
-                    if config.get("logging"):
-                        self.config.set_logging(config.get("logging"))
-
+            yield
         except Exception as e:
-            self.logger.log("Failed to load config from file", "error")
+            self.logger.log(f"Ignoring invalid value for {name}: {e}", "error")
+
+    def __load_file_config(self):
+        if not os.path.exists(self.__config_file):
+            return
+
+        try:
+            with open(self.__config_file, "r") as file:
+                config = json.load(file)
+        except Exception as e:
+            self.logger.log(f"Failed to load config from file: {e}", "error")
+            return
+
+        with self.__option("mode"):
+            if config.get("mode"):
+                self.config.set_mode(config.get("mode"))
+
+        with self.__option("fallback"):
+            if config.get("fallback"):
+                self.config.set_fallback(config.get("fallback"))
+
+        with self.__option("environment"):
+            if config.get("environment"):
+                self.config.set_environment(config.get("environment"))
+
+        with self.__option("rootSuite"):
+            if config.get("rootSuite"):
+                self.config.set_root_suite(config.get("rootSuite"))
+
+        with self.__option("profilers"):
+            if config.get("profilers"):
+                self.config.set_profilers(config.get("profilers"))
+
+        with self.__option("debug"):
+            if config.get("debug") is not None:
+                self.config.set_debug(config.get("debug"))
+
+        with self.__option("excludeParams"):
+            if config.get("excludeParams"):
+                self.config.set_exclude_params(config.get("excludeParams"))
+
+        with self.__option("statusMapping"):
+            if config.get("statusMapping"):
+                self.config.set_status_mapping(config.get("statusMapping"))
+
+        with self.__option("executionPlan.path"):
+            execution_plan = config.get("executionPlan") or {}
+            if execution_plan.get("path"):
+                self.config.execution_plan.set_path(execution_plan.get("path"))
+
+        testops = config.get("testops") or {}
+        api = testops.get("api") or {}
+
+        with self.__option("testops.api.host"):
+            if api.get("host"):
+                self.config.testops.api.set_host(api.get("host"))
+
+        with self.__option("testops.api.token"):
+            if api.get("token"):
+                self.config.testops.api.set_token(api.get("token"))
+
+        with self.__option("testops.api.timeout"):
+            if api.get("timeout"):
+                self.config.testops.api.set_timeout(api.get("timeout"))
+
+        # `is not None`, not truthiness: 0 is a valid value
+        # for both, meaning "no retries" / "no backoff".
+        with self.__option("testops.api.retries"):
+            if api.get("retries") is not None:
+                self.config.testops.api.set_retries(api.get("retries"))
+
+        with self.__option("testops.api.retryBackoff"):
+            if api.get("retryBackoff") is not None:
+                self.config.testops.api.set_retry_backoff(api.get("retryBackoff"))
+
+        with self.__option("testops.project"):
+            if testops.get("project"):
+                self.config.testops.set_project(testops.get("project"))
+
+        with self.__option("testops.defect"):
+            if testops.get("defect") is not None:
+                self.config.testops.set_defect(testops.get("defect"))
+
+        with self.__option("testops.plan.id"):
+            plan = testops.get("plan") or {}
+            if plan.get("id"):
+                self.config.testops.plan.set_id(plan.get("id"))
+
+        run = testops.get("run") or {}
+
+        with self.__option("testops.run.id"):
+            if run.get("id"):
+                self.config.testops.run.set_id(run.get("id"))
+
+        with self.__option("testops.run.title"):
+            if run.get("title"):
+                self.config.testops.run.set_title(run.get("title"))
+
+        with self.__option("testops.run.description"):
+            if run.get("description"):
+                self.config.testops.run.set_description(run.get("description"))
+
+        with self.__option("testops.run.complete"):
+            if run.get("complete") is not None:
+                self.config.testops.run.set_complete(run.get("complete"))
+
+        with self.__option("testops.run.tags"):
+            if run.get("tags"):
+                self.config.testops.run.set_tags([tag.strip() for tag in run.get("tags")])
+
+        with self.__option("testops.run.externalLink"):
+            if run.get("externalLink"):
+                self.config.testops.run.set_external_link(run.get("externalLink"))
+
+        with self.__option("testops.batch.size"):
+            batch = testops.get("batch") or {}
+            if batch.get("size"):
+                self.config.testops.batch.set_size(batch.get("size"))
+
+        configurations = testops.get("configurations") or {}
+
+        with self.__option("testops.configurations.values"):
+            for value in configurations.get("values") or []:
+                if value.get("name") and value.get("value"):
+                    self.config.testops.configurations.add_value(
+                        value.get("name"), value.get("value"))
+
+        with self.__option("testops.configurations.createIfNotExists"):
+            if configurations.get("createIfNotExists") is not None:
+                self.config.testops.configurations.set_create_if_not_exists(
+                    configurations.get("createIfNotExists"))
+
+        with self.__option("testops.statusFilter"):
+            status_filter = testops.get("statusFilter")
+            if status_filter:
+                if isinstance(status_filter, list):
+                    self.config.testops.set_status_filter(status_filter)
+                elif isinstance(status_filter, str):
+                    # Parse comma-separated string
+                    self.config.testops.set_status_filter([s.strip() for s in status_filter.split(',')])
+
+        with self.__option("testops.showPublicReportLink"):
+            if testops.get("showPublicReportLink") is not None:
+                self.config.testops.set_show_public_report_link(testops.get("showPublicReportLink"))
+
+        with self.__option("testops_multi"):
+            if config.get("testops_multi"):
+                self.config.set_testops_multi(config.get("testops_multi"))
+
+        report = config.get("report") or {}
+        connection = report.get("connection") or {}
+
+        with self.__option("report.driver"):
+            if report.get("driver"):
+                self.config.report.set_driver(report.get("driver"))
+
+        with self.__option("report.connection.path"):
+            if connection.get("path"):
+                self.config.report.connection.set_path(connection.get("path"))
+
+        with self.__option("report.connection.format"):
+            if connection.get("format"):
+                self.config.report.connection.set_format(connection.get("format"))
+
+        pytest = (config.get("framework") or {}).get("pytest") or {}
+        xfail_status = pytest.get("xfailStatus") or {}
+
+        with self.__option("framework.pytest.captureLogs"):
+            if pytest.get("captureLogs") is not None:
+                self.config.framework.pytest.set_capture_logs(pytest.get("captureLogs"))
+
+        with self.__option("framework.pytest.xfailStatus.xfail"):
+            if xfail_status.get("xfail"):
+                self.config.framework.pytest.xfail_status.set_xfail(xfail_status.get("xfail"))
+
+        with self.__option("framework.pytest.xfailStatus.xpass"):
+            if xfail_status.get("xpass"):
+                self.config.framework.pytest.xfail_status.set_xpass(xfail_status.get("xpass"))
+
+        with self.__option("logging"):
+            if config.get("logging"):
+                self.config.set_logging(config.get("logging"))
 
     def __load_env_config(self):
-        try:
-            for key, value in os.environ.items():
-                if key == 'QASE_MODE':
-                    self.config.set_mode(value)
+        for key, value in os.environ.items():
+            # CI templates like QASE_TESTOPS_RUN_ID=${RUN_ID} leave the variable
+            # set but empty; that means "not configured", not an invalid value.
+            if not key.startswith('QASE_') or not value.strip():
+                continue
+            with self.__option(key):
+                self.__apply_env_var(key, value)
 
-                if key == 'QASE_FALLBACK':
-                    self.config.set_fallback(value)
+    def __apply_env_var(self, key: str, value: str):
+        if key == 'QASE_MODE':
+            self.config.set_mode(value)
 
-                if key == 'QASE_ENVIRONMENT':
-                    self.config.set_environment(value)
+        if key == 'QASE_FALLBACK':
+            self.config.set_fallback(value)
 
-                if key == 'QASE_ROOT_SUITE':
-                    self.config.set_root_suite(value)
+        if key == 'QASE_ENVIRONMENT':
+            self.config.set_environment(value)
 
-                if key == 'QASE_PROFILERS':
-                    self.config.set_profilers(value.split(','))
+        if key == 'QASE_ROOT_SUITE':
+            self.config.set_root_suite(value)
 
-                if key == 'QASE_PROFILER_NETWORK_EXCLUDE_HOSTS':
-                    self.config.network_profiler.set_exclude_hosts(
-                        [h.strip() for h in value.split(',')]
-                    )
+        if key == 'QASE_PROFILERS':
+            self.config.set_profilers(value.split(','))
 
-                if key == 'QASE_DEBUG':
-                    self.config.set_debug(value)
+        if key == 'QASE_PROFILER_NETWORK_EXCLUDE_HOSTS':
+            self.config.network_profiler.set_exclude_hosts(
+                [h.strip() for h in value.split(',')]
+            )
 
-                if key == 'QASE_EXCLUDE_PARAMS':
-                    self.config.set_exclude_params(
-                        [param.strip() for param in value.split(',')])
+        if key == 'QASE_DEBUG':
+            self.config.set_debug(value)
 
-                if key == 'QASE_STATUS_MAPPING':
-                    # Parse status mapping from environment variable
-                    # Format: "source1=target1,source2=target2"
-                    if value:
-                        mapping_dict = {}
-                        pairs = value.split(',')
-                        for pair in pairs:
-                            pair = pair.strip()
-                            if pair and '=' in pair:
-                                source_status, target_status = pair.split('=', 1)
-                                mapping_dict[source_status.strip()] = target_status.strip()
-                        self.config.set_status_mapping(mapping_dict)
+        if key == 'QASE_EXCLUDE_PARAMS':
+            self.config.set_exclude_params(
+                [param.strip() for param in value.split(',')])
 
-                if key == 'QASE_EXECUTION_PLAN_PATH':
-                    self.config.execution_plan.set_path(value)
+        if key == 'QASE_STATUS_MAPPING':
+            # Parse status mapping from environment variable
+            # Format: "source1=target1,source2=target2"
+            if value:
+                mapping_dict = {}
+                pairs = value.split(',')
+                for pair in pairs:
+                    pair = pair.strip()
+                    if pair and '=' in pair:
+                        source_status, target_status = pair.split('=', 1)
+                        mapping_dict[source_status.strip()] = target_status.strip()
+                self.config.set_status_mapping(mapping_dict)
 
-                if key == 'QASE_TESTOPS_API_HOST':
-                    self.config.testops.api.set_host(value)
+        if key == 'QASE_EXECUTION_PLAN_PATH':
+            self.config.execution_plan.set_path(value)
 
-                if key == 'QASE_TESTOPS_API_TOKEN':
-                    self.config.testops.api.set_token(value)
+        if key == 'QASE_TESTOPS_API_HOST':
+            self.config.testops.api.set_host(value)
 
-                if key == 'QASE_TESTOPS_API_TIMEOUT':
-                    self.config.testops.api.set_timeout(value)
+        if key == 'QASE_TESTOPS_API_TOKEN':
+            self.config.testops.api.set_token(value)
 
-                if key == 'QASE_TESTOPS_API_RETRIES':
-                    self.config.testops.api.set_retries(value)
+        if key == 'QASE_TESTOPS_API_TIMEOUT':
+            self.config.testops.api.set_timeout(value)
 
-                if key == 'QASE_TESTOPS_API_RETRY_BACKOFF':
-                    self.config.testops.api.set_retry_backoff(value)
+        if key == 'QASE_TESTOPS_API_RETRIES':
+            self.config.testops.api.set_retries(value)
 
-                if key == 'QASE_TESTOPS_PROJECT':
-                    self.config.testops.set_project(value)
+        if key == 'QASE_TESTOPS_API_RETRY_BACKOFF':
+            self.config.testops.api.set_retry_backoff(value)
 
-                if key == 'QASE_TESTOPS_DEFECT':
-                    self.config.testops.set_defect(value)
+        if key == 'QASE_TESTOPS_PROJECT':
+            self.config.testops.set_project(value)
 
-                if key == 'QASE_TESTOPS_PLAN_ID':
-                    self.config.testops.plan.set_id(int(value.strip()))
+        if key == 'QASE_TESTOPS_DEFECT':
+            self.config.testops.set_defect(value)
 
-                if key == 'QASE_TESTOPS_RUN_ID':
-                    self.config.testops.run.set_id(int(value.strip()))
+        if key == 'QASE_TESTOPS_PLAN_ID':
+            self.config.testops.plan.set_id(int(value.strip()))
 
-                if key == 'QASE_TESTOPS_RUN_TITLE':
-                    self.config.testops.run.set_title(value)
+        if key == 'QASE_TESTOPS_RUN_ID':
+            self.config.testops.run.set_id(int(value.strip()))
 
-                if key == 'QASE_TESTOPS_RUN_DESCRIPTION':
-                    self.config.testops.run.set_description(value)
+        if key == 'QASE_TESTOPS_RUN_TITLE':
+            self.config.testops.run.set_title(value)
 
-                if key == 'QASE_TESTOPS_RUN_COMPLETE':
-                    self.config.testops.run.set_complete(value)
+        if key == 'QASE_TESTOPS_RUN_DESCRIPTION':
+            self.config.testops.run.set_description(value)
 
-                if key == 'QASE_TESTOPS_RUN_TAGS':
-                    self.config.testops.run.set_tags(
-                        [tag.strip() for tag in value.split(',')])
+        if key == 'QASE_TESTOPS_RUN_COMPLETE':
+            self.config.testops.run.set_complete(value)
 
-                if key == 'QASE_TESTOPS_RUN_EXTERNAL_LINK_TYPE':
-                    if not self.config.testops.run.external_link:
-                        from .models.external_link import ExternalLinkConfig
-                        self.config.testops.run.external_link = ExternalLinkConfig()
-                    self.config.testops.run.external_link.set_type(value)
+        if key == 'QASE_TESTOPS_RUN_TAGS':
+            self.config.testops.run.set_tags(
+                [tag.strip() for tag in value.split(',')])
 
-                if key == 'QASE_TESTOPS_RUN_EXTERNAL_LINK_URL':
-                    if not self.config.testops.run.external_link:
-                        from .models.external_link import ExternalLinkConfig
-                        self.config.testops.run.external_link = ExternalLinkConfig()
-                    self.config.testops.run.external_link.set_link(value)
+        if key == 'QASE_TESTOPS_RUN_EXTERNAL_LINK_TYPE':
+            if not self.config.testops.run.external_link:
+                from .models.external_link import ExternalLinkConfig
+                self.config.testops.run.external_link = ExternalLinkConfig()
+            self.config.testops.run.external_link.set_type(value)
 
-                if key == 'QASE_TESTOPS_BATCH_SIZE':
-                    self.config.testops.batch.set_size(int(value.strip()))
+        if key == 'QASE_TESTOPS_RUN_EXTERNAL_LINK_URL':
+            if not self.config.testops.run.external_link:
+                from .models.external_link import ExternalLinkConfig
+                self.config.testops.run.external_link = ExternalLinkConfig()
+            self.config.testops.run.external_link.set_link(value)
 
-                if key == 'QASE_TESTOPS_CONFIGURATIONS_VALUES':
-                    # Parse configurations from environment variable
-                    # Format: "group1=value1,group2=value2"
-                    if value:
-                        config_pairs = value.split(',')
-                        for pair in config_pairs:
-                            if '=' in pair:
-                                name, config_value = pair.split('=', 1)
-                                self.config.testops.configurations.add_value(name.strip(), config_value.strip())
+        if key == 'QASE_TESTOPS_BATCH_SIZE':
+            self.config.testops.batch.set_size(int(value.strip()))
 
-                if key == 'QASE_TESTOPS_CONFIGURATIONS_CREATE_IF_NOT_EXISTS':
-                    self.config.testops.configurations.set_create_if_not_exists(value)
+        if key == 'QASE_TESTOPS_CONFIGURATIONS_VALUES':
+            # Parse configurations from environment variable
+            # Format: "group1=value1,group2=value2"
+            if value:
+                config_pairs = value.split(',')
+                for pair in config_pairs:
+                    if '=' in pair:
+                        name, config_value = pair.split('=', 1)
+                        self.config.testops.configurations.add_value(name.strip(), config_value.strip())
 
-                if key == 'QASE_TESTOPS_STATUS_FILTER':
-                    # Parse comma-separated string
-                    self.config.testops.set_status_filter([s.strip() for s in value.split(',')])
+        if key == 'QASE_TESTOPS_CONFIGURATIONS_CREATE_IF_NOT_EXISTS':
+            self.config.testops.configurations.set_create_if_not_exists(value)
 
-                if key == 'QASE_TESTOPS_SHOW_PUBLIC_REPORT_LINK':
-                    self.config.testops.set_show_public_report_link(value)
+        if key == 'QASE_TESTOPS_STATUS_FILTER':
+            # Parse comma-separated string
+            self.config.testops.set_status_filter([s.strip() for s in value.split(',')])
 
-                if key == 'QASE_REPORT_DRIVER':
-                    self.config.report.set_driver(value)
+        if key == 'QASE_TESTOPS_SHOW_PUBLIC_REPORT_LINK':
+            self.config.testops.set_show_public_report_link(value)
 
-                if key == 'QASE_REPORT_CONNECTION_PATH':
-                    self.config.report.connection.set_path(value)
+        if key == 'QASE_REPORT_DRIVER':
+            self.config.report.set_driver(value)
 
-                if key == 'QASE_REPORT_CONNECTION_FORMAT':
-                    self.config.report.connection.set_format(value)
+        if key == 'QASE_REPORT_CONNECTION_PATH':
+            self.config.report.connection.set_path(value)
 
-                if key == 'QASE_PYTEST_CAPTURE_LOGS':
-                    self.config.framework.pytest.set_capture_logs(value)
+        if key == 'QASE_REPORT_CONNECTION_FORMAT':
+            self.config.report.connection.set_format(value)
 
-                if key == 'QASE_PYTEST_XFAIL_STATUS_XFAIL':
-                    self.config.framework.pytest.xfail_status.set_xfail(value)
+        if key == 'QASE_PYTEST_CAPTURE_LOGS':
+            self.config.framework.pytest.set_capture_logs(value)
 
-                if key == 'QASE_PYTEST_XFAIL_STATUS_XPASS':
-                    self.config.framework.pytest.xfail_status.set_xpass(value)
+        if key == 'QASE_PYTEST_XFAIL_STATUS_XFAIL':
+            self.config.framework.pytest.xfail_status.set_xfail(value)
 
-                if key == 'QASE_LOGGING_CONSOLE':
-                    self.config.logging.set_console(QaseUtils.parse_bool(value))
+        if key == 'QASE_PYTEST_XFAIL_STATUS_XPASS':
+            self.config.framework.pytest.xfail_status.set_xpass(value)
 
-                if key == 'QASE_LOGGING_FILE':
-                    self.config.logging.set_file(QaseUtils.parse_bool(value))
+        if key == 'QASE_LOGGING_CONSOLE':
+            self.config.logging.set_console(QaseUtils.parse_bool(value))
 
-        except Exception as e:
-            self.logger.log(f"Failed to load config from env vars {e}", "error")
+        if key == 'QASE_LOGGING_FILE':
+            self.config.logging.set_file(QaseUtils.parse_bool(value))
