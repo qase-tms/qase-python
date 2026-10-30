@@ -1,3 +1,12 @@
+# qase-python-commons@5.1.7
+
+## What's new
+
+- Fixed the `report` fallback losing results. When the TestOps reporter failed mid-run, the results it held were handed to the local report but never written to disk, so the fallback report contained no results. They are now written like any report-mode result.
+- A failure to create or check the test run at start no longer disables reporting when `fallback` is set to `report`: the reporter switches to the local report instead.
+- Results from batches that could not be delivered after all retries are now written to the fallback report at the end of the run, together with the results that were delivered. Without a fallback the behaviour is unchanged: the loss is logged and the run is left open.
+- Fixed the local report failing to compile `run.json` when a result has no relations.
+
 # qase-python-commons@5.1.6
 
 ## What's new
