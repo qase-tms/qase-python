@@ -1,0 +1,25 @@
+qase-pytest/changelog.md
+  s_8aa4c51c324fd6::t_5781ac216930b7 1-6
+qase-pytest/pyproject.toml
+  s_8aa4c51c324fd6::t_a71eb6bc6467ec 7
+qase-tavern/changelog.md
+  s_8aa4c51c324fd6::t_db84acf9597fd9 1-6
+qase-tavern/pyproject.toml
+  s_8aa4c51c324fd6::t_ac9bc0d3b3567e 7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "a25f64310aadcc5a990ef5c4591805d0bba5236e",
+  "prompts": {},
+  "sessions": {
+    "s_8aa4c51c324fd6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "66c592f2-12c9-4f45-9eba-43c50effb022",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
