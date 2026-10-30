@@ -112,7 +112,13 @@ class QaseReport:
         return self.results
 
     def set_results(self, results):
-        self.results = results
+        # Called on fallback with what the TestOps reporter held: a list, or
+        # a dict of lists per project. The report is compiled from results/,
+        # so they have to be written there, not kept in memory.
+        if isinstance(results, dict):
+            results = [result for project_results in results.values() for result in project_results]
+        for result in results:
+            self.add_result(result)
 
     def _persist_attachment(self, attachment: Attachment):
         if attachment.content:

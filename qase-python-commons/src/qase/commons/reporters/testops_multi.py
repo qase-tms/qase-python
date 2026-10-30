@@ -51,6 +51,7 @@ class QaseTestOpsMulti:
         # Results in batches that could not be delivered after all retries,
         # counted per project so one project's loss does not hide another's.
         self.lost_results: Dict[str, int] = {project.code: 0 for project in self.multi_config.projects}
+        self.undelivered: Dict[str, List[Result]] = {project.code: [] for project in self.multi_config.projects}
 
         # Initialize environment for each project
         for project_code, project_data in self.project_configs.items():
@@ -122,6 +123,7 @@ class QaseTestOpsMulti:
             # nothing acted on, which is how the loss stayed invisible.
             with self.lock:
                 self.lost_results[project_code] = self.lost_results.get(project_code, 0) + len(results)
+                self.undelivered.setdefault(project_code, []).extend(results)
                 self.logger.log(
                     f"Failed to send {len(results)} results for project {project_code}, "
                     f"run {run_id} after {self.config.testops.api.retries} attempt(s): {e}",
@@ -347,7 +349,8 @@ class QaseTestOpsMulti:
         """Get all results (pending + processed) grouped by project."""
         all_results = {}
         for project_code in self.project_configs.keys():
-            all_results[project_code] = self.project_results[project_code] + self.processed[project_code]
+            all_results[project_code] = (self.project_results[project_code] + self.processed[project_code]
+                                         + self.undelivered.get(project_code, []))
         return all_results
 
     def set_results(self, results: Dict[str, List[Result]]) -> None:

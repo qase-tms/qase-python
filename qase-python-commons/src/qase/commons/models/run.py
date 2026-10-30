@@ -50,18 +50,18 @@ class Run(BaseModel):
                  title: str,
                  start_time: float,
                  end_time: float,
-                 results: List[str] = [],
-                 threads: List[str] = [],
-                 suites: List[str] = [],
+                 results: Optional[List[str]] = None,
+                 threads: Optional[List[str]] = None,
+                 suites: Optional[List[str]] = None,
                  environment: Optional[str] = None
                  ):
         self.host_data = None
         self.title = title
         self.execution = RunExecution(start_time=start_time, end_time=end_time)
         self.stats = RunStats()
-        self.results = results
-        self.threads = threads
-        self.suites = suites
+        self.results = results if results is not None else []
+        self.threads = threads if threads is not None else []
+        self.suites = suites if suites is not None else []
         self.environment = environment
 
     def add_result(self, result: dict):
@@ -84,11 +84,8 @@ class Run(BaseModel):
 
     def _extract_path_from_relations(self, relations_dict):
 
-        titles = []
-        if "relations" in relations_dict and "suite" in relations_dict["relations"]:
-            if "data" in relations_dict["relations"]["suite"]:
-                data_list = relations_dict["relations"]["suite"]["data"]
-                titles = [item["title"] for item in data_list if "title" in item]
+        suite = (relations_dict.get("relations") or {}).get("suite") or {}
+        titles = [item["title"] for item in suite.get("data") or [] if "title" in item]
 
         path = "/".join(titles)
 
