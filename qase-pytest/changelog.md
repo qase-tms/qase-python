@@ -1,3 +1,9 @@
+# qase-pytest 9.0.1
+
+## Bug fixes
+
+- `qase-pytest` and `qase-tavern` can now be installed together. Both packages registered their pytest plugin under the same name, so pytest loaded only one of them. With `qase-tavern` 4.0.2 or later, Tavern YAML tests are reported by `qase-tavern` and all other tests by `qase-pytest`, into a single test run. Tavern tests are not filtered out by an execution plan, matching `qase-tavern` on its own.
+
 # qase-pytest 9.0.0
 
 ## Breaking changes
