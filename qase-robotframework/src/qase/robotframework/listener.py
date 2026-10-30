@@ -1,6 +1,7 @@
 import logging
 import pathlib
 import re
+import time
 import uuid
 
 from filelock import FileLock
@@ -31,6 +32,8 @@ class Listener:
     ROBOT_LISTENER_API_VERSION = 3
 
     meta_run_file = pathlib.Path("src.run")
+    pabot_run_id_timeout = 300
+    pabot_poll_interval = 0.5
 
     def __init__(self):
         config = ConfigManager()
@@ -40,11 +43,18 @@ class Listener:
         self.tests = {}
         self.pabot_index = None
         self.last_level_flag = None
+        self.in_test = False
 
         # Use centralized logger from config
         self.logger = config.logger
 
     def start_suite(self, suite, result):
+        # Robot Framework calls start_suite for every suite in the hierarchy.
+        # Only the root starts the run (starting it again in report mode wipes
+        # the results written so far) and registers tests with full paths.
+        if getattr(suite, "parent", None) is not None:
+            return
+
         self.pabot_index = get_pool_id()
         self.last_level_flag = get_last_level_flag()
         if self.pabot_index is not None:
@@ -56,10 +66,7 @@ class Listener:
                             with open(self.meta_run_file, "w") as lock_file:
                                 lock_file.write(str(test_run_id))
                 else:
-                    while True:
-                        if Listener.meta_run_file.exists():
-                            self.__load_run_from_lock()
-                            break
+                    self.__wait_for_run_from_lock()
             except RuntimeError:
                 self.logger.log_error("Failed to create or read lock file")
         else:
@@ -70,21 +77,22 @@ class Listener:
             selector = Filter(*execution_plan)
             suite.visit(selector)
 
-        # Robot Framework invokes start_suite for every suite in the hierarchy
-        # (root → leaves). Extract tests only on the root call so each test is
-        # registered once with its full suite path; otherwise subsequent calls
-        # for child suites would overwrite the entry with a shorter hierarchy.
-        if getattr(suite, "parent", None) is None:
-            self.tests.update(self.__extract_tests_with_suites(suite))
+        self.tests.update(self.__extract_tests_with_suites(suite))
 
     def start_test(self, test, result):
         self.logger.log_debug(f"Starting test '{test.name}'")
+        self.in_test = True
 
         self.runtime.result = Result(title=test.name, signature=test.name)
         self.runtime.steps = {}
 
     def end_user_keyword(self, data, implementation, result):
         self.logger.log_debug(f"Ending user keyword '{data.name}'")
+
+        # Suite setup/teardown keywords have no result of their own; the one
+        # in runtime belongs to the previous test, which is already reported.
+        if not self.in_test:
+            return
 
         test_metadata = TagParser.parse_tags(result.tags, self.logger)
 
@@ -105,6 +113,7 @@ class Listener:
 
     def end_test(self, test, result):
         self.logger.log_debug(f"Finishing test '{test.name}'")
+        self.in_test = False
 
         test_metadata = TagParser.parse_tags(test.tags, self.logger)
 
@@ -147,7 +156,7 @@ class Listener:
         if test_metadata.tags:
             self.runtime.result.add_tags(test_metadata.tags)
 
-        suites = self.tests.get(f"{test.name}:{test.lineno}")
+        suites = self.tests.get(test.id)
         if suites:
             relations = Relation()
             for suite in suites:
@@ -213,8 +222,8 @@ class Listener:
 
         if hasattr(suite, 'tests') and suite.tests:
             for test in suite.tests:
-                test_key = f"{test.name}:{test.lineno}"
-                test_dict[test_key] = current_suites
+                # name:lineno is not unique across files; the id (s1-s2-t1) is.
+                test_dict[test.id] = current_suites
 
         return test_dict
 
@@ -615,6 +624,17 @@ class Listener:
             step.execution.set_status("skipped")
         else:
             step.execution.set_status("passed")
+
+    def __wait_for_run_from_lock(self):
+        deadline = time.monotonic() + self.pabot_run_id_timeout
+        while not Listener.meta_run_file.exists():
+            if time.monotonic() >= deadline:
+                self.logger.log_error(
+                    f"No test run ID from the first pabot process after {self.pabot_run_id_timeout}s; "
+                    f"results of this process may not be reported")
+                return
+            time.sleep(self.pabot_poll_interval)
+        self.__load_run_from_lock()
 
     def __load_run_from_lock(self):
         if Listener.meta_run_file.exists():
