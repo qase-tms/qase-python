@@ -86,10 +86,11 @@ class TestSetStepStatusBasedOnChildren:
         step.execution.set_status.assert_called_once_with("passed")
 
 
-def _make_test(name, lineno):
-    test = MagicMock(spec=["name", "lineno"])
+def _make_test(name, lineno, id=None):
+    test = MagicMock(spec=["name", "lineno", "id"])
     test.name = name
     test.lineno = lineno
+    test.id = id or f"{name}:{lineno}"
     return test
 
 
