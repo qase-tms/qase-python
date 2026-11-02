@@ -208,7 +208,9 @@ class ApiV2Client(ApiV1Client):
                 prepared_step['execution']['start_time'] = None
                 prepared_step['execution']['end_time'] = None
             else:
-                prepared_step['execution']['status'] = ResultStepStatus(step.execution.status)
+                # The API has no "invalid" step status and rejects the whole batch on it.
+                status = 'failed' if step.execution.status == 'invalid' else step.execution.status
+                prepared_step['execution']['status'] = ResultStepStatus(status)
                 prepared_step['execution']['duration'] = step.execution.duration
                 prepared_step['execution']['start_time'] = step.execution.start_time
                 prepared_step['execution']['end_time'] = step.execution.end_time

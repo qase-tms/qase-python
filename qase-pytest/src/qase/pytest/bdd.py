@@ -112,11 +112,13 @@ class QasePytestBddPlugin:
         runtime = getattr(self._pytest_plugin, "runtime", None)
         if runtime is None or self._current is None:
             return
-        # No before_step fired — create the Step directly with status='invalid'.
+        # No before_step fired — create the Step directly. Not "invalid": Qase has
+        # no such step status and rejects the whole batch on it.
         qase_step = build_step(step)
-        qase_step.execution.set_status("invalid")
+        qase_step.execution.set_status("failed")
         qase_step.execution.complete()
         runtime.steps[qase_step.id] = qase_step
+        self._current["next_step_idx"] += 1
         self._current["scenario_failed"] = True
 
     def pytest_bdd_after_scenario(self, request, feature, scenario):

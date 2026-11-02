@@ -192,7 +192,7 @@ def outcome():
     assert statuses[2] == "skipped"
 
 
-def test_step_lookup_error_marks_step_invalid(pytester):
+def test_step_lookup_error_marks_step_failed(pytester):
     _write_config(pytester)
     _write_feature(
         pytester,
@@ -220,10 +220,7 @@ def implemented():
     assert len(results) == 1
     steps = results[0]["steps"]
     statuses = [s["execution"]["status"] for s in steps]
-    # First step passes (it has an implementation).
-    assert statuses[0] == "passed"
-    # The missing one should be marked invalid by our plugin.
-    assert "invalid" in statuses
+    assert statuses == ["passed", "failed"]
 
 
 def test_nested_qase_step_inherits_gherkin_parent(pytester):

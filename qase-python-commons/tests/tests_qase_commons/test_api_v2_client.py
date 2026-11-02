@@ -1,7 +1,9 @@
 from unittest.mock import Mock, patch
 
 from qase.commons.client.api_v2_client import ApiV2Client
+from qase.api_client_v2.models.result_step_status import ResultStepStatus
 from qase.commons.models.result import Result
+from qase.commons.models.step import Step, StepTextData, StepType
 
 
 def _client() -> ApiV2Client:
@@ -52,3 +54,24 @@ def test_send_results_passes_the_configured_timeout():
 
     kwargs = results_api.return_value.create_results_v2.call_args.kwargs
     assert kwargs["_request_timeout"] == 7
+
+
+def _result_with_step(status: str) -> Result:
+    result = _result("test something", "sig-1")
+    step = Step(step_type=StepType.TEXT, id=None, data=StepTextData(action="do it"))
+    step.execution.set_status(status)
+    result.add_steps([step])
+    return result
+
+
+def test_invalid_step_is_sent_as_failed():
+    # The API has no "invalid" step status and rejects the whole batch on it.
+    prepared = _client()._prepare_result("DEMO", _result_with_step("invalid"))
+
+    assert prepared.steps[0].execution.status == ResultStepStatus.FAILED
+
+
+def test_untested_step_is_sent_as_skipped():
+    prepared = _client()._prepare_result("DEMO", _result_with_step("untested"))
+
+    assert prepared.steps[0].execution.status == ResultStepStatus.SKIPPED
