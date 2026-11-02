@@ -33,8 +33,8 @@ def filter_scenarios(case_ids: List[int], scenarios: List[Scenario]) -> List[Sce
     return executed_scenarios
 
 
-def parse_scenario(scenario: Scenario) -> Result:
-    tags = __parse_tags(scenario.tags)
+def parse_scenario(scenario: Scenario, logger=None) -> Result:
+    tags = __parse_tags(scenario.tags, logger)
 
     result = Result(scenario.name, scenario.name)
 
@@ -85,50 +85,53 @@ def __parse_parameters(scenario):
     return {name: value for name, value in zip(row.headings, row.cells)} if row else {}
 
 
-def __parse_tags(tags) -> dict:
+def __parse_tags(tags, logger=None) -> dict:
     meta_data = {}
 
     for tag in tags:
-        tag_lower = tag.lower()
-        
-        if tag_lower.startswith("qase.project_id."):
-            # Format: @qase.project_id.PROJ1:123,124
-            parts = tag.split(":", 1)
-            if len(parts) == 2:
-                project_part = parts[0].split(".", 2)  # ["qase", "project_id", "PROJ1"]
-                if len(project_part) == 3:
-                    project_code = project_part[2]
-                    ids_str = parts[1]
-                    testops_ids = [int(x.strip()) for x in ids_str.split(',') if x.strip()]
-                    if project_code and testops_ids:
-                        if TESTOPS_PROJECT_ID not in meta_data:
-                            meta_data[TESTOPS_PROJECT_ID] = {}
-                        meta_data[TESTOPS_PROJECT_ID][project_code] = testops_ids
-            continue
-
-        if tag_lower.startswith("qase.id"):
-            meta_data[TESTOPS_ID] = [int(x) for x in (tag.split(":")[1]).split(',')]
-            continue
-
-        if tag_lower.startswith("qase.fields"):
-            meta_data[FIELDS] = __extract_fields(tag)
-            continue
-
-        if tag_lower.startswith("qase.tags"):
-            tag_values = tag.split(":", 1)[1].split(",")
-            parsed = [t.strip() for t in tag_values if t.strip()]
-            if TAGS not in meta_data:
-                meta_data[TAGS] = []
-            meta_data[TAGS].extend(parsed)
-            continue
-
-        if tag_lower == "qase.ignore":
-            meta_data[IGNORE] = True
-
-        if tag_lower.startswith("qase.suite"):
-            meta_data[SUITE] = tag.split(":")[1].split('||')
+        # A typo in one tag must not abort the behave run.
+        try:
+            __parse_tag(tag, meta_data)
+        except (ValueError, IndexError) as e:
+            if logger:
+                logger.log(f"Ignoring malformed tag @{tag}: {e}", "warning")
 
     return meta_data
+
+
+VALUE_TAGS = ("qase.id", "qase.fields", "qase.tags", "qase.suite")
+
+
+def __parse_tag(tag: str, meta_data: dict) -> None:
+    tag_lower = tag.lower()
+
+    if tag_lower.startswith("qase.project_id."):
+        # Format: @qase.project_id.PROJ1:123,124
+        project_part, ids_str = tag.split(":", 1)
+        project_code = project_part.split(".", 2)[2]
+        if not project_code:
+            raise ValueError("expected @qase.project_id.CODE:1,2")
+        meta_data.setdefault(TESTOPS_PROJECT_ID, {})[project_code] = __parse_ids(ids_str)
+    elif tag_lower.startswith("qase.id:"):
+        meta_data[TESTOPS_ID] = __parse_ids(tag.split(":", 1)[1])
+    elif tag_lower.startswith("qase.fields:"):
+        meta_data[FIELDS] = __extract_fields(tag)
+    elif tag_lower.startswith("qase.tags:"):
+        tag_values = tag.split(":", 1)[1].split(",")
+        meta_data.setdefault(TAGS, []).extend(t.strip() for t in tag_values if t.strip())
+    elif tag_lower.startswith("qase.suite:"):
+        meta_data[SUITE] = tag.split(":", 1)[1].split('||')
+    elif tag_lower == "qase.ignore":
+        meta_data[IGNORE] = True
+    elif tag_lower in VALUE_TAGS or tag_lower.startswith(tuple(f"{name}." for name in VALUE_TAGS)):
+        raise ValueError(f"expected @{tag_lower.split('.')[0]}.{tag_lower.split('.')[1]}:<value>")
+
+
+def __parse_ids(value: str) -> List[int]:
+    ids = [int(x) for x in (part.strip() for part in value.split(',')) if x]
+    if not ids:
+        raise ValueError("no case IDs")
+    return ids
 
 
 def __extract_fields(tag: str) -> dict:
@@ -147,6 +150,7 @@ def parse_scenario_from_json(
     scenario_dict: dict,
     feature_filename: str,
     time_offset: float = 0.0,
+    logger=None,
 ) -> Result:
     """Parse a BehaveX JSON scenario dict into a Qase Result.
 
@@ -154,7 +158,7 @@ def parse_scenario_from_json(
     from BehaveX so the original timeline can be replayed inside the
     current Qase run window. See ``QaseFormatter._compute_time_offset``.
     """
-    tags = __parse_tags(scenario_dict.get('tags', []))
+    tags = __parse_tags(scenario_dict.get('tags', []), logger)
 
     name = scenario_dict.get('name', '')
     result = Result(name, name)
@@ -190,7 +194,7 @@ def parse_scenario_from_json(
         'failed': 'failed',
         'error': 'invalid',
         'skipped': 'skipped',
-        'undefined': 'skipped',
+        'undefined': 'invalid',
         'untested': 'skipped',
     }
     result.execution.set_status(
@@ -251,7 +255,7 @@ def parse_step_from_json(step_dict: dict, time_offset: float = 0.0) -> QaseStep:
         'failed': 'failed',
         'error': 'failed',
         'skipped': 'skipped',
-        'undefined': 'skipped',
+        'undefined': 'failed',
         'untested': 'skipped',
     }
     model.execution.set_status(
@@ -302,7 +306,7 @@ def parse_step(step: Step, start_time: float = None) -> QaseStep:
         'hook_error': 'failed',
         'cleanup_error': 'failed',
         'skipped': 'skipped',
-        'undefined': 'skipped',
+        'undefined': 'failed',
         'pending': 'skipped'
     }
     model.execution.set_status(status_mapping.get(step.status.name, 'skipped'))
