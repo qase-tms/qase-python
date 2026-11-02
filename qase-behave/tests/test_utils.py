@@ -260,8 +260,13 @@ class TestParseScenarioFromJson:
         result = parse_scenario_from_json(scenario_dict, 'features/test.feature')
         assert result.execution.thread == 'worker-2'
 
-    def test_skipped_undefined_untested_statuses(self):
-        for status in ['skipped', 'undefined', 'untested']:
+    def test_undefined_status_maps_to_invalid(self):
+        scenario_dict = {'name': 'undefined test', 'status': 'undefined', 'duration': 0.0, 'tags': []}
+        result = parse_scenario_from_json(scenario_dict, 'features/test.feature')
+        assert result.execution.status == 'invalid'
+
+    def test_skipped_untested_statuses(self):
+        for status in ['skipped', 'untested']:
             scenario_dict = {
                 'name': f'{status} test',
                 'status': status,
@@ -318,7 +323,7 @@ class TestParseStepFromJson:
         step = parse_step_from_json(step_dict)
         assert step.execution.status == 'failed'
 
-    def test_undefined_step_maps_to_skipped(self):
+    def test_undefined_step_maps_to_failed(self):
         step_dict = {
             'step_type': 'given',
             'name': 'an undefined step',
@@ -327,7 +332,7 @@ class TestParseStepFromJson:
             'duration': 0.0,
         }
         step = parse_step_from_json(step_dict)
-        assert step.execution.status == 'skipped'
+        assert step.execution.status == 'failed'
 
     def test_step_with_duration(self):
         """Step timestamps calculated from current time and duration."""

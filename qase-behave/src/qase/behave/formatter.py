@@ -75,7 +75,7 @@ class QaseFormatter(Formatter):
 
     def scenario(self, scenario: Scenario):
         self.__finalize_current_scenario()
-        self.__current_scenario = parse_scenario(scenario)
+        self.__current_scenario = parse_scenario(scenario, self.reporter.logger)
         self.__current_raw_scenario = scenario
         qase._set_current_scenario(self.__current_scenario)
         qase._set_current_step(None)
@@ -102,6 +102,12 @@ class QaseFormatter(Formatter):
                 self.__current_scenario.execution.status != 'failed'):
             self.__current_scenario.execution.set_status('invalid')
 
+        # A scenario excluded by --tags or skipped from a hook never gets a
+        # result() call, so only behave's own status tells it apart from a pass.
+        raw_status = getattr(getattr(self.__current_raw_scenario, 'status', None), 'name', None)
+        if raw_status in ('skipped', 'untested') and self.__current_scenario.execution.status == 'passed':
+            self.__current_scenario.execution.set_status('skipped')
+
         self.__current_scenario.execution.complete()
         self.reporter.add_result(self.__current_scenario)
         self.__current_scenario = None
@@ -126,12 +132,12 @@ class QaseFormatter(Formatter):
 
         if step.execution.status != 'passed':
             if step.execution.status == 'failed':
-                # A before_step/after_step hook failure is a broken step,
-                # like a setup/teardown error; any other step-body failure
-                # (assertion or otherwise) is a real test failure.
-                status = 'invalid' if getattr(result, 'hook_failed', False) else 'failed'
-                step.execution.set_status(status)
-                self.__current_scenario.execution.set_status(status)
+                # A before_step/after_step hook failure or an undefined step is
+                # a broken test, like a setup/teardown error; any other
+                # step-body failure is a real test failure. The step itself
+                # stays 'failed': Qase rejects 'invalid' as a step status.
+                broken = getattr(result, 'hook_failed', False) or result.status.name == 'undefined'
+                self.__current_scenario.execution.set_status('invalid' if broken else 'failed')
             else:
                 self.__current_scenario.execution.set_status(step.execution.status)
 
@@ -178,7 +184,8 @@ class QaseFormatter(Formatter):
             feature_filename = feature.get('filename', '')
             for scenario_dict in feature.get('scenarios', []):
                 result = parse_scenario_from_json(
-                    scenario_dict, feature_filename, time_offset=time_offset
+                    scenario_dict, feature_filename, time_offset=time_offset,
+                    logger=self.reporter.logger,
                 )
 
                 if result.ignore:

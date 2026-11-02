@@ -32,31 +32,49 @@ def mock_scenario():
 
 
 class TestTagParsingErrors:
-    """Test malformed tag handling in parse_scenario."""
+    """A malformed qase tag is skipped; it must not abort the behave run."""
 
-    def test_non_numeric_qase_id_raises_value_error(self, mock_scenario):
-        """qase.id:abc should raise ValueError from int() conversion."""
-        scenario = mock_scenario(tags=["qase.id:abc"])
-        with pytest.raises(ValueError):
-            parse_scenario(scenario)
+    @pytest.mark.parametrize("tag", [
+        "qase.id:abc", "qase.id", "qase.id:", "qase.id:7,x", "qase.id.1", "qase.tags",
+        "qase.suite", "qase.project_id.P:1,x",
+    ])
+    def test_malformed_tag_is_ignored(self, mock_scenario, tag):
+        scenario = mock_scenario(tags=[tag, "qase.fields:{\"severity\":\"major\"}"])
 
-    def test_missing_colon_in_qase_id_raises_index_error(self, mock_scenario):
-        """qase.id without colon/value should raise IndexError from split(':')[1]."""
-        scenario = mock_scenario(tags=["qase.id"])
-        with pytest.raises(IndexError):
-            parse_scenario(scenario)
+        result = parse_scenario(scenario)
+
+        assert result.testops_ids is None
+        assert result.testops_project_mapping in (None, {})
+        assert result.fields == {"severity": "major"}
+
+    def test_malformed_tag_is_logged(self, mock_scenario):
+        logger = MagicMock()
+
+        parse_scenario(mock_scenario(tags=["qase.id:abc"]), logger=logger)
+
+        logger.log.assert_called_once()
+        assert "qase.id:abc" in logger.log.call_args[0][0]
+
+    def test_trailing_comma_in_ids_is_accepted(self, mock_scenario):
+        result = parse_scenario(mock_scenario(tags=["qase.id:7,"]))
+
+        assert result.testops_ids == [7]
+
+    def test_similar_tag_name_is_not_an_id(self, mock_scenario):
+        result = parse_scenario(mock_scenario(tags=["qase.identifier:x"]))
+
+        assert result.testops_ids is None
+
+    def test_suite_name_may_contain_colon(self, mock_scenario):
+        result = parse_scenario(mock_scenario(tags=["qase.suite:API: v2||Users"]))
+
+        assert [s.title for s in result.relations.suite.data] == ["API: v2", "Users"]
 
     def test_invalid_json_in_fields_returns_empty_dict(self, mock_scenario):
         """qase.fields:not-json should produce empty fields dict."""
         scenario = mock_scenario(tags=["qase.fields:not-json"])
         result = parse_scenario(scenario)
         assert result.fields == {}
-
-    def test_empty_qase_id_value_raises(self, mock_scenario):
-        """qase.id: (colon but no value) should raise ValueError."""
-        scenario = mock_scenario(tags=["qase.id:"])
-        with pytest.raises(ValueError):
-            parse_scenario(scenario)
 
 
 class TestMultiProjectTags:
@@ -84,8 +102,8 @@ class TestMultiProjectTags:
 class TestStepParsing:
     """Test parse_step status mapping edge cases."""
 
-    def test_undefined_status_maps_to_skipped(self):
-        """Step with status 'undefined' should map to 'skipped'."""
+    def test_undefined_status_maps_to_failed(self):
+        """Step with status 'undefined' is a failed step; Qase rejects 'invalid' for steps."""
         step = MagicMock()
         step.keyword = "When"
         step.name = "an undefined step"
@@ -94,7 +112,7 @@ class TestStepParsing:
         step.duration = 0.0
 
         qase_step = parse_step(step)
-        assert qase_step.execution.status == "skipped"
+        assert qase_step.execution.status == "failed"
 
     def test_pending_status_maps_to_skipped(self):
         """Step with status 'pending' should map to 'skipped'."""
@@ -453,11 +471,22 @@ class TestStepFailureStatusFromHookFailed:
         formatter.result(step)
 
         formatter._QaseFormatter__current_scenario.execution.set_status.assert_called_with('invalid')
+        assert formatter._QaseFormatter__current_scenario.steps[0].execution.status == 'failed'
 
-    def test_undefined_step_status_is_untouched(self):
-        """Non-failed statuses (skipped/undefined/pending) pass through as before."""
+    def test_undefined_step_makes_scenario_invalid(self):
+        """behave fails a scenario with an undefined step; it is a broken
+        test, not a skipped one."""
         formatter = self._make_formatter()
         step = self._make_step(status="undefined", hook_failed=False, error_message=None)
+
+        formatter.result(step)
+
+        formatter._QaseFormatter__current_scenario.execution.set_status.assert_called_with('invalid')
+        assert formatter._QaseFormatter__current_scenario.steps[0].execution.status == 'failed'
+
+    def test_skipped_step_status_passes_through(self):
+        formatter = self._make_formatter()
+        step = self._make_step(status="skipped", hook_failed=False, error_message=None)
 
         formatter.result(step)
 
@@ -591,3 +620,35 @@ class TestBehaveXWorkerMode:
 
         formatter.reporter.complete_worker.assert_called_once()
         formatter.reporter.complete_run.assert_not_called()
+
+
+class TestSkippedScenario:
+    """behave calls scenario() for a skipped scenario but never result(), so
+    the parsed scenario keeps parse_scenario's 'passed' default."""
+
+    def _finalize(self, raw_status, status="passed"):
+        from qase.commons.models import Result
+        formatter = QaseFormatter()
+        formatter._behavex_mode = False
+        formatter.reporter = MagicMock()
+        result = Result(title="s", signature="s")
+        result.execution.set_status(status)
+        result.ignore = False
+        raw = MagicMock(hook_failed=False)
+        raw.status.name = raw_status
+        formatter._QaseFormatter__current_scenario = result
+        formatter._QaseFormatter__current_raw_scenario = raw
+
+        formatter._QaseFormatter__finalize_current_scenario()
+
+        return result
+
+    @pytest.mark.parametrize("raw_status", ["skipped", "untested"])
+    def test_skipped_scenario_is_skipped(self, raw_status):
+        assert self._finalize(raw_status).execution.status == "skipped"
+
+    def test_passed_scenario_stays_passed(self):
+        assert self._finalize("passed").execution.status == "passed"
+
+    def test_failed_scenario_is_not_overwritten(self):
+        assert self._finalize("skipped", status="failed").execution.status == "failed"
