@@ -1,3 +1,13 @@
+# qase-behave 4.0.1
+
+## Bug fixes
+
+- Skipped scenarios are now reported as `skipped`. A scenario excluded with `--tags`, or skipped with `scenario.skip()` in a `before_scenario` hook, was reported as `passed`.
+- A scenario with an undefined step is now reported as `invalid`; behave counts it as failing. It used to be reported as `skipped`.
+- Fixed results lost when a step hook failed. The failing step was sent with the status `invalid`, which the Qase API does not accept for steps, so the whole batch of results containing it was rejected. Steps are now sent as `failed`, and the scenario is still reported as `invalid`.
+- A malformed `qase` tag no longer aborts the behave run. Tags such as `@qase.id:abc`, `@qase.id` or `@qase.tags` used to raise an error from the formatter, which stopped the run and left the test run in Qase open with no results. A malformed tag is now skipped with a warning, and the other tags of the scenario still apply. A trailing comma in IDs (`@qase.id:7,`) is accepted.
+- `@qase.suite:` values may contain a colon, and tags that only start like a Qase tag (for example `@qase.identifier:x`) are no longer read as case IDs.
+
 # qase-behave 4.0.0
 
 ## Breaking changes
