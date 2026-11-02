@@ -1,3 +1,9 @@
+# qase-python-commons@5.1.8
+
+## What's new
+
+- A step with status `invalid` no longer makes Qase reject the whole batch of results. The API has no `invalid` status for steps, so a single such step caused every result in its batch to be lost; it is now sent as `failed`. The result itself keeps its `invalid` status.
+
 # qase-python-commons@5.1.7
 
 ## What's new
