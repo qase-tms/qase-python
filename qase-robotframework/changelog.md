@@ -1,3 +1,12 @@
+# qase-robotframework 7.0.1
+
+## Bug fixes
+
+- Fixed lost results in `report` mode when running a directory with several suites. The run was started again for every suite, and in `report` mode each start cleared the results already written, so only the last suites ended up in the report. In `testops` mode this also cost an extra API call per suite. The run is now started once, for the top-level suite.
+- Fixed tests reported under another file's suite. Tests were matched to their suite path by name and line number, so two tests with the same name on the same line in different files (for example, `Login` in `auth/login.robot` and `billing/login.robot`) could end up in the same suite with the same signature.
+- `pabot` processes no longer hang when the first process fails to create the test run. They used to wait for the run ID in a busy loop with no timeout. They now poll for up to 5 minutes, then log an error and continue.
+- Keywords tagged with `qase.params` or `qase.fields` that run in a Suite Setup or Suite Teardown no longer fail before the first test or change the result of the previous test.
+
 # qase-robotframework 7.0.0
 
 ## Breaking changes
