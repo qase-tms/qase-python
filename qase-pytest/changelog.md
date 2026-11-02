@@ -1,3 +1,10 @@
+# qase-pytest 9.0.2
+
+## Bug fixes
+
+- pytest-bdd: a scenario with a step that has no step definition no longer loses results. The step was reported with status `invalid`, which Qase does not accept for steps, so the whole batch it belonged to was rejected. The step is now reported as `failed`.
+- pytest-bdd: a step with no step definition is no longer reported twice, once as `failed` and once more as `skipped`.
+
 # qase-pytest 9.0.1
 
 ## Bug fixes

@@ -339,7 +339,8 @@ class TestStepErrorAndAfterScenario:
 
 
 class TestStepLookupError:
-    def test_lookup_error_records_invalid_step(self):
+    def test_lookup_error_records_failed_step(self):
+        # Qase has no "invalid" step status and rejects the whole batch on it.
         from qase.pytest.bdd import QasePytestBddPlugin
 
         pytest_plugin = MagicMock()
@@ -363,9 +364,9 @@ class TestStepLookupError:
         )
 
         added = pytest_plugin.runtime.steps
-        invalid = [s for s in added.values() if s.execution.status == "invalid"]
-        assert len(invalid) == 1
-        assert invalid[0].data.name == "missing impl"
+        failed = [s for s in added.values() if s.execution.status == "failed"]
+        assert len(failed) == 1
+        assert failed[0].data.name == "missing impl"
         assert bdd._current["scenario_failed"] is True
 
 
